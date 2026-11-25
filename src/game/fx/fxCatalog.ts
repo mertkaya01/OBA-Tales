@@ -29,6 +29,8 @@ export const RAMPS = {
   isik: ["#1b2a4a", "#3f5f8f", "#7fa8d8", "#b8dcf6", "#d6f1ff", "#eef9ff", "#ffffff", "#ffffff"],
   destansi: ["#1a0f2e", "#341c5c", "#55308e", "#7a4cc0", "#9566e0", "#bb98f2", "#e2d4ff", "#ffffff"],
   efsanevi: ["#3a1208", "#7a2410", "#c03c18", "#f0642f", "#ff9a4a", "#ffc970", "#ffe9b0", "#ffffff"],
+  ulu: ["#3b2a08", "#7a5a10", "#c49a1a", "#ffd23f", "#ffe680", "#fff3b8", "#fffbe8", "#ffffff"],
+  goksel: ["#0a1030", "#1c2a66", "#2f56a8", "#4fa3e0", "#7fe6ff", "#b8f4ff", "#e8fcff", "#ffffff"],
   zumrut: ["#0b2a20", "#145a42", "#24906a", "#34b08b", "#8ae6c0", "#ffffff"],
   gunozu: ["#3b2a08", "#7a5612", "#b8861c", "#e2a52a", "#f6d36f", "#fbe7a6", "#fff8e0", "#ffffff"],
 } as const;
@@ -42,9 +44,11 @@ export const PORTRAIT = { width: 88, height: 96, feetX: 44, feetY: 88, spriteSca
 export function portraitAuras(c: Character): FxRecipe[] {
   const { feetX: x, feetY: y } = PORTRAIT;
   const out: FxRecipe[] = [];
-  if (c.rarity === "efsanevi") {
-    out.push({ id: "holy/sunburst", options: { x, y: y - 26, palette: RAMPS.efsanevi, light: 0.75 }, layer: "back" });
+  if (c.rarity === "efsanevi" || c.rarity === "ulu" || c.rarity === "goksel") {
+    out.push({ id: "holy/sunburst", options: { x, y: y - 26, palette: RAMPS[c.rarity], light: c.rarity === "efsanevi" ? 0.75 : 0.95 }, layer: "back" });
   }
+  // Göksel: arkadaki güneşin yanında bir de yıldız ışığı halesi.
+  if (c.rarity === "goksel") out.push({ id: "holy/halo", options: { x, y, palette: RAMPS.goksel } });
   if (c.elementAura === "alev") {
     out.push({ id: "fire/spirit-flame", options: { x, y: y + 2, palette: RAMPS.ates, light: 0.9 }, layer: "back" });
   }

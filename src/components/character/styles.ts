@@ -15,4 +15,6 @@ export const RARITY_TEXT: Readonly<Record<Rarity, string>> = {
   nadir: "text-nadir",
   destansi: "text-destansi",
   efsanevi: "text-efsanevi",
+  ulu: "text-ulu",
+  goksel: "text-goksel",
 };

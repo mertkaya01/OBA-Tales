@@ -68,6 +68,8 @@ export function safeRadius(terrain: Terrain, home: Coordinates, wanted: number, 
 }
 
 function wantedRadius(c: Character): number {
+  // Özel kahramanlar Kut Kapısı'nın önünde nöbet tutar: yerlerinden ayrılmazlar.
+  if (c.roleType === "hero") return 0;
   if (c.roleType !== "follower") return CAST_WANDER;
   const h = unit(`gez:${c.id}`);
   if (h < STATIONARY_SHARE) return 0;

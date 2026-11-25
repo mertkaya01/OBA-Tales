@@ -37,7 +37,7 @@ const followers: Character[] = [
     now,
   }),
 ];
-const everyone: Character[] = [...CAST, ...followers];
+const everyone: Character[] = [...CAST.filter((c) => c.roleType !== "hero"), ...followers];
 
 const filters = (patch: Partial<FilterState>): FilterState => ({ ...createEmptyFilters(), ...patch });
 const ids = (list: Character[]) => list.map((c) => c.id).sort();
@@ -126,7 +126,7 @@ describe("seçenek sayıları", () => {
     // Sınıf sayıları yalnızca "kadro" seçimine göre: kadroda 2 kalkaneri, 2 okyeli, 3 ocakcan.
     expect(facets.classes).toEqual({ kalkaneri: 2, okyeli: 2, ocakcan: 3 });
     // Nadirlik sayıları hem okyeli hem kadro seçimine göre: Süheyla (destansı), Işıkay (efsanevi).
-    expect(facets.rarities).toEqual({ siradan: 0, nadir: 0, destansi: 1, efsanevi: 1 });
+    expect(facets.rarities).toEqual({ siradan: 0, nadir: 0, destansi: 1, efsanevi: 1, ulu: 0, goksel: 0 });
     // Özel durumlar AND: okyeli + kadro + çoklu → yalnızca Işıkay.
     expect(facets.special.coklu).toBe(1);
     expect(facets.special.kadro).toBe(2);

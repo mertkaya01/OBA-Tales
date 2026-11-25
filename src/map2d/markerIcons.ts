@@ -20,10 +20,12 @@ const FRAME: Record<Rarity, string> = {
   nadir: "frame-nadir",
   destansi: "frame-destansi",
   efsanevi: "frame-efsanevi",
+  ulu: "frame-ulu",
+  goksel: "frame-goksel",
 };
 
 /** Halka dilimlerinin sırası: en nadir en üstte (saat 12 yönünde) başlar. */
-const RING_ORDER: readonly Rarity[] = ["efsanevi", "destansi", "nadir", "siradan"];
+const RING_ORDER: readonly Rarity[] = ["goksel", "ulu", "efsanevi", "destansi", "nadir", "siradan"];
 
 /** Kullanıcıdan gelen metni HTML'e güvenle koymak için. */
 export function escapeHtml(text: string): string {

@@ -105,6 +105,15 @@ Modeli değiştirmenin iki yolu var.
 - Kimin giyeceğini söyle, kuralını ben eklerim.
 - Doku (UV ve basecolor) kullanılmaz: oyunda her parçayı takipçinin rengi boyar.
 
+### Özel kahramanlar: egetunce ve mhellingtr
+
+İki özel kahramanın parçaları Blender kitinde ayrı gruplarda duruyor:
+- `COL_11_egetunce`: kova şapka ve gözleri, lavanta, uzun Gün Kılıcı.
+- `COL_12_mhellingtr`: yıldızlı pelerin, Yıldız Yayı, okluk, yıldız tacı.
+
+Parça adları `egetunce-` ve `mhellingtr-` ile başlıyor. Düzenleyip `Alt+P` ile aktarman yeterli. Renkleri 2D portreyle aynı yerden geliyor:
+`src/game/sprites/composeSprite.ts` → `CAST_LOOKS`.
+
 ### Dosyalar ve komutlar
 
 | Ne | Nerede |

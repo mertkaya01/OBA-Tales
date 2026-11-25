@@ -29,10 +29,14 @@ describe("nadirlik kademeleri", () => {
     expect(rarityRank("siradan")).toBe(0);
     expect(rarityRank("efsanevi")).toBe(3);
     expect(rarityAt(-4)).toBe("siradan");
-    expect(rarityAt(9)).toBe("efsanevi");
+    expect(rarityAt(9)).toBe("goksel");
     expect(raiseRarity("nadir")).toBe("destansi");
     expect(raiseRarity("destansi", 5)).toBe("efsanevi");
     expect(raiseRarity("nadir", -3)).toBe("siradan");
+    // Ulu ve Göksel yükseltmeyle kazanılmaz; özel kahramanınki olduğu gibi kalır.
+    expect(raiseRarity("efsanevi", 2)).toBe("efsanevi");
+    expect(raiseRarity("ulu")).toBe("ulu");
+    expect(raiseRarity("goksel", -1)).toBe("goksel");
   });
 
   it("yüksek nadirliği öne sıralar", () => {

@@ -19,6 +19,7 @@ import type { Character } from "../../types";
 import { Badge, type BadgeTone } from "../ui/Badge";
 import { Drawer } from "../ui/Drawer";
 import { EmptyState } from "../ui/EmptyState";
+import { AttributeBars } from "./AttributeBars";
 import { BadgeList } from "./BadgeList";
 import { ClassIcon } from "./ClassIcon";
 import { LivePortraitSlot } from "./LivePortraitSlot";
@@ -30,6 +31,8 @@ const RARITY_TONE: Record<Character["rarity"], BadgeTone> = {
   nadir: "green",
   destansi: "purple",
   efsanevi: "red",
+  ulu: "gold",
+  goksel: "ice",
 };
 
 export function CharacterDrawer() {
@@ -124,6 +127,26 @@ function CharacterDetails({ character: c }: { character: Character }) {
           <p className="mt-2 rounded-xl border border-gunozu-400/20 bg-gunozu-400/5 p-2.5 text-sm italic text-gunozu-100">
             {c.signature}
           </p>
+        </Section>
+      )}
+
+      <Section title="Nitelikler">
+        <AttributeBars character={c} />
+      </Section>
+
+      {isCastMember(c) && c.specialAbilities && (
+        <Section title="Özel yetenekler">
+          <ul className="space-y-1.5">
+            {c.specialAbilities.map((ability) => {
+              const [name, ...rest] = ability.split(": ");
+              return (
+                <li key={ability} className="rounded-xl border border-white/10 bg-white/5 p-2.5 text-sm text-buz-200">
+                  <span className={cn("font-semibold", RARITY_TEXT[c.rarity])}>{name}</span>
+                  {rest.length > 0 && <>: {rest.join(": ")}</>}
+                </li>
+              );
+            })}
+          </ul>
         </Section>
       )}
 

@@ -2,17 +2,17 @@
  * Akına katılanlar: üst üste binen küçük piksel portreler ve "+78". Portreye tıklayınca haritada o kahraman açılır.
  */
 import { Link } from "react-router";
+import { rarityRank } from "../../lib/rules";
 import { formatNumber } from "../../lib/text";
 import type { Character } from "../../types";
 import { CharacterPortrait } from "../character/CharacterPortrait";
 
-const RANK = { efsanevi: 3, destansi: 2, nadir: 1, siradan: 0 } as const;
 
 export function RaidersStack({ raiders, max = 10 }: { raiders: readonly Character[]; max?: number }) {
   if (raiders.length === 0) return null;
   // Önce kadro, sonra nadirlik: en göz alıcılar önde.
   const shown = [...raiders]
-    .sort((a, b) => Number(b.roleType !== "follower") - Number(a.roleType !== "follower") || RANK[b.rarity] - RANK[a.rarity] || a.id.localeCompare(b.id))
+    .sort((a, b) => Number(b.roleType !== "follower") - Number(a.roleType !== "follower") || rarityRank(b.rarity) - rarityRank(a.rarity) || a.id.localeCompare(b.id))
     .slice(0, max);
   const rest = raiders.length - shown.length;
 

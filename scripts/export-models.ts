@@ -98,7 +98,13 @@ const GROUPS: Record<string, string[]> = {
   "08 Nadirlik ve kadro": ["uzun-pelerin", "pelerin-runlari", "madalyon", "kadim-tuy", "akin-isareti", "asa", "asa-tasi"],
 };
 const groupOf = (id: string) =>
-  id.startsWith("buyucu-") ? "10 Buyucu-sifaci" : (Object.entries(GROUPS).find(([, ids]) => ids.includes(id))?.[0] ?? "09 Diger");
+  id.startsWith("buyucu-")
+    ? "10 Buyucu-sifaci"
+    : id.startsWith("egetunce-")
+      ? "11 egetunce"
+      : id.startsWith("mhellingtr-")
+        ? "12 mhellingtr"
+        : (Object.entries(GROUPS).find(([, ids]) => ids.includes(id))?.[0] ?? "09 Diger");
 // Her parçanın örnek rengi: o parçayı taşıyan ilk örnek karakterden. Açılışta görünen: tolgalı, kılıçlı Kalkaneri.
 const samples = [kalkaneri, sample("tiktok", "nadir", { beard: "biyik" }), sample("youtube", "efsanevi", { hat: "kalpak", kopuz: true }), ...CAST];
 const kit = PARTS.map((part) => {

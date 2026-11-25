@@ -39,7 +39,7 @@ describe("harita simgeleri", () => {
   });
 
   it("küme balonu sayıyı ve kaçışlı bölge adını yazar, kalabalıkla büyür", () => {
-    const html = clusterHtml({ count: 1203, byRarity: { siradan: 1000, nadir: 200, destansi: 3, efsanevi: 0 }, regionName: "Kırağı<düzü>" });
+    const html = clusterHtml({ count: 1203, byRarity: { siradan: 1000, nadir: 200, destansi: 3, efsanevi: 0, ulu: 0, goksel: 0 }, regionName: "Kırağı<düzü>" });
     expect(html).toContain("1.203");
     expect(html).toContain("Kırağı&lt;düzü&gt;");
     expect(clusterSize(1000, true)).toBeGreaterThan(clusterSize(5, true));
@@ -47,10 +47,10 @@ describe("harita simgeleri", () => {
   });
 
   it("halka nadirlik dağılımına göre dilimlenir, boş nadirlik dilim almaz", () => {
-    const ring = rarityRing({ siradan: 2, nadir: 1, destansi: 1, efsanevi: 0 });
+    const ring = rarityRing({ siradan: 2, nadir: 1, destansi: 1, efsanevi: 0, ulu: 0, goksel: 0 });
     expect(ring).toBe(
       "conic-gradient(var(--color-destansi) 0.0% 25.0%, var(--color-nadir) 25.0% 50.0%, var(--color-siradan) 50.0% 100.0%)",
     );
-    expect(rarityRing({ siradan: 0, nadir: 0, destansi: 0, efsanevi: 0 })).toBe("conic-gradient(var(--color-siradan) 0 100%)");
+    expect(rarityRing({ siradan: 0, nadir: 0, destansi: 0, efsanevi: 0, ulu: 0, goksel: 0 })).toBe("conic-gradient(var(--color-siradan) 0 100%)");
   });
 });

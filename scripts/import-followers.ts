@@ -2,7 +2,8 @@
  * Gerçek takipçileri haritaya ekler: `npm run takipci:ekle`
  *
  * `veri/girdi/` klasöründeki CSV dosyalarını okur (her satır bir kişi) ve `public/data/roster.json`'a işler:
- *   · Yeni kişi → Kutada'da, Kut Kapısı'nın çevresinde yeni bir karakter (sınıfı platformundan).
+ *   · Yeni kişi → Kutada'da, Kut Kapısı'nın çevresinde yeni bir karakter (sınıfı platformundan); kapının önündeki
+ *     özel kahramanların dibine konmaz.
  *   · Zaten haritada olan kişi başka bir platformdan da geldiyse → o platform eklenir; çift iz / oba öncülüğü
  *     rozeti ve nadirlik bonusu kendiliğinden verilir.
  *
@@ -20,6 +21,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { parseArgs } from "node:util";
+import { nearHero } from "../src/content/cast";
 import { REGIONS } from "../src/content/regions";
 import { LANDMARKS } from "../src/content/sites";
 import { generateTerrain, isWet, sampleTerrain } from "../src/game/terrain";
@@ -118,7 +120,7 @@ function arrivalPoint(handle: string): { x: number; y: number } {
     const angle = ((h % 3600) / 3600) * Math.PI * 2;
     const r = PORTAL_RADIUS + 4 + ((h >>> 12) % 1000) / 1000 * 60;
     const p = { x: Math.round((LANDMARKS.kutKapisi.x + Math.cos(angle) * r) * 10) / 10, y: Math.round((LANDMARKS.kutKapisi.y + Math.sin(angle) * r) * 10) / 10 };
-    if (pointInPolygon(p, REGIONS.kutada.polygon) && sampleTerrain(terrain, p).height >= 0.04 && !isWet(terrain, p)) return p;
+    if (pointInPolygon(p, REGIONS.kutada.polygon) && sampleTerrain(terrain, p).height >= 0.04 && !isWet(terrain, p) && !nearHero(p)) return p;
   }
   return { x: LANDMARKS.kutKapisi.x, y: LANDMARKS.kutKapisi.y + PORTAL_RADIUS + 6 };
 }

@@ -1,23 +1,24 @@
 /**
- * Kadro bölümü — akına öncülük eden yedi kahraman: lider, anlatıcı, ana ve yan kadro.
+ * Kadro bölümü — iki özel kahraman (Ulu ve Göksel) ve akına öncülük eden yedi kahraman: lider, anlatıcı, ana ve yan kadro.
  * Her kartta portre, lakap, sınıf, kısa hikâye ve imza sözü; tıklanınca karakter çekmecesi açılır.
  */
 import { CLASSES } from "../../content/classes";
 import { CAST, ROLE_LABELS } from "../../content/cast";
 import { RARITY_INFO } from "../../content/rarities";
 import { cn } from "../../lib/cn";
+import { rarityRank } from "../../lib/rules";
 import { useAppStore } from "../../state/useAppStore";
 import { CharacterPortrait } from "../character/CharacterPortrait";
 import { ClassIcon } from "../character/ClassIcon";
 import { RARITY_TEXT } from "../character/styles";
 import { Badge } from "../ui/Badge";
 
-/** Lider ve anlatıcı önce, sonra ana kadro, en son yan kadro. */
-const ROLE_ORDER = { leader: 0, narrator: 1, core: 2, side: 3 } as const;
+/** Özel kahramanlar (en güçlüsü başta) önce, sonra lider ve anlatıcı, ana kadro, en son yan kadro. */
+const ROLE_ORDER = { hero: 0, leader: 1, narrator: 2, core: 3, side: 4 } as const;
 
 export function CoreCastSection() {
   const select = useAppStore((s) => s.select);
-  const cast = [...CAST].sort((a, b) => ROLE_ORDER[a.roleType] - ROLE_ORDER[b.roleType]);
+  const cast = [...CAST].sort((a, b) => ROLE_ORDER[a.roleType] - ROLE_ORDER[b.roleType] || rarityRank(b.rarity) - rarityRank(a.rarity));
 
   return (
     <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -32,7 +33,7 @@ export function CoreCastSection() {
             <CharacterPortrait character={member} size="lg" className="shrink-0 self-start" />
             <span className="flex min-w-0 flex-col gap-1.5">
               <span className="flex flex-wrap items-center gap-1.5">
-                <Badge tone={member.roleType === "leader" ? "gold" : member.roleType === "narrator" ? "purple" : "neutral"}>
+                <Badge tone={member.roleType === "hero" ? (member.rarity === "goksel" ? "ice" : "gold") : member.roleType === "leader" ? "gold" : member.roleType === "narrator" ? "purple" : "neutral"}>
                   {ROLE_LABELS[member.roleType]}
                 </Badge>
               </span>

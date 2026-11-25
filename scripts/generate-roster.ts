@@ -15,6 +15,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { parseArgs } from "node:util";
+import { nearHero } from "../src/content/cast";
 import { EPISODES } from "../src/content/episodes";
 import { REGIONS } from "../src/content/regions";
 import { LANDMARKS, VILLAGES } from "../src/content/sites";
@@ -227,7 +228,7 @@ function homePoint(rng: Rng, region: RegionId): { x: number; y: number } {
       const angle = rng.float(0, Math.PI * 2);
       const r = rng.float(PORTAL_RADIUS + 4, 108);
       const p = { x: LANDMARKS.kutKapisi.x + Math.cos(angle) * r, y: LANDMARKS.kutKapisi.y + Math.sin(angle) * r };
-      if (sampleTerrain(terrain, p).height >= 0.04 && !isWet(terrain, p)) return p;
+      if (sampleTerrain(terrain, p).height >= 0.04 && !isWet(terrain, p) && !nearHero(p)) return p;
     }
   }
   const villages = VILLAGES.filter((v) => v.region === region);

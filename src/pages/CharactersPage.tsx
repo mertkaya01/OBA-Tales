@@ -1,7 +1,7 @@
 /**
  * OBA KADROSU ( /karakterler )
  *
- *   kadro            akına öncülük eden yedi kahraman
+ *   kadro            iki özel kahraman ve akına öncülük eden yedi kahraman
  *   nadirlik dizini  obada her nadirlikten kaç kişi var (tıklanınca ızgara süzülür)
  *   yoldaşlar        bütün takipçiler: arama, süzgeç, sıralama
  *
@@ -28,7 +28,7 @@ export default function CharactersPage() {
   return (
     <>
       <title>Oba Kadrosu · OBA-Tales</title>
-      <meta name="description" content={`OBA-Tales dünyasının yedi kahramanı ve obaya katılan ${formatNumber(followers.length)} yoldaş.`} />
+      <meta name="description" content={`OBA-Tales dünyasının özel kahramanları, kadrosu ve obaya katılan ${formatNumber(followers.length)} yoldaş.`} />
 
       <SectionTitle
         as="h1"

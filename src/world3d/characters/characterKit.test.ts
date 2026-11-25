@@ -101,6 +101,29 @@ describe("karakter parça kiti", () => {
     expect(parts({ ...base, rarity: "destansi" }, true)).not.toContain("akin-isareti");
   });
 
+  it("özel kahramanlar kendi parçalarını giyer: egetunce kova şapkalı ve Gün Kılıçlı, mhellingtr Yıldız Yaylı", () => {
+    const ege = CAST.find((c) => c.id === "egetunce")!;
+    const mhe = CAST.find((c) => c.id === "mhellingtr")!;
+    const pe = parts(ege);
+    const pm = parts(mhe);
+    expect(pe).toEqual(expect.arrayContaining(["egetunce-sapka", "egetunce-sapka-gozleri", "egetunce-kilic", "egetunce-kilic-isigi", "egetunce-lavanta"]));
+    expect(pm).toEqual(expect.arrayContaining(["mhellingtr-yay", "mhellingtr-kiris", "mhellingtr-pelerin-yildizlari", "mhellingtr-yildiz-taci", "mhellingtr-okluk"]));
+    expect(pe.every((id) => id.startsWith("egetunce-")), pe.join()).toBe(true);
+    expect(pm.every((id) => id.startsWith("mhellingtr-")), pm.join()).toBe(true);
+    expect(parts(ege, true)).toContain("akin-isareti");
+    // Uzun kılıç dışa eğik yükselir: ucu şapkanın kenarının dışında kalır.
+    const blade = PARTS.find((p) => p.id === "egetunce-kilic")!.geometry;
+    blade.computeBoundingBox();
+    expect(blade.boundingBox!.max.y).toBeGreaterThan(3.9);
+    expect(blade.boundingBox!.min.x).toBeLessThan(-1.5);
+    // Kılıç ve yay sağ elde (x < 0), lavanta sol elde (x > 0): kollarla doğru tarafta sallanır.
+    for (const [id, side] of [["egetunce-kilic", -1], ["mhellingtr-yay", -1], ["egetunce-lavanta", 1]] as const) {
+      const g = PARTS.find((p) => p.id === id)!.geometry;
+      g.computeBoundingBox();
+      expect(side < 0 ? g.boundingBox!.max.x < 0 : g.boundingBox!.min.x > 0, id).toBe(true);
+    }
+  });
+
   it("elde tutulanlar kollarla birlikte hareket eder", () => {
     for (const id of ["kollar", "eller", "kalkan", "balta-sapi", "kilic", "yay", "fener", "kopuz", "asa", "buyucu-kollar", "buyucu-eller", "buyucu-asa", "buyucu-asa-tasi"]) {
       expect(PARTS.find((p) => p.id === id)?.arms, id).toBe(true);
@@ -148,14 +171,18 @@ describe("kopya verisi", () => {
   const data = buildInstanceData(everyone, placements, new Set(["alptug", "okcu_bir"]));
   const part = (id: string) => data.parts.find((p) => p.spec.id === id)!;
   const wizards = everyone.filter((c) => kitChoice(c, resolveLook(c)).wizard);
+  const heroes = everyone.filter((c) => kitChoice(c, resolveLook(c)).hero);
 
   it("her parçanın kopya sayısı o parçayı taşıyan karakter sayısı kadar", () => {
     expect(data.ids).toHaveLength(everyone.length);
     expect(wizards.map((c) => c.id).sort()).toEqual(["buyucu_dort", "dede_toygar"]);
-    expect(part("govde").count).toBe(everyone.length - wizards.length);
+    expect(heroes.map((c) => c.id).sort()).toEqual(["egetunce", "mhellingtr"]);
+    expect(part("govde").count).toBe(everyone.length - wizards.length - heroes.length);
     expect(part("buyucu-govde").count).toBe(wizards.length);
-    expect(part("kalkan").count).toBe(everyone.filter((c) => c.class.id === "kalkaneri").length);
-    expect(part("yay").count).toBe(everyone.filter((c) => c.class.id === "okyeli").length);
+    expect(part("kalkan").count).toBe(everyone.filter((c) => c.class.id === "kalkaneri" && !heroes.includes(c)).length);
+    expect(part("yay").count).toBe(everyone.filter((c) => c.class.id === "okyeli" && !heroes.includes(c)).length);
+    expect(part("egetunce-kilic").count).toBe(1);
+    expect(part("mhellingtr-yay").count).toBe(1);
     expect(part("akin-isareti").count).toBe(2);
     expect(part("pelerin-runlari").count + part("buyucu-pelerin-runlari").count).toBe(everyone.filter((c) => c.rarity === "efsanevi").length);
   });
@@ -175,7 +202,7 @@ describe("kopya verisi", () => {
   it("her parça kendi kopyalarının hareket bilgisini taşır", () => {
     const yay = part("yay");
     const okcu = placements.get("okcu_bir")!;
-    const k = everyone.filter((c) => c.class.id === "okyeli").findIndex((c) => c.id === "okcu_bir");
+    const k = everyone.filter((c) => c.class.id === "okyeli" && !heroes.includes(c)).findIndex((c) => c.id === "okcu_bir");
     expect([...yay.motion.subarray(k * 4, k * 4 + 4)].map((v) => +v.toFixed(4))).toEqual(
       [okcu.motion.radius, okcu.motion.seed, okcu.motion.yaw, okcu.motion.cheer].map((v) => +Math.fround(v).toFixed(4)),
     );

@@ -1,12 +1,13 @@
 /**
- * KADRO — lider, anlatıcı, 3 ana karakter ve 2 yan karakter.
+ * KADRO — lider, anlatıcı, 3 ana karakter, 2 yan karakter ve 2 özel kahraman (egetunce, mhellingtr).
  *
  * Kadro üyeleri de birer `Character`'dır; haritada takipçilerle birlikte görünür.
- * Sezon başında hepsi Akınburnu'nda, başlangıç limanındadır.
+ * Sezon başında hikâye kadrosu Akınburnu'nda, başlangıç limanındadır; özel kahramanlar Kut Kapısı'nın önünde bekler.
+ * Özel kahramanların nadirliği efsanevinin üstündedir (Ulu, Göksel); özel yetenekleri ve elle verilmiş nitelikleri vardır.
  * Platform → sınıf kuralı ve çoklu platform rozetleri takipçilerle aynıdır.
  */
 import { toClassInfo } from "./classes";
-import type { CastMember, Character, RoleType } from "../types";
+import type { CastMember, Character, Coordinates, RoleType } from "../types";
 
 /** Rollerin arayüzdeki adları. */
 export const ROLE_LABELS: Readonly<Record<RoleType, string>> = {
@@ -14,6 +15,7 @@ export const ROLE_LABELS: Readonly<Record<RoleType, string>> = {
   narrator: "Anlatıcı",
   core: "Ana Kadro",
   side: "Yan Kadro",
+  hero: "Özel Kahraman",
   follower: "Takipçi",
 };
 
@@ -23,6 +25,7 @@ export function isCastMember(character: Character): character is CastMember {
 }
 
 const CAST_UPDATED_AT = "2026-11-24T00:00:00+03:00";
+const HEROES_UPDATED_AT = "2026-11-25T00:00:00+03:00";
 const NO_CONTRIBUTIONS = { votesCast: 0, raidsJoined: 0 } as const;
 
 export const CAST: readonly CastMember[] = [
@@ -199,7 +202,96 @@ export const CAST: readonly CastMember[] = [
       "Açık mavi ve gümüş işlemeli uzun şal, alnında hilal biçimli ince taç, elinde teli ışıktan billur bir yay.",
     signature: "Hale Yolu: ışık halesini genişletir; karanlıktaki herkes yolunu görür.",
   },
+  // ── Özel kahramanlar: efsanevinin üstündeki Ulu ve Göksel kademeler yalnızca onlarda ──
+  {
+    id: "egetunce",
+    handle: "egetunce",
+    displayName: "egetunce",
+    roleType: "hero",
+    platform: "instagram",
+    linkedPlatforms: ["instagram", "tiktok", "youtube"],
+    class: toClassInfo("kalkaneri"),
+    rarity: "ulu",
+    title: "Gün Kılıçlı Alp",
+    points: 1600,
+    region: "kutada",
+    coordinates: { x: 1572, y: 1146 },
+    badges: ["oba_onculugu", "kurucu_oba"],
+    elementAura: null,
+    seasonContributions: { ...NO_CONTRIBUTIONS },
+    updatedAt: HEROES_UPDATED_AT,
+    epithet: "Kut Kapısı'nın Bekçisi",
+    bio:
+      "Kut Kapısı'ndan geçen her yeni yoldaşı ilk o karşılar. Mor kova şapkasının üstündeki iki kocaman göz hiç " +
+      "uyumaz; arkadan yaklaşan ayazı bile önceden görür. Elinde hep taze bir lavanta demeti taşır, yanında ise güneş " +
+      "ışığından dövülmüş uzun Gün Kılıcı durur. Kılıcını yalnızca buzu yarmak ve yolu açmak için çeker.",
+    appearance:
+      "Mor kova şapka (üstünde iki iri göz), omuzlara dökülen sarı saçlar, kısa sakal, siyah tişört ve şort, beyaz " +
+      "ayakkabılar; bir elinde lavanta demeti, ötekinde sarı-beyaz uzun Gün Kılıcı.",
+    signature: "“Önce lavantayı kokla, sonra yola çık!” der; Gün Kılıcı parlayınca en kalın buz bile çatlar.",
+    specialAbilities: [
+      "Gün Kılıcı: sarı-beyaz kılıcı kınından çıkınca etraf gün ışığıyla dolar, en kalın buz bile çatlar.",
+      "Lavanta Kalkanı: lavanta demetinin kokusu obayı sarar; korkan yoldaşlar sakinleşir, kalkanlar iki kat sağlamlaşır.",
+      "Uyumayan Gözler: şapkasındaki iki göz arkayı bekler; hiçbir tehlike obayı habersiz yakalayamaz.",
+      "Alp Atılımı: ön saftan tek hamlede ileri atılır, yolu kapatan buz duvarını ikiye ayırır.",
+    ],
+    attributes: {
+      guc: 136,
+      ceviklik: 94,
+      dayaniklilik: 128,
+      kut: 106,
+      special: { label: "Gün Işığı", description: "Kılıcından taşan güneş: ayazı çözer, karanlığı dağıtır.", value: 125 },
+    },
+  },
+  {
+    id: "mhellingtr",
+    handle: "mhellingtr",
+    displayName: "mhellingtr",
+    roleType: "hero",
+    platform: "tiktok",
+    linkedPlatforms: ["tiktok", "instagram", "youtube"],
+    class: toClassInfo("okyeli"),
+    rarity: "goksel",
+    title: "Yıldızların Okçusu",
+    points: 2000,
+    region: "kutada",
+    coordinates: { x: 1600, y: 1148 },
+    badges: ["oba_onculugu", "kurucu_oba"],
+    elementAura: null,
+    seasonContributions: { ...NO_CONTRIBUTIONS },
+    updatedAt: HEROES_UPDATED_AT,
+    epithet: "Obanın En Güçlüsü",
+    bio:
+      "Göğün en yüksek katından, yıldızların arasından inmiş bir okçu. Tanrı değildir ama gökyüzü onu tanır: yayını " +
+      "gerdiğinde yıldızlar bir an parlamayı keser, oku nereye giderse oraya ışık düşer. Obanın en güçlü kahramanıdır; " +
+      "yine de en çok kaybolan yoldaşlara yol göstermeyi sever.",
+    appearance:
+      "Gece mavisi ve gümüş zırh, göğsünde sekiz köşeli yıldız amblemi, yıldızlarla işlenmiş uzun pelerin, kıvırcık " +
+      "kahverengi saç ve kısa sakal, başının üstünde süzülen yıldızlar; elinde camgöbeği ışıkla parlayan Yıldız Yayı, " +
+      "sırtında beyaz tüylü oklarla dolu okluk.",
+    signature: "“Gök ne kadar uzaksa okum o kadar yakın.” der; yayından çıkan ok gecede yeni bir yıldız gibi parlar.",
+    specialAbilities: [
+      "Yıldız Oku: gökten bir yıldız koparıp yayına takar; ok geçtiği her yeri gün gibi aydınlatır.",
+      "Gök Kubbe: yayını göğe çevirip obanın üstüne ışıktan bir kubbe gerer; içindekilere ayaz işlemez.",
+      "Takımyıldız Atışı: aynı anda yedi ok atar; oklar gökte takımyıldız gibi dizilip bütün buz perdelerini düşürür.",
+      "Kutup Yıldızı: sis ne kadar koyu olursa olsun, kaybolan her yoldaşa obanın yolunu gösterir.",
+    ],
+    attributes: {
+      guc: 122,
+      ceviklik: 168,
+      dayaniklilik: 114,
+      kut: 152,
+      special: { label: "Yıldız Işığı", description: "Göğün en yüksek katından gelen ışık: obanın en güçlü gücü.", value: 190 },
+    },
+  },
 ];
+
+/** Özel kahramanların çevresi: yeni gelenler bu mesafeden yakına konmaz (kalabalıkta kaybolmasınlar). */
+export const HERO_CLEARANCE = 16;
+
+export function nearHero(p: Coordinates): boolean {
+  return CAST.some((c) => c.roleType === "hero" && Math.hypot(c.coordinates.x - p.x, c.coordinates.y - p.y) < HERO_CLEARANCE);
+}
 
 /** Kimliğe göre kadro üyesi. */
 export function findCastMember(id: string): CastMember | undefined {

@@ -17,6 +17,8 @@ const FRAME_CLASS: Record<Rarity, string> = {
   nadir: "frame-nadir",
   destansi: "frame-destansi",
   efsanevi: "frame-efsanevi",
+  ulu: "frame-ulu",
+  goksel: "frame-goksel",
 };
 
 const AURA_CLASS = {
@@ -24,6 +26,8 @@ const AURA_CLASS = {
   isik: "bg-buz-100/45",
   destansi: "bg-destansi/40",
   efsanevi: "bg-efsanevi/45",
+  ulu: "bg-ulu/50",
+  goksel: "bg-goksel/55",
 } as const;
 
 const SPARKLES = [
@@ -41,7 +45,7 @@ interface RarityFrameProps {
 
 export function RarityFrame({ rarity, elementAura = null, children, className }: RarityFrameProps) {
   const info = RARITY_INFO[rarity];
-  const aura = elementAura ?? (info.hasAura ? (rarity as "destansi" | "efsanevi") : null);
+  const aura = elementAura ?? (info.hasAura ? (rarity as "destansi" | "efsanevi" | "ulu" | "goksel") : null);
 
   return (
     <span className={cn("relative isolate inline-flex shrink-0 items-center justify-center rounded-xl border-2", FRAME_CLASS[rarity], className)}>

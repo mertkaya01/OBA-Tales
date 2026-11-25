@@ -87,20 +87,24 @@ export const CLASS_COLORS: Readonly<Record<ClassId, string>> = {
   ocakcan: "#e8a83c",
 };
 
-/** index.css içindeki --color-siradan/nadir/destansi/efsanevi ile aynı. */
+/** index.css içindeki --color-siradan/nadir/destansi/efsanevi/ulu/goksel ile aynı. */
 export const RARITY_COLORS: Readonly<Record<Rarity, string>> = {
   siradan: "#b8a888",
   nadir: "#34b08b",
   destansi: "#9566e0",
   efsanevi: "#f0642f",
+  ulu: "#ffd23f",
+  goksel: "#7fe6ff",
 };
 
-/** Pelerin renkleri: Ocakcan'ın yumuşak pelerini (sıradan/nadir), destansı mor, efsanevi kızıl. */
+/** Pelerin renkleri: Ocakcan'ın yumuşak pelerini (sıradan/nadir), destansı mor, efsanevi kızıl, ulu altın, göksel gece mavisi. */
 export const CAPE_COLORS: Readonly<Record<Rarity, string>> = {
   siradan: "#5a7f6b",
   nadir: "#2a9677",
   destansi: "#6a43b8",
   efsanevi: "#b8332c",
+  ulu: "#c9971f",
+  goksel: "#1c2a66",
 };
 
 export const AURA_COLORS = {
@@ -108,6 +112,8 @@ export const AURA_COLORS = {
   isik: "#d6f1ff",
   destansi: "#9566e0",
   efsanevi: "#f0642f",
+  ulu: "#ffd23f",
+  goksel: "#7fe6ff",
 } as const;
 
 /** Arazi boyama renkleri (kuşbakışı harita ve 3D ada). */

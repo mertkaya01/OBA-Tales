@@ -1,6 +1,7 @@
 /**
  * NADİRLİKLER — pin çerçevesi, kart stili ve harita görünümü nadirliğe göre değişir.
  * Renkler ve animasyonlar src/index.css token'larında; burada yalnızca metin ve kurallar var.
+ * Ulu ve Göksel efsanevinin üstündeki özel kademelerdir: takipçiler kazanamaz, yalnızca özel kahramanlara verilir.
  */
 import { RARITIES } from "../types";
 import type { Catalog, Rarity, RarityDefinition } from "../types";
@@ -52,6 +53,32 @@ export const RARITY_INFO: Catalog<Rarity, RarityDefinition> = {
       "Hareketli aura",
       "Yıldız-ayaz izi",
     ],
+    hasAura: true,
+    hasTrail: true,
+  },
+  ulu: {
+    id: "ulu",
+    rank: 4,
+    label: "Ulu",
+    title: "Alp",
+    description:
+      "Efsanelerin de üstünde, adı destanlara kazınmış alpler. Takipçiler bu kademeye ulaşamaz; " +
+      "obanın yalnızca birkaç özel kahramanına verilir. Geçtikleri yerde güneş ışığı kalır.",
+    frameLabel: "Güneş altını / Gün Kılıcı çerçeve",
+    visuals: ["Güneş altını işlemeler", "Göğüste güneş amblemi", "Altın aura", "Gün ışığı izi"],
+    hasAura: true,
+    hasTrail: true,
+  },
+  goksel: {
+    id: "goksel",
+    rank: 5,
+    label: "Göksel",
+    title: "Gökeri",
+    description:
+      "Göğün en yüksek katından inmiş, yıldızlarla konuşan kahramanlar. Tanrı değil ama ona en yakın olan: " +
+      "obanın en güçlüsü. Takipçiler ulaşamaz; yalnızca özel kahramanlara verilir.",
+    frameLabel: "Yıldız ışığı / Gök Kubbe çerçeve",
+    visuals: ["Yıldızlı gece pelerini", "Parlayan yıldız yayı", "Yıldız ışığı aurası", "Başında süzülen yıldızlar"],
     hasAura: true,
     hasTrail: true,
   },

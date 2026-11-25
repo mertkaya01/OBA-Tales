@@ -22,6 +22,8 @@ const RARITY_DOT: Record<Rarity, string> = {
   nadir: "bg-nadir",
   destansi: "bg-destansi",
   efsanevi: "bg-efsanevi",
+  ulu: "bg-ulu",
+  goksel: "bg-goksel",
 };
 
 const RARITY_ACTIVE: Record<Rarity, string> = {
@@ -29,6 +31,8 @@ const RARITY_ACTIVE: Record<Rarity, string> = {
   nadir: "border-nadir bg-nadir/20 text-buz-50",
   destansi: "border-destansi bg-destansi/25 text-buz-50",
   efsanevi: "border-efsanevi bg-efsanevi/25 text-buz-50",
+  ulu: "border-ulu bg-ulu/25 text-buz-50",
+  goksel: "border-goksel bg-goksel/25 text-buz-50",
 };
 
 interface FilterPanelProps {

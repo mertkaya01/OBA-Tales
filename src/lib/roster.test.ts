@@ -29,7 +29,7 @@ describe("kadro sıralama", () => {
 
   it("nadirlik dağılımı sayılar ve toplamı 100 olan yüzdeler", () => {
     const shares = rarityBreakdown(people);
-    expect(shares.map((s) => s.count)).toEqual([1, 2, 0, 1]);
+    expect(shares.map((s) => s.count)).toEqual([1, 2, 0, 1, 0, 0]);
     expect(shares.reduce((sum, s) => sum + s.percent, 0)).toBe(100);
     expect(rarityBreakdown([]).every((s) => s.percent === 0)).toBe(true);
   });

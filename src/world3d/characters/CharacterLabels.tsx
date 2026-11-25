@@ -27,6 +27,8 @@ const RARITY_PLATE: Record<Character["rarity"], string> = {
   nadir: "kb-plaka--nadir",
   destansi: "kb-plaka--destansi",
   efsanevi: "kb-plaka--efsanevi",
+  ulu: "kb-plaka--ulu",
+  goksel: "kb-plaka--goksel",
 };
 
 const HIDDEN = "translate(-9999px, -9999px)";

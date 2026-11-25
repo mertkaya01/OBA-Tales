@@ -16,6 +16,9 @@
  * cüppe, asa, iksir). Model modeller/kaynak/buyucu-sifaci.obj dosyasından gelir (npm run model:cevir); renkleri yine
  * takipçinin kendi renkleridir. Parça kimlikleri "buyucu-" ile başlar.
  *
+ * Özel kahramanlar (egetunce, mhellingtr) da kendi parçalarını giyer: kova şapkalı, lavantalı ve Gün Kılıçlı bir alp ile
+ * yıldızlı pelerinli, Yıldız Yaylı göksel bir okçu. Parça kimlikleri kahramanın adıyla başlar.
+ *
  * Üç kademe (LOD): en uzakta yalnızca `core` parçalar (gövde, kafa, atkı, başlık, pelerin) çizilir; orta mesafede
  * silüet parçaları (kollar, saç, başlıklar, ekipman) eklenir; yakında `detail` parçalar (yüz, toka, el, runlar) belirir.
  */
@@ -106,6 +109,8 @@ export interface KitChoice {
   strap: boolean;
   /** Büyücü-şifacı modeli (destansı ve efsanevi Ocakcan, Dede Toygar). */
   wizard: boolean;
+  /** Özel kahraman: ortak gövde yerine kendi parçaları (egetunce, mhellingtr). */
+  hero: HeroId | null;
 }
 
 /** Kadronun hikâyedeki görünüşü. */
@@ -114,6 +119,8 @@ const CAST_KIT: Readonly<Record<string, Partial<KitChoice>>> = {
   dede_toygar: { hat: null, beard: "uzun", staff: true, bangs: false, wizard: true },
   alptug: { hat: "bork", beard: "biyik" },
   kursat: { hat: "kalpak", beard: "kisa" },
+  egetunce: { hero: "egetunce", hat: null, beard: "kisa" },
+  mhellingtr: { hero: "mhellingtr", hat: null, beard: "kisa" },
 };
 
 const variant = (c: Character, key: string, n: number) => hashString(`${key}:${c.id}`) % n;
@@ -148,6 +155,7 @@ export function kitChoice(c: Character, look: SpriteLook): KitChoice {
     strap: cls === "okyeli",
     // Kadro kendi görünüşünü korur; büyücü olan kadro üyesi CAST_KIT içinde seçilir.
     wizard: cls === "ocakcan" && isRich(c.rarity) && c.roleType === "follower",
+    hero: null,
   };
   const override = c.roleType !== "follower" ? CAST_KIT[c.id] : undefined;
   if (override) Object.assign(choice, override);
@@ -446,10 +454,228 @@ const WIZARD_PARTS: readonly PartSpec[] = [
   },
 ];
 
-/** Büyücüler ortak gövdeyi değil kendi modellerini giyer. */
-const unlessWizard = (part: PartSpec): PartSpec => ({ ...part, applies: (c, l, ctx) => !kitChoice(c, l).wizard && part.applies(c, l, ctx) });
+// ── Özel kahramanlar (egetunce, mhellingtr) ───────────────────────
+//
+// Ortak gövde yerine kendi parçalarını giyerler; renkler composeSprite'taki sabit kadro renklerinden gelir
+// (2D portreyle aynı). Parça kimlikleri kahramanın adıyla başlar: "egetunce-kilic", "mhellingtr-yay" …
 
-export const PARTS: readonly PartSpec[] = [...BASE_PARTS.map(unlessWizard), ...WIZARD_PARTS];
+export type HeroId = "egetunce" | "mhellingtr";
+
+// egetunce: siyah tişört ve şort, beyaz ayakkabı, mor kova şapka (üstünde iki iri göz), omuza inen sarı saç,
+// kısa sakal; sol elinde (x > 0) lavanta demeti, sağ elinde (x < 0) dışa eğik uzun sarı-beyaz Gün Kılıcı.
+const EGE_SHORTS = pair(0.46, 0.5, 0.54, 0.3, 0.8, 0);
+const EGE_CALVES = pair(0.36, 0.36, 0.42, 0.3, 0.46, 0);
+const EGE_SNEAKERS = pair(0.5, 0.3, 0.72, 0.3, 0.19, 0.07);
+const EGE_SOLES = pair(0.52, 0.07, 0.74, 0.3, 0.035, 0.07);
+const EGE_TEE = box(1.46, 1.7, 0.96, { at: [0, 1.9, 0] });
+const EGE_NECK = box(0.5, 0.24, 0.5, { at: [0, 2.85, 0] });
+const EGE_SLEEVES = pair(0.42, 0.5, 0.5, 0.95, 2.38, 0);
+const EGE_ARMS = pair(0.32, 0.78, 0.38, 0.95, 1.76, 0);
+const EGE_MOUTH = box(0.3, 0.06, 0.05, { at: [0, 3.12, 0.58] });
+const EGE_HAIR = merge(
+  box(1.12, 0.22, 1.02, { at: [0, 3.86, 0] }), // şapkanın altında kalsın (köşeleri kenardan taşmasın)
+  box(1.16, 1.3, 0.24, { at: [0, 3.25, -0.52] }),
+  box(0.2, 1.15, 0.86, { at: [-0.6, 3.3, -0.04] }),
+  box(0.2, 1.15, 0.86, { at: [0.6, 3.3, -0.04] }),
+);
+// Tepe gövdenin biraz içinden başlar: çakışan yüz kalmaz (Blender gidiş-dönüşünde birebir aynı kalsın).
+const EGE_HAT = merge(cylinder(0.72, 0.8, 0.62, 10, { at: [0, 4.23, 0] }), cylinder(0.58, 0.71, 0.12, 10, { at: [0, 4.595, 0] }));
+const EGE_HAT_BRIM = cylinder(0.82, 1.1, 0.14, 12, { at: [0, 3.88, 0] });
+// Şapkanın ön yüzlerine oturan iki iri göz; bebekler yana bakar.
+const HAT_FACE = 0.314; // ön yüzün açısı (10 kenarlı silindirde 18°)
+const EGE_HAT_EYES = merge(
+  cylinder(0.15, 0.15, 0.04, 12, { rx: Math.PI / 2, ry: -HAT_FACE, at: [-0.21, 4.3, 0.71] }),
+  cylinder(0.15, 0.15, 0.04, 12, { rx: Math.PI / 2, ry: HAT_FACE, at: [0.21, 4.3, 0.71] }),
+);
+const EGE_HAT_PUPILS = merge(
+  cylinder(0.07, 0.07, 0.04, 10, { rx: Math.PI / 2, ry: -HAT_FACE, at: [-0.265, 4.29, 0.722] }),
+  cylinder(0.07, 0.07, 0.04, 10, { rx: Math.PI / 2, ry: HAT_FACE, at: [0.17, 4.29, 0.752] }),
+);
+// Lavanta: sol elin önünde beş sap, uçlarında mor başaklar.
+const LAVENDER: readonly [number, number, number][] = [
+  [0.88, 0.3, 0.16],
+  [0.95, 0.24, 0],
+  [1.03, 0.31, -0.14],
+  [0.92, 0.38, 0.08],
+  [1.0, 0.4, -0.06],
+];
+const EGE_LAVENDER_STEMS = merge(...LAVENDER.map(([x, z, tilt]) => box(0.035, 0.95, 0.035, { rz: tilt, at: [x, 1.75, z] })));
+const EGE_LAVENDER = merge(...LAVENDER.map(([x, z, tilt]) => box(0.11, 0.34, 0.11, { rz: tilt, at: [x - Math.sin(tilt) * 0.64, 1.75 + Math.cos(tilt) * 0.64, z] })));
+// Gün Kılıcı: kabza elde, ağız dışa doğru eğik yükselir (şapkanın kenarına değmez). Önce kılıç kendi ekseninde
+// (kabza ortası 0'da, ağız +y) kurulur, sonra ele taşınır.
+const SUN_SWORD: Transform = { rz: 0.24, at: [-0.98, 1.45, 0.26] };
+const toHand = (g: BufferGeometry) => place(g, SUN_SWORD);
+const EGE_BLADE = toHand(merge(box(0.22, 2.3, 0.06, { at: [0, 1.47, 0] }), box(0.155, 0.155, 0.06, { rz: Math.PI / 4, at: [0, 2.62, 0] })));
+const EGE_FULLER = toHand(box(0.07, 2.0, 0.075, { at: [0, 1.4, 0] }));
+const EGE_GUARD = toHand(
+  merge(
+    box(0.78, 0.11, 0.16, { at: [0, 0.27, 0] }),
+    box(0.18, 0.2, 0.18, { at: [0, 0.3, 0] }),
+    ico(0.075, { at: [-0.42, 0.27, 0] }),
+    ico(0.075, { at: [0.42, 0.27, 0] }),
+    box(0.13, 0.04, 0.13, { at: [0, 0.1, 0] }),
+    box(0.13, 0.04, 0.13, { at: [0, -0.1, 0] }),
+    ico(0.095, { at: [0, -0.28, 0] }),
+  ),
+);
+const EGE_GRIP = toHand(box(0.1, 0.42, 0.1, {}));
+const EGE_GEM = toHand(merge(place(new OctahedronGeometry(0.08, 0), { at: [0, 0.3, 0.1] }), place(new OctahedronGeometry(0.08, 0), { at: [0, 0.3, -0.1] })));
+
+// mhellingtr: gece mavisi ve gümüş zırh, göğüste sekiz köşeli yıldız, yıldızlı uzun pelerin, kıvırcık saç, kısa
+// sakal, başının üstünde süzülen beş yıldız; sağ elinde (x < 0) camgöbeği parlayan Yıldız Yayı ve ışıktan ok.
+const MHE_BUCKLE = box(0.36, 0.28, 0.1, { at: [0, 1.65, 0.9] });
+const MHE_STAR = merge(box(0.3, 0.3, 0.05, { at: [0, 2.2, 0.84] }), box(0.3, 0.3, 0.05, { rz: Math.PI / 4, at: [0, 2.2, 0.85] }));
+const MHE_BRACERS = pair(0.44, 0.4, 0.52, 0.95, 1.78, 0);
+const MHE_PAULDRON_GEMS = merge(ico(0.08, { at: [-0.92, 2.9, 0.05] }), ico(0.08, { at: [0.92, 2.9, 0.05] }));
+const MHE_MOUTH = box(0.28, 0.06, 0.05, { at: [0, 3.12, 0.58] });
+const CURLS: readonly [number, number, number, number][] = [
+  [-0.4, 4.18, -0.35, 0.2], [0, 4.22, -0.35, 0.2], [0.4, 4.18, -0.35, 0.2],
+  [-0.4, 4.2, 0.05, 0.2], [0, 4.25, 0.05, 0.21], [0.4, 4.2, 0.05, 0.2],
+  [-0.38, 4.1, 0.38, 0.18], [0, 4.13, 0.4, 0.18], [0.38, 4.1, 0.38, 0.18],
+  [-0.6, 3.85, -0.2, 0.17], [-0.6, 3.85, 0.2, 0.15], [0.6, 3.85, -0.2, 0.17], [0.6, 3.85, 0.2, 0.15],
+  [-0.35, 3.6, -0.56, 0.18], [0.35, 3.6, -0.56, 0.18],
+];
+const MHE_HAIR = merge(HAIR.clone(), ...CURLS.map(([x, y, z, r]) => ico(r, { at: [x, y, z] })));
+const MHE_CROWN = merge(
+  ...Array.from({ length: 5 }, (_, i) => {
+    const a = (i / 5) * Math.PI * 2;
+    return place(new OctahedronGeometry(0.1, 0), { at: [Math.sin(a) * 0.62, 4.68, Math.cos(a) * 0.62] });
+  }),
+);
+// Pelerin arka yüzü yukarı doğru hafifçe öne yatık: z(y) = -0.86 + (y - 1.75) · 0.06.
+const capeBack = (y: number) => -0.86 + (y - 1.75) * 0.06;
+const CAPE_STARS: readonly [number, number][] = [
+  [-0.62, 2.7], [0.1, 2.85], [0.55, 2.45], [-0.25, 2.2], [0.68, 1.75], [-0.6, 1.6], [0.2, 1.45], [-0.15, 0.95], [0.5, 0.75], [-0.55, 0.6],
+];
+const MHE_CAPE = LONG_CAPE.clone();
+const MHE_CAPE_STARS = merge(...CAPE_STARS.map(([x, y], i) => place(new OctahedronGeometry(i % 3 === 0 ? 0.09 : 0.06, 0), { at: [x, y, capeBack(y) - 0.03] })));
+const MHE_CAPE_TRIM = merge(
+  box(0.08, 2.75, 0.13, { rx: 0.06, at: [-0.88, 1.75, -0.805] }),
+  box(0.08, 2.75, 0.13, { rx: 0.06, at: [0.88, 1.75, -0.805] }),
+  box(1.84, 0.1, 0.13, { rx: 0.06, at: [0, 0.43, -0.875] }),
+);
+// Okluk pelerinin üstünde, sol omuzdan (x > 0) taşar; altı ok, uçlarında parlayan tüyler.
+const QUIVER_TILT = -0.42;
+const QUIVER_AXIS = [Math.sin(-QUIVER_TILT), Math.cos(QUIVER_TILT)] as const;
+const MHE_QUIVER = cylinder(0.21, 0.26, 1.4, 6, { rz: QUIVER_TILT, at: [0.42, 2.4, -1.06] });
+const MHE_QUIVER_BANDS = merge(
+  ...[-0.45, 0.45].map((t) => cylinder(0.24, 0.24, 0.08, 6, { rz: QUIVER_TILT, at: [0.42 + QUIVER_AXIS[0] * t, 2.4 + QUIVER_AXIS[1] * t, -1.06] })),
+);
+const ARROW_OFFSETS: readonly [number, number, number][] = [
+  [-0.08, 0, 0.12], [0.06, 0.05, -0.1], [0, -0.08, 0.02], [0.1, -0.04, -0.2], [-0.04, 0.08, 0.2], [0.03, 0, -0.05],
+];
+const quiverTop = (t: number, dx: number, dz: number): [number, number, number] => [0.42 + QUIVER_AXIS[0] * t + dx, 2.4 + QUIVER_AXIS[1] * t, -1.06 + dz];
+const MHE_ARROWS = merge(...ARROW_OFFSETS.map(([dx, dz, turn]) => box(0.045, 0.62, 0.045, { rz: QUIVER_TILT + turn, at: quiverTop(0.95, dx, dz) })));
+const MHE_FLETCHING = merge(...ARROW_OFFSETS.map(([dx, dz, turn]) => box(0.12, 0.2, 0.03, { rz: QUIVER_TILT + turn, at: quiverTop(1.28, dx, dz) })));
+// Yıldız Yayı: büyük gümüş yay, önünde camgöbeği ışık şeridi, uçlarında taşlar; ışıktan kiriş ve ok.
+const BOW_AT: [number, number, number] = [-0.8, 2.1, 0.24];
+const BOW_R = 1.32;
+const MHE_BOW = place(new TorusGeometry(BOW_R, 0.075, 5, 16, Math.PI), { rz: Math.PI / 2, at: BOW_AT });
+const MHE_BOW_LIGHT = place(new TorusGeometry(BOW_R, 0.03, 4, 16, Math.PI), { rz: Math.PI / 2, at: [BOW_AT[0], BOW_AT[1], BOW_AT[2] + 0.08] });
+const MHE_BOW_TIPS = merge(
+  place(new OctahedronGeometry(0.13, 0), { at: [BOW_AT[0], BOW_AT[1] + BOW_R, BOW_AT[2]] }),
+  place(new OctahedronGeometry(0.13, 0), { at: [BOW_AT[0], BOW_AT[1] - BOW_R, BOW_AT[2]] }),
+);
+const MHE_BOW_GRIP = box(0.22, 0.38, 0.22, { at: [BOW_AT[0] - BOW_R, BOW_AT[1], BOW_AT[2]] });
+const MHE_STRING = box(0.035, BOW_R * 2, 0.035, { at: BOW_AT });
+const MHE_LIGHT_ARROW = merge(
+  box(1.75, 0.045, 0.045, { at: [BOW_AT[0] - 0.875, BOW_AT[1], BOW_AT[2]] }),
+  box(0.13, 0.13, 0.045, { rz: Math.PI / 4, at: [BOW_AT[0] - 1.78, BOW_AT[1], BOW_AT[2]] }),
+);
+
+type HeroPart = readonly [name: string, geometry: BufferGeometry, color: Paint, flags: Flags];
+const GLASS = "#15121c";
+
+const HERO_KITS: Readonly<Record<HeroId, readonly HeroPart[]>> = {
+  egetunce: [
+    ["sort", EGE_SHORTS, (l) => l.colors.p, { legs: true }],
+    ["baldir", EGE_CALVES, (l) => l.colors.s, { legs: true }],
+    ["ayakkabi", EGE_SNEAKERS, (l) => l.colors.b, { legs: true }],
+    ["taban", EGE_SOLES, () => "#9c9a94", { legs: true, detail: true }],
+    ["tisort", EGE_TEE, (l) => l.colors.c, { core: true, shadow: true }],
+    ["boyun", EGE_NECK, (l) => l.colors.s, { detail: true }],
+    ["kollar", EGE_SLEEVES, (l) => l.colors.c, { arms: true, shadow: true }],
+    ["kol-teni", EGE_ARMS, (l) => l.colors.s, { arms: true }],
+    ["eller", HANDS, (l) => l.colors.s, { arms: true, detail: true }],
+    ["kafa", HEAD, (l) => l.colors.s, { core: true, shadow: true }],
+    ["gozler", EYES, (l) => l.colors.e, { detail: true }],
+    ["kaslar", BROWS, (l) => l.colors.f, { detail: true }],
+    ["burun", NOSE, (l) => l.colors.S, { detail: true }],
+    ["agiz", EGE_MOUTH, () => "#5a2b26", { detail: true }],
+    ["sakal", BEARD_SHORT, (l) => l.colors.f, {}],
+    ["sac", EGE_HAIR, (l) => l.colors.h, { core: true }],
+    ["sapka", EGE_HAT, (l) => l.colors.m, { core: true, shadow: true }],
+    ["sapka-kenari", EGE_HAT_BRIM, (l) => l.colors.m, { core: true, shadow: true }],
+    ["sapka-gozleri", EGE_HAT_EYES, (l) => l.colors.i, {}],
+    ["sapka-bebekleri", EGE_HAT_PUPILS, () => GLASS, { detail: true }],
+    ["lavanta-sapi", EGE_LAVENDER_STEMS, (l) => l.colors.v, { arms: true, detail: true }],
+    ["lavanta", EGE_LAVENDER, (l) => l.colors.d, { arms: true }],
+    ["kilic", EGE_BLADE, (l) => l.colors.i, { arms: true, shadow: true }],
+    ["kilic-isigi", EGE_FULLER, (l) => l.colors.l, { arms: true, glow: true }],
+    ["kilic-siperi", EGE_GUARD, (l) => l.colors.g, { arms: true }],
+    ["kilic-kabzasi", EGE_GRIP, (l) => l.colors.k, { arms: true, detail: true }],
+    ["kilic-tasi", EGE_GEM, (l) => l.colors.L, { arms: true, glow: true, detail: true }],
+  ],
+  mhellingtr: [
+    ["bacaklar", LEGS, (l) => l.colors.p, { legs: true }],
+    ["cizmeler", BOOTS, (l) => l.colors.b, { legs: true }],
+    ["cizme-kenari", BOOT_FUR, (l) => l.colors.m, { legs: true, detail: true }],
+    ["govde", BODY, (l) => l.colors.c, { core: true, shadow: true }],
+    ["etek", HEM, (l) => l.colors.g, {}],
+    ["kemer", BELT, (l) => l.colors.k, { detail: true }],
+    ["toka", MHE_BUCKLE, (l) => l.colors.M, { detail: true }],
+    ["yildiz-amblemi", MHE_STAR, (l) => l.colors.l, { glow: true, detail: true }],
+    ["boyunluk", FUR_COLLAR, (l) => l.colors.m, {}],
+    ["omuzluk", PAULDRONS, (l) => l.colors.m, { arms: true }],
+    ["omuz-taslari", MHE_PAULDRON_GEMS, (l) => l.colors.L, { arms: true, glow: true, detail: true }],
+    ["kollar", SLEEVES, (l) => l.colors.C, { arms: true, shadow: true }],
+    ["bileklik", MHE_BRACERS, (l) => l.colors.m, { arms: true, detail: true }],
+    ["eller", HANDS, (l) => l.colors.s, { arms: true, detail: true }],
+    ["kafa", HEAD, (l) => l.colors.s, { core: true, shadow: true }],
+    ["gozler", EYES, (l) => l.colors.e, { detail: true }],
+    ["kaslar", BROWS, (l) => l.colors.h, { detail: true }],
+    ["burun", NOSE, (l) => l.colors.S, { detail: true }],
+    ["kulaklar", EARS, (l) => l.colors.s, { detail: true }],
+    ["agiz", MHE_MOUTH, () => "#5a2b26", { detail: true }],
+    ["sakal", BEARD_SHORT, (l) => l.colors.h, {}],
+    ["sac", MHE_HAIR, (l) => l.colors.h, { core: true }],
+    ["yildiz-taci", MHE_CROWN, (l) => l.colors.L, { glow: true }],
+    ["pelerin", MHE_CAPE, (l) => l.colors.v, { core: true, shadow: true }],
+    ["pelerin-kenari", MHE_CAPE_TRIM, (l) => l.colors.g, {}],
+    ["pelerin-yildizlari", MHE_CAPE_STARS, (l) => l.colors.L, { glow: true, detail: true }],
+    ["okluk", MHE_QUIVER, (l) => l.colors.k, { shadow: true }],
+    ["okluk-halkalari", MHE_QUIVER_BANDS, (l) => l.colors.m, { detail: true }],
+    ["oklar", MHE_ARROWS, (l) => l.colors.i, {}],
+    ["ok-tuyleri", MHE_FLETCHING, (l) => l.colors.l, { glow: true, detail: true }],
+    ["yay", MHE_BOW, (l) => l.colors.m, { arms: true, shadow: true }],
+    ["yay-isigi", MHE_BOW_LIGHT, (l) => l.colors.l, { arms: true, glow: true }],
+    ["yay-uclari", MHE_BOW_TIPS, (l) => l.colors.L, { arms: true, glow: true }],
+    ["yay-kabzasi", MHE_BOW_GRIP, (l) => l.colors.C, { arms: true, detail: true }],
+    ["kiris", MHE_STRING, (l) => l.colors.L, { arms: true, glow: true }],
+    ["isik-oku", MHE_LIGHT_ARROW, (l) => l.colors.l, { arms: true, glow: true }],
+  ],
+};
+
+const HERO_PARTS: readonly PartSpec[] = (Object.keys(HERO_KITS) as HeroId[]).flatMap((hero) =>
+  HERO_KITS[hero].map<PartSpec>(([name, geometry, color, flags]) => ({
+    id: `${hero}-${name}`,
+    geometry,
+    applies: (c, l) => kitChoice(c, l).hero === hero,
+    color,
+    ...flags,
+  })),
+);
+
+/** Büyücüler ve özel kahramanlar ortak gövdeyi değil kendi modellerini giyer (kahramanlarda akın işareti ortak). */
+const unlessCustom = (part: PartSpec): PartSpec => ({
+  ...part,
+  applies: (c, l, ctx) => {
+    const k = kitChoice(c, l);
+    return !k.wizard && (!k.hero || part.id === "akin-isareti") && part.applies(c, l, ctx);
+  },
+});
+
+export const PARTS: readonly PartSpec[] = [...BASE_PARTS.map(unlessCustom), ...WIZARD_PARTS, ...HERO_PARTS];
 
 /** Karakterin taşıdığı parçaların kimlikleri (test ve hata ayıklama için). */
 export function partsOf(character: Character, look: SpriteLook, ctx: PartContext): string[] {

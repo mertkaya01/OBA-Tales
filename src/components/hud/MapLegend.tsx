@@ -13,6 +13,8 @@ const SWATCH: Record<Rarity, string> = {
   nadir: "frame-nadir",
   destansi: "frame-destansi",
   efsanevi: "frame-efsanevi",
+  ulu: "frame-ulu",
+  goksel: "frame-goksel",
 };
 
 export function MapLegend({ className }: { className?: string }) {

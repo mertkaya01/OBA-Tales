@@ -105,8 +105,25 @@ describe("bölümler ve boss'lar", () => {
 });
 
 describe("kadro", () => {
-  it("lider, anlatıcı, 3 ana ve 2 yan karakterden oluşur", () => {
-    expect(CAST.map((c) => c.roleType).sort()).toEqual(["core", "core", "core", "leader", "narrator", "side", "side"]);
+  it("lider, anlatıcı, 3 ana, 2 yan karakter ve 2 özel kahramandan oluşur", () => {
+    expect(CAST.map((c) => c.roleType).sort()).toEqual(["core", "core", "core", "hero", "hero", "leader", "narrator", "side", "side"]);
+  });
+
+  it("Ulu ve Göksel kademeler yalnızca özel kahramanlarda; mhellingtr en güçlüsü", () => {
+    const special = CAST.filter((c) => c.rarity === "ulu" || c.rarity === "goksel");
+    expect(special.map((c) => [c.id, c.rarity, c.class.id])).toEqual([
+      ["egetunce", "ulu", "kalkaneri"],
+      ["mhellingtr", "goksel", "okyeli"],
+    ]);
+    for (const hero of special) {
+      expect(hero.roleType).toBe("hero");
+      expect(hero.specialAbilities?.length).toBeGreaterThanOrEqual(3);
+    }
+    const top = Math.max(...CAST.map((c) => c.points));
+    expect(CAST.find((c) => c.points === top)?.id).toBe("mhellingtr");
+    // Takipçi kaydı Ulu ya da Göksel olamaz.
+    const follower = { ...special[0], roleType: "follower" as const, badges: ["oba_onculugu" as const] };
+    expect(characterSchema.safeParse(follower).success).toBe(false);
   });
 
   it.each(CAST.map((c) => [c.id, c] as const))("%s şemadan geçer ve kendi bölgesinde durur", (_id, member) => {

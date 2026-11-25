@@ -15,8 +15,8 @@ import { useMap } from "react-leaflet";
 import { REGIONS } from "../content/regions";
 import { atlasRect, type SpriteAtlas } from "../game/sprites/atlas";
 import { clusterByRegion } from "../lib/clustering";
-import { REGION_IDS } from "../types";
-import type { Character, RegionId } from "../types";
+import { RARITIES, REGION_IDS } from "../types";
+import type { Character, Rarity, RegionId } from "../types";
 import { toLatLng } from "./mapCoords";
 import { PIN_ANCHOR, PIN_SIZE, clusterHtml, clusterSize, escapeHtml, pinHtml } from "./markerIcons";
 
@@ -109,7 +109,7 @@ export function ClusterLayer({
         animate,
         iconCreateFunction: (cluster) => {
           const children = cluster.getAllChildMarkers();
-          const byRarity = { siradan: 0, nadir: 0, destansi: 0, efsanevi: 0 };
+          const byRarity = Object.fromEntries(RARITIES.map((r) => [r, 0])) as Record<Rarity, number>;
           for (const marker of children) byRarity[characterOf.current.get(marker)?.rarity ?? "siradan"] += 1;
           const size = clusterSize(children.length, false);
           return L.divIcon({ html: clusterHtml({ count: children.length, byRarity }), className: "kb-ikon", iconSize: [size, size] });

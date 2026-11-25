@@ -17,7 +17,7 @@ import { createStarterCharacter } from "./rules";
 
 const now = new Date("2026-11-24T15:00:00Z");
 const everyone: Character[] = [
-  ...CAST,
+  ...CAST.filter((c) => c.roleType !== "hero"), // hikâye kadrosu (özel kahramanlar ayrı testlerde)
   createStarterCharacter({ handle: "ayaz_okcu", platform: "tiktok", region: "ayazbogazi", coordinates: { x: 235, y: 330 }, now }),
   createStarterCharacter({ handle: "kar_tanesi", platform: "youtube", region: "suzulkoy", coordinates: { x: 470, y: 545 }, now }),
 ];
@@ -37,7 +37,7 @@ describe("bölge kümeleri", () => {
     const [akinburnu, suzulkoy] = clusterByRegion(everyone);
     expect(akinburnu.center).toEqual(REGIONS.akinburnu.center);
     expect(akinburnu.topRarity).toBe("efsanevi");
-    expect(akinburnu.byRarity).toEqual({ siradan: 0, nadir: 0, destansi: 3, efsanevi: 4 });
+    expect(akinburnu.byRarity).toEqual({ siradan: 0, nadir: 0, destansi: 3, efsanevi: 4, ulu: 0, goksel: 0 });
     expect(suzulkoy.topRarity).toBe("siradan");
   });
 

@@ -136,6 +136,28 @@ Boss'lar `src/world3d/living/bossModels.tsx` (Karaçay, Ayazkurt, Kışgölgesi 
 
 ---
 
+### Özel kahramanlar ve Ulu, Göksel kademeleri
+
+Efsanevinin üstünde iki kademe var. Takipçiler bunlara ulaşamaz, yalnızca özel kahramanlara elle verilir.
+
+| Kademe | Unvan | Renk | Kimde |
+|---|---|---|---|
+| Ulu | Alp | Güneş altını | egetunce (Kalkaneri, "Gün Kılıçlı Alp") |
+| Göksel | Gökeri | Yıldız ışığı | mhellingtr (Okyeli, "Yıldızların Okçusu"), obanın en güçlüsü |
+
+- **Kayıtlar:** `src/content/cast.ts` (rol `hero`). Her kahramanın kendi bilgileri var:
+  - unvan ve hikâye
+  - 4 özel yetenek (`specialAbilities`)
+  - elle verilmiş nitelikler (`attributes`)
+- **Nitelikler:** Güç, Çeviklik, Dayanıklılık ve Kut (`src/lib/attributes.ts`).
+  - Herkesin nitelikleri sınıfından, nadirliğinden ve kimliğinden türer, tavan 99'dur.
+  - Özel kahramanlar tavanı aşar ve yalnızca kendilerine ait bir nitelik taşır: Gün Işığı ya da Yıldız Işığı.
+- **3D görünüş:** `characterKit.ts` → `HERO_KITS`. Parçalar `egetunce-*` ve `mhellingtr-*` adını taşır; Blender kitinde
+  `COL_11_egetunce` ve `COL_12_mhellingtr` gruplarındadır.
+- **2D portre:** `pixelMaps.ts` → `HERO_LAYERS`. Renkler `composeSprite.ts` → `CAST_LOOKS` içinde.
+- **Haritadaki yer:** İkisi de Kut Kapısı'nın önünde nöbet tutar ve yerinden ayrılmaz. Yeni takipçiler onların 16 birim
+  yakınına konmaz (`nearHero`).
+
 ## Seviye 3: 2D piksel resimler
 
 **Portreler ve harita pinleri:** `src/game/sprites/pixelMaps.ts`

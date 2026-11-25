@@ -4,7 +4,7 @@
  * Renk ailesi:  gece (deniz/gökyüzü) · buz · yün (parşömen) · kilim (sıcak kırmızı)
  *               günözü (altın) · zümrüt · mor · alev
  * Sınıf renkleri:    kalkaneri · okyeli · ocakcan        → bg-kalkaneri, text-okyeli …
- * Nadirlik renkleri: siradan · nadir · destansi · efsanevi → border-efsanevi, ring-nadir …
+ * Nadirlik renkleri: siradan · nadir · destansi · efsanevi · ulu · goksel → border-efsanevi, ring-nadir …
  */
 @import "tailwindcss";
 
@@ -71,6 +71,9 @@
   --color-nadir: #34b08b;
   --color-destansi: #9566e0;
   --color-efsanevi: #f0642f;
+  /* Özel kahraman kademeleri: ulu güneş altını, göksel yıldız ışığı */
+  --color-ulu: #ffd23f;
+  --color-goksel: #7fe6ff;
 
   /* ── Animasyonlar ── */
   --animate-aura: aura-pulse 2.4s ease-in-out infinite;
@@ -169,6 +172,8 @@
  *   frame-nadir    zümrüt / Süzülkoy
  *   frame-destansi mor-altın / Günözü (gradyan kenar)
  *   frame-efsanevi kızıl-altın / Alev-Işık (gradyan kenar)
+ *   frame-ulu      güneş altını-beyaz (gradyan kenar)
+ *   frame-goksel   yıldız ışığı: camgöbeği-beyaz-mor (gradyan kenar)
  */
 @utility frame-siradan {
   border-color: color-mix(in oklab, var(--color-siradan) 75%, transparent);
@@ -192,6 +197,20 @@
   background:
     linear-gradient(var(--color-gece-900), var(--color-gece-900)) padding-box,
     linear-gradient(135deg, var(--color-efsanevi), var(--color-gunozu-300) 50%, var(--color-efsanevi)) border-box;
+}
+
+@utility frame-ulu {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--color-gece-900), var(--color-gece-900)) padding-box,
+    linear-gradient(135deg, var(--color-ulu), #fff6d0 50%, var(--color-ulu)) border-box;
+}
+
+@utility frame-goksel {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--color-gece-900), var(--color-gece-900)) padding-box,
+    linear-gradient(135deg, var(--color-goksel), #ffffff 45%, #b48cff 75%, var(--color-goksel)) border-box;
 }
 
 /* Piksel sanatı büyütülürken bulanıklaşmasın. */
@@ -281,6 +300,19 @@
 .kb-pin.frame-efsanevi {
   box-shadow:
     0 0 14px rgb(240 100 47 / 0.85),
+    0 4px 8px rgb(0 0 0 / 0.45);
+}
+
+.kb-pin.frame-ulu {
+  box-shadow:
+    0 0 16px rgb(255 210 63 / 0.9),
+    0 4px 8px rgb(0 0 0 / 0.45);
+}
+
+.kb-pin.frame-goksel {
+  box-shadow:
+    0 0 18px rgb(127 230 255 / 0.95),
+    0 0 6px rgb(180 140 255 / 0.8),
     0 4px 8px rgb(0 0 0 / 0.45);
 }
 
@@ -440,6 +472,12 @@
 }
 .kb-plaka--efsanevi {
   --plaka-renk: var(--color-efsanevi);
+}
+.kb-plaka--ulu {
+  --plaka-renk: var(--color-ulu);
+}
+.kb-plaka--goksel {
+  --plaka-renk: var(--color-goksel);
 }
 
 .kb-plaka__ad {

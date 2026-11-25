@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { CAST } from "../content/cast";
 import { createStarterCharacter } from "../lib/rules";
 import type { RosterFile, SeasonState, WorldState } from "../types";
 import {
@@ -45,7 +46,7 @@ describe("buildGameData", () => {
   const data = buildGameData(roster, season, world);
 
   it("kadroyu ve takipçileri birleştirir, kadroyla çakışan kaydı atlar", () => {
-    expect(data.characters).toHaveLength(7 + 1);
+    expect(data.characters).toHaveLength(CAST.length + 1); // 7 hikâye kadrosu + 2 özel kahraman + 1 takipçi
     expect(data.characters[0].id).toBe("baturay");
     expect(data.characterById.get("baturay")?.roleType).toBe("leader");
     expect(data.characterById.get("ayaz_okcu")).toBe(follower);
@@ -112,7 +113,7 @@ describe("dosya yükleme", () => {
     });
     const first = loadGameData();
     expect(loadGameData()).toBe(first);
-    expect((await first).characters).toHaveLength(8);
+    expect((await first).characters).toHaveLength(CAST.length + 1);
     expect(fetchMock).toHaveBeenCalledTimes(3);
 
     clearDataCache();

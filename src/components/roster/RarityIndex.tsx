@@ -13,6 +13,8 @@ const SWATCH: Record<Rarity, string> = {
   nadir: "frame-nadir",
   destansi: "frame-destansi",
   efsanevi: "frame-efsanevi",
+  ulu: "frame-ulu",
+  goksel: "frame-goksel",
 };
 
 const BAR: Record<Rarity, string> = {
@@ -20,6 +22,8 @@ const BAR: Record<Rarity, string> = {
   nadir: "bg-zumrut-400",
   destansi: "bg-mor-400",
   efsanevi: "bg-alev-400",
+  ulu: "bg-ulu",
+  goksel: "bg-goksel",
 };
 
 interface RarityIndexProps {

@@ -19,6 +19,7 @@ import {
   PLATFORMS,
   PLATFORM_TO_CLASS,
   RARITIES,
+  FOLLOWER_RARITY_CAP,
   REGION_IDS,
   ROLE_TYPES,
   SEASON_LENGTH,
@@ -51,6 +52,8 @@ const hasDuplicates = (values: readonly string[]): boolean => new Set(values).si
 
 export const platformSchema = z.enum(PLATFORMS);
 export const regionIdSchema = z.enum(REGION_IDS);
+
+const rarityRankOf = (r: (typeof RARITIES)[number]) => RARITIES.indexOf(r);
 
 export const coordinatesSchema = z.object({
   x: z.number().min(0).max(WORLD_SIZE.width),
@@ -102,6 +105,13 @@ export const characterSchema = z
         code: 'custom',
         path: ['class', 'id'],
         message: `"${c.platform}" platformunun sınıfı "${expectedClass}" olmalı`,
+      });
+    }
+    if (c.roleType === 'follower' && rarityRankOf(c.rarity) > rarityRankOf(FOLLOWER_RARITY_CAP)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['rarity'],
+        message: `"${c.rarity}" yalnızca özel kahramanlara verilir; takipçilerde en yüksek nadirlik "${FOLLOWER_RARITY_CAP}"`,
       });
     }
     if (c.class.archetype !== CLASS_ARCHETYPE[c.class.id]) {

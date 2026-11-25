@@ -6,7 +6,7 @@
  *   - 2 platform `cift_iz`, 3 platform `oba_onculugu` rozeti verir.
  *   - Boss ve özel bölüm akınlarına katılım ile çok oy kullanmak ayrıca rozet kazandırır.
  */
-import { BADGE_IDS, PLATFORMS, PLATFORM_TO_CLASS, RARITIES } from "../types";
+import { BADGE_IDS, FOLLOWER_RARITY_CAP, PLATFORMS, PLATFORM_TO_CLASS, RARITIES } from "../types";
 import type { BadgeId, Character, ClassId, Coordinates, Platform, Rarity, RegionId, RoleType } from "../types";
 import { CLASSES, toClassInfo } from "../content/classes";
 import { RARITY_INFO } from "../content/rarities";
@@ -29,9 +29,14 @@ export function rarityAt(rank: number): Rarity {
   return RARITIES[clamp(Math.round(rank), 0, RARITIES.length - 1)];
 }
 
-/** Nadirliği verilen kademe kadar yükseltir (negatif değer düşürür). Tavan "efsanevi". */
+/**
+ * Nadirliği verilen kademe kadar yükseltir (negatif değer düşürür). Tavan "efsanevi": Ulu ve Göksel
+ * yükseltmeyle kazanılmaz, yalnızca özel kahramanlara elle verilir (onlarınki olduğu gibi kalır).
+ */
 export function raiseRarity(rarity: Rarity, steps = 1): Rarity {
-  return rarityAt(rarityRank(rarity) + steps);
+  const cap = rarityRank(FOLLOWER_RARITY_CAP);
+  if (rarityRank(rarity) > cap) return rarity;
+  return rarityAt(Math.min(rarityRank(rarity) + steps, cap));
 }
 
 /** Sıralama için: yüksek nadirlik önce gelir. */

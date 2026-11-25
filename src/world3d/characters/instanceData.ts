@@ -39,16 +39,17 @@ export interface InstanceData {
  */
 export const CHARACTER_SIZE = 1.8;
 
-/** Kadro biraz daha iri, efsaneviler hafifçe daha iri; herkes kendi küçük farkıyla. */
+/** Kadro biraz daha iri, efsaneviler hafifçe, ulu ve göksel kahramanlar biraz daha iri; herkes kendi küçük farkıyla. */
 export function characterScale(c: Character): number {
   const role = c.roleType === "follower" ? 1 : 1.15;
-  const rarity = c.rarity === "efsanevi" ? 1.06 : 1;
+  const rarity = c.rarity === "goksel" ? 1.14 : c.rarity === "ulu" ? 1.1 : c.rarity === "efsanevi" ? 1.06 : 1;
   const jitter = 0.96 + ((hashString(`boy:${c.id}`) % 1000) / 1000) * 0.08;
   return CHARACTER_SIZE * role * rarity * jitter;
 }
 
 /** Dururken yüzleri kameraya (güneye) dönük, ±35° kadar farklı yönlere bakarlar. */
 export function characterFacing(c: Character): number {
+  if (c.roleType === "hero") return 0; // nöbetteki kahramanlar kapıdan gelenlere, kameraya bakar
   return ((hashString(`yon:${c.id}`) % 1000) / 1000 - 0.5) * 1.2;
 }
 

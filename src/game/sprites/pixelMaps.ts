@@ -169,6 +169,20 @@ const GOLD_EDGED_CAPE = layer({
   18: "..gggggggggggg..",
 });
 
+/** Göksel pelerin: gece mavisi, yıldız ışığı kenarlı, üstünde parlayan yıldızlar. */
+const STAR_CAPE = layer({
+  9: ".wvvvLvvvvvvvvw.",
+  10: ".wvvvvvvvLvvvvw.",
+  11: ".wvLvvvvvvvvvvw.",
+  12: ".wvvvvvLvvvvvvw.",
+  13: ".wvvvvvvvvvLvvw.",
+  14: ".wvvLvvvvvvvvvw.",
+  15: ".wvvvvvvLvvvvvw.",
+  16: ".wvvvvvvvvvvLvw.",
+  17: "..wvvLvvvvvvw...",
+  18: "..wwwwwwwwwwww..",
+});
+
 export const RARITY_LAYERS: Readonly<Record<Rarity, GearLayers>> = {
   /** Sıradan: göğüste tek küçük rozet. */
   siradan: {
@@ -203,6 +217,85 @@ export const RARITY_LAYERS: Readonly<Record<Rarity, GearLayers>> = {
       11: "....M..gg..M....",
       12: ".......gg.......",
       13: "...g.g....g.g...",
+    }),
+  },
+  /** Ulu: göğüste güneş amblemi, başının iki yanında parıltı. Yalnızca özel kahramanlar. */
+  ulu: {
+    back: layer({}),
+    front: layer({
+      0: "..l..........l..",
+      1: ".l............l.",
+      10: ".....g.gg.g.....",
+      11: "......gLLg......",
+      12: ".....g.gg.g.....",
+      13: "...g........g...",
+    }),
+  },
+  /** Göksel: yıldızlı gece pelerini, göğüste yıldız ışığı, başında süzülen yıldızlar. En yüksek kademe. */
+  goksel: {
+    back: STAR_CAPE,
+    front: layer({
+      0: "..L..........L..",
+      1: "...........L....",
+      10: "....w..LL..w....",
+      11: "....M.LLLL.M....",
+      12: ".......LL.......",
+      13: "...w.w....w.w...",
+    }),
+  },
+};
+
+// ── Özel kahramanlar ───────────────────────────────────────────────
+
+/**
+ * Özel kahramanların sınıf ekipmanı yerine kendi katmanları (kimliğe göre).
+ *   egetunce   mor kova şapka (iki iri göz), sakal, sol elde lavanta, sağda uzun sarı-beyaz Gün Kılıcı
+ *              (m/M şapka moru, i ak, l gün sarısı, f sakal, d lavanta, v sap yeşili)
+ *   mhellingtr kıvırcık saç, kısa sakal, sırtta okluk, gümüş omuzluk, camgöbeği parlayan Yıldız Yayı
+ */
+export const HERO_LAYERS: Readonly<Record<string, GearLayers>> = {
+  egetunce: {
+    back: layer({}),
+    front: layer({
+      0: ".....oooooo.....",
+      1: "....oMmmmmmMo.i.",
+      2: "....omiommiomoil",
+      3: "..ommmmmmmmmmoil",
+      4: "..............il",
+      5: "..............il",
+      6: "...of......fo.il",
+      7: ".d..offffffo..il",
+      8: "d.d...........il",
+      9: "dd............il",
+      10: ".v............il",
+      11: ".v............il",
+      12: "vv............il",
+      13: "............gggg",
+      14: "..............k.",
+      15: "..............g.",
+    }),
+  },
+  mhellingtr: {
+    back: layer({
+      3: "............i.i.",
+      4: "............iii.",
+      5: "............kkk.",
+      6: "............kMk.",
+      7: "............kkk.",
+      8: "...........kkk..",
+      9: "...........kk...",
+    }),
+    front: layer({
+      0: "....ohhohhho....",
+      6: "...oh......ho...",
+      7: ".L..ohhSShho....",
+      8: "wL..............",
+      9: "wL.MM......MM...",
+      10: "wL..............",
+      11: "wL..............",
+      12: "wL..............",
+      13: "wL..............",
+      14: ".L..............",
     }),
   },
 };

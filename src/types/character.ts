@@ -41,13 +41,22 @@ export interface ClassInfo {
 
 // ── Nadirlik ───────────────────────────────────────────────────────
 
-/** Sıralama önemlidir: dizideki konum = nadirlik kademesi (0 en düşük). */
-export const RARITIES = ['siradan', 'nadir', 'destansi', 'efsanevi'] as const;
+/**
+ * Sıralama önemlidir: dizideki konum = nadirlik kademesi (0 en düşük).
+ * Ulu ve Göksel efsanevinin üstündeki özel kademelerdir: takipçiler kazanamaz, yalnızca özel kahramanlara verilir.
+ */
+export const RARITIES = ['siradan', 'nadir', 'destansi', 'efsanevi', 'ulu', 'goksel'] as const;
 export type Rarity = (typeof RARITIES)[number];
+
+/** Takipçilerin ulaşabileceği en yüksek nadirlik. */
+export const FOLLOWER_RARITY_CAP = 'efsanevi' satisfies Rarity;
+/** Yalnızca özel kahramanlara verilen kademeler. */
+export const SPECIAL_RARITIES = ['ulu', 'goksel'] as const satisfies readonly Rarity[];
 
 // ── Rol, aura, rozet ───────────────────────────────────────────────
 
-export const ROLE_TYPES = ['follower', 'core', 'side', 'leader', 'narrator'] as const;
+/** hero: obanın özel kahramanları (Ulu ve Göksel kademeler yalnızca onlarda). */
+export const ROLE_TYPES = ['follower', 'core', 'side', 'leader', 'narrator', 'hero'] as const;
 export type RoleType = (typeof ROLE_TYPES)[number];
 
 /** Kadro üyelerinin rolleri (takipçi dışındaki her şey). */
@@ -127,6 +136,21 @@ export interface CastMember extends Character {
   appearance: string;
   /** İmza hareketi ya da sözü. */
   signature: string;
+  /** Yalnızca bu kahramana ait yetenekler (sınıf yeteneklerinin yanında gösterilir). */
+  specialAbilities?: readonly string[];
+  /** Elle verilmiş nitelikler (özel kahramanlar 100 tavanını aşar). */
+  attributes?: HeroAttributes;
+}
+
+// ── Nitelikler ─────────────────────────────────────────────────────
+
+export const ATTRIBUTE_IDS = ['guc', 'ceviklik', 'dayaniklilik', 'kut'] as const;
+export type AttributeId = (typeof ATTRIBUTE_IDS)[number];
+export type CharacterAttributes = Record<AttributeId, number>;
+
+/** Özel kahramanın nitelikleri: dört temel nitelik ve yalnızca ona ait bir nitelik. */
+export interface HeroAttributes extends CharacterAttributes {
+  special: { label: string; description: string; value: number };
 }
 
 // ── Kanon tanımları (src/content/* içinde doldurulur) ───────────────
@@ -150,7 +174,7 @@ export interface ClassDefinition {
 
 export interface RarityDefinition {
   id: Rarity;
-  /** 0 = sıradan … 3 = efsanevi. */
+  /** 0 = sıradan … 3 = efsanevi, 4 = ulu, 5 = göksel. */
   rank: number;
   /** "Sıradan", "Nadir", "Destansı", "Efsanevi". */
   label: string;

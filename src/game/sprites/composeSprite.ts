@@ -22,6 +22,7 @@ import {
 import {
   BODY,
   CLASS_LAYERS,
+  HERO_LAYERS,
   HAIR_LAYERS,
   HAIR_STYLES,
   RARITY_LAYERS,
@@ -60,6 +61,15 @@ const CAST_LOOKS: Readonly<Record<string, LookOverride>> = {
   kursat: { colors: { c: "#a8642e", C: "#824b21", w: "#7fbf6a", h: "#7a4a26" }, hair: "topuz" },
   yalvac: { colors: { c: "#d0603a", C: "#a8482a", h: "#8a2f2a" }, hair: "uzun" },
   isikay: { colors: { c: "#9cc7e6", C: "#6fa3c8", h: "#e8e2d5" }, hair: "uzun" },
+  // Özel kahramanlar: egetunce siyah tişört-şort, mor kova şapka, sarı saç; mhellingtr gece mavisi ve gümüş, yıldız ışığı.
+  egetunce: {
+    colors: { s: "#f1c9a2", S: "#d9a67c", c: "#1e1c24", C: "#141218", p: "#1e1c24", b: "#efeee9", h: "#e8c55c", f: "#b8893a", m: "#5a2e94", M: "#7c4cc0", i: "#ffffff", l: "#ffe680", L: "#fff6c0", g: "#ffd23f", d: "#9a7fd6", v: "#4f8a3c", k: "#6b4a2a" },
+    hair: "uzun",
+  },
+  mhellingtr: {
+    colors: { s: "#dba57a", S: "#bb855c", c: "#1c2a66", C: "#131d4a", p: "#1a2350", b: "#2a3570", h: "#4a2e1c", m: "#dfe8f5", M: "#ffffff", g: "#dfe8f5", i: "#f2f6ff", l: "#7fe6ff", L: "#b8f4ff", v: "#1c2a66", k: "#2c2440" },
+    hair: "kisa",
+  },
 };
 
 /** Karakterin renklerini ve saç modelini belirler. */
@@ -109,7 +119,8 @@ export function resolveLook(character: Character): SpriteLook {
 
 /** Katmanların çizim sırası. */
 export function spriteLayers(character: Character, hair: HairStyle): PixelLayer[] {
-  const gear = CLASS_LAYERS[character.class.id];
+  // Özel kahramanlar sınıf ekipmanı yerine kendi katmanlarını giyer.
+  const gear = (character.roleType !== "follower" && HERO_LAYERS[character.id]) || CLASS_LAYERS[character.class.id];
   const trim = RARITY_LAYERS[character.rarity];
   return [gear.back, trim.back, BODY, HAIR_LAYERS[hair], gear.front, trim.front];
 }

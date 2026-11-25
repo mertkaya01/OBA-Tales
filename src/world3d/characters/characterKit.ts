@@ -12,14 +12,19 @@
  * görünüyorsa dünyada da öyle görünür. Kişiye özgü seçimler takipçi kimliğinden türetilir: herkes her
  * açılışta aynı görünür, ama iki takipçi neredeyse hiç birbirinin aynısı olmaz.
  *
+ * Büyücü-şifacı: destansı ve efsanevi Ocakcanlar ile Dede Toygar, ortak gövde yerine kendi modelini giyer (sivri şapka,
+ * cüppe, asa, iksir). Model modeller/kaynak/buyucu-sifaci.obj dosyasından gelir (npm run model:cevir); renkleri yine
+ * takipçinin kendi renkleridir. Parça kimlikleri "buyucu-" ile başlar.
+ *
  * Üç kademe (LOD): en uzakta yalnızca `core` parçalar (gövde, kafa, atkı, başlık, pelerin) çizilir; orta mesafede
  * silüet parçaları (kollar, saç, başlıklar, ekipman) eklenir; yakında `detail` parçalar (yüz, toka, el, runlar) belirir.
  */
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
-import { BoxGeometry, ConeGeometry, CylinderGeometry, IcosahedronGeometry, OctahedronGeometry, TorusGeometry, type BufferGeometry } from "three";
+import { BoxGeometry, BufferGeometry, ConeGeometry, CylinderGeometry, Float32BufferAttribute, IcosahedronGeometry, OctahedronGeometry, TorusGeometry } from "three";
 import type { SpriteLook } from "../../game/sprites/composeSprite";
 import { hashString } from "../../lib/random";
 import type { Character, Rarity } from "../../types";
+import { buyucuSifaci, type ModelPart } from "./models/buyucuSifaci";
 
 export interface PartContext {
   inRaid: boolean;
@@ -99,12 +104,14 @@ export interface KitChoice {
   nazar: boolean;
   /** Göğüsten çapraz geçen okluk kayışı (Okyeli). */
   strap: boolean;
+  /** Büyücü-şifacı modeli (destansı ve efsanevi Ocakcan, Dede Toygar). */
+  wizard: boolean;
 }
 
 /** Kadronun hikâyedeki görünüşü. */
 const CAST_KIT: Readonly<Record<string, Partial<KitChoice>>> = {
   baturay: { hat: "tolga", plume: true, beard: "kisa", weapon: "kilic" },
-  dede_toygar: { hat: null, beard: "uzun", staff: true, bangs: false },
+  dede_toygar: { hat: null, beard: "uzun", staff: true, bangs: false, wizard: true },
   alptug: { hat: "bork", beard: "biyik" },
   kursat: { hat: "kalpak", beard: "kisa" },
 };
@@ -139,6 +146,8 @@ export function kitChoice(c: Character, look: SpriteLook): KitChoice {
     pouch: variant(c, "kese", 2) === 0,
     nazar: variant(c, "nazar", 10) < 3,
     strap: cls === "okyeli",
+    // Kadro kendi görünüşünü korur; büyücü olan kadro üyesi CAST_KIT içinde seçilir.
+    wizard: cls === "ocakcan" && isRich(c.rarity) && c.roleType === "follower",
   };
   const override = c.roleType !== "follower" ? CAST_KIT[c.id] : undefined;
   if (override) Object.assign(choice, override);
@@ -270,7 +279,7 @@ const isClass = (id: Character["class"]["id"]) => (c: Character) => c.class.id =
 const hasLongCape = (c: Character) => isRich(c.rarity);
 const showsHair = (c: Character) => c.class.id !== "okyeli";
 
-export const PARTS: readonly PartSpec[] = [
+const BASE_PARTS: readonly PartSpec[] = [
   // Gövde
   { id: "bacaklar", geometry: LEGS, applies: () => true, color: (l) => l.colors.p, legs: true },
   { id: "cizmeler", geometry: BOOTS, applies: () => true, color: (l) => l.colors.b, legs: true },
@@ -358,6 +367,89 @@ export const PARTS: readonly PartSpec[] = [
   { id: "kadim-tuy", geometry: PLUME, applies: (c, l) => c.rarity === "efsanevi" && !kitChoice(c, l).plume, color: (l) => l.colors.L, glow: true },
   { id: "akin-isareti", geometry: RAID_MARKER, applies: (_c, _l, ctx) => ctx.inRaid, color: () => "#f6d36f", glow: true, core: true },
 ];
+
+// ── Büyücü-şifacı (modeller/kaynak/buyucu-sifaci.obj) ─────────────
+
+function modelGeometry(part: ModelPart | undefined, id: string): BufferGeometry {
+  if (!part) throw new Error(`Büyücü-şifacı modelinde "${id}" parçası yok`);
+  const geometry = new BufferGeometry();
+  geometry.setAttribute("position", new Float32BufferAttribute(part.p as number[], 3));
+  geometry.setIndex(part.i as number[]);
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
+type Paint = (l: SpriteLook) => string;
+type Flags = Pick<PartSpec, "glow" | "detail" | "core" | "shadow" | "legs" | "arms">;
+const isWizard = has((k) => k.wizard);
+const POTION = "#73e88b";
+
+/** [modeldeki ad, renk, bayraklar, ek koşul]. Renkler takipçinin kendi renkleri: cüppe = kaftan rengi, süsler altın. */
+const WIZARD: readonly [string, Paint, Flags, ((c: Character) => boolean)?][] = [
+  ["bacaklar", (l) => l.colors.p, { legs: true }],
+  ["cizmeler", (l) => l.colors.b, { legs: true }],
+  ["etek", (l) => l.colors.c, { shadow: true, core: true }],
+  ["etek-kenari", (l) => l.colors.g, { detail: true }],
+  ["govde", (l) => l.colors.c, { shadow: true, core: true }],
+  ["altin-etek", (l) => l.colors.g, {}, (c) => isRich(c.rarity)],
+  ["kemer", (l) => l.colors.k, { detail: true }],
+  ["toka", (l) => l.colors.g, { detail: true }],
+  ["yaka", (l) => l.colors.i, { detail: true }],
+  ["nakis", (l) => l.colors.g, { detail: true }, (c) => c.rarity !== "siradan"],
+  ["gogus-amblemi", (l) => l.colors.g, { detail: true }],
+  ["madalyon", (l) => l.colors.L, { glow: true, detail: true }, (c) => isRich(c.rarity)],
+  ["kollar", (l) => l.colors.c, { arms: true, shadow: true }],
+  ["kol-kenari", (l) => l.colors.i, { arms: true, detail: true }],
+  ["eller", (l) => l.colors.s, { arms: true, detail: true }],
+  ["kafa", (l) => l.colors.s, { shadow: true, core: true }],
+  ["gozler", (l) => l.colors.e, { detail: true }],
+  ["goz-isigi", (l) => l.colors.L, { glow: true, detail: true }],
+  ["kaslar", (l) => l.colors.h, { detail: true }],
+  ["burun", (l) => l.colors.S, { detail: true }],
+  ["kulaklar", (l) => l.colors.s, { detail: true }],
+  ["sac", (l) => l.colors.h, {}],
+  ["uzun-sac", (l) => l.colors.h, {}],
+  ["uzun-sakal", (l) => l.colors.h, {}],
+  ["biyik", (l) => l.colors.h, { detail: true }],
+  ["sapka-kenari", (l) => l.colors.C, { shadow: true, core: true }],
+  ["sapka", (l) => l.colors.c, { shadow: true, core: true }],
+  ["sapka-bandi", (l) => l.colors.g, {}],
+  ["sapka-yildizi", (l) => l.colors.g, { glow: true, detail: true }],
+  ["asa", (l) => l.colors.k, { arms: true, shadow: true }],
+  ["asa-bagi", (l) => l.colors.b, { arms: true, detail: true }],
+  ["asa-halkasi", (l) => l.colors.g, { arms: true, detail: true }],
+  ["asa-yuvasi", (l) => l.colors.b, { arms: true, detail: true }],
+  ["asa-tasi", (l) => l.colors.L, { arms: true, glow: true }],
+  ["uzun-pelerin", (l) => l.colors.v, { shadow: true, core: true }, (c) => isRich(c.rarity)],
+  ["pelerin-runlari", (l) => l.colors.g, { glow: true, detail: true }, (c) => c.rarity === "efsanevi"],
+  ["kese", (l) => l.colors.k, { detail: true }],
+  ["iksir", () => POTION, { glow: true }],
+  ["iksir-tipasi", (l) => l.colors.b, { detail: true }],
+];
+
+const WIZARD_PARTS: readonly PartSpec[] = [
+  ...WIZARD.map<PartSpec>(([name, color, flags, when]) => ({
+    id: `buyucu-${name}`,
+    geometry: modelGeometry(buyucuSifaci[name], name),
+    applies: when ? (c, l) => isWizard(c, l) && when(c) : isWizard,
+    color,
+    ...flags,
+  })),
+  // Sivri şapkanın üstünde kalsın diye akın işareti biraz daha yukarıda.
+  {
+    id: "buyucu-akin-isareti",
+    geometry: place(new OctahedronGeometry(0.3, 0), { at: [0, 5.7, 0] }),
+    applies: (c, l, ctx) => ctx.inRaid && isWizard(c, l),
+    color: () => "#f6d36f",
+    glow: true,
+    core: true,
+  },
+];
+
+/** Büyücüler ortak gövdeyi değil kendi modellerini giyer. */
+const unlessWizard = (part: PartSpec): PartSpec => ({ ...part, applies: (c, l, ctx) => !kitChoice(c, l).wizard && part.applies(c, l, ctx) });
+
+export const PARTS: readonly PartSpec[] = [...BASE_PARTS.map(unlessWizard), ...WIZARD_PARTS];
 
 /** Karakterin taşıdığı parçaların kimlikleri (test ve hata ayıklama için). */
 export function partsOf(character: Character, look: SpriteLook, ctx: PartContext): string[] {

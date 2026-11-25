@@ -83,7 +83,7 @@ exportCharacter("kalkaneri", kalkaneri);
 exportCharacter("kalkaneri-borklu-baltali", sample("instagram", "siradan", { hat: "bork", weapon: "balta", beard: "uzun" }));
 exportCharacter("okyeli", sample("tiktok", "nadir", { beard: "biyik" }));
 exportCharacter("ocakcan", sample("youtube", "nadir", { hat: "kalpak", kopuz: true, beard: null }));
-exportCharacter("efsanevi-ocakcan", sample("youtube", "efsanevi", { hat: null, beard: "kisa" }));
+exportCharacter("efsanevi-ocakcan", sample("youtube", "efsanevi", { hat: null, beard: "kisa" })); // büyücü-şifacı modeli
 for (const member of CAST) exportCharacter(`kadro-${member.id}`, member);
 
 // ── Blender kiti: bütün parçalar tek dosyada (npm run blender:kit bunu .blend dosyasına çevirir) ──
@@ -97,7 +97,8 @@ const GROUPS: Record<string, string[]> = {
   "07 Ocakcan": ["davul", "davul-tokmaklari", "fener", "kopuz", "yumusak-pelerin"],
   "08 Nadirlik ve kadro": ["uzun-pelerin", "pelerin-runlari", "madalyon", "kadim-tuy", "akin-isareti", "asa", "asa-tasi"],
 };
-const groupOf = (id: string) => Object.entries(GROUPS).find(([, ids]) => ids.includes(id))?.[0] ?? "09 Diger";
+const groupOf = (id: string) =>
+  id.startsWith("buyucu-") ? "10 Buyucu-sifaci" : (Object.entries(GROUPS).find(([, ids]) => ids.includes(id))?.[0] ?? "09 Diger");
 // Her parçanın örnek rengi: o parçayı taşıyan ilk örnek karakterden. Açılışta görünen: tolgalı, kılıçlı Kalkaneri.
 const samples = [kalkaneri, sample("tiktok", "nadir", { beard: "biyik" }), sample("youtube", "efsanevi", { hat: "kalpak", kopuz: true }), ...CAST];
 const kit = PARTS.map((part) => {

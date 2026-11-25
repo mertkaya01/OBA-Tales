@@ -62,13 +62,48 @@ Blender dosyasını sıfırdan kurmak için `npm run blender:kit -- --yenile` ku
   - Her parça `x = 0`'ın kendi tarafında kalsın. `x > 0` tarafı `+X` koluyla ve bacağıyla birlikte hareket eder.
 - **Az poligon:** Haritada aynı anda binlerce karakter çiziliyor.
   - Tek bir parça en fazla 350 üçgen olsun.
-  - Bir karakterin açık parçaları toplamda 1500 üçgeni geçmesin. Şu an 784.
+  - Bir karakterin açık parçaları toplamda 1500 üçgeni geçmesin. Şu an Kalkaneri 784, büyücü-şifacı 2064 (daha az
+    kişide göründüğü için sorun değil).
   - Düz gölge (Shade Flat) kullan. Subdivision Surface kullanma.
 - **Değiştiriciler:** Mirror, Bevel ve Solidify serbest; oyuna aktarırken uygulanırlar. Nesneyi taşıyıp döndürmen
   de sorun değil.
 - **Silmek:** Bir parçayı silersen oyun o parçayı koddaki şekliyle çizer.
 - **Kod gerektirenler:** Yeni bir seçenek (örneğin yeni bir başlık türü ya da kadroya özel bir parça) hangi takipçide
   görüneceğine dair bir kural ister. Modelini yap, adını söyle, kuralı ben eklerim.
+
+### Tam yeni bir karakter modeli: büyücü-şifacı
+
+![Büyücü-şifacı](kaynak/buyucu-sifaci-onizleme.png)
+
+Senin yaptığın büyücü-şifacı modeli oyunda.
+- **Kimler giyer:** Destansı ve efsanevi Ocakcanlar ile Dede Toygar. Bu karakterler ortak gövde yerine bu modeli
+  giyer: sivri şapka, cüppe, sakal, ay amblemi, taşlı asa, iksir ve kese.
+- **Renkler:** Her takipçinin kendi renkleri kullanılır. Cüppe ve şapka kaftan rengini, süsler altın rengini, uzun
+  pelerin nadirlik rengini alır.
+- **Nadirliğe göre farklar:** Pelerin runları yalnızca efsanevilerde var.
+- **Kalanlar:** Öteki kadro üyeleri ve sıradan ya da nadir Ocakcanlar eski görünüşünde.
+
+| Ne | Nerede |
+|---|---|
+| Senin dosyan (kopya, asıl klasöre dokunulmadı) | `modeller/kaynak/buyucu-sifaci.obj` |
+| Oyundaki kod geometrisi (üretilmiş) | `src/world3d/characters/models/buyucuSifaci.ts` |
+| Kimin giydiği, renkler | `src/world3d/characters/characterKit.ts` → `WIZARD`, `kitChoice().wizard` |
+
+Modeli değiştirmenin iki yolu var.
+- **Blender'da:** Parçalar Blender kitinde `COL_10_Buyucu-sifaci` grubunda, adları `buyucu-` ile başlıyor.
+  Düzenleyip `Alt+P` ile aktarman yeterli.
+- **OBJ'yi yenileyerek:** Önce `modeller/kaynak/buyucu-sifaci.obj` dosyasını yenile, sonra kodu yeniden üret:
+
+  ```powershell
+  npm run model:cevir -- modeller/kaynak/buyucu-sifaci.obj buyucuSifaci
+  ```
+
+**Yeni bir model getirirken:**
+- Blockbench kalıbından (10 kat büyük) çalış.
+- Parça adlarını yukarıdaki kurallara göre ver.
+- Dosyayı `modeller/kaynak/` klasörüne koy.
+- Kimin giyeceğini söyle, kuralını ben eklerim.
+- Doku (UV ve basecolor) kullanılmaz: oyunda her parçayı takipçinin rengi boyar.
 
 ### Dosyalar ve komutlar
 
@@ -168,7 +203,7 @@ npm run modeller
 | `kalkaneri-borklu-baltali.obj` | Börklü, baltalı, uzun sakallı Kalkaneri |
 | `okyeli.obj` | Tüylü başlıklı, yaylı, okluklu Okyeli |
 | `ocakcan.obj` | Kalpaklı, fenerli, kopuzlu, davullu Ocakcan |
-| `efsanevi-ocakcan.obj` | Efsanevi nadirlik: uzun pelerin, altın etek, madalyon, runlar |
+| `efsanevi-ocakcan.obj` | Efsanevi Ocakcan: büyücü-şifacı modeli (sivri şapka, cüppe, asa, iksir, runlu pelerin) |
 | `kadro-*.obj` | Yedi kahraman (Baturay, Dede Toygar, Alptuğ, Süheyla, Kürşat, Yalvaç, Işıkay) |
 | `blockbench/` | Aynı dosyalar 10 kat büyük (boy ≈ 44 birim): Blockbench'te rahat çalışılır |
 

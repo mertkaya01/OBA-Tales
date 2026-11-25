@@ -178,6 +178,10 @@ Renkler, sınıflar, seçenekler, uzaklık kademeleri ve hareketler koddaki kura
 
 Ölçüleri ve değişen parçaları denetlemek için `npm run blender:kontrol` kullan.
 
+**Tam yeni model (örnek: büyücü-şifacı):** Destansı ve efsanevi Ocakcanlar ile Dede Toygar senin büyücü-şifacı modelini
+giyer. Model `modeller/kaynak/buyucu-sifaci.obj` dosyasında. `npm run model:cevir` onu kod geometrisine çevirir, kimin
+giyeceği `characterKit.ts` içinde. Ayrıntı [modeller/README.md](../modeller/README.md) içinde.
+
 **OBJ kalıpları:** Blockbench gibi öteki programlar için aynı karakterler `modeller/referans/` içinde OBJ olarak duruyor
 (`npm run modeller`). Blockbench'te yapılan parça OBJ olarak Blender kitine alınıp oradan aktarılır.
 

@@ -23,8 +23,8 @@
       "points": 95,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 975.9,
-        "y": 1494.6
+        "x": 977.5,
+        "y": 1500.8
       },
       "badges": [
         "cift_iz"
@@ -55,8 +55,8 @@
       "points": 120,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 772.8,
-        "y": 1161.5
+        "x": 771.5,
+        "y": 1163.9
       },
       "badges": [],
       "elementAura": "alev",
@@ -115,8 +115,8 @@
       "points": 125,
       "region": "akinburnu",
       "coordinates": {
-        "x": 625,
-        "y": 1456
+        "x": 661.2,
+        "y": 1445.8
       },
       "badges": [
         "ilk_adim"
@@ -177,8 +177,8 @@
       "points": 217,
       "region": "akinburnu",
       "coordinates": {
-        "x": 435.2,
-        "y": 1453
+        "x": 429.7,
+        "y": 1452.7
       },
       "badges": [
         "ilk_adim"
@@ -209,8 +209,8 @@
       "points": 146,
       "region": "akinburnu",
       "coordinates": {
-        "x": 402.9,
-        "y": 1418.3
+        "x": 391,
+        "y": 1412.1
       },
       "badges": [
         "ilk_adim"
@@ -241,8 +241,8 @@
       "points": 78,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 442.4,
-        "y": 1062.7
+        "x": 443.9,
+        "y": 1072.2
       },
       "badges": [
         "ilk_adim"
@@ -273,8 +273,8 @@
       "points": 66,
       "region": "akinburnu",
       "coordinates": {
-        "x": 590,
-        "y": 1445.2
+        "x": 620.7,
+        "y": 1432.6
       },
       "badges": [],
       "elementAura": null,
@@ -303,8 +303,8 @@
       "points": 134,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 1094.3,
-        "y": 1005.3
+        "x": 1094.6,
+        "y": 1005.5
       },
       "badges": [
         "ilk_adim"
@@ -335,8 +335,8 @@
       "points": 13,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 950.2,
-        "y": 1080
+        "x": 954.4,
+        "y": 1079
       },
       "badges": [],
       "elementAura": null,
@@ -365,8 +365,8 @@
       "points": 22,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 1146.7,
-        "y": 982.6
+        "x": 1156,
+        "y": 979.9
       },
       "badges": [],
       "elementAura": null,
@@ -395,8 +395,8 @@
       "points": 159,
       "region": "akinburnu",
       "coordinates": {
-        "x": 533.8,
-        "y": 1443.3
+        "x": 555.8,
+        "y": 1431.1
       },
       "badges": [
         "ilk_adim"
@@ -427,8 +427,8 @@
       "points": 91,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 944.3,
-        "y": 1102.7
+        "x": 947.7,
+        "y": 1104.4
       },
       "badges": [],
       "elementAura": null,
@@ -457,8 +457,8 @@
       "points": 129,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 691.2,
-        "y": 1506.3
+        "x": 683.4,
+        "y": 1510
       },
       "badges": [
         "ilk_adim"
@@ -490,8 +490,8 @@
       "points": 105,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1018.5,
-        "y": 753.2
+        "x": 1016.8,
+        "y": 745.4
       },
       "badges": [
         "cift_iz"
@@ -522,7 +522,7 @@
       "points": 199,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 962.7,
+        "x": 968.9,
         "y": 1087.8
       },
       "badges": [
@@ -554,8 +554,8 @@
       "points": 249,
       "region": "pusluada",
       "coordinates": {
-        "x": 2215,
-        "y": 1063.3
+        "x": 2216.5,
+        "y": 1066.8
       },
       "badges": [
         "ilk_adim"
@@ -586,8 +586,8 @@
       "points": 220,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 866.9,
-        "y": 1107.4
+        "x": 860.6,
+        "y": 1110
       },
       "badges": [
         "ilk_adim"
@@ -618,8 +618,8 @@
       "points": 192,
       "region": "pusluada",
       "coordinates": {
-        "x": 2216.7,
-        "y": 1132.8
+        "x": 2214.1,
+        "y": 1129.4
       },
       "badges": [
         "ilk_adim"
@@ -650,8 +650,8 @@
       "points": 106,
       "region": "akinburnu",
       "coordinates": {
-        "x": 514.1,
-        "y": 1433.1
+        "x": 520.4,
+        "y": 1429.7
       },
       "badges": [
         "ilk_adim"
@@ -682,8 +682,8 @@
       "points": 81,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 700,
-        "y": 1434.4
+        "x": 693.4,
+        "y": 1427
       },
       "badges": [],
       "elementAura": null,
@@ -712,8 +712,8 @@
       "points": 85,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1052,
-        "y": 827
+        "x": 1054.9,
+        "y": 829.8
       },
       "badges": [
         "ilk_adim"
@@ -744,8 +744,8 @@
       "points": 260,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 963.6,
-        "y": 1491.4
+        "x": 963.4,
+        "y": 1496.9
       },
       "badges": [
         "ilk_adim"
@@ -776,8 +776,8 @@
       "points": 212,
       "region": "akinburnu",
       "coordinates": {
-        "x": 463.3,
-        "y": 1459
+        "x": 463,
+        "y": 1459.1
       },
       "badges": [
         "ilk_adim"
@@ -842,8 +842,8 @@
       "points": 193,
       "region": "pusluada",
       "coordinates": {
-        "x": 2179.1,
-        "y": 1000.8
+        "x": 2175.8,
+        "y": 996.1
       },
       "badges": [
         "ilk_adim"
@@ -876,8 +876,8 @@
       "points": 270,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1011.6,
-        "y": 795.5
+        "x": 1009.7,
+        "y": 794.5
       },
       "badges": [
         "oba_onculugu",
@@ -909,8 +909,8 @@
       "points": 138,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 572.4,
-        "y": 1156.2
+        "x": 574.2,
+        "y": 1148.7
       },
       "badges": [],
       "elementAura": null,
@@ -939,8 +939,8 @@
       "points": 94,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 555.2,
-        "y": 1219.3
+        "x": 554.9,
+        "y": 1220.2
       },
       "badges": [
         "ilk_adim"
@@ -973,7 +973,7 @@
       "region": "kiragiduzu",
       "coordinates": {
         "x": 788.9,
-        "y": 1149.2
+        "y": 1149.3
       },
       "badges": [
         "cift_iz",
@@ -1065,8 +1065,8 @@
       "points": 156,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 973.5,
-        "y": 1438.6
+        "x": 974.2,
+        "y": 1437.6
       },
       "badges": [],
       "elementAura": null,
@@ -1095,8 +1095,8 @@
       "points": 82,
       "region": "akinburnu",
       "coordinates": {
-        "x": 454.4,
-        "y": 1445.9
+        "x": 452.4,
+        "y": 1444.9
       },
       "badges": [],
       "elementAura": null,
@@ -1125,7 +1125,7 @@
       "points": 117,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 917.9,
+        "x": 927,
         "y": 1365.5
       },
       "badges": [
@@ -1157,8 +1157,8 @@
       "points": 81,
       "region": "pusluada",
       "coordinates": {
-        "x": 2231.8,
-        "y": 1174.2
+        "x": 2231.4,
+        "y": 1175.2
       },
       "badges": [],
       "elementAura": null,
@@ -1187,8 +1187,8 @@
       "points": 236,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 435.3,
-        "y": 1010.2
+        "x": 435.4,
+        "y": 1010.4
       },
       "badges": [],
       "elementAura": null,
@@ -1218,8 +1218,8 @@
       "points": 308,
       "region": "akinburnu",
       "coordinates": {
-        "x": 495.9,
-        "y": 1441.6
+        "x": 498.9,
+        "y": 1439.9
       },
       "badges": [
         "cift_iz",
@@ -1251,8 +1251,8 @@
       "points": 2,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 769,
-        "y": 1445
+        "x": 772.9,
+        "y": 1439.6
       },
       "badges": [],
       "elementAura": null,
@@ -1281,8 +1281,8 @@
       "points": 22,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 805.3,
-        "y": 1328.5
+        "x": 798.1,
+        "y": 1323.2
       },
       "badges": [],
       "elementAura": null,
@@ -1312,8 +1312,8 @@
       "points": 137,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1000.7,
-        "y": 824
+        "x": 996.7,
+        "y": 826.5
       },
       "badges": [
         "cift_iz"
@@ -1345,8 +1345,8 @@
       "points": 154,
       "region": "akinburnu",
       "coordinates": {
-        "x": 353.5,
-        "y": 1443.3
+        "x": 341,
+        "y": 1449.8
       },
       "badges": [
         "cift_iz"
@@ -1377,8 +1377,8 @@
       "points": 148,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 728.8,
-        "y": 1509.1
+        "x": 727.1,
+        "y": 1512.5
       },
       "badges": [
         "ilk_adim"
@@ -1410,8 +1410,8 @@
       "points": 169,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 518.5,
-        "y": 1169.2
+        "x": 512.2,
+        "y": 1163.6
       },
       "badges": [
         "cift_iz",
@@ -1444,8 +1444,8 @@
       "points": 82,
       "region": "pusluada",
       "coordinates": {
-        "x": 2197.5,
-        "y": 1042.9
+        "x": 2197.4,
+        "y": 1043
       },
       "badges": [
         "cift_iz"
@@ -1476,8 +1476,8 @@
       "points": 19,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 836.7,
-        "y": 1311.9
+        "x": 834,
+        "y": 1304.3
       },
       "badges": [],
       "elementAura": null,
@@ -1507,8 +1507,8 @@
       "points": 214,
       "region": "akinburnu",
       "coordinates": {
-        "x": 413.5,
-        "y": 1492.5
+        "x": 403.5,
+        "y": 1498.8
       },
       "badges": [
         "cift_iz",
@@ -1540,8 +1540,8 @@
       "points": 141,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1013.4,
-        "y": 850.2
+        "x": 1011,
+        "y": 856.9
       },
       "badges": [
         "ilk_adim"
@@ -1572,8 +1572,8 @@
       "points": 164,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 898.7,
-        "y": 1073.1
+        "x": 897.2,
+        "y": 1071.7
       },
       "badges": [
         "ilk_adim"
@@ -1604,8 +1604,8 @@
       "points": 180,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 426.8,
-        "y": 961.2
+        "x": 426.1,
+        "y": 955.9
       },
       "badges": [],
       "elementAura": null,
@@ -1635,8 +1635,8 @@
       "points": 257,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 400.9,
-        "y": 1010.6
+        "x": 396.9,
+        "y": 1011.9
       },
       "badges": [
         "cift_iz"
@@ -1667,8 +1667,8 @@
       "points": 18,
       "region": "pusluada",
       "coordinates": {
-        "x": 2186.2,
-        "y": 1050
+        "x": 2184.5,
+        "y": 1051.6
       },
       "badges": [],
       "elementAura": null,
@@ -1697,8 +1697,8 @@
       "points": 39,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 921,
-        "y": 1143.4
+        "x": 921.8,
+        "y": 1150.9
       },
       "badges": [],
       "elementAura": null,
@@ -1727,8 +1727,8 @@
       "points": 56,
       "region": "kutada",
       "coordinates": {
-        "x": 1486.6,
-        "y": 1223.5
+        "x": 1486.4,
+        "y": 1224.3
       },
       "badges": [],
       "elementAura": null,
@@ -1757,8 +1757,8 @@
       "points": 72,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 964.8,
-        "y": 1104.2
+        "x": 971.4,
+        "y": 1106.3
       },
       "badges": [],
       "elementAura": null,
@@ -1787,8 +1787,8 @@
       "points": 179,
       "region": "pusluada",
       "coordinates": {
-        "x": 2218.6,
-        "y": 979.6
+        "x": 2220.9,
+        "y": 971.5
       },
       "badges": [
         "ilk_adim"
@@ -1821,8 +1821,8 @@
       "points": 300,
       "region": "akinburnu",
       "coordinates": {
-        "x": 427,
-        "y": 1452.1
+        "x": 419.9,
+        "y": 1451.7
       },
       "badges": [
         "oba_onculugu",
@@ -1855,7 +1855,7 @@
       "region": "ayazbogazi",
       "coordinates": {
         "x": 559.7,
-        "y": 1190.1
+        "y": 1188.8
       },
       "badges": [
         "ilk_adim"
@@ -1886,8 +1886,8 @@
       "points": 240,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 1117,
-        "y": 975
+        "x": 1121.4,
+        "y": 971.6
       },
       "badges": [
         "ilk_adim"
@@ -1919,8 +1919,8 @@
       "points": 216,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 537.9,
-        "y": 1225.8
+        "x": 535.1,
+        "y": 1228.3
       },
       "badges": [
         "cift_iz"
@@ -1951,8 +1951,8 @@
       "points": 207,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 936.7,
-        "y": 1504.4
+        "x": 932.3,
+        "y": 1512.5
       },
       "badges": [],
       "elementAura": null,
@@ -1981,8 +1981,8 @@
       "points": 176,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 947,
-        "y": 1042
+        "x": 951.3,
+        "y": 1035.9
       },
       "badges": [
         "ilk_adim"
@@ -2014,8 +2014,8 @@
       "points": 87,
       "region": "akinburnu",
       "coordinates": {
-        "x": 522.8,
-        "y": 1483.6
+        "x": 530.9,
+        "y": 1488.2
       },
       "badges": [
         "cift_iz"
@@ -2046,8 +2046,8 @@
       "points": 265,
       "region": "akinburnu",
       "coordinates": {
-        "x": 494.5,
-        "y": 1510.2
+        "x": 498,
+        "y": 1519.2
       },
       "badges": [
         "ilk_adim"
@@ -2079,8 +2079,8 @@
       "points": 234,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 434.5,
-        "y": 964.4
+        "x": 434.8,
+        "y": 959.7
       },
       "badges": [
         "cift_iz"
@@ -2111,8 +2111,8 @@
       "points": 123,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 968.8,
-        "y": 1390.4
+        "x": 969.4,
+        "y": 1380.9
       },
       "badges": [],
       "elementAura": null,
@@ -2143,7 +2143,7 @@
       "points": 216,
       "region": "akinburnu",
       "coordinates": {
-        "x": 520.6,
+        "x": 528,
         "y": 1454.8
       },
       "badges": [
@@ -2175,8 +2175,8 @@
       "points": 91,
       "region": "pusluada",
       "coordinates": {
-        "x": 2220.6,
-        "y": 1042.6
+        "x": 2222.2,
+        "y": 1043.3
       },
       "badges": [],
       "elementAura": null,
@@ -2205,8 +2205,8 @@
       "points": 131,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 449.6,
-        "y": 1035.6
+        "x": 452,
+        "y": 1040.4
       },
       "badges": [
         "ilk_adim"
@@ -2237,8 +2237,8 @@
       "points": 135,
       "region": "akinburnu",
       "coordinates": {
-        "x": 592,
-        "y": 1420.9
+        "x": 622.2,
+        "y": 1404.3
       },
       "badges": [
         "ilk_adim"
@@ -2270,8 +2270,8 @@
       "points": 91,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 867.6,
-        "y": 1413.6
+        "x": 869.3,
+        "y": 1420.3
       },
       "badges": [
         "cift_iz"
@@ -2302,8 +2302,8 @@
       "points": 76,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 932.9,
-        "y": 1108.7
+        "x": 934.8,
+        "y": 1110.9
       },
       "badges": [],
       "elementAura": null,
@@ -2334,8 +2334,8 @@
       "points": 254,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 505.3,
-        "y": 1222.7
+        "x": 497,
+        "y": 1225.3
       },
       "badges": [
         "oba_onculugu",
@@ -2367,8 +2367,8 @@
       "points": 35,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 448.4,
-        "y": 994.1
+        "x": 449.8,
+        "y": 993.6
       },
       "badges": [],
       "elementAura": null,
@@ -2397,8 +2397,8 @@
       "points": 26,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 838.7,
-        "y": 1344.5
+        "x": 836.8,
+        "y": 1342.2
       },
       "badges": [],
       "elementAura": null,
@@ -2427,8 +2427,8 @@
       "points": 73,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 770.3,
-        "y": 1516.1
+        "x": 774.4,
+        "y": 1521.1
       },
       "badges": [],
       "elementAura": null,
@@ -2457,8 +2457,8 @@
       "points": 160,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 791.3,
-        "y": 1475.9
+        "x": 798.6,
+        "y": 1475
       },
       "badges": [],
       "elementAura": null,
@@ -2487,8 +2487,8 @@
       "points": 290,
       "region": "akinburnu",
       "coordinates": {
-        "x": 543.2,
-        "y": 1414.4
+        "x": 567.2,
+        "y": 1397.7
       },
       "badges": [
         "ilk_adim"
@@ -2521,8 +2521,8 @@
       "points": 187,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 795.1,
-        "y": 1136.3
+        "x": 795.4,
+        "y": 1136.2
       },
       "badges": [
         "oba_onculugu",
@@ -2554,8 +2554,8 @@
       "points": 104,
       "region": "akinburnu",
       "coordinates": {
-        "x": 470.5,
-        "y": 1469.1
+        "x": 470.3,
+        "y": 1470.1
       },
       "badges": [],
       "elementAura": null,
@@ -2584,8 +2584,8 @@
       "points": 66,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 867.5,
-        "y": 1373.7
+        "x": 868.4,
+        "y": 1374.3
       },
       "badges": [],
       "elementAura": null,
@@ -2614,8 +2614,8 @@
       "points": 88,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 1100.1,
-        "y": 1063
+        "x": 1102.3,
+        "y": 1072.5
       },
       "badges": [
         "ilk_adim"
@@ -2646,8 +2646,8 @@
       "points": 78,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 870.1,
-        "y": 1382.3
+        "x": 871.7,
+        "y": 1384.1
       },
       "badges": [],
       "elementAura": null,
@@ -2676,8 +2676,8 @@
       "points": 130,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 846,
-        "y": 1348
+        "x": 845.2,
+        "y": 1346.4
       },
       "badges": [
         "ilk_adim"
@@ -2710,8 +2710,8 @@
       "points": 122,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1052.4,
-        "y": 774.7
+        "x": 1055.5,
+        "y": 770.6
       },
       "badges": [
         "oba_onculugu"
@@ -2777,8 +2777,8 @@
       "points": 224,
       "region": "akinburnu",
       "coordinates": {
-        "x": 436.4,
-        "y": 1464.6
+        "x": 431.1,
+        "y": 1466
       },
       "badges": [
         "oba_onculugu",
@@ -2810,8 +2810,8 @@
       "points": 23,
       "region": "akinburnu",
       "coordinates": {
-        "x": 523.7,
-        "y": 1425.3
+        "x": 532,
+        "y": 1420.5
       },
       "badges": [],
       "elementAura": null,
@@ -2842,8 +2842,8 @@
       "points": 195,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 744.5,
-        "y": 1528
+        "x": 744.8,
+        "y": 1534.7
       },
       "badges": [
         "oba_onculugu"
@@ -2874,8 +2874,8 @@
       "points": 17,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 715.4,
-        "y": 1491.5
+        "x": 712.1,
+        "y": 1492.7
       },
       "badges": [],
       "elementAura": null,
@@ -2904,8 +2904,8 @@
       "points": 109,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 567.2,
-        "y": 1236.9
+        "x": 568.1,
+        "y": 1240.9
       },
       "badges": [],
       "elementAura": null,
@@ -2935,7 +2935,7 @@
       "region": "kiragiduzu",
       "coordinates": {
         "x": 783.6,
-        "y": 1149.9
+        "y": 1150.1
       },
       "badges": [
         "ilk_adim"
@@ -2967,8 +2967,8 @@
       "points": 213,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 890.2,
-        "y": 1039.9
+        "x": 886.8,
+        "y": 1033.5
       },
       "badges": [
         "cift_iz",
@@ -3000,8 +3000,8 @@
       "points": 115,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 890.7,
-        "y": 1090.3
+        "x": 888.2,
+        "y": 1090.6
       },
       "badges": [],
       "elementAura": null,
@@ -3030,8 +3030,8 @@
       "points": 89,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 756.9,
-        "y": 1102.7
+        "x": 753,
+        "y": 1097.4
       },
       "badges": [],
       "elementAura": null,
@@ -3093,8 +3093,8 @@
       "points": 31,
       "region": "pusluada",
       "coordinates": {
-        "x": 2242.7,
-        "y": 1185
+        "x": 2243.4,
+        "y": 1187.8
       },
       "badges": [],
       "elementAura": null,
@@ -3123,8 +3123,8 @@
       "points": 60,
       "region": "akinburnu",
       "coordinates": {
-        "x": 371.6,
-        "y": 1430.4
+        "x": 362.1,
+        "y": 1434.4
       },
       "badges": [],
       "elementAura": null,
@@ -3153,8 +3153,8 @@
       "points": 106,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 1035.1,
-        "y": 1033.1
+        "x": 1027.7,
+        "y": 1038
       },
       "badges": [],
       "elementAura": null,
@@ -3213,8 +3213,8 @@
       "points": 14,
       "region": "kutada",
       "coordinates": {
-        "x": 1487.9,
-        "y": 1231.4
+        "x": 1487.7,
+        "y": 1233.6
       },
       "badges": [],
       "elementAura": null,
@@ -3243,8 +3243,8 @@
       "points": 170,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1025.2,
-        "y": 823
+        "x": 1024.8,
+        "y": 824.7
       },
       "badges": [
         "ilk_adim"
@@ -3275,8 +3275,8 @@
       "points": 13,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 1108.7,
-        "y": 1048.6
+        "x": 1112.1,
+        "y": 1055.7
       },
       "badges": [],
       "elementAura": null,
@@ -3306,7 +3306,7 @@
       "points": 139,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 929.2,
+        "x": 930.1,
         "y": 1088.4
       },
       "badges": [
@@ -3338,8 +3338,8 @@
       "points": 120,
       "region": "akinburnu",
       "coordinates": {
-        "x": 347.9,
-        "y": 1450.8
+        "x": 334.3,
+        "y": 1458.7
       },
       "badges": [],
       "elementAura": null,
@@ -3370,8 +3370,8 @@
       "points": 116,
       "region": "akinburnu",
       "coordinates": {
-        "x": 440.3,
-        "y": 1504.2
+        "x": 435,
+        "y": 1512.2
       },
       "badges": [
         "oba_onculugu"
@@ -3404,8 +3404,8 @@
       "points": 208,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 782.5,
-        "y": 1461.9
+        "x": 788.4,
+        "y": 1458.9
       },
       "badges": [
         "oba_onculugu",
@@ -3437,8 +3437,8 @@
       "points": 168,
       "region": "pusluada",
       "coordinates": {
-        "x": 2278.1,
-        "y": 1157.7
+        "x": 2283.7,
+        "y": 1157.4
       },
       "badges": [
         "ilk_adim"
@@ -3469,8 +3469,8 @@
       "points": 280,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 394.5,
-        "y": 1000.2
+        "x": 389.5,
+        "y": 1000.3
       },
       "badges": [
         "ilk_adim"
@@ -3503,8 +3503,8 @@
       "points": 277,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 1125.4,
-        "y": 966.9
+        "x": 1131.3,
+        "y": 962.1
       },
       "badges": [
         "oba_onculugu"
@@ -3536,8 +3536,8 @@
       "points": 283,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 996.6,
-        "y": 801.9
+        "x": 992.2,
+        "y": 801.5
       },
       "badges": [
         "cift_iz",
@@ -3569,8 +3569,8 @@
       "points": 130,
       "region": "akinburnu",
       "coordinates": {
-        "x": 633.2,
-        "y": 1425.5
+        "x": 670.4,
+        "y": 1410.5
       },
       "badges": [],
       "elementAura": null,
@@ -3600,8 +3600,8 @@
       "points": 164,
       "region": "akinburnu",
       "coordinates": {
-        "x": 294.6,
-        "y": 1445.4
+        "x": 273.7,
+        "y": 1451.8
       },
       "badges": [
         "cift_iz",
@@ -3665,8 +3665,8 @@
       "points": 208,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 993.9,
-        "y": 813.2
+        "x": 989,
+        "y": 814.3
       },
       "badges": [
         "oba_onculugu"
@@ -3697,8 +3697,8 @@
       "points": 11,
       "region": "kutada",
       "coordinates": {
-        "x": 1458.1,
-        "y": 1260
+        "x": 1453.3,
+        "y": 1267.5
       },
       "badges": [],
       "elementAura": null,
@@ -3727,8 +3727,8 @@
       "points": 208,
       "region": "akinburnu",
       "coordinates": {
-        "x": 316,
-        "y": 1428.2
+        "x": 298.2,
+        "y": 1432.1
       },
       "badges": [
         "ilk_adim"
@@ -3759,8 +3759,8 @@
       "points": 204,
       "region": "akinburnu",
       "coordinates": {
-        "x": 589.9,
-        "y": 1372.2
+        "x": 620.6,
+        "y": 1349.6
       },
       "badges": [
         "ilk_adim"
@@ -3793,8 +3793,8 @@
       "points": 110,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 827.1,
-        "y": 1136.7
+        "x": 832.9,
+        "y": 1136.2
       },
       "badges": [
         "oba_onculugu"
@@ -3825,8 +3825,8 @@
       "points": 121,
       "region": "akinburnu",
       "coordinates": {
-        "x": 508.4,
-        "y": 1488.8
+        "x": 514,
+        "y": 1494
       },
       "badges": [],
       "elementAura": null,
@@ -3855,8 +3855,8 @@
       "points": 80,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 503.1,
-        "y": 1185.4
+        "x": 494.3,
+        "y": 1182.2
       },
       "badges": [],
       "elementAura": null,
@@ -3885,8 +3885,8 @@
       "points": 150,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 923.5,
-        "y": 1124.6
+        "x": 924.6,
+        "y": 1129
       },
       "badges": [
         "ilk_adim"
@@ -3917,8 +3917,8 @@
       "points": 215,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1042,
-        "y": 793.3
+        "x": 1043,
+        "y": 792.3
       },
       "badges": [],
       "elementAura": null,
@@ -3980,8 +3980,8 @@
       "points": 94,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 793.9,
-        "y": 1355.7
+        "x": 785.1,
+        "y": 1354.3
       },
       "badges": [],
       "elementAura": null,
@@ -4010,8 +4010,8 @@
       "points": 246,
       "region": "akinburnu",
       "coordinates": {
-        "x": 515.7,
-        "y": 1489.4
+        "x": 522.5,
+        "y": 1494.9
       },
       "badges": [
         "ilk_adim"
@@ -4042,8 +4042,8 @@
       "points": 87,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 983.5,
-        "y": 1465.8
+        "x": 985.6,
+        "y": 1467.3
       },
       "badges": [],
       "elementAura": null,
@@ -4072,8 +4072,8 @@
       "points": 115,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1005.5,
-        "y": 820.9
+        "x": 1002.4,
+        "y": 822.9
       },
       "badges": [
         "ilk_adim"
@@ -4104,8 +4104,8 @@
       "points": 93,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 510.7,
-        "y": 1210.6
+        "x": 503.3,
+        "y": 1211.2
       },
       "badges": [
         "ilk_adim"
@@ -4137,8 +4137,8 @@
       "points": 71,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 858.5,
-        "y": 1090
+        "x": 850.9,
+        "y": 1090.3
       },
       "badges": [
         "cift_iz"
@@ -4169,8 +4169,8 @@
       "points": 206,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 461.8,
-        "y": 1035.2
+        "x": 466,
+        "y": 1040.2
       },
       "badges": [
         "ilk_adim"
@@ -4203,8 +4203,8 @@
       "points": 199,
       "region": "pusluada",
       "coordinates": {
-        "x": 2262,
-        "y": 1020.7
+        "x": 2270.7,
+        "y": 1018.6
       },
       "badges": [
         "oba_onculugu"
@@ -4235,8 +4235,8 @@
       "points": 221,
       "region": "akinburnu",
       "coordinates": {
-        "x": 524.9,
-        "y": 1463.6
+        "x": 533.2,
+        "y": 1465
       },
       "badges": [
         "ilk_adim"
@@ -4267,8 +4267,8 @@
       "points": 97,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 564.4,
-        "y": 1235.6
+        "x": 564.9,
+        "y": 1239.4
       },
       "badges": [],
       "elementAura": null,
@@ -4299,8 +4299,8 @@
       "points": 294,
       "region": "akinburnu",
       "coordinates": {
-        "x": 550.3,
-        "y": 1450.9
+        "x": 575.1,
+        "y": 1439.7
       },
       "badges": [
         "oba_onculugu",
@@ -4333,8 +4333,8 @@
       "points": 263,
       "region": "akinburnu",
       "coordinates": {
-        "x": 353.3,
-        "y": 1424.6
+        "x": 341,
+        "y": 1427.8
       },
       "badges": [
         "cift_iz",
@@ -4366,8 +4366,8 @@
       "points": 82,
       "region": "kutada",
       "coordinates": {
-        "x": 1478.9,
-        "y": 1217.3
+        "x": 1478.2,
+        "y": 1217.7
       },
       "badges": [],
       "elementAura": null,
@@ -4426,8 +4426,8 @@
       "points": 254,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 861.4,
-        "y": 1106.3
+        "x": 854.2,
+        "y": 1108.7
       },
       "badges": [
         "ilk_adim"
@@ -4458,8 +4458,8 @@
       "points": 183,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 605.7,
-        "y": 1161.7
+        "x": 612.8,
+        "y": 1154.7
       },
       "badges": [
         "ilk_adim"
@@ -4491,8 +4491,8 @@
       "points": 279,
       "region": "akinburnu",
       "coordinates": {
-        "x": 596.1,
-        "y": 1397.9
+        "x": 627.1,
+        "y": 1379.6
       },
       "badges": [
         "cift_iz"
@@ -4554,8 +4554,8 @@
       "points": 215,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 742.4,
-        "y": 1091.6
+        "x": 735.9,
+        "y": 1084.3
       },
       "badges": [
         "cift_iz",
@@ -4587,8 +4587,8 @@
       "points": 82,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 939.4,
-        "y": 1096.5
+        "x": 942,
+        "y": 1097.3
       },
       "badges": [
         "ilk_adim"
@@ -4619,8 +4619,8 @@
       "points": 118,
       "region": "pusluada",
       "coordinates": {
-        "x": 2222.6,
-        "y": 1143.2
+        "x": 2221.2,
+        "y": 1141.5
       },
       "badges": [],
       "elementAura": null,
@@ -4650,8 +4650,8 @@
       "points": 246,
       "region": "pusluada",
       "coordinates": {
-        "x": 2210.4,
-        "y": 1134.2
+        "x": 2207,
+        "y": 1130.8
       },
       "badges": [
         "cift_iz"
@@ -4683,8 +4683,8 @@
       "points": 257,
       "region": "akinburnu",
       "coordinates": {
-        "x": 537.4,
-        "y": 1426.2
+        "x": 560.3,
+        "y": 1411.3
       },
       "badges": [
         "cift_iz"
@@ -4715,8 +4715,8 @@
       "points": 92,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 447.6,
-        "y": 1005.5
+        "x": 448.9,
+        "y": 1006
       },
       "badges": [],
       "elementAura": null,
@@ -4745,8 +4745,8 @@
       "points": 71,
       "region": "akinburnu",
       "coordinates": {
-        "x": 570.8,
-        "y": 1458
+        "x": 598.7,
+        "y": 1447.8
       },
       "badges": [],
       "elementAura": null,
@@ -4809,8 +4809,8 @@
       "points": 85,
       "region": "akinburnu",
       "coordinates": {
-        "x": 598.8,
-        "y": 1410.8
+        "x": 629.7,
+        "y": 1393.8
       },
       "badges": [],
       "elementAura": null,
@@ -4840,8 +4840,8 @@
       "points": 201,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 1001.1,
-        "y": 1447.7
+        "x": 1006.1,
+        "y": 1447.1
       },
       "badges": [
         "cift_iz",
@@ -4875,8 +4875,8 @@
       "points": 137,
       "region": "akinburnu",
       "coordinates": {
-        "x": 534.6,
-        "y": 1414.4
+        "x": 557.1,
+        "y": 1397.7
       },
       "badges": [
         "oba_onculugu"
@@ -4908,8 +4908,8 @@
       "points": 195,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 942.1,
-        "y": 1432.8
+        "x": 939.1,
+        "y": 1430.4
       },
       "badges": [
         "cift_iz",
@@ -4941,8 +4941,8 @@
       "points": 104,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 428.9,
-        "y": 1013.6
+        "x": 428.7,
+        "y": 1014.5
       },
       "badges": [],
       "elementAura": null,
@@ -4971,8 +4971,8 @@
       "points": 37,
       "region": "akinburnu",
       "coordinates": {
-        "x": 508.5,
-        "y": 1407.2
+        "x": 514.3,
+        "y": 1399.4
       },
       "badges": [],
       "elementAura": null,
@@ -5001,8 +5001,8 @@
       "points": 152,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 728.1,
-        "y": 1467.4
+        "x": 726.7,
+        "y": 1466
       },
       "badges": [
         "ilk_adim"
@@ -5033,8 +5033,8 @@
       "points": 41,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1079.6,
-        "y": 783.4
+        "x": 1087.1,
+        "y": 780.1
       },
       "badges": [],
       "elementAura": null,
@@ -5094,8 +5094,8 @@
       "points": 146,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 786,
-        "y": 1124
+        "x": 786.1,
+        "y": 1122.8
       },
       "badges": [
         "cift_iz"
@@ -5128,8 +5128,8 @@
       "points": 113,
       "region": "kutada",
       "coordinates": {
-        "x": 1502,
-        "y": 1203.3
+        "x": 1502.7,
+        "y": 1202.9
       },
       "badges": [
         "oba_onculugu"
@@ -5161,8 +5161,8 @@
       "points": 190,
       "region": "akinburnu",
       "coordinates": {
-        "x": 376.5,
-        "y": 1451
+        "x": 367.6,
+        "y": 1458.2
       },
       "badges": [
         "cift_iz"
@@ -5193,8 +5193,8 @@
       "points": 31,
       "region": "akinburnu",
       "coordinates": {
-        "x": 458.1,
-        "y": 1524.1
+        "x": 455.6,
+        "y": 1535.6
       },
       "badges": [],
       "elementAura": null,
@@ -5224,8 +5224,8 @@
       "points": 192,
       "region": "akinburnu",
       "coordinates": {
-        "x": 399.4,
-        "y": 1485.8
+        "x": 386.9,
+        "y": 1491
       },
       "badges": [
         "cift_iz",
@@ -5239,9 +5239,9 @@
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "ak_kartal74",
-      "handle": "ak_kartal74",
-      "displayName": "Ak Kartal",
+      "id": "akbaykus",
+      "handle": "akbaykus",
+      "displayName": "Ak Baykuş",
       "roleType": "follower",
       "platform": "instagram",
       "linkedPlatforms": [
@@ -5253,16 +5253,17 @@
         "name": "Kalkaneri",
         "archetype": "savasci"
       },
-      "rarity": "efsanevi",
-      "title": "Efsane Kalkaneri",
-      "points": 212,
+      "rarity": "nadir",
+      "title": "Yoldaş Kalkaneri",
+      "points": 153,
       "region": "akinburnu",
       "coordinates": {
-        "x": 564.5,
-        "y": 1356.5
+        "x": 464,
+        "y": 1441.5
       },
       "badges": [
-        "cift_iz"
+        "cift_iz",
+        "ilk_adim"
       ],
       "elementAura": null,
       "seasonContributions": {
@@ -5272,9 +5273,72 @@
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "bilge_sincap56",
-      "handle": "bilge.sincap56",
-      "displayName": "Bilge Sincap",
+      "id": "pus_can",
+      "handle": "pus_can",
+      "displayName": "Pus Can",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Kalkaneri",
+      "points": 129,
+      "region": "gunozu_tepesi",
+      "coordinates": {
+        "x": 1020.9,
+        "y": 797.5
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "tugpence42",
+      "handle": "tugpence42",
+      "displayName": "Tuğ Pençe",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram",
+        "tiktok"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "destansi",
+      "title": "Başeri Kalkaneri",
+      "points": 223,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 823.8,
+        "y": 1111.8
+      },
+      "badges": [
+        "cift_iz"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "poyraz_er",
+      "handle": "poyraz_er",
+      "displayName": "Poyraz Er",
       "roleType": "follower",
       "platform": "tiktok",
       "linkedPlatforms": [
@@ -5287,63 +5351,31 @@
       },
       "rarity": "siradan",
       "title": "Çırak Okyeli",
-      "points": 77,
-      "region": "suzulkoy",
+      "points": 178,
+      "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 723.8,
-        "y": 1482.5
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kivilcim_balikci36",
-      "handle": "kivilcim.balikci36",
-      "displayName": "Kıvılcım Balıkçı",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube",
-        "instagram"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "destansi",
-      "title": "Başeri Ocakcan",
-      "points": 195,
-      "region": "pusluada",
-      "coordinates": {
-        "x": 2231.9,
-        "y": 1003.3
+        "x": 964.8,
+        "y": 795.5
       },
       "badges": [
-        "cift_iz"
+        "ilk_adim"
       ],
       "elementAura": null,
       "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 1
+        "votesCast": 4,
+        "raidsJoined": 2
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "deniz_balikci",
-      "handle": "deniz_balikci",
-      "displayName": "Deniz Balıkçı",
+      "id": "ak_goz",
+      "handle": "ak.goz",
+      "displayName": "Ak Göz",
       "roleType": "follower",
       "platform": "instagram",
       "linkedPlatforms": [
         "instagram",
-        "tiktok",
-        "youtube"
+        "tiktok"
       ],
       "class": {
         "id": "kalkaneri",
@@ -5352,52 +5384,19 @@
       },
       "rarity": "nadir",
       "title": "Yoldaş Kalkaneri",
-      "points": 168,
-      "region": "ayazbogazi",
+      "points": 98,
+      "region": "kutada",
       "coordinates": {
-        "x": 445.6,
-        "y": 999.7
+        "x": 1663.5,
+        "y": 1056.1
       },
       "badges": [
-        "oba_onculugu",
-        "ilk_adim"
+        "cift_iz"
       ],
       "elementAura": null,
       "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kiragiruzgar",
-      "handle": "kiragiruzgar",
-      "displayName": "Kırağı Rüzgâr",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Ocakcan",
-      "points": 158,
-      "region": "gunozu_tepesi",
-      "coordinates": {
-        "x": 1032.7,
-        "y": 787.3
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 2
+        "votesCast": 0,
+        "raidsJoined": 0
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
@@ -5420,8 +5419,8 @@
       "points": 104,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1006.3,
-        "y": 766.1
+        "x": 1002.9,
+        "y": 760.4
       },
       "badges": [],
       "elementAura": null,
@@ -5450,8 +5449,8 @@
       "points": 146,
       "region": "akinburnu",
       "coordinates": {
-        "x": 596.6,
-        "y": 1396
+        "x": 627.8,
+        "y": 1377.4
       },
       "badges": [
         "ilk_adim"
@@ -5483,8 +5482,8 @@
       "points": 307,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 541.6,
-        "y": 1216
+        "x": 539.7,
+        "y": 1217
       },
       "badges": [
         "cift_iz",
@@ -5516,8 +5515,8 @@
       "points": 93,
       "region": "pusluada",
       "coordinates": {
-        "x": 2211.7,
-        "y": 1210.6
+        "x": 2208.1,
+        "y": 1217.9
       },
       "badges": [],
       "elementAura": null,
@@ -5547,8 +5546,8 @@
       "points": 258,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 939.1,
-        "y": 1109.8
+        "x": 941.9,
+        "y": 1112.3
       },
       "badges": [
         "cift_iz",
@@ -5580,8 +5579,8 @@
       "points": 331,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 994.5,
-        "y": 800.4
+        "x": 989.7,
+        "y": 799.7
       },
       "badges": [
         "ilk_adim"
@@ -5612,8 +5611,8 @@
       "points": 347,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 725.9,
-        "y": 1517.9
+        "x": 723.7,
+        "y": 1522.9
       },
       "badges": [
         "ilk_adim"
@@ -5644,8 +5643,8 @@
       "points": 82,
       "region": "akinburnu",
       "coordinates": {
-        "x": 460,
-        "y": 1462.3
+        "x": 459.1,
+        "y": 1462.9
       },
       "badges": [],
       "elementAura": null,
@@ -5674,8 +5673,8 @@
       "points": 124,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 779.3,
-        "y": 1452.3
+        "x": 784.7,
+        "y": 1447.9
       },
       "badges": [
         "ilk_adim"
@@ -5706,8 +5705,8 @@
       "points": 93,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 1075,
-        "y": 1037.3
+        "x": 1073.6,
+        "y": 1042.3
       },
       "badges": [
         "ilk_adim"
@@ -5740,8 +5739,8 @@
       "points": 202,
       "region": "pusluada",
       "coordinates": {
-        "x": 2159.9,
-        "y": 1072.2
+        "x": 2153.6,
+        "y": 1077.7
       },
       "badges": [
         "oba_onculugu"
@@ -5772,8 +5771,8 @@
       "points": 210,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 494.2,
-        "y": 996.1
+        "x": 503.5,
+        "y": 995.5
       },
       "badges": [
         "ilk_adim"
@@ -5804,8 +5803,8 @@
       "points": 36,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 947.1,
-        "y": 1475.3
+        "x": 944.9,
+        "y": 1478.3
       },
       "badges": [],
       "elementAura": null,
@@ -5869,8 +5868,8 @@
       "points": 253,
       "region": "akinburnu",
       "coordinates": {
-        "x": 492,
-        "y": 1508.2
+        "x": 495.1,
+        "y": 1516.7
       },
       "badges": [
         "oba_onculugu",
@@ -5904,8 +5903,8 @@
       "points": 228,
       "region": "akinburnu",
       "coordinates": {
-        "x": 508.5,
-        "y": 1517.5
+        "x": 514.5,
+        "y": 1528
       },
       "badges": [
         "oba_onculugu",
@@ -5937,8 +5936,8 @@
       "points": 205,
       "region": "gunozu_tepesi",
       "coordinates": {
-        "x": 1060.5,
-        "y": 790.8
+        "x": 1064.6,
+        "y": 788.9
       },
       "badges": [],
       "elementAura": null,
@@ -5967,8 +5966,8 @@
       "points": 209,
       "region": "akinburnu",
       "coordinates": {
-        "x": 538.8,
-        "y": 1497.9
+        "x": 550,
+        "y": 1505.2
       },
       "badges": [],
       "elementAura": null,
@@ -5997,8 +5996,8 @@
       "points": 264,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 946.5,
-        "y": 1428.9
+        "x": 944.2,
+        "y": 1426
       },
       "badges": [
         "ilk_adim"
@@ -6029,8 +6028,8 @@
       "points": 59,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 822.7,
-        "y": 1416.3
+        "x": 818,
+        "y": 1423.6
       },
       "badges": [],
       "elementAura": null,
@@ -6059,8 +6058,8 @@
       "points": 124,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 754.3,
-        "y": 1485.1
+        "x": 754.9,
+        "y": 1485.3
       },
       "badges": [
         "ilk_adim"
@@ -6091,8 +6090,8 @@
       "points": 225,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 455.8,
-        "y": 991.3
+        "x": 458.4,
+        "y": 990.3
       },
       "badges": [
         "ilk_adim"
@@ -6123,8 +6122,8 @@
       "points": 80,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 724.5,
-        "y": 1470.2
+        "x": 722.7,
+        "y": 1469
       },
       "badges": [],
       "elementAura": null,
@@ -6154,8 +6153,8 @@
       "points": 147,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 766.8,
-        "y": 1143.4
+        "x": 765.2,
+        "y": 1143.7
       },
       "badges": [
         "cift_iz",
@@ -6188,8 +6187,8 @@
       "points": 307,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 590.6,
-        "y": 1173
+        "x": 595.1,
+        "y": 1168.2
       },
       "badges": [
         "cift_iz",
@@ -6221,8 +6220,8 @@
       "points": 170,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 525.2,
-        "y": 1166.1
+        "x": 520,
+        "y": 1160.1
       },
       "badges": [],
       "elementAura": null,
@@ -6281,8 +6280,8 @@
       "points": 210,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 949.1,
-        "y": 1470.3
+        "x": 947.2,
+        "y": 1472.4
       },
       "badges": [
         "ilk_adim"
@@ -6314,8 +6313,8 @@
       "points": 275,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 577.3,
-        "y": 1215.8
+        "x": 579,
+        "y": 1216.7
       },
       "badges": [
         "cift_iz",
@@ -6348,8 +6347,8 @@
       "points": 150,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 945.5,
-        "y": 1116.5
+        "x": 949.3,
+        "y": 1120.1
       },
       "badges": [
         "cift_iz"
@@ -6380,8 +6379,8 @@
       "points": 64,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 549.2,
-        "y": 1203.4
+        "x": 548.8,
+        "y": 1203.3
       },
       "badges": [],
       "elementAura": null,
@@ -6410,8 +6409,8 @@
       "points": 50,
       "region": "akinburnu",
       "coordinates": {
-        "x": 535,
-        "y": 1422.7
+        "x": 557.6,
+        "y": 1407.3
       },
       "badges": [],
       "elementAura": null,
@@ -6440,8 +6439,8 @@
       "points": 157,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 393.1,
-        "y": 981.2
+        "x": 387.7,
+        "y": 978.6
       },
       "badges": [],
       "elementAura": null,
@@ -6471,8 +6470,8 @@
       "points": 103,
       "region": "akinburnu",
       "coordinates": {
-        "x": 346.3,
-        "y": 1449.2
+        "x": 332.5,
+        "y": 1456.8
       },
       "badges": [
         "cift_iz"
@@ -6504,8 +6503,8 @@
       "points": 167,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 859.9,
-        "y": 1316.9
+        "x": 860.6,
+        "y": 1310.3
       },
       "badges": [
         "cift_iz"
@@ -6536,8 +6535,8 @@
       "points": 172,
       "region": "ayazbogazi",
       "coordinates": {
-        "x": 478.2,
-        "y": 987.1
+        "x": 484.8,
+        "y": 985.2
       },
       "badges": [],
       "elementAura": null,
@@ -6567,8 +6566,8 @@
       "points": 189,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 723.1,
-        "y": 1477.9
+        "x": 721.3,
+        "y": 1477.5
       },
       "badges": [
         "cift_iz",
@@ -6601,7 +6600,7 @@
       "points": 150,
       "region": "pusluada",
       "coordinates": {
-        "x": 2247.4,
+        "x": 2247.7,
         "y": 1160.5
       },
       "badges": [
@@ -6634,8 +6633,8 @@
       "points": 264,
       "region": "akinburnu",
       "coordinates": {
-        "x": 553.7,
-        "y": 1390.4
+        "x": 579.3,
+        "y": 1370.4
       },
       "badges": [
         "cift_iz",
@@ -6669,8 +6668,8 @@
       "points": 265,
       "region": "akinburnu",
       "coordinates": {
-        "x": 462.9,
-        "y": 1417.4
+        "x": 461.4,
+        "y": 1411.8
       },
       "badges": [
         "oba_onculugu",
@@ -6702,8 +6701,8 @@
       "points": 220,
       "region": "akinburnu",
       "coordinates": {
-        "x": 465.4,
-        "y": 1446.9
+        "x": 465.1,
+        "y": 1446.6
       },
       "badges": [],
       "elementAura": "alev",
@@ -6732,8 +6731,8 @@
       "points": 54,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 1080.4,
-        "y": 985.5
+        "x": 1080,
+        "y": 984.5
       },
       "badges": [],
       "elementAura": null,
@@ -6762,8 +6761,8 @@
       "points": 176,
       "region": "pusluada",
       "coordinates": {
-        "x": 2214,
-        "y": 1196.7
+        "x": 2210.8,
+        "y": 1201.8
       },
       "badges": [
         "ilk_adim"
@@ -6794,8 +6793,8 @@
       "points": 139,
       "region": "akinburnu",
       "coordinates": {
-        "x": 471.7,
-        "y": 1484.1
+        "x": 471.5,
+        "y": 1487.9
       },
       "badges": [
         "ilk_adim"
@@ -6828,8 +6827,8 @@
       "points": 166,
       "region": "kutada",
       "coordinates": {
-        "x": 1547.4,
-        "y": 1186.3
+        "x": 1556,
+        "y": 1182.8
       },
       "badges": [
         "oba_onculugu"
@@ -6860,8 +6859,8 @@
       "points": 89,
       "region": "akinburnu",
       "coordinates": {
-        "x": 470.6,
-        "y": 1425.1
+        "x": 470.3,
+        "y": 1421.1
       },
       "badges": [
         "ilk_adim"
@@ -6893,8 +6892,8 @@
       "points": 161,
       "region": "pusluada",
       "coordinates": {
-        "x": 2173.3,
-        "y": 1076.8
+        "x": 2169.1,
+        "y": 1082.7
       },
       "badges": [
         "cift_iz",
@@ -6904,6 +6903,1346 @@
       "seasonContributions": {
         "votesCast": 4,
         "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "pus_yolcu86",
+      "handle": "pus_yolcu86",
+      "displayName": "Pus Yolcu",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 86,
+      "region": "ayazbogazi",
+      "coordinates": {
+        "x": 439.5,
+        "y": 987.4
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "bilgeyurek93",
+      "handle": "bilgeyurek93",
+      "displayName": "Bilge Yürek",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube",
+        "instagram"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Ocakcan",
+      "points": 230,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 804.5,
+        "y": 1423.9
+      },
+      "badges": [
+        "cift_iz",
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "dalga_turna",
+      "handle": "dalga_turna",
+      "displayName": "Dalga Turna",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 163,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 453.5,
+        "y": 1532.9
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "cesuravci71",
+      "handle": "cesuravci71",
+      "displayName": "Cesur Avcı",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Okyeli",
+      "points": 145,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 878.9,
+        "y": 1088.9
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "pus_yurek",
+      "handle": "pus_yurek",
+      "displayName": "Pus Yürek",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Ocakcan",
+      "points": 140,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 893.5,
+        "y": 1076.6
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "pus_pence93",
+      "handle": "pus.pence93",
+      "displayName": "Pus Pençe",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Kalkaneri",
+      "points": 109,
+      "region": "pusluada",
+      "coordinates": {
+        "x": 2237.9,
+        "y": 1112.3
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "demir_ozan90",
+      "handle": "demir.ozan90",
+      "displayName": "Demir Ozan",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "destansi",
+      "title": "Başeri Okyeli",
+      "points": 137,
+      "region": "gunozu_tepesi",
+      "coordinates": {
+        "x": 1042.1,
+        "y": 782.6
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "cakil_dogan",
+      "handle": "cakil_dogan",
+      "displayName": "Çakıl Doğan",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 134,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 734.4,
+        "y": 1498.1
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "bilge_ruzgar58",
+      "handle": "bilge.ruzgar58",
+      "displayName": "Bilge Rüzgâr",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 209,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 864.9,
+        "y": 1348.8
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "neseli_tepe4",
+      "handle": "neseli.tepe4",
+      "displayName": "Neşeli Tepe",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Kalkaneri",
+      "points": 167,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 453.8,
+        "y": 1431.2
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 4,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "ocakbekci74",
+      "handle": "ocakbekci74",
+      "displayName": "Ocak Bekçi",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Kalkaneri",
+      "points": 138,
+      "region": "gunozu_tepesi",
+      "coordinates": {
+        "x": 1045.5,
+        "y": 816.6
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "bozkuzu",
+      "handle": "bozkuzu",
+      "displayName": "Boz Kuzu",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Okyeli",
+      "points": 24,
+      "region": "kutada",
+      "coordinates": {
+        "x": 1554.6,
+        "y": 1178.6
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 0,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "ucar_sincap",
+      "handle": "ucar.sincap",
+      "displayName": "Uçar Sincap",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Okyeli",
+      "points": 108,
+      "region": "gunozu_tepesi",
+      "coordinates": {
+        "x": 993.1,
+        "y": 790.5
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "buz_kasif88",
+      "handle": "buz_kasif88",
+      "displayName": "Buz Kâşif",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Okyeli",
+      "points": 31,
+      "region": "kutada",
+      "coordinates": {
+        "x": 1476.1,
+        "y": 1203.9
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 1,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "denizyaprak",
+      "handle": "denizyaprak",
+      "displayName": "Deniz Yaprak",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok",
+        "youtube"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 210,
+      "region": "ayazbogazi",
+      "coordinates": {
+        "x": 559.6,
+        "y": 1191
+      },
+      "badges": [
+        "cift_iz",
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "kiragiozan",
+      "handle": "kiragiozan",
+      "displayName": "Kırağı Ozan",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Kalkaneri",
+      "points": 42,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 896.9,
+        "y": 1117.2
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "fener_kunduz",
+      "handle": "fener_kunduz",
+      "displayName": "Fener Kunduz",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Kalkaneri",
+      "points": 12,
+      "region": "pusluada",
+      "coordinates": {
+        "x": 2272.6,
+        "y": 1194.7
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 0,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "neseli_ates",
+      "handle": "neseli_ates",
+      "displayName": "Neşeli Ateş",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok",
+        "youtube"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 103,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 305,
+        "y": 1458.3
+      },
+      "badges": [
+        "cift_iz"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 1,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "ucarmarti",
+      "handle": "ucarmarti",
+      "displayName": "Uçar Martı",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 110,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 1103.2,
+        "y": 1006.6
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 1,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "ucar_sincap87",
+      "handle": "ucar_sincap87",
+      "displayName": "Uçar Sincap",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "destansi",
+      "title": "Başeri Okyeli",
+      "points": 237,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 980.1,
+        "y": 1448.9
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "cinarkizak66",
+      "handle": "cinarkizak66",
+      "displayName": "Çınar Kızak",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube",
+        "tiktok"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Ocakcan",
+      "points": 75,
+      "region": "ayazbogazi",
+      "coordinates": {
+        "x": 589.6,
+        "y": 1181.1
+      },
+      "badges": [
+        "cift_iz"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 0,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "tan_tay41",
+      "handle": "tan_tay41",
+      "displayName": "Tan Tay",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube",
+        "instagram",
+        "tiktok"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Ocakcan",
+      "points": 187,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 877.4,
+        "y": 1399
+      },
+      "badges": [
+        "oba_onculugu"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "simsekokcu",
+      "handle": "simsekokcu",
+      "displayName": "Şimşek Okçu",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 207,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 765,
+        "y": 1106.7
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "alaz_bekci",
+      "handle": "alaz.bekci",
+      "displayName": "Alaz Bekçi",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Kalkaneri",
+      "points": 92,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 905.7,
+        "y": 1075
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 1,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "tug_kalkan",
+      "handle": "tug.kalkan",
+      "displayName": "Tuğ Kalkan",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok",
+        "instagram"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 234,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 471.9,
+        "y": 1416.4
+      },
+      "badges": [
+        "cift_iz",
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "tan_ceylan",
+      "handle": "tan_ceylan",
+      "displayName": "Tan Ceylan",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok",
+        "instagram"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 205,
+      "region": "ayazbogazi",
+      "coordinates": {
+        "x": 413.4,
+        "y": 1022.8
+      },
+      "badges": [
+        "cift_iz",
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "boz_kar_tanesi86",
+      "handle": "boz.kar_tanesi86",
+      "displayName": "Boz Kar Tanesi",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "destansi",
+      "title": "Başeri Ocakcan",
+      "points": 184,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 551.9,
+        "y": 1433.4
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "ak_kartal",
+      "handle": "ak_kartal",
+      "displayName": "Ak Kartal",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram",
+        "youtube"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Kalkaneri",
+      "points": 169,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 419.5,
+        "y": 1427.5
+      },
+      "badges": [
+        "cift_iz"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "demir_yurek",
+      "handle": "demir_yurek",
+      "displayName": "Demir Yürek",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Kalkaneri",
+      "points": 51,
+      "region": "gunozu_tepesi",
+      "coordinates": {
+        "x": 1001.3,
+        "y": 834.6
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 0,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "ayaz_kayikci27",
+      "handle": "ayaz.kayikci27",
+      "displayName": "Ayaz Kayıkçı",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "efsanevi",
+      "title": "Efsane Kalkaneri",
+      "points": 284,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 803,
+        "y": 1336.2
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": "alev",
+      "seasonContributions": {
+        "votesCast": 4,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "sedir_ates30",
+      "handle": "sedir_ates30",
+      "displayName": "Sedir Ateş",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 103,
+      "region": "pusluada",
+      "coordinates": {
+        "x": 2252.1,
+        "y": 1062.1
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 1,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "kivilcim_yaprak9",
+      "handle": "kivilcim.yaprak9",
+      "displayName": "Kıvılcım Yaprak",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "efsanevi",
+      "title": "Efsane Kalkaneri",
+      "points": 206,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 881.9,
+        "y": 1049.2
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": "isik",
+      "seasonContributions": {
+        "votesCast": 1,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "ilgin_tay93",
+      "handle": "ilgin_tay93",
+      "displayName": "Ilgın Tay",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube",
+        "instagram"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "destansi",
+      "title": "Başeri Ocakcan",
+      "points": 218,
+      "region": "gunozu_tepesi",
+      "coordinates": {
+        "x": 982.7,
+        "y": 787.3
+      },
+      "badges": [
+        "cift_iz"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "sessizavci",
+      "handle": "sessizavci",
+      "displayName": "Sessiz Avcı",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 7,
+      "region": "ayazbogazi",
+      "coordinates": {
+        "x": 412.7,
+        "y": 1014
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 0,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "cevik_kar_tanesi70",
+      "handle": "cevik.kar_tanesi70",
+      "displayName": "Çevik Kar Tanesi",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 72,
+      "region": "ayazbogazi",
+      "coordinates": {
+        "x": 552.1,
+        "y": 1192.8
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 1,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "bilge_tilki34",
+      "handle": "bilge_tilki34",
+      "displayName": "Bilge Tilki",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 136,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 376.3,
+        "y": 1500.5
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "cesurer",
+      "handle": "cesurer",
+      "displayName": "Cesur Er",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Okyeli",
+      "points": 78,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 809.9,
+        "y": 1318.7
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 1,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "alazkunduz18",
+      "handle": "alazkunduz18",
+      "displayName": "Alaz Kunduz",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Okyeli",
+      "points": 145,
+      "region": "pusluada",
+      "coordinates": {
+        "x": 2177.6,
+        "y": 1085.5
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "tan_isik",
+      "handle": "tan_isik",
+      "displayName": "Tan Işık",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok",
+        "instagram",
+        "youtube"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "destansi",
+      "title": "Başeri Okyeli",
+      "points": 186,
+      "region": "kutada",
+      "coordinates": {
+        "x": 1467.4,
+        "y": 1191.4
+      },
+      "badges": [
+        "oba_onculugu"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 4,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "bilgebalikci92",
+      "handle": "bilgebalikci92",
+      "displayName": "Bilge Balıkçı",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Kalkaneri",
+      "points": 72,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 978.9,
+        "y": 1107.7
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 1,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "aydogan",
+      "handle": "aydogan",
+      "displayName": "Ay Doğan",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 136,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 1078.9,
+        "y": 1016.7
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "kar_tilki16",
+      "handle": "kar_tilki16",
+      "displayName": "Kar Tilki",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram",
+        "tiktok",
+        "youtube"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Kalkaneri",
+      "points": 141,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 929.7,
+        "y": 1096.2
+      },
+      "badges": [
+        "oba_onculugu"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 0
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
@@ -6921,49 +8260,15 @@
         "name": "Ocakcan",
         "archetype": "destek"
       },
-      "rarity": "efsanevi",
-      "title": "Efsane Ocakcan",
-      "points": 345,
-      "region": "ayazbogazi",
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 165,
+      "region": "suzulkoy",
       "coordinates": {
-        "x": 621.3,
-        "y": 1215.7
+        "x": 975.9,
+        "y": 1489.5
       },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": "isik",
-      "seasonContributions": {
-        "votesCast": 4,
-        "raidsJoined": 3
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kopuzpence",
-      "handle": "kopuzpence",
-      "displayName": "Kopuz Pençe",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
-      "points": 210,
-      "region": "pusluada",
-      "coordinates": {
-        "x": 2185.3,
-        "y": 1052.3
-      },
-      "badges": [
-        "ilk_adim"
-      ],
+      "badges": [],
       "elementAura": null,
       "seasonContributions": {
         "votesCast": 3,
@@ -6972,72 +8277,9 @@
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "kopuzisik",
-      "handle": "kopuzisik",
-      "displayName": "Kopuz Işık",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Kalkaneri",
-      "points": 93,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 925.1,
-        "y": 1070.2
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "gunkasif",
-      "handle": "gunkasif",
-      "displayName": "Gün Kâşif",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram",
-        "youtube"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "destansi",
-      "title": "Başeri Kalkaneri",
-      "points": 144,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 452.2,
-        "y": 1439.2
-      },
-      "badges": [
-        "cift_iz"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "cakil_ates19",
-      "handle": "cakil.ates19",
-      "displayName": "Çakıl Ateş",
+      "id": "yildiz_kalkan",
+      "handle": "yildiz_kalkan",
+      "displayName": "Yıldız Kalkan",
       "roleType": "follower",
       "platform": "youtube",
       "linkedPlatforms": [
@@ -7050,11 +8292,73 @@
       },
       "rarity": "siradan",
       "title": "Çırak Ocakcan",
-      "points": 108,
+      "points": 27,
       "region": "akinburnu",
       "coordinates": {
-        "x": 450.3,
-        "y": 1428.3
+        "x": 533.2,
+        "y": 1491.4
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 1,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "sessiz_baykus",
+      "handle": "sessiz.baykus",
+      "displayName": "Sessiz Baykuş",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Ocakcan",
+      "points": 206,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 965.7,
+        "y": 1465.5
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "sedirkunduz76",
+      "handle": "sedirkunduz76",
+      "displayName": "Sedir Kunduz",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Ocakcan",
+      "points": 126,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 999,
+        "y": 1422.4
       },
       "badges": [],
       "elementAura": null,
@@ -7065,81 +8369,13 @@
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "simsek_er44",
-      "handle": "simsek.er44",
-      "displayName": "Şimşek Er",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube",
-        "instagram"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Ocakcan",
-      "points": 148,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 629.1,
-        "y": 1387.6
-      },
-      "badges": [
-        "cift_iz"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "demir_ozan90",
-      "handle": "demir.ozan90",
-      "displayName": "Demir Ozan",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram",
-        "tiktok",
-        "youtube"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "efsanevi",
-      "title": "Efsane Kalkaneri",
-      "points": 234,
-      "region": "gunozu_tepesi",
-      "coordinates": {
-        "x": 1040.9,
-        "y": 784.9
-      },
-      "badges": [
-        "oba_onculugu"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "bulut_kalkan",
-      "handle": "bulut.kalkan",
-      "displayName": "Bulut Kalkan",
+      "id": "ucar_avci84",
+      "handle": "ucar_avci84",
+      "displayName": "Uçar Avcı",
       "roleType": "follower",
       "platform": "tiktok",
       "linkedPlatforms": [
         "tiktok",
-        "instagram",
         "youtube"
       ],
       "class": {
@@ -7149,59 +8385,26 @@
       },
       "rarity": "destansi",
       "title": "Başeri Okyeli",
-      "points": 356,
-      "region": "akinburnu",
+      "points": 149,
+      "region": "kiragiduzu",
       "coordinates": {
-        "x": 347.8,
-        "y": 1448.9
+        "x": 1126,
+        "y": 1000
       },
       "badges": [
-        "oba_onculugu",
-        "ilk_adim"
+        "cift_iz"
       ],
       "elementAura": null,
       "seasonContributions": {
-        "votesCast": 4,
-        "raidsJoined": 3
+        "votesCast": 1,
+        "raidsJoined": 0
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "kopuz_can87",
-      "handle": "kopuz.can87",
-      "displayName": "Kopuz Can",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Kalkaneri",
-      "points": 204,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 568.6,
-        "y": 1444.3
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 4,
-        "raidsJoined": 3
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "ak_okcu",
-      "handle": "ak.okcu",
-      "displayName": "Ak Okçu",
+      "id": "cinar_pence",
+      "handle": "cinar_pence",
+      "displayName": "Çınar Pençe",
       "roleType": "follower",
       "platform": "instagram",
       "linkedPlatforms": [
@@ -7214,11 +8417,11 @@
       },
       "rarity": "destansi",
       "title": "Başeri Kalkaneri",
-      "points": 170,
+      "points": 176,
       "region": "akinburnu",
       "coordinates": {
-        "x": 572.1,
-        "y": 1446.8
+        "x": 480.3,
+        "y": 1362.7
       },
       "badges": [],
       "elementAura": null,
@@ -7229,9 +8432,133 @@
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "bilgetay36",
-      "handle": "bilgetay36",
-      "displayName": "Bilge Tay",
+      "id": "poyraz_ates",
+      "handle": "poyraz_ates",
+      "displayName": "Poyraz Ateş",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "destansi",
+      "title": "Başeri Okyeli",
+      "points": 180,
+      "region": "ayazbogazi",
+      "coordinates": {
+        "x": 375,
+        "y": 958.4
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "minikkunduz",
+      "handle": "minikkunduz",
+      "displayName": "Minik Kunduz",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Kalkaneri",
+      "points": 195,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 532,
+        "y": 1397.9
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "minik_kayikci28",
+      "handle": "minik.kayikci28",
+      "displayName": "Minik Kayıkçı",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Kalkaneri",
+      "points": 146,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 308.7,
+        "y": 1441.3
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 4,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "kopuz_balikci",
+      "handle": "kopuz.balikci",
+      "displayName": "Kopuz Balıkçı",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Okyeli",
+      "points": 110,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 311.3,
+        "y": 1503.5
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "yel_kasif81",
+      "handle": "yel.kasif81",
+      "displayName": "Yel Kâşif",
       "roleType": "follower",
       "platform": "tiktok",
       "linkedPlatforms": [
@@ -7243,28 +8570,58 @@
         "name": "Okyeli",
         "archetype": "menzilli"
       },
-      "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
-      "points": 160,
-      "region": "akinburnu",
+      "rarity": "destansi",
+      "title": "Başeri Okyeli",
+      "points": 185,
+      "region": "ayazbogazi",
       "coordinates": {
-        "x": 478.2,
-        "y": 1469.6
+        "x": 495,
+        "y": 1040.1
       },
       "badges": [
         "cift_iz"
       ],
       "elementAura": null,
       "seasonContributions": {
-        "votesCast": 1,
+        "votesCast": 2,
         "raidsJoined": 1
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "usta_kasif",
-      "handle": "usta.kasif",
-      "displayName": "Usta Kâşif",
+      "id": "usta_coban",
+      "handle": "usta.coban",
+      "displayName": "Usta Çoban",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 150,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 746.4,
+        "y": 1472.6
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "ay_kar_tanesi15",
+      "handle": "ay.kar_tanesi15",
+      "displayName": "Ay Kar Tanesi",
       "roleType": "follower",
       "platform": "tiktok",
       "linkedPlatforms": [
@@ -7277,50 +8634,16 @@
       },
       "rarity": "efsanevi",
       "title": "Efsane Okyeli",
-      "points": 202,
+      "points": 229,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 739.7,
-        "y": 1504.1
+        "x": 846.6,
+        "y": 1382
       },
       "badges": [],
-      "elementAura": "isik",
+      "elementAura": "alev",
       "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "neseliatli15",
-      "handle": "neseliatli15",
-      "displayName": "Neşeli Atlı",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok",
-        "youtube"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
-      "points": 167,
-      "region": "pusluada",
-      "coordinates": {
-        "x": 2231.3,
-        "y": 1204.4
-      },
-      "badges": [
-        "cift_iz",
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 4,
+        "votesCast": 2,
         "raidsJoined": 1
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
@@ -7330,370 +8653,6 @@
       "handle": "deniztilki",
       "displayName": "Deniz Tilki",
       "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok",
-        "instagram"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "destansi",
-      "title": "Başeri Okyeli",
-      "points": 196,
-      "region": "ayazbogazi",
-      "coordinates": {
-        "x": 415.7,
-        "y": 1004.5
-      },
-      "badges": [
-        "cift_iz",
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "boz_ates",
-      "handle": "boz_ates",
-      "displayName": "Boz Ateş",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram",
-        "tiktok"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "efsanevi",
-      "title": "Efsane Kalkaneri",
-      "points": 243,
-      "region": "suzulkoy",
-      "coordinates": {
-        "x": 891.7,
-        "y": 1382.6
-      },
-      "badges": [
-        "cift_iz"
-      ],
-      "elementAura": "isik",
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "buz_coban",
-      "handle": "buz.coban",
-      "displayName": "Buz Çoban",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Ocakcan",
-      "points": 146,
-      "region": "pusluada",
-      "coordinates": {
-        "x": 2259.6,
-        "y": 1031.9
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "ayturna",
-      "handle": "ayturna",
-      "displayName": "Ay Turna",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok",
-        "youtube"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "destansi",
-      "title": "Başeri Okyeli",
-      "points": 202,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 894,
-        "y": 1100.2
-      },
-      "badges": [
-        "cift_iz",
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "ilgingezgin",
-      "handle": "ilgingezgin",
-      "displayName": "Ilgın Gezgin",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok",
-        "youtube"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
-      "points": 234,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 355.7,
-        "y": 1505
-      },
-      "badges": [
-        "cift_iz"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "akfener78",
-      "handle": "akfener78",
-      "displayName": "Ak Fener",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram",
-        "tiktok",
-        "youtube"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "destansi",
-      "title": "Başeri Kalkaneri",
-      "points": 303,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 448,
-        "y": 1516.2
-      },
-      "badges": [
-        "oba_onculugu"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "pusyaprak",
-      "handle": "pusyaprak",
-      "displayName": "Pus Yaprak",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok",
-        "instagram"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
-      "points": 93,
-      "region": "pusluada",
-      "coordinates": {
-        "x": 2262.6,
-        "y": 1159.9
-      },
-      "badges": [
-        "cift_iz"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "sarp_yay46",
-      "handle": "sarp_yay46",
-      "displayName": "Sarp Yay",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube",
-        "instagram"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "destansi",
-      "title": "Başeri Ocakcan",
-      "points": 329,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 1091.4,
-        "y": 984.4
-      },
-      "badges": [
-        "cift_iz",
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 4,
-        "raidsJoined": 3
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "bulut_atli63",
-      "handle": "bulut.atli63",
-      "displayName": "Bulut Atlı",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Kalkaneri",
-      "points": 96,
-      "region": "suzulkoy",
-      "coordinates": {
-        "x": 957.1,
-        "y": 1475.6
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "simsek_kalkan39",
-      "handle": "simsek.kalkan39",
-      "displayName": "Şimşek Kalkan",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
-      "points": 119,
-      "region": "pusluada",
-      "coordinates": {
-        "x": 2201,
-        "y": 1094.5
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "ilgin_ruzgar60",
-      "handle": "ilgin_ruzgar60",
-      "displayName": "Ilgın Rüzgâr",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram",
-        "tiktok"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Kalkaneri",
-      "points": 233,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 346.8,
-        "y": 1481.1
-      },
-      "badges": [
-        "cift_iz"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "demir_tepe",
-      "handle": "demir.tepe",
-      "displayName": "Demir Tepe",
-      "roleType": "follower",
       "platform": "youtube",
       "linkedPlatforms": [
         "youtube"
@@ -7705,151 +8664,26 @@
       },
       "rarity": "siradan",
       "title": "Çırak Ocakcan",
-      "points": 142,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 489.2,
-        "y": 1452
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "usta_dogan",
-      "handle": "usta_dogan",
-      "displayName": "Usta Doğan",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Ocakcan",
-      "points": 138,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 925.1,
-        "y": 1108
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "karbalikci4",
-      "handle": "karbalikci4",
-      "displayName": "Kar Balıkçı",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Okyeli",
-      "points": 37,
-      "region": "kutada",
-      "coordinates": {
-        "x": 1544.5,
-        "y": 1194.3
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kopuz_tilki89",
-      "handle": "kopuz.tilki89",
-      "displayName": "Kopuz Tilki",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube",
-        "instagram"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "efsanevi",
-      "title": "Efsane Ocakcan",
-      "points": 183,
-      "region": "suzulkoy",
-      "coordinates": {
-        "x": 736.5,
-        "y": 1489.5
-      },
-      "badges": [
-        "cift_iz"
-      ],
-      "elementAura": "isik",
-      "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "ay_tilki58",
-      "handle": "ay_tilki58",
-      "displayName": "Ay Tilki",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
       "points": 151,
-      "region": "pusluada",
+      "region": "suzulkoy",
       "coordinates": {
-        "x": 2231.8,
-        "y": 1184.9
+        "x": 814.4,
+        "y": 1409.5
       },
-      "badges": [],
+      "badges": [
+        "ilk_adim"
+      ],
       "elementAura": null,
       "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 1
+        "votesCast": 2,
+        "raidsJoined": 2
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "bulut_sincap84",
-      "handle": "bulut_sincap84",
-      "displayName": "Bulut Sincap",
+      "id": "kizilisik86",
+      "handle": "kizilisik86",
+      "displayName": "Kızıl Işık",
       "roleType": "follower",
       "platform": "youtube",
       "linkedPlatforms": [
@@ -7862,126 +8696,60 @@
       },
       "rarity": "siradan",
       "title": "Çırak Ocakcan",
-      "points": 170,
-      "region": "gunozu_tepesi",
+      "points": 31,
+      "region": "akinburnu",
       "coordinates": {
-        "x": 1001.4,
-        "y": 795.3
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 4,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kiragiavci64",
-      "handle": "kiragiavci64",
-      "displayName": "Kırağı Avcı",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Ocakcan",
-      "points": 82,
-      "region": "suzulkoy",
-      "coordinates": {
-        "x": 756.4,
-        "y": 1489.4
+        "x": 661.8,
+        "y": 1403.3
       },
       "badges": [],
       "elementAura": null,
       "seasonContributions": {
-        "votesCast": 1,
+        "votesCast": 2,
         "raidsJoined": 0
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "kiragiyay56",
-      "handle": "kiragiyay56",
-      "displayName": "Kırağı Yay",
+      "id": "buzatli",
+      "handle": "buzatli",
+      "displayName": "Buz Atlı",
       "roleType": "follower",
-      "platform": "youtube",
+      "platform": "tiktok",
       "linkedPlatforms": [
-        "youtube",
         "tiktok"
       ],
       "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Ocakcan",
-      "points": 162,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 797.3,
-        "y": 1088.4
-      },
-      "badges": [
-        "cift_iz"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "tantay",
-      "handle": "tantay",
-      "displayName": "Tan Tay",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
       },
       "rarity": "siradan",
-      "title": "Çırak Kalkaneri",
-      "points": 88,
+      "title": "Çırak Okyeli",
+      "points": 138,
       "region": "akinburnu",
       "coordinates": {
-        "x": 392.5,
-        "y": 1450
+        "x": 534.5,
+        "y": 1462.7
       },
       "badges": [
         "ilk_adim"
       ],
       "elementAura": null,
       "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 1
+        "votesCast": 2,
+        "raidsJoined": 2
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "tancan",
-      "handle": "tancan",
-      "displayName": "Tan Can",
+      "id": "fener_coban44",
+      "handle": "fener_coban44",
+      "displayName": "Fener Çoban",
       "roleType": "follower",
       "platform": "youtube",
       "linkedPlatforms": [
-        "youtube",
-        "tiktok"
+        "youtube"
       ],
       "class": {
         "id": "ocakcan",
@@ -7990,177 +8758,13 @@
       },
       "rarity": "destansi",
       "title": "Başeri Ocakcan",
-      "points": 189,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 478.6,
-        "y": 1434.8
-      },
-      "badges": [
-        "cift_iz",
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kivilcimyolcu",
-      "handle": "kivilcimyolcu",
-      "displayName": "Kıvılcım Yolcu",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok",
-        "instagram",
-        "youtube"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "destansi",
-      "title": "Başeri Okyeli",
-      "points": 298,
+      "points": 160,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 912.9,
-        "y": 1103.9
-      },
-      "badges": [
-        "oba_onculugu"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kopuzmarti",
-      "handle": "kopuzmarti",
-      "displayName": "Kopuz Martı",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Kalkaneri",
-      "points": 34,
-      "region": "ayazbogazi",
-      "coordinates": {
-        "x": 585.1,
-        "y": 1223.4
+        "x": 824,
+        "y": 1165.4
       },
       "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "ucaryay",
-      "handle": "ucaryay",
-      "displayName": "Uçar Yay",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Okyeli",
-      "points": 204,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 588.4,
-        "y": 1438.6
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 4,
-        "raidsJoined": 3
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "usta_davul40",
-      "handle": "usta.davul40",
-      "displayName": "Usta Davul",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Ocakcan",
-      "points": 174,
-      "region": "gunozu_tepesi",
-      "coordinates": {
-        "x": 1040.9,
-        "y": 804.9
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "buzkelebek",
-      "handle": "buzkelebek",
-      "displayName": "Buz Kelebek",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram",
-        "tiktok"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "destansi",
-      "title": "Başeri Kalkaneri",
-      "points": 191,
-      "region": "suzulkoy",
-      "coordinates": {
-        "x": 743,
-        "y": 1468.2
-      },
-      "badges": [
-        "cift_iz"
-      ],
       "elementAura": null,
       "seasonContributions": {
         "votesCast": 2,
@@ -8169,196 +8773,9 @@
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "ucar_tepe",
-      "handle": "ucar_tepe",
-      "displayName": "Uçar Tepe",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Ocakcan",
-      "points": 81,
-      "region": "pusluada",
-      "coordinates": {
-        "x": 2175.8,
-        "y": 999.1
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "sarp_tay7",
-      "handle": "sarp_tay7",
-      "displayName": "Sarp Tay",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Ocakcan",
-      "points": 66,
-      "region": "kutada",
-      "coordinates": {
-        "x": 1520.8,
-        "y": 1230
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "cevikkuzu51",
-      "handle": "cevikkuzu51",
-      "displayName": "Çevik Kuzu",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok",
-        "instagram"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
-      "points": 136,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 481.9,
-        "y": 1482.4
-      },
-      "badges": [
-        "cift_iz",
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "ak_kanat9",
-      "handle": "ak_kanat9",
-      "displayName": "Ak Kanat",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok",
-        "instagram"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
-      "points": 166,
-      "region": "ayazbogazi",
-      "coordinates": {
-        "x": 598.1,
-        "y": 1163.8
-      },
-      "badges": [
-        "cift_iz"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kivilcim_ruzgar7",
-      "handle": "kivilcim.ruzgar7",
-      "displayName": "Kıvılcım Rüzgâr",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Okyeli",
-      "points": 44,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 478.8,
-        "y": 1446.4
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "gokatli",
-      "handle": "gokatli",
-      "displayName": "Gök Atlı",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Okyeli",
-      "points": 58,
-      "region": "pusluada",
-      "coordinates": {
-        "x": 2211.5,
-        "y": 1162.6
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "bilge_kalkan",
-      "handle": "bilge.kalkan",
-      "displayName": "Bilge Kalkan",
+      "id": "kopuz_isik77",
+      "handle": "kopuz.isik77",
+      "displayName": "Kopuz Işık",
       "roleType": "follower",
       "platform": "youtube",
       "linkedPlatforms": [
@@ -8370,13 +8787,13 @@
         "name": "Ocakcan",
         "archetype": "destek"
       },
-      "rarity": "destansi",
-      "title": "Başeri Ocakcan",
-      "points": 259,
+      "rarity": "nadir",
+      "title": "Yoldaş Ocakcan",
+      "points": 164,
       "region": "kiragiduzu",
       "coordinates": {
-        "x": 1117,
-        "y": 969.5
+        "x": 742.1,
+        "y": 1187.1
       },
       "badges": [
         "cift_iz"
@@ -8384,291 +8801,14 @@
       "elementAura": null,
       "seasonContributions": {
         "votesCast": 3,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "feneryolcu",
-      "handle": "feneryolcu",
-      "displayName": "Fener Yolcu",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Kalkaneri",
-      "points": 203,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 888.6,
-        "y": 1095
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "cakil_ruzgar",
-      "handle": "cakil.ruzgar",
-      "displayName": "Çakıl Rüzgâr",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Kalkaneri",
-      "points": 261,
-      "region": "suzulkoy",
-      "coordinates": {
-        "x": 706.6,
-        "y": 1501.8
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 4,
-        "raidsJoined": 3
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kopuzozan",
-      "handle": "kopuzozan",
-      "displayName": "Kopuz Ozan",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Kalkaneri",
-      "points": 37,
-      "region": "ayazbogazi",
-      "coordinates": {
-        "x": 445.9,
-        "y": 1009.5
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "bulut_tilki",
-      "handle": "bulut.tilki",
-      "displayName": "Bulut Tilki",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
-      "points": 194,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 343.5,
-        "y": 1476.1
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "poyraz_coban",
-      "handle": "poyraz_coban",
-      "displayName": "Poyraz Çoban",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Kalkaneri",
-      "points": 217,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 604,
-        "y": 1439.7
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 4,
-        "raidsJoined": 3
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "dalga_kartal9",
-      "handle": "dalga.kartal9",
-      "displayName": "Dalga Kartal",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Okyeli",
-      "points": 84,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 554.4,
-        "y": 1363.3
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
         "raidsJoined": 1
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "kizil_yaprak",
-      "handle": "kizil_yaprak",
-      "displayName": "Kızıl Yaprak",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Okyeli",
-      "points": 72,
-      "region": "suzulkoy",
-      "coordinates": {
-        "x": 786.9,
-        "y": 1526.7
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "deniz_marti40",
-      "handle": "deniz_marti40",
-      "displayName": "Deniz Martı",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Okyeli",
-      "points": 16,
-      "region": "kutada",
-      "coordinates": {
-        "x": 1497.9,
-        "y": 1173.4
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "gumuskuzu",
-      "handle": "gumuskuzu",
-      "displayName": "Gümüş Kuzu",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok",
-        "instagram"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
-      "points": 119,
-      "region": "kutada",
-      "coordinates": {
-        "x": 1479.7,
-        "y": 1217.6
-      },
-      "badges": [
-        "cift_iz"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kizil_kar_tanesi",
-      "handle": "kizil.kar_tanesi",
-      "displayName": "Kızıl Kar Tanesi",
+      "id": "sarp_okcu97",
+      "handle": "sarp_okcu97",
+      "displayName": "Sarp Okçu",
       "roleType": "follower",
       "platform": "youtube",
       "linkedPlatforms": [
@@ -8679,168 +8819,13 @@
         "name": "Ocakcan",
         "archetype": "destek"
       },
-      "rarity": "siradan",
-      "title": "Çırak Ocakcan",
-      "points": 56,
-      "region": "gunozu_tepesi",
-      "coordinates": {
-        "x": 1036.9,
-        "y": 782.5
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kiragikuzu27",
-      "handle": "kiragikuzu27",
-      "displayName": "Kırağı Kuzu",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram",
-        "youtube"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "efsanevi",
-      "title": "Efsane Kalkaneri",
-      "points": 257,
-      "region": "suzulkoy",
-      "coordinates": {
-        "x": 876.3,
-        "y": 1344.5
-      },
-      "badges": [
-        "cift_iz"
-      ],
-      "elementAura": "isik",
-      "seasonContributions": {
-        "votesCast": 4,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "simsekdavul87",
-      "handle": "simsekdavul87",
-      "displayName": "Şimşek Davul",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "efsanevi",
-      "title": "Efsane Ocakcan",
-      "points": 255,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 947.5,
-        "y": 1093.9
-      },
-      "badges": [],
-      "elementAura": "isik",
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "ilginisik98",
-      "handle": "ilginisik98",
-      "displayName": "Ilgın Işık",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Kalkaneri",
-      "points": 81,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 541.1,
-        "y": 1436.1
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "bozcoban",
-      "handle": "bozcoban",
-      "displayName": "Boz Çoban",
-      "roleType": "follower",
-      "platform": "tiktok",
-      "linkedPlatforms": [
-        "tiktok"
-      ],
-      "class": {
-        "id": "okyeli",
-        "name": "Okyeli",
-        "archetype": "menzilli"
-      },
       "rarity": "nadir",
-      "title": "Yoldaş Okyeli",
-      "points": 171,
-      "region": "ayazbogazi",
+      "title": "Yoldaş Ocakcan",
+      "points": 73,
+      "region": "kutada",
       "coordinates": {
-        "x": 415.6,
-        "y": 1000.8
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "neseliturna8",
-      "handle": "neseliturna8",
-      "displayName": "Neşeli Turna",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Kalkaneri",
-      "points": 45,
-      "region": "gunozu_tepesi",
-      "coordinates": {
-        "x": 1064.9,
-        "y": 782.5
+        "x": 1544.4,
+        "y": 1154.7
       },
       "badges": [],
       "elementAura": null,
@@ -8851,199 +8836,39 @@
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "fener_goz",
-      "handle": "fener_goz",
-      "displayName": "Fener Göz",
+      "id": "sedir_kelebek",
+      "handle": "sedir_kelebek",
+      "displayName": "Sedir Kelebek",
       "roleType": "follower",
-      "platform": "instagram",
+      "platform": "tiktok",
       "linkedPlatforms": [
-        "instagram"
+        "tiktok"
       ],
       "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
       },
-      "rarity": "siradan",
-      "title": "Çırak Kalkaneri",
-      "points": 60,
-      "region": "pusluada",
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 63,
+      "region": "kutada",
       "coordinates": {
-        "x": 2221.7,
-        "y": 1189.9
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "tan_fener",
-      "handle": "tan_fener",
-      "displayName": "Tan Fener",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Kalkaneri",
-      "points": 105,
-      "region": "ayazbogazi",
-      "coordinates": {
-        "x": 454.9,
-        "y": 956.6
+        "x": 1522.6,
+        "y": 1182.7
       },
       "badges": [],
       "elementAura": null,
       "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "cesur_baykus",
-      "handle": "cesur_baykus",
-      "displayName": "Cesur Baykuş",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram",
-        "tiktok",
-        "youtube"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Kalkaneri",
-      "points": 240,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 483.6,
-        "y": 1469.7
-      },
-      "badges": [
-        "oba_onculugu"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 3,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "sessiz_kasif",
-      "handle": "sessiz.kasif",
-      "displayName": "Sessiz Kâşif",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Ocakcan",
-      "points": 130,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 501.6,
-        "y": 1503.1
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
         "votesCast": 1,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "minik_okcu",
-      "handle": "minik_okcu",
-      "displayName": "Minik Okçu",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Ocakcan",
-      "points": 37,
-      "region": "suzulkoy",
-      "coordinates": {
-        "x": 829.4,
-        "y": 1376.6
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
         "raidsJoined": 0
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "simsek_baykus",
-      "handle": "simsek.baykus",
-      "displayName": "Şimşek Baykuş",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Kalkaneri",
-      "points": 176,
-      "region": "suzulkoy",
-      "coordinates": {
-        "x": 786.7,
-        "y": 1457.4
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "cesurruzgar",
-      "handle": "cesurruzgar",
-      "displayName": "Cesur Rüzgâr",
+      "id": "cevikkalkan",
+      "handle": "cevikkalkan",
+      "displayName": "Çevik Kalkan",
       "roleType": "follower",
       "platform": "tiktok",
       "linkedPlatforms": [
@@ -9056,150 +8881,54 @@
       },
       "rarity": "siradan",
       "title": "Çırak Okyeli",
-      "points": 19,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 487,
-        "y": 1441
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "ak_kartal33",
-      "handle": "ak_kartal33",
-      "displayName": "Ak Kartal",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube",
-        "instagram",
-        "tiktok"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Ocakcan",
-      "points": 202,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 489.1,
-        "y": 1480.7
-      },
-      "badges": [
-        "oba_onculugu"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "fener_gezgin",
-      "handle": "fener_gezgin",
-      "displayName": "Fener Gezgin",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Kalkaneri",
-      "points": 215,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 901.5,
-        "y": 1112.5
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 4,
-        "raidsJoined": 2
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "denizsincap",
-      "handle": "denizsincap",
-      "displayName": "Deniz Sincap",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Kalkaneri",
-      "points": 74,
-      "region": "akinburnu",
-      "coordinates": {
-        "x": 316,
-        "y": 1463.3
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "simsekkasif",
-      "handle": "simsekkasif",
-      "displayName": "Şimşek Kâşif",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Kalkaneri",
-      "points": 79,
+      "points": 93,
       "region": "suzulkoy",
       "coordinates": {
-        "x": 898.7,
-        "y": 1319.6
+        "x": 717.2,
+        "y": 1520.3
       },
       "badges": [],
       "elementAura": null,
       "seasonContributions": {
         "votesCast": 1,
-        "raidsJoined": 0
+        "raidsJoined": 1
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "poyrazkalkan16",
-      "handle": "poyrazkalkan16",
-      "displayName": "Poyraz Kalkan",
+      "id": "denizozan",
+      "handle": "denizozan",
+      "displayName": "Deniz Ozan",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 135,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 631.8,
+        "y": 1378.2
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "usta_kar_tanesi87",
+      "handle": "usta_kar_tanesi87",
+      "displayName": "Usta Kar Tanesi",
       "roleType": "follower",
       "platform": "instagram",
       "linkedPlatforms": [
@@ -9212,154 +8941,124 @@
       },
       "rarity": "siradan",
       "title": "Çırak Kalkaneri",
-      "points": 71,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 757.2,
-        "y": 1107.7
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "kizilpence87",
-      "handle": "kizilpence87",
-      "displayName": "Kızıl Pençe",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Ocakcan",
-      "points": 81,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 762.4,
-        "y": 1189.9
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "alazkayikci",
-      "handle": "alazkayikci",
-      "displayName": "Alaz Kayıkçı",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Ocakcan",
-      "points": 100,
+      "points": 33,
       "region": "akinburnu",
       "coordinates": {
-        "x": 447.7,
-        "y": 1479.7
+        "x": 614.4,
+        "y": 1383.2
       },
       "badges": [],
       "elementAura": null,
       "seasonContributions": {
         "votesCast": 2,
-        "raidsJoined": 1
+        "raidsJoined": 0
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "kizil_can",
-      "handle": "kizil_can",
-      "displayName": "Kızıl Can",
+      "id": "bilge_tilki61",
+      "handle": "bilge.tilki61",
+      "displayName": "Bilge Tilki",
       "roleType": "follower",
-      "platform": "youtube",
+      "platform": "instagram",
       "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Kalkaneri",
+      "points": 17,
+      "region": "ayazbogazi",
+      "coordinates": {
+        "x": 442.8,
+        "y": 997.7
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 0,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "tug_fener55",
+      "handle": "tug_fener55",
+      "displayName": "Tuğ Fener",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram",
+        "tiktok",
         "youtube"
       ],
       "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
       },
       "rarity": "destansi",
-      "title": "Başeri Ocakcan",
-      "points": 167,
-      "region": "pusluada",
+      "title": "Başeri Kalkaneri",
+      "points": 236,
+      "region": "kiragiduzu",
       "coordinates": {
-        "x": 2233.6,
-        "y": 1172.1
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "gungoz",
-      "handle": "gungoz",
-      "displayName": "Gün Göz",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube",
-        "instagram",
-        "tiktok"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "efsanevi",
-      "title": "Efsane Ocakcan",
-      "points": 314,
-      "region": "pusluada",
-      "coordinates": {
-        "x": 2235.6,
-        "y": 1029.3
+        "x": 1070.3,
+        "y": 1003.3
       },
       "badges": [
         "oba_onculugu",
         "ilk_adim"
       ],
-      "elementAura": "isik",
+      "elementAura": null,
       "seasonContributions": {
         "votesCast": 2,
-        "raidsJoined": 2
+        "raidsJoined": 1
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "ilgin_tay",
-      "handle": "ilgin_tay",
-      "displayName": "Ilgın Tay",
+      "id": "cakil_tepe",
+      "handle": "cakil.tepe",
+      "displayName": "Çakıl Tepe",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Okyeli",
+      "points": 45,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 361.8,
+        "y": 1486.2
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 1,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "ayazkanat24",
+      "handle": "ayazkanat24",
+      "displayName": "Ayaz Kanat",
       "roleType": "follower",
       "platform": "instagram",
       "linkedPlatforms": [
         "instagram",
-        "tiktok"
+        "youtube"
       ],
       "class": {
         "id": "kalkaneri",
@@ -9368,122 +9067,26 @@
       },
       "rarity": "nadir",
       "title": "Yoldaş Kalkaneri",
-      "points": 70,
-      "region": "kiragiduzu",
+      "points": 117,
+      "region": "ayazbogazi",
       "coordinates": {
-        "x": 1062.2,
-        "y": 982.7
+        "x": 533.7,
+        "y": 1168.6
       },
       "badges": [
         "cift_iz"
       ],
       "elementAura": null,
       "seasonContributions": {
-        "votesCast": 0,
-        "raidsJoined": 0
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "ay_kelebek30",
-      "handle": "ay_kelebek30",
-      "displayName": "Ay Kelebek",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "nadir",
-      "title": "Yoldaş Kalkaneri",
-      "points": 137,
-      "region": "gunozu_tepesi",
-      "coordinates": {
-        "x": 1041.2,
-        "y": 801.1
-      },
-      "badges": [
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
         "votesCast": 2,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "gun_er75",
-      "handle": "gun_er75",
-      "displayName": "Gün Er",
-      "roleType": "follower",
-      "platform": "youtube",
-      "linkedPlatforms": [
-        "youtube"
-      ],
-      "class": {
-        "id": "ocakcan",
-        "name": "Ocakcan",
-        "archetype": "destek"
-      },
-      "rarity": "siradan",
-      "title": "Çırak Ocakcan",
-      "points": 15,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 1121.3,
-        "y": 995.9
-      },
-      "badges": [],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 0,
         "raidsJoined": 0
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "cakil_kelebek41",
-      "handle": "cakil.kelebek41",
-      "displayName": "Çakıl Kelebek",
-      "roleType": "follower",
-      "platform": "instagram",
-      "linkedPlatforms": [
-        "instagram",
-        "tiktok"
-      ],
-      "class": {
-        "id": "kalkaneri",
-        "name": "Kalkaneri",
-        "archetype": "savasci"
-      },
-      "rarity": "destansi",
-      "title": "Başeri Kalkaneri",
-      "points": 179,
-      "region": "kiragiduzu",
-      "coordinates": {
-        "x": 767.9,
-        "y": 1124.1
-      },
-      "badges": [
-        "cift_iz",
-        "ilk_adim"
-      ],
-      "elementAura": null,
-      "seasonContributions": {
-        "votesCast": 1,
-        "raidsJoined": 1
-      },
-      "updatedAt": "2026-11-24T18:00:00.000Z"
-    },
-    {
-      "id": "bilge_fener",
-      "handle": "bilge_fener",
-      "displayName": "Bilge Fener",
+      "id": "gunkunduz",
+      "handle": "gunkunduz",
+      "displayName": "Gün Kunduz",
       "roleType": "follower",
       "platform": "instagram",
       "linkedPlatforms": [
@@ -9496,13 +9099,112 @@
       },
       "rarity": "siradan",
       "title": "Çırak Kalkaneri",
-      "points": 41,
-      "region": "kutada",
+      "points": 79,
+      "region": "ayazbogazi",
       "coordinates": {
-        "x": 1519.7,
-        "y": 1209.3
+        "x": 364.5,
+        "y": 982.5
       },
       "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "ay_marti52",
+      "handle": "ay.marti52",
+      "displayName": "Ay Martı",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Okyeli",
+      "points": 158,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 918.4,
+        "y": 1100
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "yildiz_tilki29",
+      "handle": "yildiz_tilki29",
+      "displayName": "Yıldız Tilki",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube",
+        "instagram"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Ocakcan",
+      "points": 221,
+      "region": "ayazbogazi",
+      "coordinates": {
+        "x": 583.7,
+        "y": 1235.7
+      },
+      "badges": [
+        "cift_iz",
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "cevik_baykus53",
+      "handle": "cevik_baykus53",
+      "displayName": "Çevik Baykuş",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok",
+        "instagram"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 120,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 1002.9,
+        "y": 1459.9
+      },
+      "badges": [
+        "cift_iz"
+      ],
       "elementAura": null,
       "seasonContributions": {
         "votesCast": 1,
@@ -9511,9 +9213,9 @@
       "updatedAt": "2026-11-24T18:00:00.000Z"
     },
     {
-      "id": "kivilcim_baykus69",
-      "handle": "kivilcim.baykus69",
-      "displayName": "Kıvılcım Baykuş",
+      "id": "buz_dogan",
+      "handle": "buz_dogan",
+      "displayName": "Buz Doğan",
       "roleType": "follower",
       "platform": "instagram",
       "linkedPlatforms": [
@@ -9524,19 +9226,295 @@
         "name": "Kalkaneri",
         "archetype": "savasci"
       },
-      "rarity": "nadir",
-      "title": "Yoldaş Kalkaneri",
-      "points": 72,
-      "region": "kiragiduzu",
+      "rarity": "siradan",
+      "title": "Çırak Kalkaneri",
+      "points": 36,
+      "region": "suzulkoy",
       "coordinates": {
-        "x": 936.6,
-        "y": 1115.4
+        "x": 889.1,
+        "y": 1326.8
       },
       "badges": [],
       "elementAura": null,
       "seasonContributions": {
-        "votesCast": 1,
+        "votesCast": 0,
         "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "kopuz_coban",
+      "handle": "kopuz.coban",
+      "displayName": "Kopuz Çoban",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 55,
+      "region": "kutada",
+      "coordinates": {
+        "x": 1580.9,
+        "y": 1057.5
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "gun_kayikci",
+      "handle": "gun_kayikci",
+      "displayName": "Gün Kayıkçı",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 140,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 654.6,
+        "y": 1356.7
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "boz_yaprak",
+      "handle": "boz.yaprak",
+      "displayName": "Boz Yaprak",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Okyeli",
+      "points": 143,
+      "region": "pusluada",
+      "coordinates": {
+        "x": 2183.3,
+        "y": 1058.1
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 3,
+        "raidsJoined": 2
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "poyrazkalkan",
+      "handle": "poyrazkalkan",
+      "displayName": "Poyraz Kalkan",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok",
+        "instagram"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Okyeli",
+      "points": 170,
+      "region": "pusluada",
+      "coordinates": {
+        "x": 2250.5,
+        "y": 1074.8
+      },
+      "badges": [
+        "cift_iz",
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "cakil_balikci27",
+      "handle": "cakil.balikci27",
+      "displayName": "Çakıl Balıkçı",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "nadir",
+      "title": "Yoldaş Ocakcan",
+      "points": 148,
+      "region": "kiragiduzu",
+      "coordinates": {
+        "x": 895.5,
+        "y": 1139.6
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "bilgeyay",
+      "handle": "bilgeyay",
+      "displayName": "Bilge Yay",
+      "roleType": "follower",
+      "platform": "instagram",
+      "linkedPlatforms": [
+        "instagram"
+      ],
+      "class": {
+        "id": "kalkaneri",
+        "name": "Kalkaneri",
+        "archetype": "savasci"
+      },
+      "rarity": "efsanevi",
+      "title": "Efsane Kalkaneri",
+      "points": 222,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 468.7,
+        "y": 1468.8
+      },
+      "badges": [],
+      "elementAura": "isik",
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "gunbaykus",
+      "handle": "gunbaykus",
+      "displayName": "Gün Baykuş",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 11,
+      "region": "ayazbogazi",
+      "coordinates": {
+        "x": 404.9,
+        "y": 1053.1
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 0,
+        "raidsJoined": 0
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "kopuz_fener",
+      "handle": "kopuz.fener",
+      "displayName": "Kopuz Fener",
+      "roleType": "follower",
+      "platform": "tiktok",
+      "linkedPlatforms": [
+        "tiktok"
+      ],
+      "class": {
+        "id": "okyeli",
+        "name": "Okyeli",
+        "archetype": "menzilli"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Okyeli",
+      "points": 72,
+      "region": "akinburnu",
+      "coordinates": {
+        "x": 356,
+        "y": 1475.7
+      },
+      "badges": [
+        "ilk_adim"
+      ],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
+      },
+      "updatedAt": "2026-11-24T18:00:00.000Z"
+    },
+    {
+      "id": "cakil_dogan16",
+      "handle": "cakil.dogan16",
+      "displayName": "Çakıl Doğan",
+      "roleType": "follower",
+      "platform": "youtube",
+      "linkedPlatforms": [
+        "youtube"
+      ],
+      "class": {
+        "id": "ocakcan",
+        "name": "Ocakcan",
+        "archetype": "destek"
+      },
+      "rarity": "siradan",
+      "title": "Çırak Ocakcan",
+      "points": 75,
+      "region": "suzulkoy",
+      "coordinates": {
+        "x": 724.4,
+        "y": 1492.5
+      },
+      "badges": [],
+      "elementAura": null,
+      "seasonContributions": {
+        "votesCast": 2,
+        "raidsJoined": 1
       },
       "updatedAt": "2026-11-24T18:00:00.000Z"
     }

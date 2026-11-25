@@ -2,7 +2,7 @@
 #
 # Cloudflare panelinde "Workers & Pages → Create → Import a repository" ile açılan proje bu dosyayı okur:
 # önce `npm run build` derler, sonra `npx wrangler deploy` dist klasörünü yayınlar. `npm run deploy` de aynısını yapar.
-# Adres: https://oba-tales.<hesap-alt-alanın>.workers.dev (kendi alan adını panelden bağlayabilirsin).
+# Adres: https://oba-tales.mhellingtr.workers.dev (kendi alan adını panelden bağlayabilirsin).
 name = "oba-tales"
 compatibility_date = "2025-01-01"
 

@@ -28,7 +28,7 @@ export const RAID_CLEARING = { square: 34, focus: 14 } as const;
 /** Doğanın yerleşmeyeceği alanlar (yapıların çevresi ve akın meydanları). */
 const EXCLUSIONS: readonly { center: Coordinates; radius: number }[] = [
   // Obaların çevresi açık çayır: ağıl ve sürü de buraya kurulur.
-  ...VILLAGES.map((v) => ({ center: v.center, radius: v.radius + 40 })),
+  ...VILLAGES.map((v) => ({ center: v.center, radius: v.radius + 50 })),
   ...Object.values(RAID_GROUNDS).flatMap((g) => [
     { center: g.square, radius: RAID_CLEARING.square },
     { center: g.focus, radius: RAID_CLEARING.focus },
@@ -91,12 +91,12 @@ export interface CampLayout {
   flock: Coordinates | null;
 }
 
-export const CORRAL_RADIUS = 11;
+export const CORRAL_RADIUS = 15;
 /** Kut Kapısı'nın taş meydanının yarıçapı (gezinenler girmez). */
 export const PORTAL_RADIUS = 30;
 /** Oba çadırlarının boyu (karakterler 1,8 kat iri olduğu için çadırlar da büyütüldü). */
-export const YURT_SIZE = 1.35;
-export const FLOCK_RADIUS = 11;
+export const YURT_SIZE = 1.7;
+export const FLOCK_RADIUS = 14;
 
 const polar = (c: Coordinates, angle: number, r: number): Coordinates => ({ x: c.x + Math.cos(angle) * r, y: c.y + Math.sin(angle) * r });
 
@@ -125,11 +125,11 @@ export function campLayouts(terrain: Terrain): CampLayout[] {
     return {
       village,
       fire: village.center,
-      cauldron: polar(village.center, base + 1.2, 6),
-      woodpile: polar(village.center, base + 2.7, 7.6),
-      banner: spot(base, village.radius + 8, 2.5) ?? polar(village.center, base, village.radius + 8),
-      corral: village.corral ? spot(base + Math.PI, village.radius + 20, CORRAL_RADIUS + 1) : null,
-      flock: !village.corral && village.id ? spot(base + Math.PI * 0.6, village.radius + 25, FLOCK_RADIUS) : null,
+      cauldron: polar(village.center, base + 1.2, 7),
+      woodpile: polar(village.center, base + 2.7, 9),
+      banner: spot(base, village.radius + 10, 3) ?? polar(village.center, base, village.radius + 10),
+      corral: village.corral ? spot(base + Math.PI, village.radius + 26, CORRAL_RADIUS + 1) : null,
+      flock: !village.corral && village.id ? spot(base + Math.PI * 0.6, village.radius + 30, FLOCK_RADIUS) : null,
     };
   });
   campCache.set(terrain, layouts);
@@ -218,7 +218,7 @@ export function yurtPlacements(terrain: Terrain, seed: number): Placement[] {
       const p = { x: village.center.x + Math.cos(angle) * radius, y: village.center.y + Math.sin(angle) * radius };
       const sample = sampleTerrain(terrain, p);
       if (sample.height < 0.05 || sample.height > 0.7) continue;
-      if (out.some((o) => distance(o, p) < 11)) continue;
+      if (out.some((o) => distance(o, p) < 14)) continue;
       // Kapı köy merkezine baksın.
       out.push({ ...p, rotation: Math.atan2(village.center.x - p.x, village.center.y - p.y), scale: rng.float(0.9, 1.15) });
     }
@@ -247,10 +247,10 @@ export function structureObstacles(terrain: Terrain, seed: number): Obstacle[] {
     circle(MONUMENTS.uluKayin, 5),
     circle(MONUMENTS.firtinaFeneri, 4.5),
     ...campLayouts(terrain).flatMap((camp) => [
-      circle(camp.fire, 5.4),
-      circle(camp.cauldron, 2),
-      circle(camp.woodpile, 2.2),
-      circle(camp.banner, 1.8),
+      circle(camp.fire, 6.2),
+      circle(camp.cauldron, 2.3),
+      circle(camp.woodpile, 2.6),
+      circle(camp.banner, 2),
       ...(camp.corral ? [circle(camp.corral, CORRAL_RADIUS + 1)] : []),
     ]),
     circle(MONUMENTS.ataHeykeli, 7),

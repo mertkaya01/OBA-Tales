@@ -98,7 +98,7 @@ export function previewNewcomer(handle: string, platforms: readonly Platform[]):
     linkedPlatforms: linked,
     // Her yeni yoldaş Kutada'da, Kut Kapısı'nın önünde başlar.
     region: "kutada",
-    coordinates: { x: LANDMARKS.kutKapisi.x, y: LANDMARKS.kutKapisi.y + 38 },
+    coordinates: { x: LANDMARKS.kutKapisi.x, y: LANDMARKS.kutKapisi.y + 50 },
     now: new Date("2026-01-01T00:00:00Z"),
   });
 }

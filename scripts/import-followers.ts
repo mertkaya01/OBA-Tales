@@ -116,7 +116,7 @@ function arrivalPoint(handle: string): { x: number; y: number } {
   for (let attempt = 0; attempt < 80; attempt++) {
     const h = hashString(`varis:${handle}:${attempt}`);
     const angle = ((h % 3600) / 3600) * Math.PI * 2;
-    const r = PORTAL_RADIUS + 4 + ((h >>> 12) % 1000) / 1000 * 54;
+    const r = PORTAL_RADIUS + 4 + ((h >>> 12) % 1000) / 1000 * 60;
     const p = { x: Math.round((LANDMARKS.kutKapisi.x + Math.cos(angle) * r) * 10) / 10, y: Math.round((LANDMARKS.kutKapisi.y + Math.sin(angle) * r) * 10) / 10 };
     if (pointInPolygon(p, REGIONS.kutada.polygon) && sampleTerrain(terrain, p).height >= 0.04 && !isWet(terrain, p)) return p;
   }

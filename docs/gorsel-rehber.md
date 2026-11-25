@@ -8,7 +8,7 @@ her değişiklikten sonra `npm run dev` açıkken tarayıcı sayfayı kendiliği
 | 1 | Hazır ayarların sayısını değiştir (netlik, renk, boyut) | Yalnızca VS Code |
 | 2 | Kodla çizilmiş 3D karakter parçalarını değiştir, yenisini ekle | Biraz kod okuma |
 | 3 | 2D piksel portreleri ve boss resimlerini değiştir | Harf ızgarası düzenleme |
-| 4 | Kendi 3D modellerini Blockbench ya da Blender'da yap | Model programı + benim bağlayacağım yükleyici |
+| 4 | Kendi 3D modellerini Blender'da yap | Blender kiti (modeller/), yükleyici hazır |
 
 Deneme adresleri: `/?saat=21` (gece), `/?saat=12` (öğle), `/?boss=ayazkurt` (başka boss'un meydanı, yalnızca
 geliştirmede), `/?stres` (5000 kişi, performans denemesi).
@@ -163,21 +163,30 @@ En büyük kalite sıçraması burada.
 - **[Blender](https://www.blender.org)** (ücretsiz): her şeyi yapar ama öğrenmesi uzun sürer.
 - Hazır model kullanacaksan yalnızca **CC0** ya da açık lisanslı modeller kullan (ör. Kenney, Quaternius). Başka oyunlardan model alma; OBA-Tales özgün kalmalı.
 
-**Başlangıç kalıbı (hazır):** oyundaki karakterlerin birebir çıktısı `modeller/referans/` klasöründe OBJ olarak duruyor
-(`npm run modeller` yeniden üretir). Blockbench için 10 kat büyük sürümler `modeller/referans/blockbench/` içinde.
-Açma adımları ve dosya listesi: [modeller/README.md](../modeller/README.md). En iyi başlangıç: `taban.obj` (yalnızca
-gövde) ya da sınıfının dosyası (`kalkaneri.obj`, `okyeli.obj`, `ocakcan.obj`).
+**Karakterler: Blender kiti (hazır, bağlı):** `modeller/OBA-Tales-karakter-kit.blend` haritadaki karakterlerin bütün
+parçalarını içerir.
+1. Bir parçayı Blender'da düzenle.
+2. Dosyanın içindeki `OBA-Tales_oyuna_aktar.py` betiğini çalıştır (`Alt+P`) ya da `npm run blender:aktar` kullan.
+3. Oyun `public/models/karakter-kit.glb` dosyasını görünce bütün takipçiler yeni şekille çizilir.
 
-**Kurallar:**
+Renkler, sınıflar, seçenekler, uzaklık kademeleri ve hareketler koddaki kurallarla aynı kalır. Dosya yoksa koddaki
+şekiller kullanılır. Adım adım anlatım ve kurallar [modeller/README.md](../modeller/README.md) içinde.
+- Parça adları (`kafa`, `govde`, `kalkan` …) korunmalı.
+- Karakter `-Y`'ye bakar, boyu 4,4 m.
+- Kollar omuzdan, bacaklar kalçadan döner.
+- Tek parça en fazla 350 üçgen, bir karakter toplamda en fazla 1500 üçgen.
+
+Ölçüleri ve değişen parçaları denetlemek için `npm run blender:kontrol` kullan.
+
+**OBJ kalıpları:** Blockbench gibi öteki programlar için aynı karakterler `modeller/referans/` içinde OBJ olarak duruyor
+(`npm run modeller`). Blockbench'te yapılan parça OBJ olarak Blender kitine alınıp oradan aktarılır.
+
+**Kurallar (yeni modeller için):**
 - Dışa aktarım biçimi **GLB** (glTF binary).
-- **Karakter:** ayaklar `y = 0`'da, yüz `+z` yönünde, boy yaklaşık 4,4 birim. Az çokgen kullan; binlerce kopya çizilecek, karakter başına 600–1200 üçgen ideal.
-- **Renklenecek parçalar ayrı nesne olsun ve adları parça kimlikleriyle aynı olsun:** `govde`, `kafa`, `sac`, `bacaklar`, `kalkan`, `yay`, `davul`… Böylece her takipçinin kendi renkleri (portresindeki renkler) modele de geçer.
-- **Boss:** tek parça olabilir, kendi renkleri ve dokusuyla. Yüzü `+z` yönünde, ayaklar `y = 0`'da.
-- Dosyalar `public/models/` klasörüne gider: `kalkaneri.glb`, `buzkiran-tekgoz.glb` gibi.
-
-**Bağlantı:** GLB yükleyicisi henüz kurulu değil. İlk modelini hazırladığında bana gönder:
-- Karakterlerde modeldeki parçaları adlarına göre kodla çizilmiş parçaların yerine geçireceğim (çoğaltma ve renklendirme aynı kalacak).
-- Boss'larda modeli olduğu gibi meydana koyacağım.
+- **Boss:** Tek parça olabilir, kendi renkleri ve dokusuyla. Yüzü `+z` yönünde (Blender'da `-Y`), ayaklar yerde.
+- **Kadroya özel model:** Baturay, Dede Toygar gibi kadro üyelerine özel modeller.
+- Boss ve kadro modellerinin yükleyicisi bir sonraki adım. İlk modelin hazır olunca `public/models/` klasörüne koy;
+  meydana ya da kahramanın yerine ben bağlarım.
 
 ---
 

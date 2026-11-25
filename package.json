@@ -16,6 +16,9 @@
     "test:watch": "vitest",
     "og": "tsx scripts/generate-og.ts",
     "modeller": "tsx scripts/export-models.ts",
+    "blender:kit": "tsx scripts/export-models.ts && tsx scripts/blender/calistir.ts kit",
+    "blender:aktar": "tsx scripts/blender/calistir.ts aktar && tsx scripts/blender/kontrol.ts",
+    "blender:kontrol": "tsx scripts/blender/kontrol.ts",
     "takipci:ekle": "tsx scripts/import-followers.ts",
     "youtube:yorumlar": "tsx scripts/fetch-youtube-comments.ts",
     "deploy": "npm run build && npx wrangler@4 deploy"

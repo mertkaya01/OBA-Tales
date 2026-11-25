@@ -87,21 +87,21 @@ export interface Village {
 }
 
 export const VILLAGES: readonly Village[] = [
-  { id: "akinburnu_obasi", name: "Akınburnu obası", region: "akinburnu", center: { x: 473, y: 1455 }, count: 12, radius: 70, banner: "#c4413a", corral: true },
-  { id: "burun_obasi", name: "Burun obası", region: "akinburnu", center: { x: 320, y: 1480 }, count: 6, radius: 48, banner: "#3f6f8a", corral: false },
-  { id: "yel_obasi", name: "Yel obası", region: "akinburnu", center: { x: 615, y: 1395 }, count: 6, radius: 48, banner: "#d9a12a", corral: true },
-  { id: "suzulkoy_obasi", name: "Süzülkoy obası", region: "suzulkoy", center: { x: 855, y: 1365 }, count: 8, radius: 52, banner: "#2a9677", corral: false },
-  { id: "agci_obasi", name: "Ağcılar obası", region: "suzulkoy", center: { x: 965, y: 1452 }, count: 6, radius: 48, banner: "#3f6f8a", corral: false },
-  { id: "koybasi_obasi", name: "Koybaşı obası", region: "suzulkoy", center: { x: 742, y: 1482 }, count: 6, radius: 48, banner: "#c4413a", corral: true },
-  { id: "gecit_obasi", name: "Geçit obası", region: "ayazbogazi", center: { x: 432, y: 1000 }, count: 7, radius: 50, banner: "#5fb8f0", corral: false },
-  { id: "yanki_obasi", name: "Yankı obası", region: "ayazbogazi", center: { x: 560, y: 1206 }, count: 6, radius: 48, banner: "#6a43b8", corral: true },
-  { id: null, name: "Şenlik halkası", region: "kiragiduzu", center: SENLIK_OCAGI, count: 8, radius: 41, banner: "#e2b23c", corral: false },
-  { id: "kiragi_obasi", name: "Kırağı obası", region: "kiragiduzu", center: { x: 785, y: 1140 }, count: 7, radius: 50, banner: "#dfeef2", corral: true },
-  { id: "yayla_obasi", name: "Yayla obası", region: "kiragiduzu", center: { x: 1085, y: 1000 }, count: 7, radius: 50, banner: "#2a9677", corral: true },
-  { id: "pusluada_obasi", name: "Pusluada obası", region: "pusluada", center: { x: 2203, y: 1035 }, count: 6, radius: 44, banner: "#8a8f9a", corral: false },
-  { id: "kemer_obasi", name: "Kemeraltı obası", region: "pusluada", center: { x: 2237, y: 1160 }, count: 5, radius: 44, banner: "#6a43b8", corral: false },
-  { id: "konuk_obasi", name: "Konuk obası", region: "kutada", center: { x: 1490, y: 1210 }, count: 8, radius: 50, banner: "#e2b23c", corral: true },
-  { id: "tapinak_obasi", name: "Tapınak obası", region: "gunozu_tepesi", center: { x: 1030, y: 805 }, count: 6, radius: 48, banner: "#e2b23c", corral: false },
+  { id: "akinburnu_obasi", name: "Akınburnu obası", region: "akinburnu", center: { x: 473, y: 1455 }, count: 12, radius: 82, banner: "#c4413a", corral: true },
+  { id: "burun_obasi", name: "Burun obası", region: "akinburnu", center: { x: 308, y: 1490 }, count: 6, radius: 56, banner: "#3f6f8a", corral: false },
+  { id: "yel_obasi", name: "Yel obası", region: "akinburnu", center: { x: 628, y: 1388 }, count: 6, radius: 56, banner: "#d9a12a", corral: true },
+  { id: "suzulkoy_obasi", name: "Süzülkoy obası", region: "suzulkoy", center: { x: 855, y: 1365 }, count: 8, radius: 60, banner: "#2a9677", corral: false },
+  { id: "agci_obasi", name: "Ağcılar obası", region: "suzulkoy", center: { x: 965, y: 1452 }, count: 6, radius: 56, banner: "#3f6f8a", corral: false },
+  { id: "koybasi_obasi", name: "Koybaşı obası", region: "suzulkoy", center: { x: 742, y: 1482 }, count: 6, radius: 56, banner: "#c4413a", corral: true },
+  { id: "gecit_obasi", name: "Geçit obası", region: "ayazbogazi", center: { x: 432, y: 1000 }, count: 7, radius: 58, banner: "#5fb8f0", corral: false },
+  { id: "yanki_obasi", name: "Yankı obası", region: "ayazbogazi", center: { x: 560, y: 1206 }, count: 6, radius: 56, banner: "#6a43b8", corral: true },
+  { id: null, name: "Şenlik halkası", region: "kiragiduzu", center: SENLIK_OCAGI, count: 8, radius: 48, banner: "#e2b23c", corral: false },
+  { id: "kiragi_obasi", name: "Kırağı obası", region: "kiragiduzu", center: { x: 785, y: 1140 }, count: 7, radius: 58, banner: "#dfeef2", corral: true },
+  { id: "yayla_obasi", name: "Yayla obası", region: "kiragiduzu", center: { x: 1085, y: 1000 }, count: 7, radius: 58, banner: "#2a9677", corral: true },
+  { id: "pusluada_obasi", name: "Pusluada obası", region: "pusluada", center: { x: 2203, y: 1035 }, count: 6, radius: 51, banner: "#8a8f9a", corral: false },
+  { id: "kemer_obasi", name: "Kemeraltı obası", region: "pusluada", center: { x: 2237, y: 1160 }, count: 5, radius: 51, banner: "#6a43b8", corral: false },
+  { id: "konuk_obasi", name: "Konuk obası", region: "kutada", center: { x: 1490, y: 1210 }, count: 8, radius: 58, banner: "#e2b23c", corral: true },
+  { id: "tapinak_obasi", name: "Tapınak obası", region: "gunozu_tepesi", center: { x: 1030, y: 805 }, count: 6, radius: 56, banner: "#e2b23c", corral: false },
 ];
 
 // ── Akın meydanları ────────────────────────────────────────────────
@@ -190,7 +190,7 @@ export const FLAT_SITES: readonly Site[] = [
   ...VILLAGES.map((v) => ({ center: v.center, radius: v.radius + 16 })),
   { center: LANDMARKS.tapinak, radius: 36 },
   { center: MONUMENTS.ataHeykeli, radius: 16 },
-  { center: LANDMARKS.kutKapisi, radius: 70 },
+  { center: LANDMARKS.kutKapisi, radius: 92 },
 ];
 
 /** Her zaman kara kalan alanlar: düzlenen yerler ve kıyıya yakın yapılar. */

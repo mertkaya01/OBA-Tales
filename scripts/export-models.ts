@@ -9,6 +9,7 @@
  *   · Renkler MTL dosyasında (her parçanın örnek rengi).
  *   · Birim: oyundaki birim. Ayak tabanı y = 0, yüz +z yönünde, boy ≈ 4,4 birim.
  *     `blockbench/` alt klasöründekiler 10 kat büyütülmüştür (≈ 44 piksel boy): Blockbench'te rahat çalışılır.
+ *   · `modeller/kit.json`: bütün parçalar tek dosyada; `npm run blender:kit` bundan Blender dosyasını kurar.
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -84,4 +85,35 @@ exportCharacter("okyeli", sample("tiktok", "nadir", { beard: "biyik" }));
 exportCharacter("ocakcan", sample("youtube", "nadir", { hat: "kalpak", kopuz: true, beard: null }));
 exportCharacter("efsanevi-ocakcan", sample("youtube", "efsanevi", { hat: null, beard: "kisa" }));
 for (const member of CAST) exportCharacter(`kadro-${member.id}`, member);
-console.log("Bitti. Blockbench: File → Import → OBJ (Generic Model). Blender: File → Import → Wavefront (.obj).");
+
+// ── Blender kiti: bütün parçalar tek dosyada (npm run blender:kit bunu .blend dosyasına çevirir) ──
+const GROUPS: Record<string, string[]> = {
+  "01 Govde": ["bacaklar", "cizmeler", "cizme-kurku", "govde", "etek", "altin-etek", "yaka", "kemer", "toka", "kese", "nakis", "nazar", "nazar-ici", "nazar-gozu", "kollar", "eller", "atki"],
+  "02 Yuz": ["kafa", "gozler", "kaslar", "burun", "kulaklar", "agiz", "biyik", "kisa-sakal", "uzun-sakal"],
+  "03 Sac": ["sac", "uzun-sac", "topuz", "percem", "orgu"],
+  "04 Baslik": ["tolga", "tolga-tuyu", "bork", "bork-kurku", "kalpak", "kalpak-tepesi", "kulah", "kulah-bandi", "tac"],
+  "05 Kalkaneri": ["kurk-yaka", "omuzluk", "kalkan", "kalkan-kabarasi", "kalkan-amblemi", "kalkan-cemberi", "balta-sapi", "balta-agzi", "kilic", "kilic-kabzasi"],
+  "06 Okyeli": ["baslik", "tuy", "gozluk", "yay", "kiris", "bileklik", "kayis", "okluk", "oklar"],
+  "07 Ocakcan": ["davul", "davul-tokmaklari", "fener", "kopuz", "yumusak-pelerin"],
+  "08 Nadirlik ve kadro": ["uzun-pelerin", "pelerin-runlari", "madalyon", "kadim-tuy", "akin-isareti", "asa", "asa-tasi"],
+};
+const groupOf = (id: string) => Object.entries(GROUPS).find(([, ids]) => ids.includes(id))?.[0] ?? "09 Diger";
+// Her parçanın örnek rengi: o parçayı taşıyan ilk örnek karakterden. Açılışta görünen: tolgalı, kılıçlı Kalkaneri.
+const samples = [kalkaneri, sample("tiktok", "nadir", { beard: "biyik" }), sample("youtube", "efsanevi", { hat: "kalpak", kopuz: true }), ...CAST];
+const kit = PARTS.map((part) => {
+  const owner = samples.find((c) => part.applies(c, resolveLook(c), { inRaid: true })) ?? kalkaneri;
+  const geometry = part.geometry.index ? part.geometry.toNonIndexed() : part.geometry;
+  const positions = Array.from(geometry.getAttribute("position").array as ArrayLike<number>, (v) => Math.round(v * 10000) / 10000);
+  return {
+    id: part.id,
+    group: groupOf(part.id),
+    color: part.color(resolveLook(owner)),
+    visible: part.applies(kalkaneri, resolveLook(kalkaneri), { inRaid: false }),
+    arms: part.arms ?? false,
+    legs: part.legs ?? false,
+    positions,
+  };
+});
+writeFileSync(resolve("modeller/kit.json"), `${JSON.stringify({ version: 1, note: "Oyun koordinatı: y yukarı, yüz +z. Üçgenler sırayla.", parts: kit })}\n`, "utf8");
+console.log(`  kit.json                 ${kit.length} parça (Blender kiti için)`);
+console.log("Bitti. Blockbench: File → Import → OBJ (Generic Model). Blender: npm run blender:kit (ya da File → Import → Wavefront).");

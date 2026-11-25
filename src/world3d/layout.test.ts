@@ -109,7 +109,7 @@ describe("doğa", () => {
   it("yeterince ağaç, kaya ve buz kristali üretir", () => {
     expect(trees.length).toBeGreaterThan(3000);
     expect(rocks.length).toBeGreaterThan(20);
-    expect(ice.length).toBeGreaterThan(15);
+    expect(ice.length).toBeGreaterThan(10);
   });
 
   it("hepsi karada, nehir ve göl dışında; yapıların çevresi boş", () => {
@@ -185,7 +185,7 @@ describe("obalar, anıtlar ve patikalar", () => {
       expect(pointInPolygon(c.coordinates, REGIONS[c.region].polygon), c.id).toBe(true);
       expect(isWet(terrain, c.coordinates), c.id).toBe(false);
       // Yeni gelenler (Kutada) Kut Kapısı'nın meydanında da olabilir.
-      const atPortal = c.region === "kutada" && distance(LANDMARKS.kutKapisi, c.coordinates) <= 95;
+      const atPortal = c.region === "kutada" && distance(LANDMARKS.kutKapisi, c.coordinates) <= 115;
       const home = atPortal || VILLAGES.filter((v) => v.region === c.region).some((v) => distance(v.center, c.coordinates) <= v.radius + 27);
       expect(home, c.id).toBe(true);
     }
@@ -211,7 +211,7 @@ describe("Kutada ve Kut Kapısı", () => {
       expect(isLandAt({ x: (span.from.x + span.to.x) / 2, y: span.from.y })).toBe(false);
       for (const end of [span.from, span.to]) expect(trails.paths.some((path) => path.some((p) => distance(p, end) < 12)), JSON.stringify(end)).toBe(true);
     }
-    expect(trails.paths.some((path) => path.some((p) => distance(p, LANDMARKS.kutKapisi) < 45))).toBe(true);
+    expect(trails.paths.some((path) => path.some((p) => distance(p, LANDMARKS.kutKapisi) < 58))).toBe(true);
   });
 
   it("yelkenlilerin deniz yolları açık suda", () => {

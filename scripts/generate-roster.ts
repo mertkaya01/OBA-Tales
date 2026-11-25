@@ -225,7 +225,7 @@ function homePoint(rng: Rng, region: RegionId): { x: number; y: number } {
   if (region === "kutada" && rng.chance(0.6)) {
     for (let attempt = 0; attempt < 60; attempt++) {
       const angle = rng.float(0, Math.PI * 2);
-      const r = rng.float(PORTAL_RADIUS + 4, 88);
+      const r = rng.float(PORTAL_RADIUS + 4, 108);
       const p = { x: LANDMARKS.kutKapisi.x + Math.cos(angle) * r, y: LANDMARKS.kutKapisi.y + Math.sin(angle) * r };
       if (sampleTerrain(terrain, p).height >= 0.04 && !isWet(terrain, p)) return p;
     }

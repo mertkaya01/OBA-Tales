@@ -46,8 +46,8 @@ const MOTE = new OctahedronGeometry(0.45, 0);
 const PULSE = new RingGeometry(0.85, 1, 32).rotateX(-Math.PI / 2);
 const MOTES = 28;
 const PULSE_PERIOD = 5;
-/** Kapının boyu: karakterlerin yaklaşık 4,5 katı (taş halka ≈ 39 birim). */
-const PORTAL_SCALE = 1.7;
+/** Kapının boyu: karakterlerin yaklaşık 6 katı (kilit taşının tepesi ≈ 49 birim). */
+const PORTAL_SCALE = 2.3;
 
 const VORTEX_VERTEX = /* glsl */ `
 varying vec2 vLocal;

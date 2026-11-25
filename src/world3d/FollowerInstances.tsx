@@ -5,6 +5,7 @@
  *   · Gezinme, yürüyüş, nefes ve Oba Narası ekran kartında hesaplanır (living/motion.ts); gölgeler de yürür.
  *   · Üç kademe: en uzakta yalnızca gövde, kafa, atkı, başlık ve pelerin; orta mesafede kollar, saç, ekipman;
  *     yakında yüz, toka, eller ve runlar gibi ayrıntılar.
+ *   · Parçaların şekli koddan gelir; public/models/karakter-kit.glb varsa (Blender kiti) oradan.
  *   · Görünmez bir silindir katmanı tıklama ve üzerine gelmeyi yakalar; ışın testinden hemen önce
  *     silindirler karakterlerin o anki yerine taşınır.
  */
@@ -23,6 +24,8 @@ import type { Character } from "../types";
 import { HIT_GEOMETRY } from "./characters/characterKit";
 import { createCharacterMaterials, type CharacterMaterials, type CharacterUniforms } from "./characters/characterMaterials";
 import { buildInstanceData, type PartInstances } from "./characters/instanceData";
+import type { KitGeometries } from "./characters/kitModel";
+import { useKitModel } from "./characters/useKitModel";
 import { currentPosition, type CharacterPlacement, type WorldPoint } from "./living/placement";
 import { worldZoomOf } from "./worldScale";
 
@@ -42,10 +45,12 @@ function withMotionAttribute(source: BufferGeometry, motion: Float32Array): Buff
   return geometry;
 }
 
-function PartMesh({ part, materials }: { part: PartInstances; materials: CharacterMaterials }) {
+function PartMesh({ part, materials, kit }: { part: PartInstances; materials: CharacterMaterials; kit: KitGeometries | null }) {
   const ref = useRef<InstancedMesh>(null);
   const { size } = useThree();
-  const geometry = useMemo(() => withMotionAttribute(part.spec.geometry, part.motion), [part]);
+  // Blender kiti (public/models/karakter-kit.glb) bu parçanın şeklini veriyorsa o, yoksa koddaki şekil.
+  const source = kit?.get(part.spec.id) ?? part.spec.geometry;
+  const geometry = useMemo(() => withMotionAttribute(source, part.motion), [source, part]);
   const { glow, legs, arms } = part.spec;
   const material: Material = glow ? (arms ? materials.glowArms : materials.glow) : legs ? materials.legs : arms ? materials.arms : materials.tinted;
 
@@ -61,7 +66,8 @@ function PartMesh({ part, materials }: { part: PartInstances; materials: Charact
     mesh.computeBoundingSphere();
     // Gezinenler evlerinden biraz uzaklaşır: sınır küresi buna yer bıraksın.
     if (mesh.boundingSphere) mesh.boundingSphere.radius += 16;
-  }, [part, materials]);
+    // Geometri değişince (Blender kiti geldi) InstancedMesh yeniden kurulur: kopya bilgisi yeniden yazılır.
+  }, [part, materials, geometry]);
 
   useFrame(({ camera }) => {
     if (part.spec.core || !ref.current) return;
@@ -93,6 +99,7 @@ interface FollowerInstancesProps {
 export function FollowerInstances({ characters, placements, terrain, uniforms, activeParticipantIds, onSelect, onHover }: FollowerInstancesProps) {
   const { gl } = useThree();
   const materials = useMemo(() => createCharacterMaterials(uniforms), [uniforms]);
+  const kit = useKitModel();
   const data = useMemo(() => buildInstanceData(characters, placements, activeParticipantIds), [characters, placements, activeParticipantIds]);
   const hitRef = useRef<InstancedMesh>(null);
   const lastSync = useRef(Number.NEGATIVE_INFINITY);
@@ -139,7 +146,7 @@ export function FollowerInstances({ characters, placements, terrain, uniforms, a
   return (
     <group>
       {data.parts.map((part) => (
-        <PartMesh key={`${part.spec.id}:${part.count}`} part={part} materials={materials} />
+        <PartMesh key={`${part.spec.id}:${part.count}`} part={part} materials={materials} kit={kit} />
       ))}
       {data.ids.length > 0 && (
         <instancedMesh

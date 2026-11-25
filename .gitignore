@@ -34,3 +34,7 @@ veri/girdi/
 
 # Cloudflare Wrangler yerel durumu
 .wrangler/
+
+# Blender yedekleri (Ctrl+S ve blender:kit --yenile)
+*.blend1
+modeller/*-yedek-*.blend

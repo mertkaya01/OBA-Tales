@@ -68,9 +68,9 @@ function glowTexture(): DataTexture {
 }
 const SMOKE = new IcosahedronGeometry(0.9, 0);
 /** Oba ateşinin boyu (karakterler 1,8 kat iri olduğu için ateş de büyütüldü). */
-const FIRE_SCALE = 2.1;
+const FIRE_SCALE = 2.4;
 /** Tuğ sancakları uzaktan seçilsin: obanın simgesi. */
-const BANNER_SCALE = 1.9;
+const BANNER_SCALE = 2.6;
 
 const TRIPOD = merge(...ring(3, 1.1).map((p) => cylinder(0.08, 0.1, 3.2, 4, { at: [p.x * 0.5, 1.5, p.z * 0.5], rx: p.z * 0.3, rz: -p.x * 0.3 })));
 const POT = merge(cylinder(0.85, 0.65, 1.1, 8, { at: [0, 1.1, 0] }), cylinder(0.9, 0.9, 0.15, 8, { at: [0, 1.65, 0] }));
@@ -279,8 +279,8 @@ export function Settlements({ terrain, fogUniforms, animate, sky }: SettlementsP
       rings: camps.map((c) => item(c.fire, { scale: FIRE_SCALE }, -0.15)),
       logs: camps.map((c) => item(c.fire, { rotationY: hashAngle(c.village.name), scale: FIRE_SCALE })),
       glows: camps.map((c) => item(c.fire, {}, 0)),
-      tripods: camps.map((c) => item(c.cauldron, { rotationY: hashAngle(`${c.village.name}k`), scale: 1.6 })),
-      woodpiles: camps.map((c) => item(c.woodpile, { rotationY: hashAngle(`${c.village.name}o`), scale: 1.6 })),
+      tripods: camps.map((c) => item(c.cauldron, { rotationY: hashAngle(`${c.village.name}k`), scale: 1.8 })),
+      woodpiles: camps.map((c) => item(c.woodpile, { rotationY: hashAngle(`${c.village.name}o`), scale: 1.8 })),
       poles: camps.map((c) => item(c.banner, { scale: BANNER_SCALE }, -0.2)),
       flags: camps.map((c) => item(c.banner, { rotationY: hashAngle(`${c.village.name}s`), color: c.village.banner, scale: BANNER_SCALE }, -0.2)),
       corrals: camps.filter((c) => c.corral).map((c) => item(c.corral!, { rotationY: hashAngle(`${c.village.name}a`) }, -0.15)),

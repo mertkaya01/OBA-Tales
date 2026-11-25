@@ -49,7 +49,7 @@ function stops(): Stop[] {
     { point: LANDMARKS.kadimKemer.to, clear: 0 },
     { point: LANDMARKS.batiKemer.from, clear: 0 },
     { point: LANDMARKS.batiKemer.to, clear: 0 },
-    { point: LANDMARKS.kutKapisi, clear: 32 },
+    { point: LANDMARKS.kutKapisi, clear: 44 },
     { point: MONUMENTS.ataHeykeli, clear: 8 },
     { point: MONUMENTS.dilekAgaci, clear: 6 },
     ...MONUMENTS.gozcuKuleleri.map((p) => ({ point: p, clear: 4 })),

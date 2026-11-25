@@ -1,0 +1,190 @@
+# OBA-Tales referans renkleri: kalkaneri-borklu-baltali
+newmtl bacaklar
+Kd 0.2314 0.1882 0.2745
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizmeler
+Kd 0.2902 0.1843 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl govde
+Kd 0.3529 0.2902 0.4784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl etek
+Kd 0.2627 0.2157 0.3490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yaka
+Kd 0.7216 0.6588 0.5333
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer
+Kd 0.4784 0.2902 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl toka
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kollar
+Kd 0.2627 0.2157 0.3490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl eller
+Kd 0.9647 0.8235 0.7098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl atki
+Kd 0.4980 0.7490 0.4157
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kafa
+Kd 0.9647 0.8235 0.7098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gozler
+Kd 0.1059 0.0784 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kaslar
+Kd 0.4784 0.2902 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl burun
+Kd 0.8784 0.6706 0.5412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kulaklar
+Kd 0.9647 0.8235 0.7098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sac
+Kd 0.4784 0.2902 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl uzun-sakal
+Kd 0.4784 0.2902 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bork
+Kd 0.9451 0.9137 0.8235
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bork-kurku
+Kd 0.9373 0.9020 0.8314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kurk-yaka
+Kd 0.9373 0.9020 0.8314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl omuzluk
+Kd 0.7882 0.5765 0.2275
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkan
+Kd 0.7882 0.5765 0.2275
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkan-kabarasi
+Kd 0.9647 0.8275 0.4353
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkan-amblemi
+Kd 0.4980 0.7490 0.4157
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkan-cemberi
+Kd 0.4784 0.2902 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl balta-sapi
+Kd 0.4784 0.2902 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl balta-agzi
+Kd 0.9647 0.8275 0.4353
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+

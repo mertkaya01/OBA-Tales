@@ -1,0 +1,5 @@
+# Depoda ve çalışma kopyasında satır sonları LF (Cloudflare Linux üzerinde derler)
+* text=auto eol=lf
+*.png binary
+*.glb binary
+*.woff2 binary

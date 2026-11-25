@@ -1,0 +1,197 @@
+# OBA-Tales referans renkleri: kadro-isikay
+newmtl bacaklar
+Kd 0.2314 0.1882 0.2745
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizmeler
+Kd 0.2902 0.1843 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl govde
+Kd 0.6118 0.7804 0.9020
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl altin-etek
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yaka
+Kd 0.9412 0.3922 0.1843
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer
+Kd 0.4784 0.2902 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl toka
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kollar
+Kd 0.4353 0.6392 0.7843
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl eller
+Kd 0.5529 0.3529 0.2314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl atki
+Kd 0.9412 0.3922 0.1843
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kafa
+Kd 0.5529 0.3529 0.2314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gozler
+Kd 0.1059 0.0784 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kaslar
+Kd 0.9098 0.8863 0.8353
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl burun
+Kd 0.4314 0.2627 0.1647
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl uzun-sakal
+Kd 0.9098 0.8863 0.8353
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl baslik
+Kd 0.6118 0.7804 0.9020
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl tuy
+Kd 0.9412 0.3922 0.1843
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gozluk
+Kd 0.9020 0.9451 0.9725
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yay
+Kd 0.9451 0.9137 0.8235
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kiris
+Kd 0.9098 0.8863 0.8353
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bileklik
+Kd 0.4784 0.2902 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kayis
+Kd 0.4784 0.2902 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okluk
+Kd 0.4784 0.2902 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl oklar
+Kd 0.9412 0.3922 0.1843
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl uzun-pelerin
+Kd 0.7216 0.2000 0.1725
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl pelerin-runlari
+Kd 1.0000 0.9647 0.8118
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl madalyon
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kadim-tuy
+Kd 1.0000 0.9647 0.8118
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+

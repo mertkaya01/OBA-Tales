@@ -1,0 +1,567 @@
+/*
+ * OBA-TALES TEMASI — Tailwind CSS v4
+ *
+ * Renk ailesi:  gece (deniz/gökyüzü) · buz · yün (parşömen) · kilim (sıcak kırmızı)
+ *               günözü (altın) · zümrüt · mor · alev
+ * Sınıf renkleri:    kalkaneri · okyeli · ocakcan        → bg-kalkaneri, text-okyeli …
+ * Nadirlik renkleri: siradan · nadir · destansi · efsanevi → border-efsanevi, ring-nadir …
+ */
+@import "tailwindcss";
+
+@theme {
+  /* ── Yazı tipleri ── */
+  --font-display: "Pixelify Sans", ui-monospace, monospace;
+  --font-sans: "Nunito Variable", "Nunito", system-ui, "Segoe UI", sans-serif;
+
+  /* ── Gece denizi ── */
+  --color-gece-950: #08111e;
+  --color-gece-900: #0d1b2e;
+  --color-gece-800: #132a45;
+  --color-gece-700: #1b3a5c;
+  --color-gece-600: #26507a;
+
+  /* ── Buz ── */
+  --color-buz-50: #f3f9fd;
+  --color-buz-100: #e2f0f9;
+  --color-buz-200: #c3e0f2;
+  --color-buz-300: #98c8e8;
+  --color-buz-400: #66a9d8;
+  --color-buz-500: #3f8cc4;
+
+  /* ── Yün / parşömen ── */
+  --color-yun-50: #fbf7ef;
+  --color-yun-100: #f3ead8;
+  --color-yun-200: #e6d6b8;
+  --color-yun-300: #d2bb92;
+  --color-yun-400: #b89c6c;
+  --color-yun-500: #9a7f52;
+  --color-yun-700: #5c4a2c;
+  --color-yun-900: #2e2416;
+
+  /* ── Kilim kırmızısı ── */
+  --color-kilim-400: #e0574c;
+  --color-kilim-500: #c4413a;
+  --color-kilim-600: #9e2f2a;
+
+  /* ── Günözü altını ── */
+  --color-gunozu-200: #fbe7a6;
+  --color-gunozu-300: #f6d36f;
+  --color-gunozu-400: #edbd45;
+  --color-gunozu-500: #d9a12a;
+  --color-gunozu-600: #b07f1c;
+
+  /* ── Zümrüt, mor, alev ── */
+  --color-zumrut-300: #7fd6b8;
+  --color-zumrut-400: #3fb592;
+  --color-zumrut-500: #2a9677;
+  --color-mor-300: #c1a6f0;
+  --color-mor-400: #9a74e0;
+  --color-mor-500: #7b4fc9;
+  --color-alev-300: #f7a477;
+  --color-alev-400: #f07a45;
+  --color-alev-500: #e5562b;
+
+  /* ── Sınıf renkleri ── */
+  --color-kalkaneri: #d0503f;
+  --color-okyeli: #4aa6cf;
+  --color-ocakcan: #e8a83c;
+
+  /* ── Nadirlik renkleri ── */
+  --color-siradan: #b8a888;
+  --color-nadir: #34b08b;
+  --color-destansi: #9566e0;
+  --color-efsanevi: #f0642f;
+
+  /* ── Animasyonlar ── */
+  --animate-aura: aura-pulse 2.4s ease-in-out infinite;
+  --animate-ayaz: ayaz-twinkle 1.8s ease-in-out infinite;
+  --animate-float: soft-float 3.2s ease-in-out infinite;
+  --animate-drawer-in: drawer-in 220ms ease-out;
+  --animate-sheet-in: sheet-in 260ms ease-out;
+
+  @keyframes drawer-in {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes sheet-in {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes aura-pulse {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes ayaz-twinkle {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes soft-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-gece-950 font-sans text-buz-50 antialiased;
+    min-height: 100dvh;
+    /* Kuzey ışığı gibi hafif bir parıltı */
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgb(63 140 196 / 0.22), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 90% 0%, rgb(149 102 224 / 0.12), transparent 70%);
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-wide;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-gunozu-400);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-gunozu-400);
+    color: var(--color-gece-950);
+  }
+}
+
+/*
+ * NADİRLİK ÇERÇEVELERİ — kart, portre ve harita pini aynı sınıfları kullanır.
+ *   frame-siradan  düz yün
+ *   frame-nadir    zümrüt / Süzülkoy
+ *   frame-destansi mor-altın / Günözü (gradyan kenar)
+ *   frame-efsanevi kızıl-altın / Alev-Işık (gradyan kenar)
+ */
+@utility frame-siradan {
+  border-color: color-mix(in oklab, var(--color-siradan) 75%, transparent);
+  background-color: rgb(46 36 22 / 0.55);
+}
+
+@utility frame-nadir {
+  border-color: var(--color-nadir);
+  background-color: rgb(20 60 50 / 0.55);
+}
+
+@utility frame-destansi {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--color-gece-900), var(--color-gece-900)) padding-box,
+    linear-gradient(135deg, var(--color-destansi), var(--color-gunozu-400) 55%, var(--color-destansi)) border-box;
+}
+
+@utility frame-efsanevi {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--color-gece-900), var(--color-gece-900)) padding-box,
+    linear-gradient(135deg, var(--color-efsanevi), var(--color-gunozu-300) 50%, var(--color-efsanevi)) border-box;
+}
+
+/* Piksel sanatı büyütülürken bulanıklaşmasın. */
+@utility pixelated {
+  image-rendering: pixelated;
+}
+
+/*
+ * LEAFLET HARİTASI — React dışında üretilen DOM için düz CSS (kb- öneki).
+ */
+/* Leaflet'in kendi CSS'i sonra yüklendiği için iki sınıfla daha baskın seçici. */
+.leaflet-container.kb-harita {
+  isolation: isolate;
+  /* Adanın derin deniz rengiyle aynı: harita dışı kesintisiz okyanus gibi görünür. */
+  background: #0b2440;
+  font-family: var(--font-sans);
+}
+
+/* Uzak görünümde balonlar bölge adını zaten yazar; etiketleri gizle. */
+.kb-harita.kb-uzak .kb-bolge-etiketi {
+  display: none;
+}
+
+.leaflet-container:focus-visible {
+  outline: 3px solid var(--color-gunozu-400);
+  outline-offset: -3px;
+}
+
+/* Piksel ada büyütülürken keskin kalsın; sis bilerek yumuşak. */
+.kb-harita-zemini {
+  image-rendering: pixelated;
+}
+
+.kb-sis {
+  pointer-events: none;
+}
+
+.kb-bolge {
+  transition: fill-opacity 0.15s;
+}
+
+.kb-bolge:hover {
+  fill-opacity: 0.08;
+}
+
+/* Leaflet'in varsayılan beyaz divIcon kutusunu kaldır. */
+.kb-ikon {
+  background: none;
+  border: none;
+}
+
+/* Pin: nadirlik çerçevesi içinde karakterin piksel çizimi (atlas). */
+.kb-pin {
+  position: relative;
+  width: 36px;
+  height: 44px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 9px;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.45);
+  transition: transform 0.12s ease-out;
+}
+
+.kb-pin__sprite {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 32px;
+  height: 40px;
+  background-image: var(--kb-atlas);
+  background-size: var(--kb-atlas-w) var(--kb-atlas-h);
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+.leaflet-marker-icon:hover .kb-pin,
+.leaflet-marker-icon:focus-visible .kb-pin {
+  transform: translateY(-3px) scale(1.08);
+}
+
+.kb-pin.frame-destansi {
+  box-shadow:
+    0 0 10px rgb(149 102 224 / 0.75),
+    0 4px 8px rgb(0 0 0 / 0.45);
+}
+
+.kb-pin.frame-efsanevi {
+  box-shadow:
+    0 0 14px rgb(240 100 47 / 0.85),
+    0 4px 8px rgb(0 0 0 / 0.45);
+}
+
+.kb-pin--secili {
+  outline: 3px solid var(--color-gunozu-300);
+  outline-offset: 2px;
+  transform: translateY(-4px) scale(1.15);
+}
+
+/* Aktif bölüm akınındakiler: sağ üstte parlayan altın piksel */
+.kb-pin--akin::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-gunozu-300);
+  box-shadow: 0 0 6px var(--color-gunozu-300);
+}
+
+/*
+ * Küme balonu: dış halka nadirlik dağılımını gösteren pasta dilimleri (inline conic-gradient),
+ * içte sayı; uzak görünümde bölge adı.
+ */
+.kb-kume {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  border-radius: 9999px;
+  box-shadow: 0 6px 14px rgb(0 0 0 / 0.5);
+  cursor: pointer;
+  transition: transform 0.12s ease-out;
+}
+
+.leaflet-marker-icon:hover .kb-kume {
+  transform: scale(1.06);
+}
+
+.kb-kume__ic {
+  display: grid;
+  place-content: center;
+  border-radius: 9999px;
+  background: rgb(13 27 46 / 0.94);
+  color: var(--color-buz-50);
+  font-family: var(--font-display);
+  line-height: 1.05;
+  text-align: center;
+}
+
+.kb-kume__sayi {
+  font-size: 15px;
+}
+
+.kb-kume__ad {
+  font-size: 10px;
+  color: var(--color-gunozu-200);
+}
+
+/* İsim baloncuğu */
+.leaflet-tooltip.kb-tooltip {
+  border: 1px solid rgb(255 255 255 / 0.15);
+  border-radius: 8px;
+  background: var(--color-gece-900);
+  color: var(--color-buz-50);
+  font-weight: 700;
+  box-shadow: 0 6px 14px rgb(0 0 0 / 0.45);
+}
+
+.leaflet-tooltip-top.kb-tooltip::before {
+  border-top-color: var(--color-gece-900);
+}
+
+/* Bölge adları: haritaya yazılmış gibi, kutusuz */
+.leaflet-tooltip.kb-bolge-etiketi {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-yun-50);
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-shadow:
+    0 2px 0 var(--color-gece-950),
+    0 0 6px var(--color-gece-950);
+}
+
+.leaflet-tooltip.kb-bolge-etiketi::before {
+  display: none;
+}
+
+/*
+ * 3D DÜNYA
+ */
+.kb-dunya {
+  touch-action: none;
+}
+
+.kb-dunya canvas {
+  image-rendering: pixelated;
+}
+
+.kb-dunya canvas:focus-visible {
+  outline: 3px solid var(--color-gunozu-400);
+  outline-offset: -3px;
+}
+
+.kb-bolge-etiketi-3d {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  white-space: nowrap;
+  color: var(--color-yun-50);
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-shadow:
+    0 2px 0 var(--color-gece-950),
+    0 0 6px var(--color-gece-950);
+  user-select: none;
+}
+
+.kb-bolge-etiketi-3d__sis {
+  font-size: 10px;
+  color: var(--color-buz-200);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Seçili karakterin isim plakası (ad + nadirlik + sınıf) */
+.kb-plaka {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 10px 5px;
+  border: 2px solid var(--plaka-renk, var(--color-siradan));
+  border-radius: 8px;
+  background: rgb(13 27 46 / 0.92);
+  box-shadow: 0 6px 14px rgb(0 0 0 / 0.45);
+  white-space: nowrap;
+}
+
+.kb-plaka:empty {
+  display: none;
+}
+
+.kb-plaka--siradan {
+  --plaka-renk: var(--color-siradan);
+}
+.kb-plaka--nadir {
+  --plaka-renk: var(--color-nadir);
+}
+.kb-plaka--destansi {
+  --plaka-renk: var(--color-destansi);
+}
+.kb-plaka--efsanevi {
+  --plaka-renk: var(--color-efsanevi);
+}
+
+.kb-plaka__ad {
+  color: var(--color-buz-50);
+  font-family: var(--font-display);
+  font-size: 14px;
+}
+
+.kb-plaka__alt {
+  color: var(--plaka-renk);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Topluluğun ad koyduğu yerler, akın meydanı ve boss plakası */
+.kb-yer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  white-space: nowrap;
+  user-select: none;
+  text-shadow:
+    0 2px 0 var(--color-gece-950),
+    0 0 6px var(--color-gece-950);
+}
+
+.kb-yer__ad {
+  color: var(--color-yun-50);
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.03em;
+}
+
+.kb-yer__alt {
+  color: var(--color-buz-200);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.kb-yer__koyan {
+  margin-top: 2px;
+  padding: 1px 7px 2px;
+  border-radius: 999px;
+  background: rgb(13 27 46 / 0.85);
+  color: var(--color-buz-200);
+  font-size: 10px;
+  text-shadow: none;
+}
+
+.kb-yer__koyan b {
+  color: var(--color-gunozu-300);
+  font-weight: 700;
+}
+
+button.kb-yer__koyan {
+  cursor: pointer;
+  transition: background-color 120ms;
+}
+
+button.kb-yer__koyan:hover,
+button.kb-yer__koyan:focus-visible {
+  background: var(--color-gece-700);
+  outline: none;
+}
+
+/* Boss plakası tıklanınca akın paneli açılır */
+button.kb-yer__ad:hover,
+button.kb-yer__ad:focus-visible {
+  background: var(--color-gece-700);
+  outline: 2px solid var(--color-gunozu-400);
+  outline-offset: 1px;
+}
+
+.kb-yer--boss .kb-yer__ad,
+.kb-yer--meydan .kb-yer__ad {
+  padding: 3px 10px 4px;
+  border: 2px solid var(--color-alev-400);
+  border-radius: 8px;
+  background: rgb(13 27 46 / 0.92);
+  box-shadow: 0 6px 14px rgb(0 0 0 / 0.45);
+  color: var(--color-buz-50);
+  font-size: 15px;
+  text-shadow: none;
+}
+
+.kb-yer--meydan .kb-yer__ad {
+  border-color: var(--color-gunozu-400);
+  font-size: 13px;
+}
+
+.kb-yer--boss .kb-yer__alt,
+.kb-yer--meydan .kb-yer__alt {
+  margin-top: 3px;
+  color: var(--color-alev-300);
+}
+
+/* Üzerine gelinen karakterin adı */
+.kb-isim {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgb(13 27 46 / 0.88);
+  color: var(--color-buz-50);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.kb-isim:empty {
+  display: none;
+}
+
+/* Hareket azaltma tercihi: animasyonlar ve geçişler neredeyse anında biter. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

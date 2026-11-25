@@ -1,0 +1,26 @@
+# Cloudflare Pages yanıt başlıkları.
+# Yerelde `npm run preview` de "/*" bloğunu okur (vite.config.ts), böylece CSP yayından önce denenebilir.
+#
+#   script-src 'self'          satır içi script yok; Pixi "pixi.js/unsafe-eval" ile eval'siz çalışır
+#   style-src 'unsafe-inline'  React ve Leaflet'in style="" öznitelikleri için
+#   img-src data: blob:        piksel portreler ve harita data URL olarak üretilir
+#   worker-src blob:           Pixi'nin doku yükleme işçisi
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# Dosya adında içerik özeti olan derleme çıktıları hiç değişmez: bir yıl önbellekte kalabilir.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Canlı oba verisi (roster, sezon, dünya) güncellenince bir dakika içinde herkese ulaşsın.
+/data/*
+  Cache-Control: public, max-age=60, must-revalidate
+
+/lisanslar/*
+  Cache-Control: public, max-age=3600
+  Content-Type: text/plain; charset=utf-8

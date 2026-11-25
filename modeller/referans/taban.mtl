@@ -1,0 +1,113 @@
+# OBA-Tales referans renkleri: taban
+newmtl bacaklar
+Kd 0.2314 0.1882 0.2745
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizmeler
+Kd 0.2902 0.1843 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl govde
+Kd 0.3529 0.2902 0.4784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl etek
+Kd 0.2627 0.2157 0.3490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yaka
+Kd 0.2039 0.6902 0.5451
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer
+Kd 0.4784 0.2902 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl toka
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kollar
+Kd 0.2627 0.2157 0.3490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl eller
+Kd 0.5529 0.3529 0.2314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl atki
+Kd 0.2039 0.6902 0.5451
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kafa
+Kd 0.5529 0.3529 0.2314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gozler
+Kd 0.1059 0.0784 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kaslar
+Kd 0.2902 0.1804 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl burun
+Kd 0.4314 0.2627 0.1647
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kulaklar
+Kd 0.5529 0.3529 0.2314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sac
+Kd 0.2902 0.1804 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+

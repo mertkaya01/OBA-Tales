@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "seed": 20261124,
+  "fogSoftness": 24,
+  "revealedRegions": ["kutada", "akinburnu", "ayazbogazi"],
+  "glimpses": [
+    {
+      "name": "Süzülkoy'un ışıkları",
+      "center": { "x": 855, "y": 1403 },
+      "radius": 90
+    }
+  ],
+  "weather": "kar",
+  "namedPlaces": [
+    { "place": "fener", "name": "Yıldızgözü Feneri", "namedBy": "kizil_kunduz" },
+    { "place": "iskele", "name": "Martıkonak İskelesi", "namedBy": "kopuz_yolcu" },
+    { "place": "ruzgar_gulleri", "name": "İkiz Yelkovanlar", "namedBy": "pusfener39" },
+    { "place": "akinburnu_obasi", "name": "Kopuzlu Oba", "namedBy": "buzyaprak" },
+    { "place": "yesilsirt", "name": "Zümrütsırt Adası", "namedBy": "alaz_coban96" }
+  ],
+  "socialLinks": {
+    "instagram": "https://www.instagram.com/oba.tales/",
+    "tiktok": "https://www.tiktok.com/@obatales_",
+    "youtube": "https://www.youtube.com/@OBA-tales"
+  },
+  "updatedAt": "2026-11-25T12:00:00+03:00"
+}

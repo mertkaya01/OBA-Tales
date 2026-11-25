@@ -97,13 +97,59 @@ becerisinden oluşan bir paket (MIT lisanslı).
 - **Kapsamı:** low-poly modelleme, malzeme, ışık, animasyon, dışa aktarım.
 - **Nasıl çalışır:** Blender'ın içine kurulan **Blender MCP** eklentisi Claude'u açık Blender'a bağlar. Böylece
   "kalkanı daha oymalı yap" dediğinde Claude sahneyi görür ve parçayı doğrudan Blender'da düzenler.
-- **Kurulum:** Bunun için `uv` aracı, Blender eklentisi ve beceriler kurulmalı. İstersen söyle, kurulumu birlikte
-  yapalım.
 - **Bu kite zaten uygulananlar:** Paketin önerileri kullanıldı.
   - GLB'de +Y Up ve uygulanmış dönüşümler.
   - Low-poly bütçesi ve düz gölge.
   - `COL_` önekli koleksiyon adları.
   - Siluet denetimi (önizleme görseli).
+
+**Kurulu olanlar (25 Kasım 2026):**
+
+| Ne | Nerede |
+|---|---|
+| `uv` | winget ile kurulu |
+| Blender eklentisi **MCP for Blender** 2.3.1 ([ahujasid](https://github.com/ahujasid/blender-mcp), eski adı blender-mcp) | `%APPDATA%\Blender Foundation\Blender\5.0\scripts\addons\blender_mcp.py`, Preferences → Add-ons'ta açık |
+| Claude Code'daki `blender` MCP sunucusu | Yalnızca bu projede ve yalnızca sende (`local` kapsam, `~/.claude.json`) |
+| 94 beceri | `.claude/skills/` (bu projede, git'e eklenmedi) |
+
+**Kullanmak:**
+1. Kit dosyasını Blender'da aç. Eklenti sunucuyu kendiliğinden başlatır ve yalnızca bu bilgisayardan bağlantı
+   kabul eder (`localhost:9876`). Durumu 3D görünümde `N` → **MCP for Blender** sekmesinde görürsün; kapalıysa
+   **Start MCP Server**'a bas.
+2. Claude Code'da bu projede **yeni bir oturum** aç. MCP araçları oturum açılırken yüklenir.
+3. İsteğini yaz, örneğin "kalkanı daha oymalı yap". Claude sahnedeki nesneleri listeler, Blender'da Python
+   çalıştırarak düzenler ve görüntüyle kontrol eder.
+4. Beğenirsen `Ctrl+S` ile kaydet ve yukarıdaki 5. adımla oyuna aktar. Beğenmezsen `Ctrl+Z` ile geri al.
+
+**Dikkat:**
+- Claude'un yaptığı her değişiklik açık dosyadadır. Büyük bir işten önce `.blend` dosyasının kopyasını al.
+- Telemetri iki yerde de kapalı: sunucuda `DISABLE_TELEMETRY=true`, eklentide **Allow Telemetry** kapalı
+  (varsayılan).
+- Eklentideki Sketchfab, Hyper3D, Meshy gibi dış hizmetler API anahtarı ister. Anahtar girmedikçe çalışmazlar.
+
+**Komutlar:**
+
+```powershell
+claude mcp get blender
+```
+
+Başka bir bilgisayarda kurmak için önce eklentiyi kopyala, sonra Blender'da Preferences → Add-ons'tan
+**Interface: MCP for Blender**'ı aç, en son sunucuyu Claude Code'a kaydet:
+
+```powershell
+uvx mcp-for-blender@2.3.1 install-addon
+```
+
+```powershell
+claude mcp add blender -s local -e DISABLE_TELEMETRY=true -e BLENDER_HOST=localhost -e BLENDER_PORT=9876 -- cmd /c uvx mcp-for-blender@2.3.1
+```
+
+Sürüm sabitlendi (2.3.1). Güncellerken iki komuttaki sürümü birlikte değiştir: eklenti ile sunucu aynı sürümde
+olmalı. Kaldırmak için `claude mcp remove blender -s local` komutunu çalıştır, sonra eklentiyi Blender'da kapat.
+
+**Deneme:** Kurulum günü kitin bir kopyasında `kalkan-kabarasi` MCP üzerinden 1,5 kat büyütüldü ve gömülü
+`OBA-Tales_oyuna_aktar.py` ile geçici bir klasöre aktarıldı. `npm run blender:kontrol` sonucu: 71/71 parça
+dosyada, 1 parça değişmiş, sorun yok. Asıl `.blend` dosyasına ve `public/models/`'a dokunulmadı.
 
 ---
 

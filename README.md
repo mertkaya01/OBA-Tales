@@ -94,18 +94,55 @@ obasına taşı (oba konumları `src/content/sites.ts` → `VILLAGES`).
 
 ## Yayına alma (Cloudflare Pages)
 
-1. Projeyi bir GitHub deposuna gönder.
-2. Cloudflare panelinde **Workers & Pages → Create → Pages → Connect to Git** ile depoyu seç.
-3. Ayarlar:
-   - **Framework preset:** None (ya da Vite)
+Proje bir git deposu (`main` dalı) ve Cloudflare ayarları `wrangler.toml` dosyasında hazır. İki yol var; **A önerilir**
+(her `git push` sonrası site kendiliğinden güncellenir).
+
+### A) GitHub + Cloudflare (otomatik yayın)
+
+1. **GitHub'da boş bir depo aç:** github.com → **New repository** → ad: `oba-tales`. README, .gitignore ya da lisans
+   ekleme (depo boş kalsın). Gizli (private) ya da açık (public) olabilir.
+2. **Projeyi gönder** (GitHub'ın verdiği adresi yaz):
+
+   ```powershell
+   git remote add origin https://github.com/KULLANICI_ADIN/oba-tales.git
+   ```
+
+   ```powershell
+   git push -u origin main
+   ```
+
+   İlk seferde tarayıcıda GitHub'a giriş istenir.
+3. **Cloudflare'e bağla:** dash.cloudflare.com → **Workers & Pages → Create → Pages → Connect to Git** → `oba-tales`
+   deposunu seç.
+   - **Project name:** `oba-tales` (adres `https://oba-tales.pages.dev` olur)
+   - **Framework preset:** None
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
-   - Node sürümü `.node-version` dosyasından okunur (24).
-4. Proje adın `oba-tales` değilse ya da kendi alan adını bağlarsan `.env` içindeki `VITE_SITE_URL` değerini
-   güncelle (paylaşım kartlarındaki görsel bağlantısı buradan kurulur).
+   - Node sürümü `.node-version` dosyasından okunur (24); başka ayar gerekmez.
+4. **Save and Deploy.** İlk derleme 1–2 dakika sürer. Sonra her `git push` yeni sürümü yayınlar.
 
-Git kullanmadan da yayınlanabilir: `npm run build` sonrası `dist/` klasörü Cloudflare panelinde **Upload assets**
-ile yüklenir.
+### B) Git'siz, tek komutla (doğrudan yükleme)
+
+1. Bir kez Cloudflare'e giriş yap (tarayıcı açılır, onaylarsın):
+
+   ```powershell
+   npx wrangler@4 login
+   ```
+
+2. Yayınla (derler ve yükler; ilk seferde `oba-tales` projesini oluşturmayı sorar):
+
+   ```powershell
+   npm run deploy
+   ```
+
+### Yayından sonra
+
+- Proje adın `oba-tales` değilse ya da kendi alan adını bağlarsan `.env` → `VITE_SITE_URL` değerini güncelle, commit'le
+  ve yeniden yayınla (paylaşım kartlarındaki görsel bağlantısı buradan kurulur).
+- Kontrol: ana sayfa, `/karakterler` adresini doğrudan açıp yenile (404 vermemeli), telefondan aç, bir bağlantıyı
+  WhatsApp'ta paylaşıp kart görselini gör.
+- Veri güncellemek (yeni takipçiler, oylar): dosyaları değiştir → `npm run data:check` → commit → `git push`
+  (A yolunda site bir dakika içinde yenilenir; B yolunda `npm run deploy`).
 
 Yayında olanlar:
 

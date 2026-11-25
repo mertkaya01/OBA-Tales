@@ -1,0 +1,6 @@
+# Cloudflare Pages ayarları.
+# GitHub bağlantısıyla yayınlarken Cloudflare bu dosyayı okur; `npm run deploy` (doğrudan yükleme) de kullanır.
+# Proje adı sitenin adresini belirler: oba-tales → https://oba-tales.pages.dev
+name = "oba-tales"
+pages_build_output_dir = "dist"
+compatibility_date = "2025-01-01"

@@ -7,7 +7,7 @@ doğar → sonraki videoda o görünür.** Bu döngü her hafta döner.
 
 | İş | Nasıl | Kim |
 |---|---|---|
-| Siteyi yayına al | README → "Yayına alma (Cloudflare Pages)". Git deposu + Cloudflare hesabı gerekir | Sen (istersen git kısmını ben hazırlarım) |
+| Siteyi yayına al | README → "Yayına alma (Cloudflare Pages)". Git deposu ve Cloudflare ayarları hazır; GitHub deposu ve Cloudflare hesabı senin | Sen |
 | Adresi yaz | Site adresi belli olunca `.env` → `VITE_SITE_URL` (paylaşım kartı bu adresi kullanır) | Ben ya da sen |
 | Örnek takipçileri sil | `npm run takipci:ekle -- --sifirla` (bkz. docs/hesaplar.md) | Sen |
 | Bio bağlantısı | Üç hesabın bio'suna site adresi | Sen |

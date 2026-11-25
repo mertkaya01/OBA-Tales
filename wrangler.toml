@@ -1,6 +1,12 @@
-# Cloudflare Pages ayarları.
-# GitHub bağlantısıyla yayınlarken Cloudflare bu dosyayı okur; `npm run deploy` (doğrudan yükleme) de kullanır.
-# Proje adı sitenin adresini belirler: oba-tales → https://oba-tales.pages.dev
+# Cloudflare ayarları (Workers + statik dosyalar).
+#
+# Cloudflare panelinde "Workers & Pages → Create → Import a repository" ile açılan proje bu dosyayı okur:
+# önce `npm run build` derler, sonra `npx wrangler deploy` dist klasörünü yayınlar. `npm run deploy` de aynısını yapar.
+# Adres: https://oba-tales.<hesap-alt-alanın>.workers.dev (kendi alan adını panelden bağlayabilirsin).
 name = "oba-tales"
-pages_build_output_dir = "dist"
 compatibility_date = "2025-01-01"
+
+[assets]
+directory = "./dist"
+# Tek sayfalık uygulama: /karakterler gibi adresler doğrudan açılınca index.html döner.
+not_found_handling = "single-page-application"

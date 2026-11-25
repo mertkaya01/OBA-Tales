@@ -124,6 +124,19 @@ describe("karakter parça kiti", () => {
     }
   });
 
+  it("BinTaş alev kadını modelini giyer: alev taç, kanatlar, ateş küresi; akın işareti saçının üstünde", () => {
+    const bintas = CAST.find((c) => c.id === "bintas")!;
+    const p = parts(bintas);
+    expect(p).toEqual(expect.arrayContaining(["bintas-tac", "bintas-alev-saci", "bintas-alev-kanatlari", "bintas-alev-kuresi", "bintas-alev-dilleri"]));
+    expect(p.every((id) => id.startsWith("bintas-")), p.join()).toBe(true);
+    const raid = parts(bintas, true);
+    expect(raid).toContain("bintas-akin-isareti");
+    expect(raid).not.toContain("akin-isareti");
+    expect(PARTS.find((x) => x.id === "bintas-alev-kuresi")?.arms).toBe(true);
+    expect(PARTS.find((x) => x.id === "bintas-alev-saci")?.glow).toBe(true);
+    expect(PARTS.find((x) => x.id === "bintas-etek")!.color(resolveLook(bintas))).toBe("#b4211c");
+  });
+
   it("elde tutulanlar kollarla birlikte hareket eder", () => {
     for (const id of ["kollar", "eller", "kalkan", "balta-sapi", "kilic", "yay", "fener", "kopuz", "asa", "buyucu-kollar", "buyucu-eller", "buyucu-asa", "buyucu-asa-tasi"]) {
       expect(PARTS.find((p) => p.id === id)?.arms, id).toBe(true);
@@ -176,7 +189,7 @@ describe("kopya verisi", () => {
   it("her parçanın kopya sayısı o parçayı taşıyan karakter sayısı kadar", () => {
     expect(data.ids).toHaveLength(everyone.length);
     expect(wizards.map((c) => c.id).sort()).toEqual(["buyucu_dort", "dede_toygar"]);
-    expect(heroes.map((c) => c.id).sort()).toEqual(["egetunce", "mhellingtr"]);
+    expect(heroes.map((c) => c.id).sort()).toEqual(["bintas", "egetunce", "mhellingtr"]);
     expect(part("govde").count).toBe(everyone.length - wizards.length - heroes.length);
     expect(part("buyucu-govde").count).toBe(wizards.length);
     expect(part("kalkan").count).toBe(everyone.filter((c) => c.class.id === "kalkaneri" && !heroes.includes(c)).length);
@@ -184,7 +197,7 @@ describe("kopya verisi", () => {
     expect(part("egetunce-kilic").count).toBe(1);
     expect(part("mhellingtr-yay").count).toBe(1);
     expect(part("akin-isareti").count).toBe(2);
-    expect(part("pelerin-runlari").count + part("buyucu-pelerin-runlari").count).toBe(everyone.filter((c) => c.rarity === "efsanevi").length);
+    expect(part("pelerin-runlari").count + part("buyucu-pelerin-runlari").count).toBe(everyone.filter((c) => c.rarity === "efsanevi" && !heroes.includes(c)).length);
   });
 
   it("karakterler kendi koordinatlarında ve zeminin üstünde durur", () => {

@@ -17,7 +17,8 @@
  * takipçinin kendi renkleridir. Parça kimlikleri "buyucu-" ile başlar.
  *
  * Özel kahramanlar (egetunce, mhellingtr) da kendi parçalarını giyer: kova şapkalı, lavantalı ve Gün Kılıçlı bir alp ile
- * yıldızlı pelerinli, Yıldız Yaylı göksel bir okçu. Parça kimlikleri kahramanın adıyla başlar.
+ * yıldızlı pelerinli, Yıldız Yaylı göksel bir okçu; BinTaş ise kullanıcının alev kadını modelini giyer (alev taç,
+ * alev kanatlar, ateş küresi). Parça kimlikleri kahramanın adıyla başlar.
  *
  * Üç kademe (LOD): en uzakta yalnızca `core` parçalar (gövde, kafa, atkı, başlık, pelerin) çizilir; orta mesafede
  * silüet parçaları (kollar, saç, başlıklar, ekipman) eklenir; yakında `detail` parçalar (yüz, toka, el, runlar) belirir.
@@ -27,6 +28,7 @@ import { BoxGeometry, BufferGeometry, ConeGeometry, CylinderGeometry, Float32Buf
 import type { SpriteLook } from "../../game/sprites/composeSprite";
 import { hashString } from "../../lib/random";
 import type { Character, Rarity } from "../../types";
+import { alevKadini } from "./models/alevKadini";
 import { buyucuSifaci, type ModelPart } from "./models/buyucuSifaci";
 
 export interface PartContext {
@@ -121,6 +123,7 @@ const CAST_KIT: Readonly<Record<string, Partial<KitChoice>>> = {
   kursat: { hat: "kalpak", beard: "kisa" },
   egetunce: { hero: "egetunce", hat: null, beard: "kisa" },
   mhellingtr: { hero: "mhellingtr", hat: null, beard: "kisa" },
+  bintas: { hero: "bintas", hat: null, beard: null, kopuz: false },
 };
 
 const variant = (c: Character, key: string, n: number) => hashString(`${key}:${c.id}`) % n;
@@ -459,7 +462,7 @@ const WIZARD_PARTS: readonly PartSpec[] = [
 // Ortak gövde yerine kendi parçalarını giyerler; renkler composeSprite'taki sabit kadro renklerinden gelir
 // (2D portreyle aynı). Parça kimlikleri kahramanın adıyla başlar: "egetunce-kilic", "mhellingtr-yay" …
 
-export type HeroId = "egetunce" | "mhellingtr";
+export type HeroId = "egetunce" | "mhellingtr" | "bintas";
 
 // egetunce: siyah tişört ve şort, beyaz ayakkabı, mor kova şapka (üstünde iki iri göz), omuza inen sarı saç,
 // kısa sakal; sol elinde (x > 0) lavanta demeti, sağ elinde (x < 0) dışa eğik uzun sarı-beyaz Gün Kılıcı.
@@ -586,6 +589,56 @@ const MHE_LIGHT_ARROW = merge(
 type HeroPart = readonly [name: string, geometry: BufferGeometry, color: Paint, flags: Flags];
 const GLASS = "#15121c";
 
+// BinTaş: kullanıcının alev kadını modeli (modeller/kaynak/efsanevi-alev-kadini.obj, npm run model:cevir).
+// Renkleri modeldeki gibidir; alev parçaları kendi ışığıyla parlar, ateş küresi kaldırdığı sol elindedir (x > 0).
+const BINTAS_FLAGS: Readonly<Record<string, Flags>> = {
+  bacaklar: { legs: true },
+  cizmeler: { legs: true },
+  "cizme-kenari": { legs: true, detail: true },
+  etek: { core: true, shadow: true },
+  "alev-dilleri": { glow: true },
+  govde: { core: true, shadow: true },
+  "zirh-kenari": { detail: true },
+  "gogus-amblemi": { glow: true, detail: true },
+  "kor-damar": { glow: true, detail: true },
+  toka: { detail: true },
+  "toka-tasi": { glow: true, detail: true },
+  "kusak-kenari": { detail: true },
+  "omuz-alevi": { glow: true },
+  kollar: { arms: true, shadow: true },
+  bilezik: { arms: true, detail: true },
+  eller: { arms: true, detail: true },
+  kafa: { core: true, shadow: true },
+  gozler: { detail: true },
+  "goz-isigi": { glow: true, detail: true },
+  "goz-parlamasi": { glow: true, detail: true },
+  kaslar: { detail: true },
+  burun: { detail: true },
+  dudaklar: { detail: true },
+  agiz: { detail: true },
+  kupe: { detail: true },
+  kahkul: { detail: true },
+  sac: { core: true },
+  "alev-saci": { glow: true, core: true },
+  "alev-uclari": { glow: true },
+  "tac-alevi": { glow: true },
+  "tac-tasi": { glow: true, detail: true },
+  "alev-kanatlari": { core: true, shadow: true },
+  "kanat-isigi": { glow: true },
+  "alev-kuresi": { arms: true, glow: true },
+  "kure-cekirdegi": { arms: true, glow: true },
+  "kor-parcalari": { arms: true, glow: true, detail: true },
+};
+const BINTAS_PARTS: readonly HeroPart[] = Object.entries(alevKadini).map(([name, part]) => [
+  name,
+  modelGeometry(part, name),
+  () => part.c ?? "#ffffff",
+  BINTAS_FLAGS[name] ?? {},
+]);
+/** Alev saçının üstünde kalsın diye kendi akın işareti olan kahramanlar. */
+const OWN_RAID_MARKER: ReadonlySet<HeroId> = new Set(["bintas"]);
+const BINTAS_RAID_MARKER = place(new OctahedronGeometry(0.3, 0), { at: [0, 5.6, 0] });
+
 const HERO_KITS: Readonly<Record<HeroId, readonly HeroPart[]>> = {
   egetunce: [
     ["sort", EGE_SHORTS, (l) => l.colors.p, { legs: true }],
@@ -654,24 +707,35 @@ const HERO_KITS: Readonly<Record<HeroId, readonly HeroPart[]>> = {
     ["kiris", MHE_STRING, (l) => l.colors.L, { arms: true, glow: true }],
     ["isik-oku", MHE_LIGHT_ARROW, (l) => l.colors.l, { arms: true, glow: true }],
   ],
+  bintas: BINTAS_PARTS,
 };
 
-const HERO_PARTS: readonly PartSpec[] = (Object.keys(HERO_KITS) as HeroId[]).flatMap((hero) =>
-  HERO_KITS[hero].map<PartSpec>(([name, geometry, color, flags]) => ({
-    id: `${hero}-${name}`,
-    geometry,
-    applies: (c, l) => kitChoice(c, l).hero === hero,
-    color,
-    ...flags,
-  })),
-);
+const HERO_PARTS: readonly PartSpec[] = [
+  ...(Object.keys(HERO_KITS) as HeroId[]).flatMap((hero) =>
+    HERO_KITS[hero].map<PartSpec>(([name, geometry, color, flags]) => ({
+      id: `${hero}-${name}`,
+      geometry,
+      applies: (c, l) => kitChoice(c, l).hero === hero,
+      color,
+      ...flags,
+    })),
+  ),
+  {
+    id: "bintas-akin-isareti",
+    geometry: BINTAS_RAID_MARKER,
+    applies: (c, l, ctx) => ctx.inRaid && kitChoice(c, l).hero === "bintas",
+    color: () => "#f6d36f",
+    glow: true,
+    core: true,
+  },
+];
 
 /** Büyücüler ve özel kahramanlar ortak gövdeyi değil kendi modellerini giyer (kahramanlarda akın işareti ortak). */
 const unlessCustom = (part: PartSpec): PartSpec => ({
   ...part,
   applies: (c, l, ctx) => {
     const k = kitChoice(c, l);
-    return !k.wizard && (!k.hero || part.id === "akin-isareti") && part.applies(c, l, ctx);
+    return !k.wizard && (!k.hero || (part.id === "akin-isareti" && !OWN_RAID_MARKER.has(k.hero))) && part.applies(c, l, ctx);
   },
 });
 

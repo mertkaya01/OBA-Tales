@@ -252,6 +252,8 @@ export const RARITY_LAYERS: Readonly<Record<Rarity, GearLayers>> = {
  *   egetunce   mor kova şapka (iki iri göz), sakal, sol elde lavanta, sağda uzun sarı-beyaz Gün Kılıcı
  *              (m/M şapka moru, i ak, l gün sarısı, f sakal, d lavanta, v sap yeşili)
  *   mhellingtr kıvırcık saç, kısa sakal, sırtta okluk, gümüş omuzluk, camgöbeği parlayan Yıldız Yayı
+ *   bintas     alev taç, omuzların arkasından taşan alev kanatlar, kaldırdığı elde ateş küresi, eteğinde alevler
+ *              (l alev, L kor sarısı, v kanat kızılı, g altın)
  */
 export const HERO_LAYERS: Readonly<Record<string, GearLayers>> = {
   egetunce: {
@@ -296,6 +298,23 @@ export const HERO_LAYERS: Readonly<Record<string, GearLayers>> = {
       12: "wL..............",
       13: "wL..............",
       14: ".L..............",
+    }),
+  },
+  bintas: {
+    back: layer({}),
+    front: layer({
+      0: "...l.L.LL.L.l...",
+      1: "....gLgllgLg....",
+      4: "l..............l",
+      5: "vl............lv",
+      6: "vvl..........lvv",
+      7: "lvvl........lvvl",
+      8: ".lvv........vvl.",
+      9: "..l..........lL.",
+      10: ".............LLl",
+      11: "..............l.",
+      13: "...l........l...",
+      14: "..l.l......l.l..",
     }),
   },
 };

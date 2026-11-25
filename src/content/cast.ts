@@ -1,5 +1,5 @@
 /**
- * KADRO — lider, anlatıcı, 3 ana karakter, 2 yan karakter ve 2 özel kahraman (egetunce, mhellingtr).
+ * KADRO — lider, anlatıcı, 3 ana karakter, 2 yan karakter ve 3 özel kahraman (egetunce, mhellingtr, BinTaş).
  *
  * Kadro üyeleri de birer `Character`'dır; haritada takipçilerle birlikte görünür.
  * Sezon başında hikâye kadrosu Akınburnu'nda, başlangıç limanındadır; özel kahramanlar Kut Kapısı'nın önünde bekler.
@@ -283,6 +283,38 @@ export const CAST: readonly CastMember[] = [
       kut: 152,
       special: { label: "Yıldız Işığı", description: "Göğün en yüksek katından gelen ışık: obanın en güçlü gücü.", value: 190 },
     },
+  },
+  {
+    id: "bintas",
+    handle: "bintas",
+    displayName: "BinTaş",
+    roleType: "hero",
+    platform: "youtube",
+    linkedPlatforms: ["youtube", "instagram", "tiktok"],
+    class: toClassInfo("ocakcan"),
+    rarity: "efsanevi",
+    title: "Alev Hatun",
+    points: 1400,
+    region: "kutada",
+    coordinates: { x: 1630, y: 1140 },
+    badges: ["oba_onculugu", "kurucu_oba"],
+    elementAura: "alev",
+    seasonContributions: { ...NO_CONTRIBUTIONS },
+    updatedAt: HEROES_UPDATED_AT,
+    epithet: "Bin Ocağın Közü",
+    bio:
+      "Bin taşlı eski bir ocağın külünden doğduğu anlatılır. Saçları hiç sönmeyen bir alev, tacı közden; avucunda " +
+      "dönen ateş küresi en soğuk ayazda bile obayı ısıtır. Öfkesiyle değil sıcaklığıyla tanınır: üşüyen her " +
+      "yoldaşın yanında biter, sönmeye yüz tutmuş ocakları yeniden yakar.",
+    appearance:
+      "Közden alev taç, alev gibi dalgalanan saçlar, kırmızı-altın zırhlı elbise, eteğinde alev dilleri, sırtında " +
+      "alev kanatları; kaldırdığı elinde dönen ateş küresi.",
+    signature: "“Ocak sönmez, yeter ki biri üflesin.” der; ateş küresi parlayınca bütün oba ısınır.",
+    specialAbilities: [
+      "Bin Taş Ocağı: yere bin küçük kor taşı serper; obanın çevresinde sönmeyen sıcak bir halka yanar.",
+      "Alev Kanatları: kanatlarını açar, üşüyen yoldaşları sıcak bir rüzgârla sarar.",
+      "Ateş Küresi: avucundaki küreyi fırlatır; yolu kapatan buz duvarı buhar olup uçar.",
+    ],
   },
 ];
 

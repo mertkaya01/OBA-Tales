@@ -105,8 +105,8 @@ describe("bölümler ve boss'lar", () => {
 });
 
 describe("kadro", () => {
-  it("lider, anlatıcı, 3 ana, 2 yan karakter ve 2 özel kahramandan oluşur", () => {
-    expect(CAST.map((c) => c.roleType).sort()).toEqual(["core", "core", "core", "hero", "hero", "leader", "narrator", "side", "side"]);
+  it("lider, anlatıcı, 3 ana, 2 yan karakter ve 3 özel kahramandan oluşur", () => {
+    expect(CAST.map((c) => c.roleType).sort()).toEqual(["core", "core", "core", "hero", "hero", "hero", "leader", "narrator", "side", "side"]);
   });
 
   it("Ulu ve Göksel kademeler yalnızca özel kahramanlarda; mhellingtr en güçlüsü", () => {

@@ -145,6 +145,10 @@ Efsanevinin üstünde iki kademe var. Takipçiler bunlara ulaşamaz, yalnızca �
 | Ulu | Alp | Güneş altını | egetunce (Kalkaneri, "Gün Kılıçlı Alp") |
 | Göksel | Gökeri | Yıldız ışığı | mhellingtr (Okyeli, "Yıldızların Okçusu"), obanın en güçlüsü |
 
+Üçüncü özel kahraman BinTaş (Ocakcan, Efsanevi, "Alev Hatun", alev aurası). Kullanıcının alev kadını modelini giyer:
+- Model `modeller/kaynak/efsanevi-alev-kadini.obj` dosyasında.
+- Kod geometrisi `models/alevKadini.ts` içinde. Renkleri modeldeki gibi.
+
 - **Kayıtlar:** `src/content/cast.ts` (rol `hero`). Her kahramanın kendi bilgileri var:
   - unvan ve hikâye
   - 4 özel yetenek (`specialAbilities`)
@@ -153,7 +157,7 @@ Efsanevinin üstünde iki kademe var. Takipçiler bunlara ulaşamaz, yalnızca �
   - Herkesin nitelikleri sınıfından, nadirliğinden ve kimliğinden türer, tavan 99'dur.
   - Özel kahramanlar tavanı aşar ve yalnızca kendilerine ait bir nitelik taşır: Gün Işığı ya da Yıldız Işığı.
 - **3D görünüş:** `characterKit.ts` → `HERO_KITS`. Parçalar `egetunce-*` ve `mhellingtr-*` adını taşır; Blender kitinde
-  `COL_11_egetunce` ve `COL_12_mhellingtr` gruplarındadır.
+  `COL_11_egetunce`, `COL_12_mhellingtr` ve `COL_13_BinTas` gruplarındadır.
 - **2D portre:** `pixelMaps.ts` → `HERO_LAYERS`. Renkler `composeSprite.ts` → `CAST_LOOKS` içinde.
 - **Haritadaki yer:** İkisi de Kut Kapısı'nın önünde nöbet tutar ve yerinden ayrılmaz. Yeni takipçiler onların 16 birim
   yakınına konmaz (`nearHero`).

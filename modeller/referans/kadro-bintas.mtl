@@ -1,0 +1,316 @@
+# OBA-Tales referans renkleri: kadro-bintas
+newmtl bintas-bacaklar
+Kd 0.2235 0.1373 0.1333
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-cizmeler
+Kd 0.1176 0.0902 0.1059
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-cizme-kenari
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-etek
+Kd 0.7059 0.1294 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-etek-kenari
+Kd 0.9765 0.6314 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-alev-dilleri
+Kd 0.9647 0.3373 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-govde
+Kd 0.7059 0.1294 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-gogus-zirh
+Kd 0.3098 0.0627 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-zirh-kenari
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-gogus-amblemi
+Kd 1.0000 0.8588 0.3412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kor-damar
+Kd 0.9765 0.6314 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kemer
+Kd 0.1176 0.0902 0.1059
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-toka
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-toka-tasi
+Kd 0.8314 0.1098 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kusak
+Kd 0.3098 0.0627 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kusak-kenari
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-yaka
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-omuzluk
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-omuz-alevi
+Kd 0.9647 0.3373 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kollar
+Kd 0.8588 0.5451 0.4039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-bilezik
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-eller
+Kd 0.8588 0.5451 0.4039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-boyun
+Kd 0.8588 0.5451 0.4039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kafa
+Kd 0.8588 0.5451 0.4039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-gozler
+Kd 0.1176 0.0902 0.1059
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-goz-isigi
+Kd 0.9765 0.6314 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-goz-parlamasi
+Kd 1.0000 0.9686 0.8745
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kaslar
+Kd 0.3098 0.0627 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-burun
+Kd 0.7451 0.4157 0.3059
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-dudaklar
+Kd 0.7216 0.2039 0.2196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-agiz
+Kd 0.3608 0.0902 0.1020
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kulaklar
+Kd 0.8588 0.5451 0.4039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kupe
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-sac
+Kd 0.3098 0.0627 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kahkul
+Kd 0.3098 0.0627 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-alev-saci
+Kd 0.9647 0.3373 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-alev-uclari
+Kd 1.0000 0.8588 0.3412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-tac
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-tac-alevi
+Kd 0.9765 0.6314 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-tac-tasi
+Kd 0.8314 0.1098 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-alev-kanatlari
+Kd 0.5882 0.1216 0.0980
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kanat-isigi
+Kd 0.9765 0.6314 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-alev-kuresi
+Kd 0.9647 0.3373 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kure-cekirdegi
+Kd 1.0000 0.9686 0.8745
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bintas-kor-parcalari
+Kd 1.0000 0.8588 0.3412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+

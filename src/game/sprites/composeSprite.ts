@@ -70,6 +70,11 @@ const CAST_LOOKS: Readonly<Record<string, LookOverride>> = {
     colors: { s: "#dba57a", S: "#bb855c", c: "#1c2a66", C: "#131d4a", p: "#1a2350", b: "#2a3570", h: "#4a2e1c", m: "#dfe8f5", M: "#ffffff", g: "#dfe8f5", i: "#f2f6ff", l: "#7fe6ff", L: "#b8f4ff", v: "#1c2a66", k: "#2c2440" },
     hair: "kisa",
   },
+  // BinTaş: kırmızı-altın elbise, koyu kızıl saç, alev rengi parıltılar.
+  bintas: {
+    colors: { s: "#db8b67", S: "#be6a4e", c: "#b4211c", C: "#7a1515", p: "#392322", b: "#1e171b", h: "#4f1012", k: "#1e171b", g: "#edbd45", m: "#edbd45", M: "#ffdb57", l: "#f65612", L: "#ffdb57", v: "#961f19", i: "#fff7df" },
+    hair: "uzun",
+  },
 };
 
 /** Karakterin renklerini ve saç modelini belirler. */

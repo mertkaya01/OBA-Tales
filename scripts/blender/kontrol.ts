@@ -7,6 +7,7 @@
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 import { Box3, type BufferGeometry } from "three";
+import { CAST } from "../../src/content/cast";
 import { PARTS } from "../../src/world3d/characters/characterKit";
 import { parseKitModel } from "../../src/world3d/characters/kitModel";
 
@@ -35,6 +36,9 @@ function area(g: BufferGeometry): number {
 const near = (a: number, b: number, tolerance = 0.002) => Math.abs(a - b) <= tolerance * Math.max(1, Math.abs(b));
 
 const warnings: string[] = [];
+// Özel kahramanların parçaları tek bir kişide çizilir: kalabalık üçgen sınırı onlara uygulanmaz.
+const SINGLE = CAST.filter((c) => c.roleType === "hero").map((c) => `${c.id}-`);
+const single = (id: string) => SINGLE.some((prefix) => id.startsWith(prefix));
 const rows: string[] = [];
 let changed = 0;
 let top = 0;
@@ -51,7 +55,7 @@ for (const part of PARTS) {
   top = Math.max(top, a.max.y);
   const tris = triangles(geometry);
   rows.push(`  ${part.id.padEnd(20)}${String(tris).padStart(6)}  ${same ? "aynı" : `DEĞİŞTİ (kodda ${triangles(part.geometry)} üçgen)`}`);
-  if (tris > 350) warnings.push(`${part.id}: ${tris} üçgen. 5000 kişilik kalabalıkta ağır gelir, ≤ 350 iyi olur.`);
+  if (tris > 350 && !single(part.id)) warnings.push(`${part.id}: ${tris} üçgen. 5000 kişilik kalabalıkta ağır gelir, ≤ 350 iyi olur.`);
   // Kol parçaları omuzdan, bacaklar kalçadan döner; köşenin tarafı x işaretinden seçilir.
   if ((part.arms || part.legs) && a.min.x < -0.05 && a.max.x > 0.05 && !(b.min.x < -0.05 && b.max.x > 0.05))
     warnings.push(`${part.id}: x = 0'ın iki yanına da taşıyor; ${part.arms ? "kol" : "bacak"} hareketinde ikiye ayrılır.`);

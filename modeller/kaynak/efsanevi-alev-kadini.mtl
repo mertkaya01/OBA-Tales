@@ -1,0 +1,316 @@
+# OBA-Tales referans renkleri: efsanevi-alev-kadini
+newmtl bacaklar
+Kd 0.2235 0.1373 0.1333
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizmeler
+Kd 0.1176 0.0902 0.1059
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizme-kenari
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl etek
+Kd 0.7059 0.1294 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl etek-kenari
+Kd 0.9765 0.6314 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl alev-dilleri
+Kd 0.9647 0.3373 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl govde
+Kd 0.7059 0.1294 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gogus-zirh
+Kd 0.3098 0.0627 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl zirh-kenari
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gogus-amblemi
+Kd 1.0000 0.8588 0.3412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kor-damar
+Kd 0.9765 0.6314 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer
+Kd 0.1176 0.0902 0.1059
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl toka
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl toka-tasi
+Kd 0.8314 0.1098 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yaka
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl omuzluk
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl omuz-alevi
+Kd 0.9647 0.3373 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kollar
+Kd 0.8588 0.5451 0.4039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bilezik
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl eller
+Kd 0.8588 0.5451 0.4039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl boyun
+Kd 0.8588 0.5451 0.4039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kafa
+Kd 0.8588 0.5451 0.4039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gozler
+Kd 0.1176 0.0902 0.1059
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl goz-isigi
+Kd 0.9765 0.6314 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl goz-parlamasi
+Kd 1.0000 0.9686 0.8745
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kaslar
+Kd 0.3098 0.0627 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl burun
+Kd 0.7450 0.4150 0.3050
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl dudaklar
+Kd 0.7216 0.2039 0.2196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl agiz
+Kd 0.3600 0.0900 0.1000
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kulaklar
+Kd 0.8588 0.5451 0.4039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kupe
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sac
+Kd 0.3098 0.0627 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kahkul
+Kd 0.3098 0.0627 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl alev-saci
+Kd 0.9647 0.3373 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl alev-uclari
+Kd 1.0000 0.8588 0.3412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl tac
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl tac-alevi
+Kd 0.9765 0.6314 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl tac-tasi
+Kd 0.8314 0.1098 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl alev-kanatlari
+Kd 0.5882 0.1216 0.0980
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kanat-isigi
+Kd 0.9765 0.6314 0.1137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl alev-kuresi
+Kd 0.9647 0.3373 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kure-cekirdegi
+Kd 1.0000 0.9686 0.8745
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kor-parcalari
+Kd 1.0000 0.8588 0.3412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kusak
+Kd 0.3098 0.0627 0.0706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kusak-kenari
+Kd 0.9294 0.7412 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+

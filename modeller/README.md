@@ -105,13 +105,14 @@ Modeli değiştirmenin iki yolu var.
 - Kimin giyeceğini söyle, kuralını ben eklerim.
 - Doku (UV ve basecolor) kullanılmaz: oyunda her parçayı takipçinin rengi boyar.
 
-### Özel kahramanlar: egetunce ve mhellingtr
+### Özel kahramanlar: egetunce, mhellingtr ve BinTaş
 
-İki özel kahramanın parçaları Blender kitinde ayrı gruplarda duruyor:
+Üç özel kahramanın parçaları Blender kitinde ayrı gruplarda duruyor:
 - `COL_11_egetunce`: kova şapka ve gözleri, lavanta, uzun Gün Kılıcı.
 - `COL_12_mhellingtr`: yıldızlı pelerin, Yıldız Yayı, okluk, yıldız tacı.
+- `COL_13_BinTas`: senin alev kadını modelin (`modeller/kaynak/efsanevi-alev-kadini.obj`). Renkleri modeldeki gibi.
 
-Parça adları `egetunce-` ve `mhellingtr-` ile başlıyor. Düzenleyip `Alt+P` ile aktarman yeterli. Renkleri 2D portreyle aynı yerden geliyor:
+Parça adları `egetunce-`, `mhellingtr-` ve `bintas-` ile başlıyor. Düzenleyip `Alt+P` ile aktarman yeterli. Renkleri 2D portreyle aynı yerden geliyor:
 `src/game/sprites/composeSprite.ts` → `CAST_LOOKS`.
 
 ### Dosyalar ve komutlar

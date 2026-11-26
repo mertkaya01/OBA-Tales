@@ -1,0 +1,303 @@
+# Okcu - Efsanevi (Legendary Ranger) — scripts/efsanevi-takipciler.ts
+newmtl bacaklar
+Kd 0.1647 0.1412 0.1255
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizmeler
+Kd 0.2902 0.1804 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizme-tabani
+Kd 0.1412 0.1020 0.0784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizme-plakalari
+Kd 0.8510 0.6471 0.2510
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl govde
+Kd 0.4863 0.1216 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gogus-zirhi
+Kd 0.2902 0.1804 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer
+Kd 0.2275 0.1412 0.0941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer-tokasi
+Kd 1.0000 0.8392 0.4196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kollar
+Kd 0.4863 0.1216 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bileklikler
+Kd 0.2902 0.1804 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bileklik-plakalari
+Kd 0.8510 0.6471 0.2510
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl eller
+Kd 0.8706 0.6745 0.4941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl boyun
+Kd 0.8235 0.6196 0.4471
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kafa
+Kd 0.8706 0.6745 0.4941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gozler
+Kd 0.9412 0.9176 0.8627
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl goz-bebekleri
+Kd 0.1804 0.1333 0.1176
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl goz-parlamasi
+Kd 0.9961 0.9882 0.9725
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kaslar
+Kd 0.3059 0.2118 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl burun
+Kd 0.8000 0.5882 0.4157
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl agiz
+Kd 0.5490 0.3216 0.2824
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sac
+Kd 0.2667 0.1882 0.1333
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kapuson
+Kd 0.9451 0.9137 0.8392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kapuson-kenari
+Kd 0.8510 0.6471 0.2510
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl pelerin
+Kd 0.5569 0.1412 0.1255
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl pelerin-kenari
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl omuz-zirhi
+Kd 0.7843 0.5725 0.1804
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bileklik-nakis
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer-suslemesi
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl tuy
+Kd 0.9647 0.9373 0.8784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl tuy-sapi
+Kd 0.8510 0.6471 0.2510
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yay
+Kd 0.7216 0.5255 0.1725
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yay-kavramasi
+Kd 0.2275 0.1098 0.0784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yay-kirisi
+Kd 0.8863 0.8706 0.8078
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yay-plakalari
+Kd 1.0000 0.8392 0.4196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sadak
+Kd 0.5569 0.1412 0.1255
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sadak-kenari
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sadak-kayisi
+Kd 0.4157 0.2745 0.1569
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl oklar
+Kd 0.9137 0.8627 0.7529
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ok-tuyu
+Kd 0.9451 0.9137 0.8392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+
+newmtl kartal-tuy
+Kd 0.9373 0.8941 0.8118
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl omuz-kurku
+Kd 0.9255 0.9020 0.8549
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yay-isigi
+Kd 0.6588 0.9255 1.0000
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yay-uclari
+Kd 1.0000 0.8392 0.4196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+

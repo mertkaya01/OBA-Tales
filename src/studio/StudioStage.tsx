@@ -5,6 +5,9 @@
  *   ReelPainter     piksel hattı çizdikten hemen sonra kareyi 1080×1920 kompozitör tuvaline aktarır ve
  *                   üstüne altyazı, kural kartı ve imzayı çizer
  *
+ * Akın şablonunda yönetmen Akın Günü'nün saatini videoya kilitler (savaş hamleleri kayıtla aynı saniyede), ressam da
+ * Öfke çubuğunu, perde başlığını ve anılan adları çizer.
+ *
  * İkisi paylaşılan bir zaman çizelgesi nesnesini (Timeline) okur; arayüz onu değiştirir (oynat, durdur, kaydet).
  */
 import { useFrame, useThree } from "@react-three/fiber";
@@ -13,8 +16,9 @@ import type { OrthographicCamera } from "three";
 import { currentPosition, type WorldPoint } from "../world3d/living/placement";
 import type { WorldScene } from "../world3d/useWorldScene";
 import { cameraZoomFor, groundY, tiltForZoom } from "../world3d/worldScale";
-import { drawReelFrame } from "./compositor";
-import { cameraAt, cameraDirection, captionAt, cardAt, totalDuration, type Timeline } from "./reel";
+import { actAt, fillAct, rageAt, raidCallouts, type Callout } from "../world3d/living/raidDay";
+import { drawReelFrame, type RaidOverlay } from "./compositor";
+import { cameraAt, cameraDirection, captionAt, cardAt, totalDuration, type RaidDayReel, type Timeline } from "./reel";
 
 const DISTANCE = 1500;
 
@@ -38,6 +42,17 @@ export function StudioDirector({ timeline, scene }: { timeline: RefObject<Timeli
         tl.onEnd = null;
         done?.();
       }
+    }
+
+    // Akın şablonu oynarken Akın Günü videonun saatiyle akar; durunca meydan kendi temposuna döner.
+    const battle = scene.battle;
+    const raid = tl.script.raidDay;
+    if (raid && tl.playing) {
+      battle.intense = true;
+      battle.day = { t: raid.start + tl.t, loop: 0 };
+    } else if (battle.intense) {
+      battle.intense = false;
+      battle.day = null;
     }
 
     const { pose } = cameraAt(tl.script.shots, tl.t);
@@ -64,6 +79,29 @@ export function StudioDirector({ timeline, scene }: { timeline: RefObject<Timeli
   return null;
 }
 
+const calloutCache = new WeakMap<RaidDayReel, Callout[]>();
+
+/** Akın Günü'nün videodaki o anı: boss, Öfke, perde ve son 4,5 saniyede anılan en çok üç yoldaş. */
+function raidOverlay(raid: RaidDayReel, t: number): RaidOverlay {
+  const day = raid.start + t;
+  let callouts = calloutCache.get(raid);
+  if (!callouts) {
+    callouts = raidCallouts(raid.raiders, 0);
+    calloutCache.set(raid, callouts);
+  }
+  const { act } = actAt(day);
+  return {
+    boss: raid.boss,
+    rage: rageAt(day),
+    title: fillAct(act.title, raid.boss, raid.raiders.length),
+    caption: fillAct(act.caption, raid.boss, raid.raiders.length),
+    callouts: callouts
+      .filter((c) => c.at <= day && day - c.at < 4.5)
+      .slice(-3)
+      .map((c) => ({ text: c.text, cls: c.cls, age: day - c.at })),
+  };
+}
+
 /** Piksel hattından (öncelik 1) sonra çalışır: tuvalde o karenin son hâli vardır. */
 export function ReelPainter({ timeline }: { timeline: RefObject<Timeline> }) {
   useFrame(({ gl }) => {
@@ -76,6 +114,7 @@ export function ReelPainter({ timeline }: { timeline: RefObject<Timeline> }) {
       caption: captionAt(tl.script.captions, tl.t, total),
       card: tl.showCards ? cardAt(tl.script.cards, tl.t) : null,
       signature: tl.signature,
+      raid: tl.script.raidDay ? raidOverlay(tl.script.raidDay, tl.t) : null,
     });
   }, 2);
   return null;

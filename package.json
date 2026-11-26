@@ -21,6 +21,7 @@
     "blender:kontrol": "tsx scripts/blender/kontrol.ts",
     "model:cevir": "tsx scripts/obj-to-kit.ts",
     "model:takipciler": "tsx scripts/takipci-modelleri.ts",
+    "model:efsanevi": "tsx scripts/efsanevi-takipciler.ts",
     "takipci:ekle": "tsx scripts/import-followers.ts",
     "youtube:yorumlar": "tsx scripts/fetch-youtube-comments.ts",
     "deploy": "npm run build && npx wrangler@4 deploy"

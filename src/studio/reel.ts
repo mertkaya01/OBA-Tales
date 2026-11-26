@@ -6,8 +6,10 @@
  *   kural kartı      belli bir anda açılıp kapanan bilgi kartı ("Instagram → Kalkaneri" gibi)
  *
  * Şablonlar dünyadaki gerçek yerlerden kurulur: aktif bölümün akın meydanı ve boss'u, Akınburnu obası, seçilen kahraman.
+ * Akın şablonu Akın Günü'nün (world3d/living/raidDay.ts) perdelerini videoya kilitler: savaş, Öfke çubuğu ve anılan
+ * takipçi adları kayıtla aynı saniyede akar.
  */
-import type { Coordinates } from "../types";
+import type { Character, Coordinates } from "../types";
 
 export interface CamPose {
   /** Bakılan nokta (dünya birimi). */
@@ -40,16 +42,25 @@ export interface RuleCard {
   lines: string[];
 }
 
-export const TEMPLATE_IDS = ["bolum", "katil", "kapi", "ada", "kahraman"] as const;
+export const TEMPLATE_IDS = ["bolum", "akin", "katil", "kapi", "ada", "kahraman"] as const;
 export type TemplateId = (typeof TEMPLATE_IDS)[number];
 
 export const TEMPLATE_LABELS: Readonly<Record<TemplateId, string>> = {
   bolum: "Bölüm tanıtımı",
+  akin: "Akın Günü",
   katil: "Obaya katıl çağrısı",
   kapi: "Kut Kapısı: yeni gelenler",
   ada: "Adsız adaya ad koy",
   kahraman: "Kahraman yakın çekimi",
 };
+
+/** Akın Günü'nü videoya bağlar: videonun 0. saniyesi Akın Günü'nün `start` saniyesidir. */
+export interface RaidDayReel {
+  start: number;
+  boss: string;
+  /** Saftaki akıncılar (anılacak adlar bunlardan seçilir). */
+  raiders: readonly Character[];
+}
 
 export interface ReelScript {
   template: TemplateId;
@@ -58,6 +69,8 @@ export interface ReelScript {
   cards: RuleCard[];
   /** Önerilen gün saati (null = şimdiki adalar saati). */
   hour: number | null;
+  /** Yalnızca akın şablonunda. */
+  raidDay?: RaidDayReel;
 }
 
 // ── Zaman çizelgesi ────────────────────────────────────────────────
@@ -191,7 +204,7 @@ export interface StudioContext {
   /** Kutada'daki yeni yoldaş sayısı. */
   newcomers: number;
   episode: { number: number; title: string; question: string | null; options: string[] };
-  raid: { square: Coordinates; focus: Coordinates; facing: number; count: number } | null;
+  raid: { square: Coordinates; focus: Coordinates; facing: number; count: number; raiders: readonly Character[] } | null;
   boss: { name: string } | null;
   hero: { id: string; position: Coordinates; displayName: string; handle: string; title: string; rarity: string; className: string; region: string } | null;
 }
@@ -238,6 +251,48 @@ function episodeTemplate(ctx: StudioContext): ReelScript {
   const total = totalDuration(shots);
   if (episode.options.length > 0) cards.push({ at: total - 4.6, duration: 4.3, title: "YORUMLARA YAZ", lines: episode.options.map(upper) });
   return { template: "bolum", shots, captions, cards, hour: null };
+}
+
+/** Akın Günü'nün videoda başladığı saniye (Oba Narası) ve video boyu: zafer perdesinin sonuna kadar. */
+export const AKIN_REEL_START = 5;
+
+/**
+ * Akın Günü: Oba Narası'ndan boss'un sakinleşmesine 36 saniye. Her perdede kamera o sınıfa gider: kalkan duvarı önden,
+ * ok yağmuru okçuların arkasından, ocak ışığı yandan, son hamlede geniş açı, zaferde sakin boss'a yakın çekim.
+ */
+function raidTemplate(ctx: StudioContext): ReelScript {
+  const { raid, boss, island } = ctx;
+  if (!raid) return episodeTemplate(ctx);
+  const behind = raid.facing + Math.PI;
+  const square = { x: raid.square.x, z: raid.square.y };
+  const focus = { x: raid.focus.x, z: raid.focus.y };
+  const mid = { x: (raid.square.x + raid.focus.x) / 2, z: (raid.square.y + raid.focus.y) / 2 };
+  const front = { x: raid.square.x * 0.35 + raid.focus.x * 0.65, z: raid.square.y * 0.35 + raid.focus.y * 0.65 };
+  const shots: Shot[] = [
+    // 5–9 Oba Narası: adalardan meydana iniş.
+    { duration: 4, from: { x: island.x, z: island.y, zoom: 1, yaw: 0 }, to: { ...square, zoom: 4, yaw: behind + 0.4 } },
+    // 9–16 Kalkan Duvarı: ön safın önünden yavaş yörünge.
+    { duration: 7, from: { ...front, zoom: 13, yaw: behind + 0.5 }, to: { ...front, zoom: 15, yaw: behind - 0.3 }, ease: "linear" },
+    // 16–23 Buz Oku: okçuların arkasından boss'a doğru.
+    { duration: 7, from: { ...square, zoom: 13, yaw: behind }, to: { ...mid, zoom: 11, yaw: behind + 0.15 } },
+    // 23–30 Ocak ışığı: yandan, saf boyunca.
+    { duration: 7, from: { ...mid, zoom: 12, yaw: behind + 1.2 }, to: { ...mid, zoom: 13, yaw: behind + 1.7 }, ease: "linear" },
+    // 30–35 Omuz omuza: geniş açı, bütün oba ve boss.
+    { duration: 5, from: { ...mid, zoom: 9, yaw: behind + 0.6 }, to: { ...mid, zoom: 7, yaw: behind + 0.2 }, ease: "out" },
+    // 35–41 Sakinleşti: dost olan boss'a yakın çekim.
+    { duration: 6, from: { ...mid, zoom: 8, yaw: behind + 0.2 }, to: { ...focus, zoom: 15, yaw: behind - 0.25 } },
+  ];
+  const total = totalDuration(shots);
+  return {
+    template: "akin",
+    shots,
+    // Perde başlıkları ve anılan adlar ekranda kendiliğinden çıkar; buraya yazılan satırlar onlara ek altyazıdır.
+    captions: [],
+    cards: [{ at: total - 4.4, duration: 4.1, title: "SIRADAKİ AKINA GEL", lines: ["TAKİP ET, OBAYA KATIL", "ADIN BİR SONRAKİ AKINDA ÇIKSIN"] }],
+    // İkindi: kar ve buz altın ışıkta.
+    hour: 16.6,
+    raidDay: { start: AKIN_REEL_START, boss: boss?.name ?? "Boss", raiders: raid.raiders },
+  };
 }
 
 function joinTemplate(ctx: StudioContext): ReelScript {
@@ -327,6 +382,8 @@ export function buildTemplate(id: TemplateId, ctx: StudioContext): ReelScript {
   switch (id) {
     case "bolum":
       return episodeTemplate(ctx);
+    case "akin":
+      return raidTemplate(ctx);
     case "katil":
       return joinTemplate(ctx);
     case "kapi":

@@ -81,6 +81,7 @@
   --animate-float: soft-float 3.2s ease-in-out infinite;
   --animate-drawer-in: drawer-in 220ms ease-out;
   --animate-sheet-in: sheet-in 260ms ease-out;
+  --animate-fade-in: fade-in 300ms ease-out;
 
   @keyframes drawer-in {
     from {
@@ -119,6 +120,17 @@
     }
     50% {
       opacity: 1;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 

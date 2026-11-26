@@ -1,10 +1,11 @@
 /**
- * Lejant: nadirlik çerçeveleri, sınıf simgeleri, akın işareti ve sis. Açılıp kapanabilir.
+ * Lejant: nadirlik çerçeveleri, sınıf simgeleri, akın işareti ve sis; tanıtım turunu yeniden açan düğme. Açılıp kapanabilir.
  */
-import { Info } from "lucide-react";
+import { Compass, Info } from "lucide-react";
 import { CLASS_LIST } from "../../content/classes";
 import { RARITY_LIST } from "../../content/rarities";
 import { cn } from "../../lib/cn";
+import { useAppStore } from "../../state/useAppStore";
 import type { Rarity } from "../../types";
 import { ClassIcon } from "../character/ClassIcon";
 
@@ -41,6 +42,14 @@ export function MapLegend({ className }: { className?: string }) {
             </li>
           ))}
         </ul>
+        <button
+          type="button"
+          onClick={() => useAppStore.getState().startTour()}
+          className="inline-flex items-center gap-1.5 justify-self-start rounded-lg border border-gunozu-400/50 bg-gunozu-400/10 px-2.5 py-1 font-display text-gunozu-100 hover:bg-gunozu-400/20"
+        >
+          <Compass aria-hidden className="size-4" />
+          Tanıtım turunu izle
+        </button>
         <ul className="grid gap-1 text-buz-300">
           <li className="flex items-center gap-2">
             <span aria-hidden className="size-2 bg-gunozu-300 shadow-[0_0_6px_var(--color-gunozu-300)]" />

@@ -30,8 +30,11 @@ export interface CameraRigHandle {
   rotateBy: (angle: number) => void;
   /** Kuzeyi yukarı alır. */
   faceNorth: () => void;
-  /** Hedefe uçar ve kullanıcı dokunana kadar etrafında yavaşça döner. */
-  watch: (center: Coordinates, worldZoom: number, yaw?: number) => void;
+  /**
+   * Hedefe uçar ve kullanıcı dokunana kadar etrafında yavaşça döner. `fitRadius` verilirse (dünya birimi) kamera dönerken o
+   * yarıçaptaki her şey ekranın dar kenarına sığacak kadar uzak durur (dikey telefonda boss kadrajdan çıkmasın).
+   */
+  watch: (center: Coordinates, worldZoom: number, yaw?: number, fitRadius?: number) => void;
   stopWatch: () => void;
 }
 
@@ -251,12 +254,19 @@ export function CameraRig({ ref, reducedMotion, compassRef, onWatchEnd, groundAt
       stopWatching(true);
       startFlight({ yaw: 0 }, 0.5);
     },
-    watch: (center, worldZoom, yaw) => {
+    watch: (center, worldZoom, yaw, fitRadius) => {
       const controls = controlsRef.current;
       if (!controls) return;
       watching.current = !reducedMotion;
       controls.autoRotateSpeed = WATCH_SPEED;
-      startFlight({ x: center.x, z: center.y, zoom: cameraZoomFor(worldZoom, size), yaw }, 1.4);
+      let zoom = cameraZoomFor(worldZoom, size);
+      if (fitRadius) {
+        // Üst bant ve alt şeritler için dikeyde 200 piksel pay. Kamera eğik baktığı için ekranın dikeyi zeminde yaklaşık
+        // 1,5 kat daha uzun bir yolu gösterir. Savaş efektleri dursun diye dünya zoom'u 3'ün altına inmez.
+        const narrow = Math.min(size.width, (size.height - 200) * 1.5);
+        zoom = Math.min(zoom, Math.max(cameraZoomFor(3, size), narrow / (2 * fitRadius)));
+      }
+      startFlight({ x: center.x, z: center.y, zoom, yaw }, 1.4);
     },
     stopWatch: () => stopWatching(false),
   }));

@@ -11532,8 +11532,8 @@ f 4915//4915 4916//4916 4917//4917
 f 4918//4918 4919//4919 4920//4920
 f 4921//4921 4922//4922 4923//4923
 f 4924//4924 4925//4925 4926//4926
-o okyeli-gogus-zirhi-nadir-destansi
-usemtl okyeli-gogus-zirhi-nadir-destansi
+o okyeli-gogus-zirhi-nadir-destansi-efsanevi
+usemtl okyeli-gogus-zirhi-nadir-destansi-efsanevi
 v 0.4340 2.0900 0.2250
 v 0.4850 2.2600 0.0000
 v 0.4200 2.2600 0.2230
@@ -12206,8 +12206,8 @@ f 5203//5203 5204//5204 5205//5205
 f 5206//5206 5207//5207 5208//5208
 f 5209//5209 5210//5210 5211//5211
 f 5212//5212 5213//5213 5214//5214
-o okyeli-bileklik-plakalari-nadir-destansi
-usemtl okyeli-bileklik-plakalari-nadir-destansi
+o okyeli-bileklik-plakalari-nadir-destansi-efsanevi
+usemtl okyeli-bileklik-plakalari-nadir-destansi-efsanevi
 v -1.0440 2.2120 0.0170
 v -1.0270 2.0600 -0.1260
 v -1.0720 2.0710 0.0180
@@ -12600,8 +12600,8 @@ f 5371//5371 5372//5372 5373//5373
 f 5374//5374 5375//5375 5376//5376
 f 5377//5377 5378//5378 5379//5379
 f 5380//5380 5381//5381 5382//5382
-o okyeli-sadak-kayisi-nadir-destansi
-usemtl okyeli-sadak-kayisi-nadir-destansi
+o okyeli-sadak-kayisi-nadir-destansi-efsanevi
+usemtl okyeli-sadak-kayisi-nadir-destansi-efsanevi
 v -0.3520 3.1680 -0.4890
 v -0.3880 3.1520 -0.3610
 v -0.3520 3.1840 -0.3650
@@ -12686,8 +12686,8 @@ f 5407//5407 5408//5408 5409//5409
 f 5410//5410 5411//5411 5412//5412
 f 5413//5413 5414//5414 5415//5415
 f 5416//5416 5417//5417 5418//5418
-o okyeli-cizme-plakalari-destansi
-usemtl okyeli-cizme-plakalari-destansi
+o okyeli-cizme-plakalari-destansi-efsanevi
+usemtl okyeli-cizme-plakalari-destansi-efsanevi
 v -0.0660 0.4900 0.0100
 v -0.0680 0.6350 0.0100
 v -0.1240 0.6350 0.1950
@@ -13080,8 +13080,8 @@ f 5575//5575 5576//5576 5577//5577
 f 5578//5578 5579//5579 5580//5580
 f 5581//5581 5582//5582 5583//5583
 f 5584//5584 5585//5585 5586//5586
-o okyeli-kapuson-destansi
-usemtl okyeli-kapuson-destansi
+o okyeli-kapuson-destansi-efsanevi
+usemtl okyeli-kapuson-destansi-efsanevi
 v -0.1390 2.8600 -0.2550
 v -0.1900 3.1200 -0.3450
 v 0.0000 3.1200 -0.3840
@@ -14510,8 +14510,8 @@ f 6187//6187 6188//6188 6189//6189
 f 6190//6190 6191//6191 6192//6192
 f 6193//6193 6194//6194 6195//6195
 f 6196//6196 6197//6197 6198//6198
-o okyeli-kapuson-kenari-destansi
-usemtl okyeli-kapuson-kenari-destansi
+o okyeli-kapuson-kenari-destansi-efsanevi
+usemtl okyeli-kapuson-kenari-destansi-efsanevi
 v 0.4260 3.5320 0.3480
 v 0.3840 3.7380 0.3480
 v 0.4010 3.7450 0.3740
@@ -15492,8 +15492,8 @@ f 6607//6607 6608//6608 6609//6609
 f 6610//6610 6611//6611 6612//6612
 f 6613//6613 6614//6614 6615//6615
 f 6616//6616 6617//6617 6618//6618
-o okyeli-pelerin-destansi
-usemtl okyeli-pelerin-destansi
+o okyeli-pelerin-destansi-efsanevi
+usemtl okyeli-pelerin-destansi-efsanevi
 v 0.5140 3.0300 0.2200
 v 0.6200 2.7600 0.2590
 v 0.6900 2.7600 0.0000
@@ -15970,8 +15970,8 @@ f 6811//6811 6812//6812 6813//6813
 f 6814//6814 6815//6815 6816//6816
 f 6817//6817 6818//6818 6819//6819
 f 6820//6820 6821//6821 6822//6822
-o okyeli-pelerin-kenari-destansi
-usemtl okyeli-pelerin-kenari-destansi
+o okyeli-pelerin-kenari-destansi-efsanevi
+usemtl okyeli-pelerin-kenari-destansi-efsanevi
 v 0.8000 2.2050 0.0000
 v 0.7860 2.3050 0.0000
 v 0.7030 2.2350 0.2880
@@ -16280,8 +16280,8 @@ f 6943//6943 6944//6944 6945//6945
 f 6946//6946 6947//6947 6948//6948
 f 6949//6949 6950//6950 6951//6951
 f 6952//6952 6953//6953 6954//6954
-o okyeli-omuz-zirhi-destansi
-usemtl okyeli-omuz-zirhi-destansi
+o okyeli-omuz-zirhi-destansi-efsanevi
+usemtl okyeli-omuz-zirhi-destansi-efsanevi
 v 0.3140 3.0160 -0.1800
 v 0.4780 2.9880 -0.2250
 v 0.4540 2.9160 0.0000
@@ -17206,8 +17206,8 @@ f 7339//7339 7340//7340 7341//7341
 f 7342//7342 7343//7343 7344//7344
 f 7345//7345 7346//7346 7347//7347
 f 7348//7348 7349//7349 7350//7350
-o okyeli-bileklik-nakis-destansi
-usemtl okyeli-bileklik-nakis-destansi
+o okyeli-bileklik-nakis-destansi-efsanevi
+usemtl okyeli-bileklik-nakis-destansi-efsanevi
 v -1.0120 2.3320 0.0160
 v -0.9740 2.2670 -0.1360
 v -1.0210 2.2800 0.0170
@@ -18384,8 +18384,8 @@ f 7843//7843 7844//7844 7845//7845
 f 7846//7846 7847//7847 7848//7848
 f 7849//7849 7850//7850 7851//7851
 f 7852//7852 7853//7853 7854//7854
-o okyeli-kemer-suslemesi-destansi
-usemtl okyeli-kemer-suslemesi-destansi
+o okyeli-kemer-suslemesi-destansi-efsanevi
+usemtl okyeli-kemer-suslemesi-destansi-efsanevi
 v -0.0900 2.1500 0.3580
 v -0.0900 2.3100 0.3560
 v -0.0900 2.3100 0.3420
@@ -18918,8 +18918,8 @@ f 8071//8071 8072//8072 8073//8073
 f 8074//8074 8075//8075 8076//8076
 f 8077//8077 8078//8078 8079//8079
 f 8080//8080 8081//8081 8082//8082
-o okyeli-tuy-destansi
-usemtl okyeli-tuy-destansi
+o okyeli-tuy-destansi-efsanevi
+usemtl okyeli-tuy-destansi-efsanevi
 v 0.3580 3.8220 -0.1230
 v 0.4070 4.0640 -0.1200
 v 0.4930 4.0440 -0.0720
@@ -19116,8 +19116,8 @@ f 8155//8155 8156//8156 8157//8157
 f 8158//8158 8159//8159 8160//8160
 f 8161//8161 8162//8162 8163//8163
 f 8164//8164 8165//8165 8166//8166
-o okyeli-tuy-sapi-destansi
-usemtl okyeli-tuy-sapi-destansi
+o okyeli-tuy-sapi-destansi-efsanevi
+usemtl okyeli-tuy-sapi-destansi-efsanevi
 v 0.3680 3.7670 -0.1640
 v 0.4090 3.9070 -0.1450
 v 0.4470 3.8920 -0.0880
@@ -19230,8 +19230,8 @@ f 8203//8203 8204//8204 8205//8205
 f 8206//8206 8207//8207 8208//8208
 f 8209//8209 8210//8210 8211//8211
 f 8212//8212 8213//8213 8214//8214
-o okyeli-yay-destansi
-usemtl okyeli-yay-destansi
+o okyeli-yay-destansi-efsanevi
+usemtl okyeli-yay-destansi-efsanevi
 v 1.1250 3.1410 0.0270
 v 1.0610 2.8010 0.0150
 v 1.0420 2.8050 0.0420
@@ -19834,8 +19834,8 @@ f 8461//8461 8462//8462 8463//8463
 f 8464//8464 8465//8465 8466//8466
 f 8467//8467 8468//8468 8469//8469
 f 8470//8470 8471//8471 8472//8472
-o okyeli-yay-kavramasi-destansi
-usemtl okyeli-yay-kavramasi-destansi
+o okyeli-yay-kavramasi-destansi-efsanevi
+usemtl okyeli-yay-kavramasi-destansi-efsanevi
 v 0.9370 1.9400 0.0050
 v 0.9380 1.5500 0.0060
 v 0.9140 1.5500 0.0480
@@ -20118,8 +20118,8 @@ f 8581//8581 8582//8582 8583//8583
 f 8584//8584 8585//8585 8586//8586
 f 8587//8587 8588//8588 8589//8589
 f 8590//8590 8591//8591 8592//8592
-o okyeli-yay-plakalari-destansi
-usemtl okyeli-yay-plakalari-destansi
+o okyeli-yay-plakalari-destansi-efsanevi
+usemtl okyeli-yay-plakalari-destansi-efsanevi
 v 1.0800 3.0500 0.0040
 v 1.0800 2.8700 0.0040
 v 1.0580 2.8700 0.0420
@@ -20680,8 +20680,8 @@ f 8821//8821 8822//8822 8823//8823
 f 8824//8824 8825//8825 8826//8826
 f 8827//8827 8828//8828 8829//8829
 f 8830//8830 8831//8831 8832//8832
-o okyeli-sadak-destansi
-usemtl okyeli-sadak-destansi
+o okyeli-sadak-destansi-efsanevi
+usemtl okyeli-sadak-destansi-efsanevi
 v -0.0910 1.9690 -0.4880
 v -0.2170 2.6090 -0.5360
 v -0.1640 2.6270 -0.4100
@@ -20948,8 +20948,8 @@ f 8935//8935 8936//8936 8937//8937
 f 8938//8938 8939//8939 8940//8940
 f 8941//8941 8942//8942 8943//8943
 f 8944//8944 8945//8945 8946//8946
-o okyeli-sadak-kenari-destansi
-usemtl okyeli-sadak-kenari-destansi
+o okyeli-sadak-kenari-destansi-efsanevi
+usemtl okyeli-sadak-kenari-destansi-efsanevi
 v -0.2520 3.1600 -0.4340
 v -0.2720 3.2550 -0.4420
 v -0.3240 3.2550 -0.3220
@@ -21118,8 +21118,8 @@ f 9007//9007 9008//9008 9009//9009
 f 9010//9010 9011//9011 9012//9012
 f 9013//9013 9014//9014 9015//9015
 f 9016//9016 9017//9017 9018//9018
-o okyeli-oklar-destansi
-usemtl okyeli-oklar-destansi
+o okyeli-oklar-destansi-efsanevi
+usemtl okyeli-oklar-destansi-efsanevi
 v -0.5770 3.0790 -0.5340
 v -0.6820 3.7390 -0.5710
 v -0.6670 3.7420 -0.5560
@@ -21624,8 +21624,8 @@ f 9223//9223 9224//9224 9225//9225
 f 9226//9226 9227//9227 9228//9228
 f 9229//9229 9230//9230 9231//9231
 f 9232//9232 9233//9233 9234//9234
-o okyeli-ok-tuyu-destansi
-usemtl okyeli-ok-tuyu-destansi
+o okyeli-ok-tuyu-destansi-efsanevi
+usemtl okyeli-ok-tuyu-destansi-efsanevi
 v -0.7140 3.6340 -0.5340
 v -0.6460 3.6360 -0.5780
 v -0.6460 3.6360 -0.5340

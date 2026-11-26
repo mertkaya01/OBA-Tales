@@ -125,175 +125,175 @@ Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-kol-alt-nadir-destansi
+newmtl ocakcan-kol-alt-nadir-destansi-efsanevi
 Kd 0.3137 0.2157 0.4157
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-kol-kenari-nadir-destansi
+newmtl ocakcan-kol-kenari-nadir-destansi-efsanevi
 Kd 0.6667 0.6902 0.7451
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-etek-kaplamasi-destansi
+newmtl ocakcan-etek-kaplamasi-destansi-efsanevi
 Kd 0.3137 0.2157 0.4157
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-etek-destansi
+newmtl ocakcan-etek-destansi-efsanevi
 Kd 0.4196 0.2902 0.5412
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-etek-kenari-destansi
+newmtl ocakcan-etek-kenari-destansi-efsanevi
 Kd 0.6667 0.6902 0.7451
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-etek-nakis-destansi
+newmtl ocakcan-etek-nakis-destansi-efsanevi
 Kd 0.8078 0.6902 0.3765
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-govde-suslemeleri-destansi
+newmtl ocakcan-govde-suslemeleri-destansi-efsanevi
 Kd 0.8078 0.6902 0.3765
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-sakal-destansi
+newmtl ocakcan-sakal-destansi-efsanevi
 Kd 0.9098 0.8863 0.8353
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-biyik-destansi
+newmtl ocakcan-biyik-destansi-efsanevi
 Kd 0.9098 0.8863 0.8353
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-sapka-kenari-destansi
+newmtl ocakcan-sapka-kenari-destansi-efsanevi
 Kd 0.3137 0.2157 0.4157
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-sapka-destansi
+newmtl ocakcan-sapka-destansi-efsanevi
 Kd 0.4196 0.2902 0.5412
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-sapka-bandi-destansi
+newmtl ocakcan-sapka-bandi-destansi-efsanevi
 Kd 0.8078 0.6902 0.3765
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-sapka-nakis-destansi
+newmtl ocakcan-sapka-nakis-destansi-efsanevi
 Kd 0.6745 0.6980 0.7529
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-sapka-tasi-destansi
+newmtl ocakcan-sapka-tasi-destansi-efsanevi
 Kd 0.3765 0.8706 0.8784
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-omuz-suslemeleri-destansi
+newmtl ocakcan-omuz-suslemeleri-destansi-efsanevi
 Kd 0.6745 0.6980 0.7529
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-kemer-suslemesi-destansi
+newmtl ocakcan-kemer-suslemesi-destansi-efsanevi
 Kd 0.8078 0.6902 0.3765
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-kristaller-destansi
+newmtl ocakcan-kristaller-destansi-efsanevi
 Kd 0.3765 0.8706 0.8784
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-tilsim-destansi
+newmtl ocakcan-tilsim-destansi-efsanevi
 Kd 0.8078 0.6902 0.3765
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-asa-destansi
+newmtl ocakcan-asa-destansi-efsanevi
 Kd 0.2275 0.1569 0.1255
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-asa-bagi-destansi
+newmtl ocakcan-asa-bagi-destansi-efsanevi
 Kd 0.2902 0.2118 0.1490
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-asa-yuzukleri-destansi
+newmtl ocakcan-asa-yuzukleri-destansi-efsanevi
 Kd 0.6902 0.7137 0.7686
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-asa-koruma-destansi
+newmtl ocakcan-asa-koruma-destansi-efsanevi
 Kd 0.8078 0.6902 0.3765
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-asa-tasi-destansi
+newmtl ocakcan-asa-tasi-destansi-efsanevi
 Kd 0.3765 0.8706 0.8784
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-asa-sarkilari-destansi
+newmtl ocakcan-asa-sarkilari-destansi-efsanevi
 Kd 0.8078 0.6902 0.3765
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl ocakcan-parcaciklar-destansi
+newmtl ocakcan-parcaciklar-destansi-efsanevi
 Kd 0.5882 0.9255 0.9255
 Ka 0 0 0
 Ks 0 0 0

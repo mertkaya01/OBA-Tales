@@ -12096,8 +12096,8 @@ f 5155//5155 5156//5156 5157//5157
 f 5158//5158 5159//5159 5160//5160
 f 5161//5161 5162//5162 5163//5163
 f 5164//5164 5165//5165 5166//5166
-o kalkaneri-cizme-plakalari-nadir-destansi
-usemtl kalkaneri-cizme-plakalari-nadir-destansi
+o kalkaneri-cizme-plakalari-nadir-destansi-efsanevi
+usemtl kalkaneri-cizme-plakalari-nadir-destansi-efsanevi
 v -0.0660 0.4900 0.0100
 v -0.0680 0.6350 0.0100
 v -0.1240 0.6350 0.1950
@@ -12490,8 +12490,8 @@ f 5323//5323 5324//5324 5325//5325
 f 5326//5326 5327//5327 5328//5328
 f 5329//5329 5330//5330 5331//5331
 f 5332//5332 5333//5333 5334//5334
-o kalkaneri-gogus-zirhi-nadir-destansi
-usemtl kalkaneri-gogus-zirhi-nadir-destansi
+o kalkaneri-gogus-zirhi-nadir-destansi-efsanevi
+usemtl kalkaneri-gogus-zirhi-nadir-destansi-efsanevi
 v 0.4340 2.0900 0.2250
 v 0.4850 2.2600 0.0000
 v 0.4200 2.2600 0.2230
@@ -13164,8 +13164,8 @@ f 5611//5611 5612//5612 5613//5613
 f 5614//5614 5615//5615 5616//5616
 f 5617//5617 5618//5618 5619//5619
 f 5620//5620 5621//5621 5622//5622
-o kalkaneri-bileklik-plakalari-nadir-destansi
-usemtl kalkaneri-bileklik-plakalari-nadir-destansi
+o kalkaneri-bileklik-plakalari-nadir-destansi-efsanevi
+usemtl kalkaneri-bileklik-plakalari-nadir-destansi-efsanevi
 v -1.0440 2.2120 0.0170
 v -1.0270 2.0600 -0.1260
 v -1.0720 2.0710 0.0180
@@ -13558,8 +13558,8 @@ f 5779//5779 5780//5780 5781//5781
 f 5782//5782 5783//5783 5784//5784
 f 5785//5785 5786//5786 5787//5787
 f 5788//5788 5789//5789 5790//5790
-o kalkaneri-gogus-plakalari-destansi
-usemtl kalkaneri-gogus-plakalari-destansi
+o kalkaneri-gogus-plakalari-destansi-efsanevi
+usemtl kalkaneri-gogus-plakalari-destansi-efsanevi
 v -0.3200 2.2800 0.3210
 v -0.3400 2.4300 0.3570
 v -0.3400 2.4300 0.3330
@@ -13812,8 +13812,8 @@ f 5887//5887 5888//5888 5889//5889
 f 5890//5890 5891//5891 5892//5892
 f 5893//5893 5894//5894 5895//5895
 f 5896//5896 5897//5897 5898//5898
-o kalkaneri-gogus-suslemesi-destansi
-usemtl kalkaneri-gogus-suslemesi-destansi
+o kalkaneri-gogus-suslemesi-destansi-efsanevi
+usemtl kalkaneri-gogus-suslemesi-destansi-efsanevi
 v -0.2510 2.7970 0.3650
 v -0.2590 2.7830 0.3950
 v -0.2510 2.7990 0.3950
@@ -14598,8 +14598,8 @@ f 6223//6223 6224//6224 6225//6225
 f 6226//6226 6227//6227 6228//6228
 f 6229//6229 6230//6230 6231//6231
 f 6232//6232 6233//6233 6234//6234
-o kalkaneri-yaka-kurk-destansi
-usemtl kalkaneri-yaka-kurk-destansi
+o kalkaneri-yaka-kurk-destansi-efsanevi
+usemtl kalkaneri-yaka-kurk-destansi-efsanevi
 v 0.2660 3.0050 0.1780
 v 0.3460 3.1400 0.0000
 v 0.2890 3.1400 0.1950
@@ -16252,8 +16252,8 @@ f 6931//6931 6932//6932 6933//6933
 f 6934//6934 6935//6935 6936//6936
 f 6937//6937 6938//6938 6939//6939
 f 6940//6940 6941//6941 6942//6942
-o kalkaneri-omuz-plakalari-destansi
-usemtl kalkaneri-omuz-plakalari-destansi
+o kalkaneri-omuz-plakalari-destansi-efsanevi
+usemtl kalkaneri-omuz-plakalari-destansi-efsanevi
 v -0.3260 3.1580 -0.1940
 v -0.5330 3.1570 -0.2420
 v -0.5580 3.2320 0.0000
@@ -18102,8 +18102,8 @@ f 7723//7723 7724//7724 7725//7725
 f 7726//7726 7727//7727 7728//7728
 f 7729//7729 7730//7730 7731//7731
 f 7732//7732 7733//7733 7734//7734
-o kalkaneri-kol-zirhlari-destansi
-usemtl kalkaneri-kol-zirhlari-destansi
+o kalkaneri-kol-zirhlari-destansi-efsanevi
+usemtl kalkaneri-kol-zirhlari-destansi-efsanevi
 v -0.9590 2.5900 0.0120
 v -0.9720 2.3710 -0.1580
 v -1.0220 2.3940 0.0150
@@ -18944,8 +18944,8 @@ f 8083//8083 8084//8084 8085//8085
 f 8086//8086 8087//8087 8088//8088
 f 8089//8089 8090//8090 8091//8091
 f 8092//8092 8093//8093 8094//8094
-o kalkaneri-kemer-suslemesi-destansi
-usemtl kalkaneri-kemer-suslemesi-destansi
+o kalkaneri-kemer-suslemesi-destansi-efsanevi
+usemtl kalkaneri-kemer-suslemesi-destansi-efsanevi
 v -0.1300 2.1700 0.3620
 v -0.1300 2.2950 0.3600
 v -0.1300 2.2950 0.3440
@@ -19478,8 +19478,8 @@ f 8311//8311 8312//8312 8313//8313
 f 8314//8314 8315//8315 8316//8316
 f 8317//8317 8318//8318 8319//8319
 f 8320//8320 8321//8321 8322//8322
-o kalkaneri-kalca-plakalari-destansi
-usemtl kalkaneri-kalca-plakalari-destansi
+o kalkaneri-kalca-plakalari-destansi-efsanevi
+usemtl kalkaneri-kalca-plakalari-destansi-efsanevi
 v 0.4590 2.1050 0.2500
 v 0.5060 1.7600 0.2710
 v 0.5920 1.7600 0.0000
@@ -19984,8 +19984,8 @@ f 8527//8527 8528//8528 8529//8529
 f 8530//8530 8531//8531 8532//8532
 f 8533//8533 8534//8534 8535//8535
 f 8536//8536 8537//8537 8538//8538
-o kalkaneri-kilic-destansi
-usemtl kalkaneri-kilic-destansi
+o kalkaneri-kilic-destansi-efsanevi
+usemtl kalkaneri-kilic-destansi-efsanevi
 v -1.0360 1.6300 0.0580
 v -1.0380 1.3600 -0.0020
 v -1.0380 1.3600 0.0700
@@ -20350,8 +20350,8 @@ f 8683//8683 8684//8684 8685//8685
 f 8686//8686 8687//8687 8688//8688
 f 8689//8689 8690//8690 8691//8691
 f 8692//8692 8693//8693 8694//8694
-o kalkaneri-kilic-koruma-destansi
-usemtl kalkaneri-kilic-koruma-destansi
+o kalkaneri-kilic-koruma-destansi-efsanevi
+usemtl kalkaneri-kilic-koruma-destansi-efsanevi
 v -1.0910 1.6250 0.1020
 v -1.0890 1.5650 0.0180
 v -1.0910 1.5650 0.1020
@@ -20856,8 +20856,8 @@ f 8899//8899 8900//8900 8901//8901
 f 8902//8902 8903//8903 8904//8904
 f 8905//8905 8906//8906 8907//8907
 f 8908//8908 8909//8909 8910//8910
-o kalkaneri-kilic-kabzasi-destansi
-usemtl kalkaneri-kilic-kabzasi-destansi
+o kalkaneri-kilic-kabzasi-destansi-efsanevi
+usemtl kalkaneri-kilic-kabzasi-destansi-efsanevi
 v -0.9250 1.6110 0.0190
 v -0.9260 1.9360 0.0260
 v -0.9020 1.9350 0.0680
@@ -20998,8 +20998,8 @@ f 8959//8959 8960//8960 8961//8961
 f 8962//8962 8963//8963 8964//8964
 f 8965//8965 8966//8966 8967//8967
 f 8968//8968 8969//8969 8970//8970
-o kalkaneri-kilic-tasi-destansi
-usemtl kalkaneri-kilic-tasi-destansi
+o kalkaneri-kilic-tasi-destansi-efsanevi
+usemtl kalkaneri-kilic-tasi-destansi-efsanevi
 v -0.9440 1.9340 0.0740
 v -0.9080 1.9780 0.1100
 v -0.9920 1.9780 0.1100
@@ -21140,8 +21140,8 @@ f 9019//9019 9020//9020 9021//9021
 f 9022//9022 9023//9023 9024//9024
 f 9025//9025 9026//9026 9027//9027
 f 9028//9028 9029//9029 9030//9030
-o kalkaneri-kalkan-destansi
-usemtl kalkaneri-kalkan-destansi
+o kalkaneri-kalkan-destansi-efsanevi
+usemtl kalkaneri-kalkan-destansi-efsanevi
 v 1.0500 2.0950 0.4160
 v 1.2150 2.0950 0.3940
 v 1.1720 2.2550 0.3940
@@ -21954,8 +21954,8 @@ f 9367//9367 9368//9368 9369//9369
 f 9370//9370 9371//9371 9372//9372
 f 9373//9373 9374//9374 9375//9375
 f 9376//9376 9377//9377 9378//9378
-o kalkaneri-kalkan-cercedeyi-destansi
-usemtl kalkaneri-kalkan-cercedeyi-destansi
+o kalkaneri-kalkan-cercedeyi-destansi-efsanevi
+usemtl kalkaneri-kalkan-cercedeyi-destansi-efsanevi
 v 1.4840 2.0950 0.2690
 v 1.4050 2.3890 0.2690
 v 1.4280 2.4030 0.3050
@@ -22796,8 +22796,8 @@ f 9727//9727 9728//9728 9729//9729
 f 9730//9730 9731//9731 9732//9732
 f 9733//9733 9734//9734 9735//9735
 f 9736//9736 9737//9737 9738//9738
-o kalkaneri-kalkan-suslemeleri-destansi
-usemtl kalkaneri-kalkan-suslemeleri-destansi
+o kalkaneri-kalkan-suslemeleri-destansi-efsanevi
+usemtl kalkaneri-kalkan-suslemeleri-destansi-efsanevi
 v 1.3250 2.0950 0.3690
 v 1.3570 2.0950 0.3600
 v 1.2950 2.3260 0.3600
@@ -24646,8 +24646,8 @@ f 10519//10519 10520//10520 10521//10521
 f 10522//10522 10523//10523 10524//10524
 f 10525//10525 10526//10526 10527//10527
 f 10528//10528 10529//10529 10530//10530
-o kalkaneri-kalkan-amblemi-destansi
-usemtl kalkaneri-kalkan-amblemi-destansi
+o kalkaneri-kalkan-amblemi-destansi-efsanevi
+usemtl kalkaneri-kalkan-amblemi-destansi-efsanevi
 v 1.1470 2.1000 0.4100
 v 1.0770 2.2700 0.4100
 v 1.1680 2.2080 0.4100
@@ -25796,8 +25796,8 @@ f 11011//11011 11012//11012 11013//11013
 f 11014//11014 11015//11015 11016//11016
 f 11017//11017 11018//11018 11019//11019
 f 11020//11020 11021//11021 11022//11022
-o kalkaneri-kalkan-kabara-destansi
-usemtl kalkaneri-kalkan-kabara-destansi
+o kalkaneri-kalkan-kabara-destansi-efsanevi
+usemtl kalkaneri-kalkan-kabara-destansi-efsanevi
 v 1.0530 2.2100 0.4220
 v 1.0000 2.1710 0.4680
 v 1.0250 2.0950 0.4680
@@ -26190,8 +26190,8 @@ f 11179//11179 11180//11180 11181//11181
 f 11182//11182 11183//11183 11184//11184
 f 11185//11185 11186//11186 11187//11187
 f 11188//11188 11189//11189 11190//11190
-o kalkaneri-kalkan-kayislari-destansi
-usemtl kalkaneri-kalkan-kayislari-destansi
+o kalkaneri-kalkan-kayislari-destansi-efsanevi
+usemtl kalkaneri-kalkan-kayislari-destansi-efsanevi
 v 0.8330 1.8750 0.2240
 v 0.9570 1.8750 0.2240
 v 0.9570 1.8750 0.2600

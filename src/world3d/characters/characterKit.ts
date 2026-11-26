@@ -33,7 +33,7 @@ import { hashString } from "../../lib/random";
 import type { Character, Rarity } from "../../types";
 import { alevKadini } from "./models/alevKadini";
 import { buyucuSifaci } from "./models/buyucuSifaci";
-import { TAKIPCI_MODELLERI, type FollowerBody, type FollowerTier } from "./models/takipciler";
+import { FOLLOWER_TIERS, TAKIPCI_MODELLERI, type FollowerBody, type FollowerTier } from "./models/takipciler";
 
 export interface PartContext {
   inRaid: boolean;
@@ -144,8 +144,8 @@ const variant = (c: Character, key: string, n: number) => hashString(`${key}:${c
 /** Soğuk bölgelerde yaşayanların çizmeleri kürklü. */
 const COLD_REGIONS: ReadonlySet<string> = new Set(["ayazbogazi", "kiragiduzu", "gunozu_tepesi", "pusluada"]);
 const isRich = (r: Rarity) => r === "destansi" || r === "efsanevi";
-/** Takipçi modeli kademesi: efsanevi (ve üstü) destansı modeli giyer. */
-const tierOf = (rarity: Rarity): FollowerTier => (rarity === "siradan" ? "siradan" : rarity === "nadir" ? "nadir" : "destansi");
+/** Takipçi modeli kademesi: nadirliğin kendisi; efsanevinin üstü (kahramanlar) efsanevi modeli sayılır. */
+const tierOf = (rarity: Rarity): FollowerTier => (rarity === "siradan" || rarity === "nadir" || rarity === "destansi" ? rarity : "efsanevi");
 const choices = new Map<string, KitChoice>();
 
 /** Karakterin kişiye özgü görünüş seçimleri (kimlikten türetilir, önbelleğe alınır). */
@@ -158,6 +158,8 @@ export function kitChoice(c: Character, look: SpriteLook): KitChoice {
   let hat: Hat | null = null;
   if (cls === "kalkaneri") hat = hatRoll < 3 ? "tolga" : hatRoll < 5 ? "bork" : null;
   if (cls === "ocakcan") hat = hatRoll < 3 ? "kalpak" : hatRoll < 5 ? "kulah" : null;
+  // Efsanevi Ocakcanların üçte biri büyücü-şifacı modelini, kalanı efsanevi büyücü modelini giyer.
+  const healer = cls === "ocakcan" && c.rarity === "efsanevi" && c.roleType === "follower" && variant(c, "sifaci", 3) === 0;
   const beardRoll = variant(c, "sakal", 20);
   const beard: Beard | null = beardRoll < 8 ? null : beardRoll < 12 ? "biyik" : beardRoll < 16 ? "kisa" : "uzun";
   const choice: KitChoice = {
@@ -173,9 +175,9 @@ export function kitChoice(c: Character, look: SpriteLook): KitChoice {
     nazar: variant(c, "nazar", 10) < 3,
     strap: cls === "okyeli",
     // Kadro kendi görünüşünü korur; büyücü olan kadro üyesi CAST_KIT içinde seçilir.
-    wizard: cls === "ocakcan" && c.rarity === "efsanevi" && c.roleType === "follower",
+    wizard: healer,
     hero: null,
-    model: c.roleType === "follower" && !(cls === "ocakcan" && c.rarity === "efsanevi") ? tierOf(c.rarity) : null,
+    model: c.roleType === "follower" && !healer ? tierOf(c.rarity) : null,
   };
   const override = c.roleType !== "follower" ? CAST_KIT[c.id] : undefined;
   if (override) Object.assign(choice, override);
@@ -561,12 +563,15 @@ const HERO_PARTS: readonly PartSpec[] = [
 
 // ── Takipçi modelleri (modeller/kaynak/takipciler, npm run model:takipciler) ──
 //
-// Sıradan, nadir ve destansı takipçiler (efsanevi Kalkaneri ve Okyeli de destansı modeli) sınıflarının modelini giyer:
-// Kalkaneri savaşçı, Okyeli okçu, Ocakcan büyücü. Efsanevi Ocakcan ise büyücü-şifacıdır.
+// Takipçiler sınıflarının ve kademelerinin (sıradan, nadir, destansı, efsanevi) modelini giyer: Kalkaneri savaşçı, Okyeli
+// okçu, Ocakcan büyücü. Efsanevi modellerin kaynağı scripts/efsanevi-takipciler.ts; efsanevi Ocakcanların üçte biri
+// büyücü-şifacıdır. Renkler karakterin giydiği modelin kademesinden gelir (kadro destansı model giyer).
 // Gövde, yüz ve saç kademeler arasında ortaktır; renkleri kademeye göre değişir. Ten ve saç rengi takipçinin kendisinden
 // gelir (herkes başka görünür). Kollar ve bacaklar modelin iskeletine göre döner (FOLLOWER_JOINTS).
 
-const TIER_NAMES: Readonly<Record<FollowerTier, string>> = { siradan: "siradan", nadir: "nadir", destansi: "destansi" };
+const TIER_NAMES: Readonly<Record<FollowerTier, string>> = { siradan: "siradan", nadir: "nadir", destansi: "destansi", efsanevi: "efsanevi" };
+/** Karakterin giydiği modelin kademesi (renkler buna göre). */
+const wornTier = (c: Character, l: SpriteLook): FollowerTier => kitChoice(c, l).model ?? tierOf(c.rarity);
 
 const FOLLOWER_SKIN = new Set(["kafa", "eller", "kulaklar"]);
 const FOLLOWER_SKIN_SHADE = new Set(["boyun", "burun"]);
@@ -575,14 +580,19 @@ const FOLLOWER_LEGS = new Set(["bacaklar", "cizmeler", "cizme-tabani", "cizme-pl
 const FOLLOWER_ARMS = new Set([
   "kollar", "eller", "bileklikler", "bileklik-plakalari", "bileklik-nakis", "kol-zirhlari", "kol-alt", "kol-kenari",
   "omuzluklar", "omuz-plakalari", "omuz-zirhi", "omuz-suslemeleri",
-  "kilic", "kilic-koruma", "kilic-kabzasi", "kilic-tasi", "kilic-suslemesi",
+  "kilic", "kilic-koruma", "kilic-kabzasi", "kilic-tasi", "kilic-suslemesi", "kilic-isigi",
   "kalkan", "kalkan-cercedeyi", "kalkan-kabara", "kalkan-kayislari", "kalkan-suslemeleri", "kalkan-amblemi", "kalkan-percinleri",
-  "yay", "yay-kavramasi", "yay-kirisi", "yay-plakalari",
-  "asa", "asa-bagi", "asa-yuvasi", "asa-tasi", "asa-yuzukleri", "asa-koruma", "asa-sarkilari", "kristaller",
+  "kalkan-isigi", "kalkan-gunesi",
+  "yay", "yay-kavramasi", "yay-kirisi", "yay-plakalari", "yay-isigi", "yay-uclari",
+  "asa", "asa-bagi", "asa-yuvasi", "asa-tasi", "asa-yuzukleri", "asa-koruma", "asa-sarkilari", "kristaller", "asa-alevi",
 ]);
-const FOLLOWER_CORE = new Set(["govde", "kafa", "sac", "kapuson", "sapka", "sapka-kenari", "pelerin", "etek", "gogus-zirhi", "yelek"]);
-const FOLLOWER_SHADOW = new Set(["govde", "kafa", "kapuson", "sapka", "pelerin", "etek", "kalkan", "yelek"]);
-const FOLLOWER_GLOW = new Set(["asa-tasi", "kristaller", "parcaciklar", "sapka-tasi"]);
+const FOLLOWER_CORE = new Set(["govde", "kafa", "sac", "kapuson", "sapka", "sapka-kenari", "pelerin", "etek", "gogus-zirhi", "yelek", "tolga"]);
+const FOLLOWER_SHADOW = new Set(["govde", "kafa", "kapuson", "sapka", "pelerin", "etek", "kalkan", "yelek", "tolga"]);
+/** Işıyan parçalar (ışıktan etkilenmez, gece de parlar). Efsanevi: kılıç, kalkan güneşi, kiriş, alevler, ateş halesi. */
+const FOLLOWER_GLOW = new Set([
+  "asa-tasi", "kristaller", "parcaciklar", "sapka-tasi",
+  "kilic-isigi", "kalkan-isigi", "kalkan-gunesi", "yay-isigi", "asa-alevi", "sapka-alevi", "ates-halesi", "madalyon-tasi",
+]);
 const FOLLOWER_DETAIL = new Set([
   "gozler", "goz-bebekleri", "goz-parlamasi", "kaslar", "burun", "agiz", "kulaklar", "eller", "boyun", "yaka", "yelek-acikligi",
   "kemer-tokasi", "kemer-suslemesi", "zirh-percinleri", "zirh-kayislari", "kalkan-percinleri", "kalkan-kayislari",
@@ -619,8 +629,8 @@ const FOLLOWER_FAR_PARTS: readonly PartSpec[] = (Object.keys(TAKIPCI_MODELLERI) 
   const named = (...names: string[]) => model.filter((m) => names.includes(m.name));
   const tierColor =
     (...names: string[]): PartSpec["color"] =>
-    (_l, c) => {
-      const tier = c ? tierOf(c.rarity) : "siradan";
+    (l, c) => {
+      const tier = c ? wornTier(c, l) : "siradan";
       for (const name of names) {
         const hit = model.find((m) => m.name === name && m.k.includes(tier));
         if (hit?.c[tier]) return hit.c[tier]!;
@@ -643,7 +653,7 @@ const FOLLOWER_FAR_PARTS: readonly PartSpec[] = (Object.keys(TAKIPCI_MODELLERI) 
 const FOLLOWER_PARTS: readonly PartSpec[] = [
   ...(Object.keys(TAKIPCI_MODELLERI) as FollowerBody[]).flatMap((body) =>
     TAKIPCI_MODELLERI[body].map<PartSpec>((part) => {
-      const everywhere = part.k.length === 3;
+      const everywhere = part.k.length === FOLLOWER_TIERS.length;
       const tiers = new Set(part.k);
       const fallback = part.c[part.k[0]] ?? "#ffffff";
       const color: PartSpec["color"] = FOLLOWER_SKIN.has(part.name)
@@ -652,7 +662,7 @@ const FOLLOWER_PARTS: readonly PartSpec[] = [
           ? (l) => l.colors.S
           : FOLLOWER_HAIR.has(part.name)
             ? (l) => l.colors.h
-            : (_l, c) => (c ? part.c[tierOf(c.rarity)] : undefined) ?? fallback;
+            : (l, c) => (c ? part.c[wornTier(c, l)] : undefined) ?? fallback;
       const paint: PartSpec["color"] = (l, c) => castColor(c, part.name, l) ?? color(l, c);
       return {
         id: everywhere ? `${body}-${part.name}` : `${body}-${part.name}-${part.k.map((t) => TIER_NAMES[t]).join("-")}`,

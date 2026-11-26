@@ -28,6 +28,8 @@ export interface AppState {
   raidOpen: boolean;
   /** 3D dünyada canlı akın izleniyor mu? (kamera meydanın etrafında döner) */
   watchingRaid: boolean;
+  /** İlk oba turu açık mı? (Dede Toygar anlatır; URL'ye yazılmaz.) */
+  tourOpen: boolean;
 
   setQuery: (query: string) => void;
   toggleClass: (id: ClassId) => void;
@@ -47,6 +49,9 @@ export interface AppState {
   /** Canlı akını izlemeye başlar: panel kapanır, görünüm Dünya'ya geçer. */
   watchRaid: () => void;
   stopWatchingRaid: () => void;
+  /** Tanıtım turunu açar (görünüm Dünya'ya geçer, canlı akın izleme biter). */
+  startTour: () => void;
+  endTour: () => void;
   /** URL değişince (ilk açılış, geri/ileri) durumu URL'den kurar. */
   hydrateFromUrl: (params: URLSearchParams) => void;
 }
@@ -60,6 +65,7 @@ export const useAppStore = create<AppState>()((set) => ({
   focus: null,
   raidOpen: false,
   watchingRaid: false,
+  tourOpen: false,
 
   setQuery: (query) => set((s) => ({ filters: { ...s.filters, query } })),
   toggleClass: (id) => set((s) => ({ filters: { ...s.filters, classes: toggleInList(s.filters.classes, id) } })),
@@ -74,8 +80,10 @@ export const useAppStore = create<AppState>()((set) => ({
   setFilterPanelOpen: (filterPanelOpen) => set({ filterPanelOpen }),
   focusCharacter: (id) => set((s) => ({ selectedId: id, focus: { id, nonce: (s.focus?.nonce ?? 0) + 1 } })),
   setRaidOpen: (raidOpen) => set({ raidOpen }),
-  watchRaid: () => set({ raidOpen: false, view: "dunya", watchingRaid: true }),
+  watchRaid: () => set({ raidOpen: false, view: "dunya", watchingRaid: true, tourOpen: false }),
   stopWatchingRaid: () => set((s) => (s.watchingRaid ? { watchingRaid: false } : s)),
+  startTour: () => set({ tourOpen: true, view: "dunya", watchingRaid: false, raidOpen: false }),
+  endTour: () => set((s) => (s.tourOpen ? { tourOpen: false } : s)),
 
   hydrateFromUrl: (params) =>
     set((s) => {

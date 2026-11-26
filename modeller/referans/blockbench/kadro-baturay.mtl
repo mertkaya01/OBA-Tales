@@ -63,21 +63,21 @@ d 1
 illum 1
 
 newmtl kalkaneri-eller
-Kd 0.5529 0.3529 0.2314
+Kd 0.8510 0.6314 0.4471
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
 newmtl kalkaneri-boyun
-Kd 0.4314 0.2627 0.1647
+Kd 0.7255 0.4941 0.3216
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
 newmtl kalkaneri-kafa
-Kd 0.5529 0.3529 0.2314
+Kd 0.8510 0.6314 0.4471
 Ka 0 0 0
 Ks 0 0 0
 d 1
@@ -112,7 +112,7 @@ d 1
 illum 1
 
 newmtl kalkaneri-burun
-Kd 0.4314 0.2627 0.1647
+Kd 0.7255 0.4941 0.3216
 Ka 0 0 0
 Ks 0 0 0
 d 1
@@ -126,7 +126,7 @@ d 1
 illum 1
 
 newmtl kalkaneri-kulaklar
-Kd 0.5529 0.3529 0.2314
+Kd 0.8510 0.6314 0.4471
 Ka 0 0 0
 Ks 0 0 0
 d 1
@@ -139,140 +139,140 @@ Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-cizme-plakalari-nadir-destansi
+newmtl kalkaneri-cizme-plakalari-nadir-destansi-efsanevi
 Kd 0.6196 0.6431 0.6980
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-gogus-zirhi-nadir-destansi
+newmtl kalkaneri-gogus-zirhi-nadir-destansi-efsanevi
 Kd 0.2275 0.2353 0.2824
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-bileklik-plakalari-nadir-destansi
+newmtl kalkaneri-bileklik-plakalari-nadir-destansi-efsanevi
 Kd 0.6588 0.6824 0.7373
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-gogus-plakalari-destansi
+newmtl kalkaneri-gogus-plakalari-destansi-efsanevi
 Kd 0.3059 0.3216 0.3765
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-gogus-suslemesi-destansi
+newmtl kalkaneri-gogus-suslemesi-destansi-efsanevi
 Kd 0.7451 0.7647 0.8157
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-yaka-kurk-destansi
+newmtl kalkaneri-yaka-kurk-destansi-efsanevi
 Kd 0.3686 0.2980 0.2471
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-omuz-plakalari-destansi
+newmtl kalkaneri-omuz-plakalari-destansi-efsanevi
 Kd 0.3922 0.4078 0.4706
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kol-zirhlari-destansi
+newmtl kalkaneri-kol-zirhlari-destansi-efsanevi
 Kd 0.3451 0.3608 0.4157
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kemer-suslemesi-destansi
+newmtl kalkaneri-kemer-suslemesi-destansi-efsanevi
 Kd 0.7373 0.7569 0.8078
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kalca-plakalari-destansi
+newmtl kalkaneri-kalca-plakalari-destansi-efsanevi
 Kd 0.2431 0.1961 0.1569
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kilic-destansi
+newmtl kalkaneri-kilic-destansi-efsanevi
 Kd 0.6745 0.6980 0.7529
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kilic-koruma-destansi
+newmtl kalkaneri-kilic-koruma-destansi-efsanevi
 Kd 0.7451 0.7647 0.8157
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kilic-kabzasi-destansi
+newmtl kalkaneri-kilic-kabzasi-destansi-efsanevi
 Kd 0.2039 0.1490 0.1333
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kilic-tasi-destansi
+newmtl kalkaneri-kilic-tasi-destansi-efsanevi
 Kd 0.7451 0.7647 0.8157
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kalkan-destansi
+newmtl kalkaneri-kalkan-destansi-efsanevi
 Kd 0.2745 0.2275 0.1961
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kalkan-cercedeyi-destansi
+newmtl kalkaneri-kalkan-cercedeyi-destansi-efsanevi
 Kd 0.7059 0.7294 0.7765
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kalkan-suslemeleri-destansi
+newmtl kalkaneri-kalkan-suslemeleri-destansi-efsanevi
 Kd 0.6588 0.6824 0.7373
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kalkan-amblemi-destansi
+newmtl kalkaneri-kalkan-amblemi-destansi-efsanevi
 Kd 0.7686 0.7843 0.8314
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kalkan-kabara-destansi
+newmtl kalkaneri-kalkan-kabara-destansi-efsanevi
 Kd 0.5098 0.5412 0.5961
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalkaneri-kalkan-kayislari-destansi
+newmtl kalkaneri-kalkan-kayislari-destansi-efsanevi
 Kd 0.3529 0.2431 0.1569
 Ka 0 0 0
 Ks 0 0 0
@@ -294,7 +294,7 @@ d 1
 illum 1
 
 newmtl kalkaneri-uzak-kafa
-Kd 0.5529 0.3529 0.2314
+Kd 0.8510 0.6314 0.4471
 Ka 0 0 0
 Ks 0 0 0
 d 1

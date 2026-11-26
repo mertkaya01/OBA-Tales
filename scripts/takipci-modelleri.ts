@@ -1,8 +1,9 @@
 /**
  * Takipçi sınıf modellerini oyunun kod geometrisine çevirir: `npm run model:takipciler`
  *
- * Kaynak: modeller/kaynak/takipciler/<sinif>-<kademe>.obj (+ .mtl): warrior / ranger / mage × common / rare / epic.
- *   Savaşçı = Kalkaneri, Okçu = Okyeli, Büyücü = Ocakcan; common = sıradan, rare = nadir, epic = destansı (ve efsanevi).
+ * Kaynak: modeller/kaynak/takipciler/<sinif>-<kademe>.obj (+ .mtl): warrior / ranger / mage × common / rare / epic / legendary.
+ *   Savaşçı = Kalkaneri, Okçu = Okyeli, Büyücü = Ocakcan; common = sıradan, rare = nadir, epic = destansı, legendary = efsanevi.
+ *   Efsanevi modellerin kaynağı scripts/efsanevi-takipciler.ts'tir (npm run model:efsanevi, destansının üstüne kurar).
  * Çıktı: src/world3d/characters/models/takipciler.ts
  *
  * Bir sınıfın gövdesi, yüzü ve saçı kademeler arasında ortaktır. Aynı geometri bir kez yazılır ve hangi kademelerde
@@ -24,6 +25,7 @@ const TIERS = [
   ["siradan", "common"],
   ["nadir", "rare"],
   ["destansi", "epic"],
+  ["efsanevi", "legendary"],
 ] as const;
 
 interface Merged {
@@ -51,7 +53,8 @@ const out: string[] = [
   " * TAKİPÇİ MODELLERİ — modeller/kaynak/takipciler/*.obj dosyalarından üretildi (npm run model:takipciler). Elle düzenleme.",
   " * Her sınıf için parçalar: köşeler (x, y, z), üçgenler, bulunduğu kademeler ve kademedeki renk. Ortak gövde bir kez yazılır.",
   " */",
-  'export type FollowerTier = "siradan" | "nadir" | "destansi";',
+  `export const FOLLOWER_TIERS = ${JSON.stringify(TIERS.map(([tier]) => tier))} as const;`,
+  "export type FollowerTier = (typeof FOLLOWER_TIERS)[number];",
   '/** Savaşçı modeli Kalkaneri, okçu modeli Okyeli, büyücü modeli Ocakcan. */',
   'export type FollowerBody = "kalkaneri" | "okyeli" | "ocakcan";',
   "",

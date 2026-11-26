@@ -204,6 +204,14 @@ Bir harfi değiştirince o piksel değişir. 2D harita pinleri (ve WebGL'siz kar
 - Ekranda adı geçen takipçilerin cümleleri: `LINES` ("@{h} çekirdeği vurdu!"). Her turda o sınıftan başka kişiler seçilir.
 - Sahnedeki hamlelerin zamanı (ok yağmuru sıklığı, son parlama): `src/world3d/living/RaidBattle.tsx`.
 - Ekrandaki gösterge (Öfke çubuğu, perde başlığı, anılan adlar): `src/world3d/living/RaidDayHud.tsx`.
+- Sesler: alttaki şeritteki **Ses** düğmesi davul ve kopuz müziğini, akının nara, kalkan, ok, ocak, patlama ve zafer
+  seslerini açar. Hangi saniyede hangi sesin çalacağı `src/audio/raidCues.ts`, seslerin kendisi `src/audio/obaSound.ts`
+  içinde (hepsi kodla üretilir, ses dosyası yok). Müziğin ezgisi `MELODY`, davul düzeni `DRUM` (aksak 9/8), makam `HICAZ`.
+
+**İlk oba turu:** `src/content/tour.ts`
+- Siteye ilk gelene Dede Toygar anlatır; kamera adalar → Kut Kapısı → Akınburnu obası → akın meydanı arasında uçar.
+- Metinler `TOUR_STEPS` içinde. Tur bir kez kendiliğinden açılır; Lejant'taki **Tanıtım turunu izle** ile yeniden açılır.
+- Herkese yeniden göstermek istersen `TOUR_SEEN_KEY` sonundaki sürümü artır (`v1` → `v2`).
 
 **Paylaşım görseli:** `scripts/generate-og.ts`. Değiştirdikten sonra `npm run og` çalıştır.
 

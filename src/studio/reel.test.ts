@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { TEMPLATE_IDS, WORD_INTERVAL, buildTemplate, cameraAt, cameraDirection, captionAt, cardAt, signatureFrom, totalDuration, type StudioContext } from "./reel";
+import { createStarterCharacter } from "../lib/rules";
+import { RAID_DAY_LENGTH, actAt } from "../world3d/living/raidDay";
+import { AKIN_REEL_START, TEMPLATE_IDS, WORD_INTERVAL, buildTemplate, cameraAt, cameraDirection, captionAt, cardAt, signatureFrom, totalDuration, type StudioContext } from "./reel";
+
+const raiders = ["kalkan_a", "ok_b", "ocak_c"].map((handle, i) =>
+  createStarterCharacter({ handle, platform: (["instagram", "tiktok", "youtube"] as const)[i], region: "ayazbogazi", coordinates: { x: 236, y: 336 }, now: new Date("2026-11-26T12:00:00Z") }),
+);
 
 const ctx: StudioContext = {
   island: { x: 500, y: 350 },
@@ -8,7 +14,7 @@ const ctx: StudioContext = {
   newcomers: 12,
   village: { x: 215, y: 580 },
   episode: { number: 3, title: "Buzul Geçidi", question: "Cesaret taktiği mi, buz eritme planı mı?", options: ["Cesaret Taktiği", "Buz Eritme Planı"] },
-  raid: { square: { x: 236, y: 336 }, focus: { x: 236, y: 290 }, facing: Math.PI, count: 90 },
+  raid: { square: { x: 236, y: 336 }, focus: { x: 236, y: 290 }, facing: Math.PI, count: 90, raiders },
   boss: { name: "Buzkıran Tekgöz" },
   hero: { id: "baturay", position: { x: 220, y: 570 }, displayName: "Baturay", handle: "baturay", title: "Akın Lideri", rarity: "Efsanevi", className: "Kalkaneri", region: "Akınburnu" },
 };
@@ -66,7 +72,23 @@ describe("kamera çekimleri", () => {
     expect(hero.captions).toContain("@baturay obada!");
     // Kahraman yoksa katıl şablonuna düşer
     expect(buildTemplate("kahraman", { ...ctx, hero: null }).template).toBe("katil");
-    for (const id of TEMPLATE_IDS) expect(buildTemplate(id, ctx).captions.length).toBeGreaterThan(2);
+    // Akın şablonunda perde başlıkları altyazının yerini tutar.
+    for (const id of TEMPLATE_IDS) if (id !== "akin") expect(buildTemplate(id, ctx).captions.length).toBeGreaterThan(2);
+  });
+
+  it("Akın Günü reeli Oba Narası'ndan zafere kadar sürer; akın yoksa bölüm tanıtımına düşer", () => {
+    const reel = buildTemplate("akin", ctx);
+    const total = totalDuration(reel.shots);
+    expect(reel.raidDay).toMatchObject({ start: AKIN_REEL_START, boss: "Buzkıran Tekgöz" });
+    expect(reel.raidDay!.raiders).toHaveLength(3);
+    expect(actAt(AKIN_REEL_START).act.id).toBe("nara");
+    expect(actAt(AKIN_REEL_START + total - 0.1).act.id).toBe("zafer");
+    expect(AKIN_REEL_START + total).toBeLessThanOrEqual(RAID_DAY_LENGTH);
+    // Son kart zafer perdesinin içinde açılıp kapanır.
+    const card = reel.cards.at(-1)!;
+    expect(card.at + card.duration).toBeLessThanOrEqual(total);
+    expect(actAt(AKIN_REEL_START + card.at).act.id).toBe("zafer");
+    expect(buildTemplate("akin", { ...ctx, raid: null }).template).toBe("bolum");
   });
 });
 

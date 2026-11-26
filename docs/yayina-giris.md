@@ -18,13 +18,16 @@ toplanmaya başlar.
 
 ## 2. Videoları üretmek: Reel Stüdyosu
 
-Sitede sayfa altından **Reel Stüdyosu** (`/studyo`). Her şablon 15–20 saniyelik, 9:16 dikey, altyazılı ve kural kartlı
-video çeker; **Kaydet** MP4 indirir (Chrome'da MP4, diğerlerinde WebM). **Kapak** düğmesi kapak resmini indirir.
+Sitede sayfa altından **Reel Stüdyosu** (`/studyo`). Her şablon 15–20 saniyelik (Akın Günü 36 saniye), 9:16 dikey,
+altyazılı ve kural kartlı video çeker; **Kaydet** MP4 indirir (Chrome'da MP4, diğerlerinde WebM). **Kapak** düğmesi
+kapak resmini indirir. **Müzik ve efektler** açıksa davul, kopuz ve akın sesleri videoya da girer.
 
 İpuçları:
 - Kaydederken sekmeyi ön planda tut (arka plandaki sekmede tarayıcı kareleri yavaşlatır).
 - Altyazıları sayfadaki kutudan değiştirebilirsin; her satır bir altyazı.
 - Saat seçimi videonun ışığını belirler (gece: ateşler ve portal parlar; akşamüstü: altın ışık).
+- **Akın Günü** şablonu aktif bölümün akınını çeker: Öfke çubuğu, perde başlıkları ve saftaki takipçilerin adları
+  ekranda çıkar. Bölüm haftası boyunca paylaşmak için en güçlü video budur.
 
 ## 3. İlk iki hafta: video sırası
 
@@ -35,6 +38,7 @@ video çeker; **Kaydet** MP4 indirir (Chrome'da MP4, diğerlerinde WebM). **Kapa
 | 3 | **Kahraman** (`kahraman`) | İlk gelenlerden birini öne çıkar | @kullanici obaya katıldı! Sıradaki sen ol. |
 | 4 | **Adsız ada** (`ada`) | Topluluk oyunu: ad koyma | Bu adanın adı yok. En beğenilen yorum adını koyar, haritada adı yazar. |
 | 5 | **Bölüm tanıtımı** (`bolum`) | Sezon başlıyor: Bölüm 1 | Bölüm 1: obanın ilk kararı yorumlarda. Hangisi? |
+| 5+ | **Akın Günü** (`akin`) | Akın haftası: adı geçenler paylaşır | Akında adın geçti mi? Videoda ara, kendini etiketle! |
 | 6 | **Kut Kapısı** | İlk haftanın yeni gelenleri | Bu hafta X yeni yoldaş geldi! Kendini haritada bul: (site) |
 | 7 | **Kahraman** | Ad koyma kazananı | Adayı @kullanici adlandırdı: "…". Haritada adı yazıyor! |
 | 8–14 | Bölüm + Kahraman + Kut Kapısı dönüşümlü | Haftalık döngü | |

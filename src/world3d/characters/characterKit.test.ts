@@ -18,6 +18,14 @@ const make = (handle: string, platform: Character["platform"], rarity: Rarity = 
 /** Kodla kurulan kit artık kadronun: onu denemek için kadrodan sayılan (takipçi olmayan) bir karakter. */
 const makeKit = (handle: string, platform: Character["platform"], rarity: Rarity = "siradan"): Character => ({ ...make(handle, platform, rarity), roleType: "side" });
 const parts = (c: Character, inRaid = false) => partsOf(c, resolveLook(c), { inRaid });
+const isHealer = (c: Character) => kitChoice(c, resolveLook(c)).wizard;
+/** Adı `prefix_N` olan ilk efsanevi YouTube'luyu bulur: büyücü-şifacı olanı ya da olmayanı. */
+const legendMage = (prefix: string, healer: boolean): Character => {
+  for (let i = 0; ; i++) {
+    const c = make(`${prefix}_${i}`, "youtube", "efsanevi");
+    if (isHealer(c) === healer) return c;
+  }
+};
 const box = (id: string) => {
   const g = PARTS.find((p) => p.id === id)!.geometry;
   g.computeBoundingBox();
@@ -32,10 +40,11 @@ describe("takipçi modelleri", () => {
   ] as const;
 
   it("takipçiler sınıflarının modelini giyer: gövde ortak, ekipman kademeyle büyür", () => {
-    const sizes = { kalkaneri: [30, 40, 40], okyeli: [30, 37, 39], ocakcan: [32, 37, 43] };
+    const sizes = { kalkaneri: [30, 40, 40, 49], okyeli: [30, 37, 39, 42], ocakcan: [32, 37, 43, 48] };
     for (const [platform, cls] of CLASSES) {
-      (["siradan", "nadir", "destansi"] as const).forEach((rarity, t) => {
-        const p = parts(make(`model_${cls}`, platform, rarity));
+      (["siradan", "nadir", "destansi", "efsanevi"] as const).forEach((rarity, t) => {
+        const c = cls === "ocakcan" && rarity === "efsanevi" ? legendMage("model_ocakcan", false) : make(`model_${cls}`, platform, rarity);
+        const p = parts(c);
         expect(p.every((id) => id.startsWith(`${cls}-`)), `${cls}:${rarity} ${p.join()}`).toBe(true);
         // Modelin parçaları ve en uzak görünüm için 4 parçalık siluet (bacak, gövde, kafa, başlık ya da saç).
         expect(p.filter((id) => !id.includes("-uzak-")), `${cls}:${rarity}`).toHaveLength(sizes[cls][t]);
@@ -43,9 +52,25 @@ describe("takipçi modelleri", () => {
         expect(p).toEqual(expect.arrayContaining([`${cls}-kafa`, `${cls}-govde`, `${cls}-bacaklar`, `${cls}-kollar`]));
       });
     }
-    // Efsanevi Kalkaneri ve Okyeli şimdilik destansı modeli giyer.
-    expect(parts(make("efsane", "instagram", "efsanevi")).sort()).toEqual(parts(make("efsane", "instagram", "destansi")).sort());
-    expect(parts(make("efsane", "tiktok", "efsanevi")).sort()).toEqual(parts(make("efsane", "tiktok", "destansi")).sort());
+    // Efsanevi model destansının üstüne kurulu: kendi parçaları (tolga, pelerin, ışıyan kılıç; kartal tüyü, ışıyan kiriş;
+    // ateş halesi, alevli asa) ve destansının ekipmanı.
+    const alp = parts(make("efsane", "instagram", "efsanevi"));
+    expect(alp).toEqual(expect.arrayContaining(["kalkaneri-tolga-efsanevi", "kalkaneri-tolga-yelesi-efsanevi", "kalkaneri-pelerin-efsanevi", "kalkaneri-kilic-isigi-efsanevi", "kalkaneri-kalkan-gunesi-efsanevi", "kalkaneri-omuz-plakalari-destansi-efsanevi"]));
+    const kartal = parts(make("efsane", "tiktok", "efsanevi"));
+    expect(kartal).toEqual(expect.arrayContaining(["okyeli-kartal-tuy-efsanevi", "okyeli-omuz-kurku-efsanevi", "okyeli-yay-isigi-efsanevi", "okyeli-kapuson-destansi-efsanevi"]));
+    expect(kartal.some((id) => id.startsWith("okyeli-yay-kirisi"))).toBe(false); // düz kiriş yerine ışıyan kiriş
+    expect(parts(legendMage("efsane", false))).toEqual(expect.arrayContaining(["ocakcan-ates-halesi-efsanevi", "ocakcan-asa-alevi-efsanevi", "ocakcan-sapka-destansi-efsanevi"]));
+    // Işıyanlar ve ele bağlı olanlar doğru işaretli.
+    const spec = (id: string) => PARTS.find((p) => p.id === id)!;
+    expect(spec("kalkaneri-kilic-isigi-efsanevi")).toMatchObject({ glow: true, arms: true });
+    expect(spec("okyeli-yay-isigi-efsanevi")).toMatchObject({ glow: true, arms: true });
+    expect(spec("ocakcan-ates-halesi-efsanevi").glow).toBe(true);
+    expect(spec("ocakcan-ates-halesi-efsanevi").arms).toBeUndefined();
+    // Efsanevi renkler: kızıl gövde; destansı kendi renginde kalır.
+    const legend = make("efsane", "instagram", "efsanevi");
+    const epic = make("efsane", "instagram", "destansi");
+    expect(spec("kalkaneri-govde").color(resolveLook(legend), legend)).toBe("#8e2420");
+    expect(spec("kalkaneri-govde").color(resolveLook(epic), epic)).not.toBe("#8e2420");
   });
 
   it("ten ve saç kişiye özgü; kumaş ve zırh kademenin rengi", () => {
@@ -162,8 +187,13 @@ describe("kadro kiti (kodla kurulan)", () => {
     expect(body.color(resolveLook(leader), leader)).toBe("#2a3f6b");
   });
 
-  it("efsanevi Ocakcanlar büyücü-şifacı modelini giyer; öteki kademeler büyücü takipçi modelini", () => {
-    const base = make("sifaci", "youtube");
+  it("efsanevi Ocakcanların üçte biri büyücü-şifacı modelini giyer; kalanı ve öteki kademeler büyücü takipçi modelini", () => {
+    const mages = Array.from({ length: 90 }, (_, i) => make(`ocak_${i}`, "youtube", "efsanevi"));
+    const share = mages.filter(isHealer).length / mages.length;
+    expect(share).toBeGreaterThan(0.2);
+    expect(share).toBeLessThan(0.47);
+    const healer = legendMage("sifaci", true);
+    const base = { ...healer, rarity: "siradan" as Rarity };
     const wizardParts = PARTS.filter((p) => p.id.startsWith("buyucu-")).map((p) => p.id);
     expect(wizardParts.length).toBeGreaterThan(35);
     for (const rarity of ["siradan", "nadir", "destansi"] as const) {
@@ -172,12 +202,12 @@ describe("kadro kiti (kodla kurulan)", () => {
       expect(p.every((id) => id.startsWith("ocakcan-")), rarity).toBe(true);
     }
     expect(parts({ ...make("kalkanci", "instagram"), rarity: "efsanevi" }).some((id) => id.startsWith("buyucu-"))).toBe(false);
-    const legend = parts({ ...base, rarity: "efsanevi" });
+    const legend = parts(healer);
     expect(legend).toEqual(expect.arrayContaining(["buyucu-govde", "buyucu-sapka", "buyucu-asa", "buyucu-iksir", "buyucu-uzun-pelerin", "buyucu-pelerin-runlari"]));
     // Ortak gövdeden ve sınıf ekipmanından hiçbir şey kalmaz.
     expect(legend.filter((id) => !id.startsWith("buyucu-"))).toEqual([]);
-    expect(parts({ ...base, rarity: "efsanevi" }, true)).toContain("buyucu-akin-isareti");
-    expect(parts({ ...base, rarity: "efsanevi" }, true)).not.toContain("akin-isareti");
+    expect(parts(healer, true)).toContain("buyucu-akin-isareti");
+    expect(parts(healer, true)).not.toContain("akin-isareti");
   });
 
   it("egetunce ve mhellingtr insansı gövdede: kova şapka ve Gün Kılıcı, kapüşon, hale ve takımyıldızlı pelerin", () => {
@@ -259,7 +289,8 @@ describe("kadro kiti (kodla kurulan)", () => {
 
 describe("kopya verisi", () => {
   const terrain = generateTerrain({ seed: 20261124 });
-  const followers = [make("okcu_bir", "tiktok"), make("kalkan_iki", "instagram", "efsanevi"), make("ocak_uc", "youtube", "nadir"), make("buyucu_dort", "youtube", "efsanevi")];
+  const healer = legendMage("buyucu", true);
+  const followers = [make("okcu_bir", "tiktok"), make("kalkan_iki", "instagram", "efsanevi"), make("ocak_uc", "youtube", "nadir"), healer];
   const everyone = [...CAST, ...followers];
   const placements = placeCharacters(everyone, terrain);
   const data = buildInstanceData(everyone, placements, new Set(["alptug", "okcu_bir"]));
@@ -271,7 +302,7 @@ describe("kopya verisi", () => {
 
   it("her parçanın kopya sayısı o parçayı taşıyan karakter sayısı kadar", () => {
     expect(data.ids).toHaveLength(everyone.length);
-    expect(wizards.map((c) => c.id).sort()).toEqual(["buyucu_dort"]);
+    expect(wizards.map((c) => c.id).sort()).toEqual([healer.id]);
     expect(heroes.map((c) => c.id).sort()).toEqual(["bintas"]);
     // Kadro (BinTaş dışında) ve takipçiler insansı modeli giyer.
     expect(models.map((c) => c.id).sort()).toEqual([...CAST.filter((c) => c.id !== "bintas").map((c) => c.id), "kalkan_iki", "ocak_uc", "okcu_bir"].sort());

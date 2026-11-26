@@ -125,91 +125,91 @@ Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-gogus-zirhi-nadir-destansi
+newmtl okyeli-gogus-zirhi-nadir-destansi-efsanevi
 Kd 0.9098 0.9216 0.9647
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-bileklik-plakalari-nadir-destansi
+newmtl okyeli-bileklik-plakalari-nadir-destansi-efsanevi
 Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-sadak-kayisi-nadir-destansi
+newmtl okyeli-sadak-kayisi-nadir-destansi-efsanevi
 Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-cizme-plakalari-destansi
+newmtl okyeli-cizme-plakalari-destansi-efsanevi
 Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-kapuson-destansi
+newmtl okyeli-kapuson-destansi-efsanevi
 Kd 0.9098 0.9216 0.9647
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-kapuson-kenari-destansi
+newmtl okyeli-kapuson-kenari-destansi-efsanevi
 Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-pelerin-destansi
+newmtl okyeli-pelerin-destansi-efsanevi
 Kd 0.1059 0.1529 0.4000
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-pelerin-kenari-destansi
+newmtl okyeli-pelerin-kenari-destansi-efsanevi
 Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-omuz-zirhi-destansi
+newmtl okyeli-omuz-zirhi-destansi-efsanevi
 Kd 0.9098 0.9216 0.9647
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-bileklik-nakis-destansi
+newmtl okyeli-bileklik-nakis-destansi-efsanevi
 Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-kemer-suslemesi-destansi
+newmtl okyeli-kemer-suslemesi-destansi-efsanevi
 Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-yay-destansi
+newmtl okyeli-yay-destansi-efsanevi
 Kd 0.9098 0.9216 0.9647
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-yay-kavramasi-destansi
+newmtl okyeli-yay-kavramasi-destansi-efsanevi
 Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
@@ -223,35 +223,35 @@ Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-yay-plakalari-destansi
+newmtl okyeli-yay-plakalari-destansi-efsanevi
 Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-sadak-destansi
+newmtl okyeli-sadak-destansi-efsanevi
 Kd 0.1020 0.1294 0.3137
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-sadak-kenari-destansi
+newmtl okyeli-sadak-kenari-destansi-efsanevi
 Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-oklar-destansi
+newmtl okyeli-oklar-destansi-efsanevi
 Kd 0.9569 0.9451 0.9020
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl okyeli-ok-tuyu-destansi
+newmtl okyeli-ok-tuyu-destansi-efsanevi
 Kd 0.4980 0.8471 1.0000
 Ka 0 0 0
 Ks 0 0 0

@@ -106,7 +106,32 @@ Modeli değiştirmek ya da yeni kademe eklemek için:
    Dönüştürücü ters dönmüş yüzleri kendisi düzeltir (oyun yüzlerin arkasını çizmediği için bunlar delik gibi
    görünür; Kalkaneri perçemleri öyleydi). Kontrolü `npm test` yapar.
 
-Efsanevi (Legendary) modeller gelince aynı yere `warrior-legendary.obj` gibi koy; bağlamayı ben yaparım.
+### Efsanevi takipçiler (Legendary)
+
+Efsanevi modellerin kaynağı bir betiktir: `scripts/efsanevi-takipciler.ts`. Destansı modelin üstüne kurar (aynı gövde ve
+iskelet), renkleri kızıl, altın, fildişi ve kor ışığına çevirir ve kodla çizilmiş yeni parçalar ekler:
+
+| Sınıf | Görünüş | Yeni parçalar |
+|---|---|---|
+| Kalkaneri · Alp | altın tolga, kızıl yele, uzun kızıl pelerin | `tolga`, `tolga-bandi`, `tolga-sorgucu`, `tolga-yelesi`, `pelerin`, `pelerin-kenari`, `kilic-isigi`, `kalkan-isigi`, `kalkan-gunesi` |
+| Okyeli · Kartal | fildişi kapüşon, kartal tüyü tacı, kürk yaka, altın yay | `kartal-tuy`, `omuz-kurku`, `yay-isigi` (ışıyan kiriş), `yay-uclari` |
+| Ocakcan · Ocak Ata | sırtta ateş halesi, alevli asa ve şapka | `ates-halesi`, `asa-alevi`, `sapka-alevi`, `madalyon`, `madalyon-tasi` |
+
+Efsanevi Ocakcanların üçte biri büyücü-şifacı modelini giymeye devam eder.
+
+Değiştirmek için betikteki renkleri ya da parçaları düzenle, sonra:
+
+```powershell
+npm run model:efsanevi
+```
+
+```powershell
+npm run model:takipciler
+```
+
+İlki `modeller/kaynak/takipciler/<sinif>-legendary.obj` dosyalarını yazar (Blockbench ya da Blender'da açılır), ikincisi
+oyuna bağlar. Kendi efsanevi modelini yaparsan aynı adla o klasöre koyup yalnızca ikinci komutu çalıştır; o zaman betiği
+bir daha çalıştırma, yoksa modelinin üstüne yazar.
 
 ### Tam yeni bir karakter modeli: büyücü-şifacı
 

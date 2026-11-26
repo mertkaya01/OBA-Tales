@@ -28,14 +28,14 @@ d 1
 illum 1
 
 newmtl kalkaneri-kemer
-Kd 0.2039 0.1569 0.1333
+Kd 0.6902 0.5882 0.4235
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
 newmtl kalkaneri-kemer-tokasi
-Kd 0.6980 0.7216 0.7686
+Kd 0.5725 0.6039 0.6431
 Ka 0 0 0
 Ks 0 0 0
 d 1
@@ -70,14 +70,14 @@ d 1
 illum 1
 
 newmtl kalkaneri-gozler
-Kd 0.9333 0.9098 0.8471
+Kd 0.9333 0.9059 0.8392
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
 newmtl kalkaneri-goz-bebekleri
-Kd 0.1804 0.1255 0.1176
+Kd 0.1725 0.1216 0.1098
 Ka 0 0 0
 Ks 0 0 0
 d 1
@@ -105,7 +105,7 @@ d 1
 illum 1
 
 newmtl kalkaneri-agiz
-Kd 0.4706 0.2588 0.2431
+Kd 0.4863 0.2667 0.2353
 Ka 0 0 0
 Ks 0 0 0
 d 1
@@ -126,7 +126,7 @@ d 1
 illum 1
 
 newmtl kalkaneri-uzak-bacak
-Kd 0.1882 0.1725 0.2039
+Kd 0.2353 0.2118 0.1882
 Ka 0 0 0
 Ks 0 0 0
 d 1

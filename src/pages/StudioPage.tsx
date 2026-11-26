@@ -2,7 +2,7 @@
  * REEL STÜDYOSU ( /studyo )
  *
  * Dünyayı dikey (9:16) sinematik kamerayla çekip Instagram Reels ve TikTok için video dosyası üretir:
- *   şablon seç (bölüm tanıtımı · obaya katıl · kahraman yakın çekimi) → saati ve havayı ayarla →
+ *   şablon seç (bölüm tanıtımı · Akın Günü · obaya katıl · Kut Kapısı · adsız ada · kahraman) → saati ve havayı ayarla →
  *   altyazıları düzenle → önizle → "Kaydet ve indir"
  *
  * Kayıt tarayıcıda yapılır, hiçbir şey sunucuya gönderilmez. Kapak görseli PNG olarak da indirilebilir.
@@ -20,6 +20,7 @@ import { lookupHero } from "../lib/roster";
 import { useWorldTime } from "../state/useWorldTime";
 import { WEATHERS, WORLD_SIZE } from "../types";
 import type { Weather } from "../types";
+import { ObaSound, scheduleRaidReel, soundSupported } from "../audio/obaSound";
 import { REEL, ensureReelFonts } from "../studio/compositor";
 import { downloadBlob, pickMimeType, recordingSupported, reelFilename, startRecording, type Recording } from "../studio/recorder";
 import {
@@ -69,6 +70,9 @@ export default function StudioPage() {
   const compositorRef = useRef<HTMLCanvasElement>(null);
   const recordingRef = useRef<Recording | null>(null);
   const supported = useMemo(() => recordingSupported() && pickMimeType() !== null, []);
+  // Müzik ve akın efektleri (kodla üretilir); videoya da girer.
+  const [withSound, setWithSound] = useState(() => soundSupported());
+  const soundRef = useRef<ObaSound | null>(null);
 
   // ── Şablonun dünyadaki yerleri ───────────────────────────────────
   const hero = useMemo(() => lookupHero(data.characters, heroQuery).hero, [data.characters, heroQuery]);
@@ -88,7 +92,15 @@ export default function StudioPage() {
       newcomers: data.characters.filter((c) => c.region === "kutada").length,
       village: VILLAGES[0].center,
       episode: { number: episode.number, title: episode.title, question: poll?.question ?? null, options: poll?.options.map((o) => o.label) ?? [] },
-      raid: formation ? { square: formation.ground.square, focus: formation.ground.focus, facing: formation.facing, count: formation.slots.size } : null,
+      raid: formation
+        ? {
+            square: formation.ground.square,
+            focus: formation.ground.focus,
+            facing: formation.facing,
+            count: formation.slots.size,
+            raiders: [...formation.slots.keys()].map((id) => data.characterById.get(id)).filter((c) => c !== undefined),
+          }
+        : null,
       boss: boss ? { name: boss.name } : null,
       hero:
         hero && heroPlacement
@@ -104,7 +116,7 @@ export default function StudioPage() {
             }
           : null,
     };
-  }, [data.activeEpisode, data.world.namedPlaces, data.characters, formation, boss, hero, placements]);
+  }, [data.activeEpisode, data.world.namedPlaces, data.characters, data.characterById, formation, boss, hero, placements]);
 
   const baseScript = useMemo(() => buildTemplate(template, context), [template, context]);
   // Altyazılar düzenlenebilir: şablon değişince şablonun önerisine döner.
@@ -138,17 +150,37 @@ export default function StudioPage() {
     setSettings({ ...settings, override: hour, lapse: null });
   }, [hour]);
 
-  // Kayıt sürerken sayfadan çıkılırsa kaydı bırak.
+  // Kayıt sürerken sayfadan çıkılırsa kaydı ve sesi bırak.
   useEffect(
     () => () => {
       void recordingRef.current?.stop();
+      void soundRef.current?.close();
     },
     [],
   );
 
-  const play = () => {
+  /** Her oynatmada temiz bir ses oturumu: eski zamanlanmış sesler iptal olur. Müzik ve (akında) efektler zamanlanır. */
+  const startSound = async (): Promise<ObaSound | null> => {
+    void soundRef.current?.close();
+    soundRef.current = null;
+    if (!withSound || !soundSupported()) return null;
+    const sound = new ObaSound();
+    await sound.resume();
+    soundRef.current = sound;
+    const t0 = sound.now + 0.05;
+    sound.startMusic(0.8);
+    if (script.raidDay) scheduleRaidReel(sound, t0, script.raidDay.start, total);
+    return sound;
+  };
+  const stopSound = () => soundRef.current?.stopMusic(0.6);
+
+  const play = async () => {
+    await startSound();
     const timeline = timelineRef.current;
-    timeline.onEnd = () => setStatus({ kind: "bos" });
+    timeline.onEnd = () => {
+      stopSound();
+      setStatus({ kind: "bos" });
+    };
     timeline.restart = true;
     setStatus({ kind: "oynuyor" });
   };
@@ -157,6 +189,8 @@ export default function StudioPage() {
     const timeline = timelineRef.current;
     timeline.playing = false;
     timeline.onEnd = null;
+    void soundRef.current?.close();
+    soundRef.current = null;
     if (recordingRef.current) {
       void recordingRef.current.stop();
       recordingRef.current = null;
@@ -170,9 +204,11 @@ export default function StudioPage() {
     try {
       await ensureReelFonts();
       const timeline = timelineRef.current;
-      const recording = startRecording(canvas, 30);
+      const sound = await startSound();
+      const recording = startRecording(canvas, 30, sound?.stream);
       recordingRef.current = recording;
       timeline.onEnd = () => {
+        stopSound();
         recordingRef.current = null;
         void recording.stop().then(({ blob, extension }) => {
           downloadBlob(blob, reelFilename(template, extension));
@@ -264,6 +300,9 @@ export default function StudioPage() {
                 >
                   <span className="font-display">{TEMPLATE_LABELS[id]}</span>
                   {id === "bolum" && <span className="block text-xs text-buz-300">{formation ? `Bölüm ${data.activeEpisode.number} akın meydanı` : "Oba çekimleri"}</span>}
+                  {id === "akin" && (
+                    <span className="block text-xs text-buz-300">{formation ? "36 sn savaş: Öfke çubuğu ve takipçi adları" : "Aktif akın yok; bölüm tanıtımı çekilir"}</span>
+                  )}
                   {id === "katil" && <span className="block text-xs text-buz-300">Sınıf ve çift iz kartları</span>}
                   {id === "kapi" && <span className="block text-xs text-buz-300">Gece portal, yeni gelenler, "nasıl gelirim?" kartı</span>}
                   {id === "ada" && <span className="block text-xs text-buz-300">Adsız bir adaya yorumla ad koyma çağrısı</span>}
@@ -343,6 +382,10 @@ export default function StudioPage() {
               <input type="checkbox" checked={showCards} onChange={(event) => setShowCards(event.target.checked)} className="size-4 accent-gunozu-400" />
               Kural kartlarını göster ({script.cards.length})
             </label>
+            <label className="flex items-center gap-2 text-sm text-buz-200">
+              <input type="checkbox" checked={withSound} disabled={busy || !soundSupported()} onChange={(event) => setWithSound(event.target.checked)} className="size-4 accent-gunozu-400" />
+              Müzik ve efektler (davul, kopuz; akında nara, kalkan, ok sesleri): videoya da girer
+            </label>
           </div>
 
           <div className="flex flex-wrap gap-2">
@@ -353,7 +396,7 @@ export default function StudioPage() {
               </button>
             ) : (
               <>
-                <button type="button" onClick={play} className="inline-flex items-center gap-1.5 rounded-xl border border-white/15 px-4 py-2 font-display text-buz-50 hover:bg-white/10">
+                <button type="button" onClick={() => void play()} className="inline-flex items-center gap-1.5 rounded-xl border border-white/15 px-4 py-2 font-display text-buz-50 hover:bg-white/10">
                   <Play aria-hidden className="size-4" />
                   Önizle
                 </button>

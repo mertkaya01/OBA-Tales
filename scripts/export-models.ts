@@ -86,7 +86,7 @@ exportCharacter("kalkaneri", kalkaneri);
 exportCharacter("kalkaneri-borklu-baltali", sample("instagram", "siradan", { hat: "bork", weapon: "balta", beard: "uzun" }));
 exportCharacter("okyeli", sample("tiktok", "nadir", { beard: "biyik" }));
 exportCharacter("ocakcan", sample("youtube", "nadir", { hat: "kalpak", kopuz: true, beard: null }));
-exportCharacter("efsanevi-ocakcan", sample("youtube", "efsanevi", { hat: null, beard: "kisa" }, "follower")); // büyücü-şifacı modeli
+exportCharacter("efsanevi-ocakcan", sample("youtube", "efsanevi", { hat: null, beard: "kisa", wizard: true }, "follower")); // büyücü-şifacı modeli
 for (const member of CAST) exportCharacter(`kadro-${member.id}`, member);
 
 // ── Blender kiti: bütün parçalar tek dosyada (npm run blender:kit bunu .blend dosyasına çevirir) ──
@@ -116,10 +116,12 @@ const groupOf = (id: string) =>
             : (Object.entries(GROUPS).find(([, ids]) => ids.includes(id))?.[0] ?? "09 Diger");
 // Her parçanın örnek rengi: o parçayı taşıyan ilk örnek karakterden. Açılışta görünen: nadir Kalkaneri takipçi modeli.
 const followerSamples = (["instagram", "tiktok", "youtube"] as const).flatMap((platform) =>
-  (["nadir", "siradan", "destansi", "efsanevi"] as const).map((rarity) => sample(platform, rarity, {}, "follower")),
+  (["nadir", "siradan", "destansi", "efsanevi"] as const).map((rarity) => sample(platform, rarity, { wizard: false }, "follower")),
 );
+// Efsanevi Ocakcanların üçte biri büyücü-şifacı: onun parçalarının rengi bu örnekten.
+const healerSample = sample("youtube", "efsanevi", { wizard: true }, "follower");
 const shown = followerSamples[0];
-const samples = [...followerSamples, kalkaneri, sample("tiktok", "nadir", { beard: "biyik" }), sample("youtube", "efsanevi", { hat: "kalpak", kopuz: true }), ...CAST];
+const samples = [...followerSamples, healerSample, kalkaneri, sample("tiktok", "nadir", { beard: "biyik" }), sample("youtube", "efsanevi", { hat: "kalpak", kopuz: true }), ...CAST];
 const kit = PARTS.map((part) => {
   const owner = samples.find((c) => part.applies(c, resolveLook(c), { inRaid: true })) ?? kalkaneri;
   const geometry = part.geometry.index ? part.geometry.toNonIndexed() : part.geometry;

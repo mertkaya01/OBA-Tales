@@ -37,6 +37,8 @@ export interface PortraitImage {
 export interface PortraitOptions {
   /** Çıktı pikseli / istenen boy birimi (ör. window.devicePixelRatio). 1–8 arası; varsayılan 1. */
   density?: number;
+  /** Kameranın yatay açısı (radyan; varsayılan önden-çapraz). π arkadan gösterir. */
+  yaw?: number;
 }
 
 /** İç çizim, çıktının bu kadar katı büyüklükte yapılıp küçültülür (kenar yumuşatma). */
@@ -146,7 +148,8 @@ function buildCharacter(character: Character): { group: Group; materials: Materi
 }
 
 /** Kamerayı karakterin bütün köşelerini görecek şekilde kurar; ayak noktasının çıktıdaki yerini ve ölçeği döner. */
-function frame(group: Group, aspect: number): { feet: Vector3; unitsHigh: number } {
+function frame(group: Group, aspect: number, yaw = YAW): { feet: Vector3; unitsHigh: number } {
+  direction.set(Math.sin(yaw) * Math.cos(PITCH), Math.sin(PITCH), Math.cos(yaw) * Math.cos(PITCH));
   camera.position.copy(direction).multiplyScalar(60);
   camera.up.set(0, 1, 0);
   camera.lookAt(0, 0, 0);
@@ -195,7 +198,7 @@ function draw(character: Character, width: number, height: number, options: Port
   const { group, materials } = buildCharacter(character);
   if (!group.children.length) return null;
   scene.add(group);
-  const { feet, unitsHigh } = frame(group, width / height);
+  const { feet, unitsHigh } = frame(group, width / height, options.yaw);
   r.setSize(bigW, bigH, false);
   r.render(scene, camera);
   const pixels = new Uint8Array(bigW * bigH * 4);

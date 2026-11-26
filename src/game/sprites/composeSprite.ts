@@ -81,7 +81,8 @@ const CAST_LOOKS: Readonly<Record<string, LookOverride>> = {
 /** Karakterin renklerini ve saç modelini belirler. */
 export function resolveLook(character: Character): SpriteLook {
   const rng = createRng(seedFrom("sprite", character.id));
-  const [skin, skinShadow] = rng.pick(SKIN_TONES);
+  // Kadro ve kahramanlar oba ahalisi: açık, buğday ya da yanık ten (ilk üç ton). Takipçiler bütün tonlardan.
+  const [skin, skinShadow] = rng.pick(character.roleType === "follower" ? SKIN_TONES : SKIN_TONES.slice(0, 3));
   const hair = rng.pick(HAIR_COLORS);
   const [cloth, clothShadow] = rng.pick(CLASS_CLOTH[character.class.id]);
   const scarf = rng.pick(SCARF_COLORS);

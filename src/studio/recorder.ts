@@ -2,18 +2,21 @@
  * VİDEO KAYDI — kompozitör tuvalini tarayıcının kendi kaydedicisiyle (MediaRecorder) video dosyasına çevirir.
  *
  * Tercih sırası: MP4 (Instagram ve TikTok doğrudan kabul eder; yeni Chrome, Edge ve Safari) → WebM (Firefox ve
- * eski Chrome). Hiçbir şey sunucuya gönderilmez; dosya doğrudan bilgisayara iner.
+ * eski Chrome). Müzik ve efektler açıksa ses de aynı dosyaya girer. Hiçbir şey sunucuya gönderilmez; dosya doğrudan
+ * bilgisayara iner.
  */
 
 const MIME_TYPES = ["video/mp4;codecs=avc1.42E01E", "video/mp4", "video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"] as const;
+/** Sesli kayıt: video + ses kodekleri birlikte (MP4: AAC, WebM: Opus). */
+const MIME_TYPES_AUDIO = ["video/mp4;codecs=avc1.42E01E,mp4a.40.2", "video/mp4", "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"] as const;
 
 export function recordingSupported(): boolean {
   return typeof MediaRecorder !== "undefined" && typeof HTMLCanvasElement !== "undefined" && "captureStream" in HTMLCanvasElement.prototype;
 }
 
-export function pickMimeType(): string | null {
+export function pickMimeType(withAudio = false): string | null {
   if (!recordingSupported()) return null;
-  return MIME_TYPES.find((type) => MediaRecorder.isTypeSupported(type)) ?? null;
+  return (withAudio ? MIME_TYPES_AUDIO : MIME_TYPES).find((type) => MediaRecorder.isTypeSupported(type)) ?? null;
 }
 
 export interface Recording {
@@ -21,11 +24,14 @@ export interface Recording {
   stop: () => Promise<{ blob: Blob; extension: "mp4" | "webm" }>;
 }
 
-export function startRecording(canvas: HTMLCanvasElement, fps = 30): Recording {
-  const mimeType = pickMimeType();
+/** Tuvali (ve verilirse sesi) kaydetmeye başlar. */
+export function startRecording(canvas: HTMLCanvasElement, fps = 30, audio?: MediaStream): Recording {
+  const audioTracks = audio?.getAudioTracks() ?? [];
+  const mimeType = pickMimeType(audioTracks.length > 0);
   if (!mimeType) throw new Error("Bu tarayıcı video kaydını desteklemiyor.");
   const stream = canvas.captureStream(fps);
-  const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 8_000_000 });
+  for (const track of audioTracks) stream.addTrack(track);
+  const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 8_000_000, audioBitsPerSecond: 160_000 });
   const chunks: Blob[] = [];
   recorder.ondataavailable = (event) => {
     if (event.data.size > 0) chunks.push(event.data);
@@ -36,7 +42,8 @@ export function startRecording(canvas: HTMLCanvasElement, fps = 30): Recording {
     stop: () =>
       new Promise((resolve) => {
         recorder.onstop = () => {
-          stream.getTracks().forEach((track) => track.stop());
+          // Ses izleri ObaSound'a ait (önizlemede de çalar): yalnızca tuvalin görüntü izi durdurulur.
+          stream.getVideoTracks().forEach((track) => track.stop());
           resolve({ blob: new Blob(chunks, { type: mimeType }), extension: mimeType.startsWith("video/mp4") ? "mp4" : "webm" });
         };
         recorder.stop();

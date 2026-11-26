@@ -1,11 +1,12 @@
 /**
  * REEL KOMPOZİTÖRÜ — 1080 × 1920 tuvale bir kare çizer:
  *   3D dünya (piksel piksel 3 kat büyütülmüş) · üstte OBA-TALES damgası · ortada kelime kelime piksel altyazı ·
- *   gerektiğinde kural kartı · altta imza (@hesap)
+ *   gerektiğinde kural kartı · altta imza (@hesap) · akın reelinde boss'un Öfke çubuğu, perde başlığı ve anılan adlar
  *
  * Yazılar platformların arayüzüyle çakışmasın diye "güvenli alanda" durur (üstte ve altta pay bırakılır).
  * Kayıt bu tuvalden alınır: ekranda görülen, videoda çıkanla aynıdır.
  */
+import type { ClassId } from "../types";
 import type { CaptionState, CardState } from "./reel";
 
 export const REEL = { width: 1080, height: 1920 } as const;
@@ -15,12 +16,27 @@ const INK = "#1b1424";
 const GOLD = "#f6d36f";
 const WHITE = "#fbf7ef";
 
+/** Akın reelinin göstergesi (Akın Günü'nün o anı). */
+export interface RaidOverlay {
+  boss: string;
+  /** 0–100. */
+  rage: number;
+  title: string;
+  caption: string;
+  /** Ekrandaki haberler; age = beliren haberin yaşı (saniye). */
+  callouts: { text: string; cls: ClassId | null; age: number }[];
+}
+
 export interface ReelOverlay {
   caption: CaptionState | null;
   card: CardState | null;
   /** Alttaki imza, ör. "@oba.tales". */
   signature: string;
+  raid?: RaidOverlay | null;
 }
+
+/** Sınıf renkleri (index.css'tekilerin videoda okunan açık tonları). */
+const CLASS_COLORS: Readonly<Record<ClassId, string>> = { kalkaneri: "#ff7a66", okyeli: "#7fd0f2", ocakcan: "#ffc45e" };
 
 /** Kelimeleri genişliğe göre satırlara böler. */
 function wrapWords(ctx: CanvasRenderingContext2D, words: readonly string[], maxWidth: number): string[][] {
@@ -115,6 +131,60 @@ function drawCard(ctx: CanvasRenderingContext2D, { card, presence }: CardState) 
   ctx.restore();
 }
 
+function panel(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, alpha = 0.86) {
+  ctx.fillStyle = `rgba(13, 27, 46, ${alpha})`;
+  ctx.fillRect(x, y, w, h);
+  ctx.fillStyle = "rgba(237, 189, 69, 0.85)";
+  ctx.fillRect(x, y, w, 5);
+  ctx.fillRect(x, y + h - 5, w, 5);
+}
+
+function drawRaid(ctx: CanvasRenderingContext2D, raid: RaidOverlay) {
+  // Üstte boss ve Öfke çubuğu (damganın altında).
+  const x = 110;
+  const w = REEL.width - 220;
+  panel(ctx, x, 248, w, 112);
+  ctx.textBaseline = "middle";
+  ctx.font = `700 42px ${FONT}`;
+  ctx.textAlign = "left";
+  outlinedText(ctx, raid.boss, x + 28, 290, WHITE, 8);
+  ctx.textAlign = "right";
+  outlinedText(ctx, raid.rage > 0 ? `ÖFKE ${raid.rage}` : "SAKİN", x + w - 28, 290, raid.rage > 0 ? "#ff8a5c" : GOLD, 8);
+  ctx.fillStyle = INK;
+  ctx.fillRect(x + 28, 322, w - 56, 22);
+  const fill = (w - 56 - 6) * (raid.rage / 100);
+  if (fill > 0) {
+    const gradient = ctx.createLinearGradient(x + 31, 0, x + 31 + fill, 0);
+    gradient.addColorStop(0, "#e5562b");
+    gradient.addColorStop(1, "#f6d36f");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(x + 31, 325, fill, 16);
+  }
+
+  // Anılan yoldaşlar: sağda, kayarak gelir ve 4,5 saniye sonra söner.
+  ctx.font = `700 40px ${FONT}`;
+  ctx.textAlign = "right";
+  raid.callouts.forEach((callout, i) => {
+    const slide = Math.min(1, callout.age / 0.25);
+    const fade = Math.min(1, Math.max(0, (4.5 - callout.age) / 0.5));
+    const y = 760 + i * 92;
+    const width = Math.min(900, ctx.measureText(callout.text).width + 56);
+    ctx.save();
+    ctx.globalAlpha = fade;
+    ctx.translate((1 - slide) * 260, 0);
+    panel(ctx, REEL.width - 60 - width, y - 38, width, 76, 0.82);
+    outlinedText(ctx, callout.text, REEL.width - 88, y, callout.cls ? CLASS_COLORS[callout.cls] : GOLD, 8);
+    ctx.restore();
+  });
+
+  // Perde başlığı ve açıklaması: altyazının yerinde.
+  ctx.textAlign = "center";
+  ctx.font = `700 80px ${FONT}`;
+  outlinedText(ctx, raid.title, REEL.width / 2, 1190, GOLD, 14);
+  ctx.font = `600 40px ${FONT}`;
+  wrapWords(ctx, raid.caption.split(/\s+/), 900).forEach((line, row) => outlinedText(ctx, line.join(" "), REEL.width / 2, 1280 + row * 52, WHITE, 8));
+}
+
 /** Bir reel karesi: kaynak (WebGL tuvali) keskin büyütülür, üstüne yazılar çizilir. */
 export function drawReelFrame(ctx: CanvasRenderingContext2D, source: CanvasImageSource, overlay: ReelOverlay) {
   ctx.imageSmoothingEnabled = false;
@@ -126,6 +196,7 @@ export function drawReelFrame(ctx: CanvasRenderingContext2D, source: CanvasImage
   ctx.font = `700 54px ${FONT}`;
   outlinedText(ctx, "OBA-TALES", REEL.width / 2, 190, GOLD, 10);
 
+  if (overlay.raid) drawRaid(ctx, overlay.raid);
   if (overlay.card) drawCard(ctx, overlay.card);
   if (overlay.caption) drawCaption(ctx, overlay.caption);
 

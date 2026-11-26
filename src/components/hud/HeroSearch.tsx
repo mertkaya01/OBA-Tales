@@ -60,6 +60,7 @@ export function HeroSearch({ matches, className }: HeroSearchProps) {
       <Search aria-hidden className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-buz-300" />
       <input
         id={inputId}
+        data-hero-search
         type="text"
         role="combobox"
         aria-expanded={expanded}

@@ -15,6 +15,9 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { BADGES } from "../content/badges";
 import { EPISODE_BADGES } from "../lib/rules";
 import { RaidDayHud } from "./living/RaidDayHud";
+import { RaidSoundToggle } from "./living/RaidSoundToggle";
+import { TOUR_SEEN_KEY } from "../content/tour";
+import { WelcomeTour } from "./WelcomeTour";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { WorldClock } from "../components/hud/WorldClock";
 import { ZoomControls } from "../components/hud/ZoomControls";
@@ -218,12 +221,42 @@ export default function WorldView({ characters }: WorldViewProps) {
     }
     const { square, focus } = formation.ground;
     const center = { x: square.x * 0.6 + focus.x * 0.4, y: square.y * 0.6 + focus.y * 0.4 };
-    const timer = window.setTimeout(() => rigRef.current?.watch(center, 8, formation.facing + Math.PI + 0.5), 80);
+    // Kamera merkez etrafında döner: boss (yaklaşık 24 birim) ve bütün saf dönerken de görünsün.
+    const fit = Math.max(Math.hypot(focus.x - center.x, focus.y - center.y) + 28, Math.hypot(square.x - center.x, square.y - center.y) + formation.radius);
+    const timer = window.setTimeout(() => rigRef.current?.watch(center, 8, formation.facing + Math.PI + 0.5, fit), 80);
     return () => window.clearTimeout(timer);
   }, [watching, formation, scene.battle]);
   // Dünya görünümünden çıkınca izleme de biter.
   useEffect(() => () => useAppStore.getState().stopWatchingRaid(), []);
   const onWatchEnd = useCallback(() => useAppStore.getState().stopWatchingRaid(), []);
+
+  // İlk oba turu: ilk ziyarette (bir karaktere bağlantıyla gelinmediyse) kendiliğinden açılır; görüldüğü saklanır.
+  const touring = useAppStore((s) => s.tourOpen);
+  useEffect(() => {
+    let seen = true;
+    try {
+      seen = window.localStorage.getItem(TOUR_SEEN_KEY) !== null;
+    } catch {
+      // Depolama kapalıysa tur kendiliğinden açılmaz (Lejant'tan açılabilir).
+    }
+    const { selectedId, watchingRaid } = useAppStore.getState();
+    if (seen || selectedId || watchingRaid) return;
+    const timer = window.setTimeout(() => useAppStore.getState().startTour(), 1400);
+    return () => window.clearTimeout(timer);
+  }, []);
+  useEffect(() => () => useAppStore.getState().endTour(), []);
+  const endTour = useCallback(() => {
+    try {
+      window.localStorage.setItem(TOUR_SEEN_KEY, new Date().toISOString());
+    } catch {
+      // Depolama kapalıysa bir dahaki ziyarette yine açılır.
+    }
+    useAppStore.getState().endTour();
+  }, []);
+  const raidCenter = useMemo(
+    () => (formation ? { x: formation.ground.square.x * 0.6 + formation.ground.focus.x * 0.4, y: formation.ground.square.y * 0.6 + formation.ground.focus.y * 0.4 } : null),
+    [formation],
+  );
   // Akın Günü göstergesi için akıncılar ve akının rozeti.
   const raiders = useMemo(() => (formation ? [...formation.slots.keys()].map((id) => data.characterById.get(id)).filter((c): c is Character => !!c) : []), [formation, data.characterById]);
   const raidBadge = EPISODE_BADGES[data.activeEpisode.number];
@@ -283,12 +316,16 @@ export default function WorldView({ characters }: WorldViewProps) {
       <PlaceLabelLayer labels={placeLabels} refs={placeLabelRefs} onNamerClick={onNamerClick} onBossClick={onBossClick} />
       <CharacterLabelLayer refs={characterLabelRefs} characterById={data.characterById} visibleIds={visibleIds} />
 
+      {touring && !watching && <WelcomeTour rig={rigRef} narrator={data.characterById.get("dede_toygar")} boss={boss?.name ?? null} raidCenter={raidCenter} onClose={endTour} />}
       {watching && boss && formation && <RaidDayHud battle={scene.battle} bossName={boss.name} raiders={raiders} badge={raidBadge ? BADGES[raidBadge].name : null} />}
       {watching && boss && formation && (
         <div className="absolute bottom-20 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3 whitespace-nowrap rounded-full border border-alev-400/50 bg-gece-900/90 py-1.5 pl-4 pr-1.5 shadow-lg backdrop-blur sm:bottom-4" role="status">
           <span aria-hidden className="size-2.5 animate-pulse rounded-full bg-kilim-400" />
-          <span className="font-display text-sm text-buz-50">Canlı akın · {boss.name}</span>
+          <span className="font-display text-sm text-buz-50">
+            Canlı akın<span className="hidden sm:inline"> · {boss.name}</span>
+          </span>
           <span className="hidden text-xs text-buz-300 md:inline">{formatNumber(formation.slots.size)} akıncı · kamerayı tutunca serbest kalır</span>
+          <RaidSoundToggle battle={scene.battle} />
           <button
             type="button"
             onClick={onWatchEnd}

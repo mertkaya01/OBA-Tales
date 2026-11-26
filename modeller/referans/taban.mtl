@@ -56,7 +56,7 @@ d 1
 illum 1
 
 newmtl eller
-Kd 0.5529 0.3529 0.2314
+Kd 0.8510 0.6314 0.4471
 Ka 0 0 0
 Ks 0 0 0
 d 1
@@ -70,7 +70,7 @@ d 1
 illum 1
 
 newmtl kafa
-Kd 0.5529 0.3529 0.2314
+Kd 0.8510 0.6314 0.4471
 Ka 0 0 0
 Ks 0 0 0
 d 1
@@ -91,14 +91,14 @@ d 1
 illum 1
 
 newmtl burun
-Kd 0.4314 0.2627 0.1647
+Kd 0.7255 0.4941 0.3216
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
 newmtl kulaklar
-Kd 0.5529 0.3529 0.2314
+Kd 0.8510 0.6314 0.4471
 Ka 0 0 0
 Ks 0 0 0
 d 1

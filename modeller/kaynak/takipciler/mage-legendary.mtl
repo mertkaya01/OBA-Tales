@@ -1,0 +1,338 @@
+# Buyucu - Efsanevi (Legendary Mage) — scripts/efsanevi-takipciler.ts
+newmtl bacaklar
+Kd 0.1647 0.1255 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizmeler
+Kd 0.2902 0.1804 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizme-tabani
+Kd 0.1412 0.1020 0.0784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl govde
+Kd 0.4784 0.1098 0.1333
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yaka
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer
+Kd 0.2275 0.1412 0.0941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer-tokasi
+Kd 1.0000 0.8392 0.4196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kollar
+Kd 0.4784 0.1098 0.1333
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl eller
+Kd 0.8706 0.6980 0.5176
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl boyun
+Kd 0.8314 0.6353 0.4549
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kafa
+Kd 0.8706 0.6980 0.5176
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gozler
+Kd 0.9412 0.9255 0.8784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl goz-bebekleri
+Kd 0.2353 0.1882 0.1569
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl goz-parlamasi
+Kd 0.9961 0.9882 0.9725
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kaslar
+Kd 0.8784 0.8549 0.8000
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl burun
+Kd 0.8078 0.6118 0.4392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sac
+Kd 0.9020 0.8863 0.8314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl etek-kaplamasi
+Kd 0.8314 0.3294 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl etek
+Kd 0.4784 0.1098 0.1333
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl etek-kenari
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl etek-nakis
+Kd 1.0000 0.8392 0.4196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl govde-suslemeleri
+Kd 1.0000 0.8392 0.4196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kol-alt
+Kd 0.8314 0.3294 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kol-kenari
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sakal
+Kd 0.9333 0.9176 0.8706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl biyik
+Kd 0.9333 0.9176 0.8706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sapka-kenari
+Kd 0.8510 0.6471 0.2510
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sapka
+Kd 0.4314 0.0941 0.1255
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sapka-bandi
+Kd 1.0000 0.8392 0.4196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sapka-nakis
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sapka-tasi
+Kd 1.0000 0.6039 0.2392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl omuz-suslemeleri
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer-suslemesi
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kristaller
+Kd 1.0000 0.5412 0.2392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kese
+Kd 0.5412 0.4157 0.2510
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl tilsim
+Kd 1.0000 0.8392 0.4196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl asa
+Kd 0.2275 0.1098 0.0784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl asa-bagi
+Kd 0.4157 0.1647 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl asa-yuzukleri
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl asa-koruma
+Kd 1.0000 0.8392 0.4196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl asa-tasi
+Kd 1.0000 0.7020 0.2784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl asa-sarkilari
+Kd 0.9412 0.7529 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl parcaciklar
+Kd 1.0000 0.8118 0.4392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+
+newmtl asa-alevi
+Kd 1.0000 0.4784 0.1804
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sapka-alevi
+Kd 1.0000 0.7020 0.2784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ates-halesi
+Kd 1.0000 0.5412 0.2392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl madalyon
+Kd 0.9098 0.7020 0.2275
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl madalyon-tasi
+Kd 1.0000 0.8784 0.5412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+

@@ -15,6 +15,7 @@ import { actorFromSprite } from "../game/fx/actor";
 import { CLASS_SKILL_NAMES, PORTRAIT, classSkill, portraitAuras } from "../game/fx/fxCatalog";
 import { PixelFxPlayer } from "../game/fx/PixelFxPlayer";
 import { composeSprite } from "../game/sprites/composeSprite";
+import { renderPortrait } from "../world3d/characters/portrait3d";
 import type { Character } from "../types";
 import { LayerTexture, textureFromRgba } from "./fxTexture";
 import { PixiStage } from "./PixiStage";
@@ -28,16 +29,19 @@ export default function LivePortrait({ character }: { character: Character }) {
   const setup = useCallback(
     (app: Application) => {
       const { width, height, feetX, feetY, spriteScale } = PORTRAIT;
-      const sprite = composeSprite(character);
-      const actor = actorFromSprite(sprite, spriteScale);
+      // Karakter 3D modelinden çizilir (aynı yer kaplar: 16×20 × 2); WebGL yoksa eski piksel portre.
+      const model = renderPortrait(character, 16 * spriteScale, 20 * spriteScale);
+      const sprite = model ?? composeSprite(character);
+      const scale = model ? 1 : spriteScale;
+      const actor = actorFromSprite(sprite, scale);
       const player = new PixelFxPlayer(width, height);
       for (const recipe of portraitAuras(character)) player.playRecipe(recipe, { actor });
 
       const back = new LayerTexture(player.back);
       const front = new LayerTexture(player.front);
-      const hero = new Sprite(textureFromRgba(sprite, spriteScale));
-      const heroX = feetX - (sprite.width * spriteScale) / 2;
-      const heroY = feetY - sprite.height * spriteScale;
+      const hero = new Sprite(textureFromRgba(sprite, scale));
+      const heroX = feetX - (sprite.width * scale) / 2;
+      const heroY = feetY - sprite.height * scale;
       hero.position.set(heroX, heroY);
       app.stage.addChild(new Sprite(back.texture), hero, new Sprite(front.texture));
 

@@ -1,8 +1,10 @@
 /**
- * Karakterin piksel portresi, nadirlik çerçevesi içinde.
+ * Karakterin portresi, nadirlik çerçevesi içinde: 3D modelinden çizilir (usePortrait3d); hazır olana kadar ya da
+ * WebGL yoksa eski piksel portre görünür. İkisi de aynı boyda olduğu için kayma olmaz.
  */
 import { useMemo } from "react";
 import { getPortraitUrl } from "../../game/sprites/portraitCache";
+import { usePortrait3d } from "../../game/sprites/usePortrait3d";
 import { SPRITE_HEIGHT, SPRITE_WIDTH } from "../../game/sprites/pixelMaps";
 import { cn } from "../../lib/cn";
 import type { Character } from "../../types";
@@ -25,7 +27,9 @@ interface CharacterPortraitProps {
 
 export function CharacterPortrait({ character, size = "md", alt = "", className }: CharacterPortraitProps) {
   const { scale, padding } = SIZES[size];
-  const url = useMemo(() => getPortraitUrl(character, scale), [character, scale]);
+  const pixel = useMemo(() => getPortraitUrl(character, scale), [character, scale]);
+  const model = usePortrait3d(character, SPRITE_WIDTH * scale, SPRITE_HEIGHT * scale);
+  const url = model ?? pixel;
 
   return (
     <RarityFrame rarity={character.rarity} elementAura={character.elementAura} className={cn(padding, className)}>

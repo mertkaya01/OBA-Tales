@@ -29,6 +29,8 @@ export const routes: RouteObject[] = [
       { path: "bolumler", lazy: page(() => import("./pages/EpisodesPage")) },
       { path: "katil", lazy: page(() => import("./pages/JoinPage")) },
       { path: "studyo", lazy: page(() => import("./pages/StudioPage")) },
+      // Yönetim paneli yalnızca geliştirme sunucusunda (npm run dev): yayın sürümüne girmez.
+      ...(import.meta.env.DEV ? [{ path: "yonetim", lazy: page(() => import("./pages/AdminPage")) }] : []),
       { path: "*", Component: NotFoundPage },
     ],
   },

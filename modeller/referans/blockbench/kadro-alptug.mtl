@@ -1,216 +1,335 @@
 # OBA-Tales referans renkleri: kadro-alptug
-newmtl bacaklar
-Kd 0.2314 0.1882 0.2745
+newmtl kalkaneri-bacaklar
+Kd 0.1882 0.1725 0.2039
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl cizmeler
-Kd 0.2902 0.1843 0.1137
+newmtl kalkaneri-cizmeler
+Kd 0.1804 0.1490 0.1725
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl govde
+newmtl kalkaneri-cizme-tabani
+Kd 0.1333 0.1255 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-govde
 Kd 0.4784 0.2902 0.1647
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl altin-etek
-Kd 0.9294 0.7412 0.2706
+newmtl kalkaneri-yaka
+Kd 0.5882 0.6118 0.6667
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl yaka
-Kd 0.5843 0.4000 0.8784
+newmtl kalkaneri-kemer
+Kd 0.2039 0.1569 0.1333
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kemer
-Kd 0.4784 0.2902 0.1490
+newmtl kalkaneri-kemer-tokasi
+Kd 0.6980 0.7216 0.7686
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl toka
-Kd 0.9294 0.7412 0.2706
+newmtl kalkaneri-kollar
+Kd 0.4784 0.2902 0.1647
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl nakis
-Kd 0.9294 0.7412 0.2706
+newmtl kalkaneri-bileklikler
+Kd 0.2275 0.1725 0.1412
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kollar
-Kd 0.3529 0.2078 0.1176
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl eller
+newmtl kalkaneri-eller
 Kd 0.9647 0.8235 0.7098
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl atki
-Kd 0.7216 0.6118 0.4235
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl kafa
-Kd 0.9647 0.8235 0.7098
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl gozler
-Kd 0.1059 0.0784 0.1412
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl kaslar
-Kd 0.2902 0.1804 0.1098
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl burun
+newmtl kalkaneri-boyun
 Kd 0.8784 0.6706 0.5412
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kulaklar
+newmtl kalkaneri-kafa
 Kd 0.9647 0.8235 0.7098
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl agiz
-Kd 0.3529 0.1686 0.1490
+newmtl kalkaneri-gozler
+Kd 0.9333 0.9098 0.8471
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl sac
+newmtl kalkaneri-goz-bebekleri
+Kd 0.1804 0.1255 0.1176
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-goz-parlamasi
+Kd 0.9882 0.9804 0.9608
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kaslar
 Kd 0.2902 0.1804 0.1098
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl biyik
+newmtl kalkaneri-burun
+Kd 0.8784 0.6706 0.5412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-agiz
+Kd 0.4706 0.2588 0.2431
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kulaklar
+Kd 0.9647 0.8235 0.7098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-sac
 Kd 0.2902 0.1804 0.1098
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl bork
+newmtl kalkaneri-cizme-plakalari-nadir-destansi
+Kd 0.6196 0.6431 0.6980
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-gogus-zirhi-nadir-destansi
+Kd 0.2275 0.2353 0.2824
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-bileklik-plakalari-nadir-destansi
+Kd 0.6588 0.6824 0.7373
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-gogus-plakalari-destansi
+Kd 0.3059 0.3216 0.3765
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-gogus-suslemesi-destansi
+Kd 0.7451 0.7647 0.8157
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-yaka-kurk-destansi
+Kd 0.3686 0.2980 0.2471
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-omuz-plakalari-destansi
+Kd 0.3922 0.4078 0.4706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kol-zirhlari-destansi
+Kd 0.3451 0.3608 0.4157
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kemer-suslemesi-destansi
+Kd 0.7373 0.7569 0.8078
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kalca-plakalari-destansi
+Kd 0.2431 0.1961 0.1569
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kilic-destansi
+Kd 0.6745 0.6980 0.7529
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kilic-koruma-destansi
+Kd 0.7451 0.7647 0.8157
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kilic-kabzasi-destansi
+Kd 0.2039 0.1490 0.1333
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kilic-tasi-destansi
+Kd 0.7451 0.7647 0.8157
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kalkan-destansi
+Kd 0.7882 0.6314 0.2902
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kalkan-cercedeyi-destansi
+Kd 0.5412 0.4157 0.1647
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kalkan-suslemeleri-destansi
+Kd 0.6588 0.6824 0.7373
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kalkan-amblemi-destansi
+Kd 0.7686 0.7843 0.8314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kalkan-kabara-destansi
+Kd 0.5098 0.5412 0.5961
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-kalkan-kayislari-destansi
+Kd 0.3529 0.2431 0.1569
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-uzak-bacak
+Kd 0.1882 0.1725 0.2039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-uzak-govde
+Kd 0.4784 0.2902 0.1647
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-uzak-kafa
+Kd 0.9647 0.8235 0.7098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkaneri-uzak-sac
+Kd 0.2902 0.1804 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl alptug-bork
 Kd 0.9451 0.9137 0.8235
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl bork-kurku
+newmtl alptug-bork-kurku
 Kd 0.9373 0.9020 0.8314
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kurk-yaka
-Kd 0.9373 0.9020 0.8314
+newmtl alptug-biyik
+Kd 0.2902 0.1804 0.1098
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl omuzluk
-Kd 0.7882 0.5765 0.2275
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl kalkan
-Kd 0.7882 0.5765 0.2275
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl kalkan-kabarasi
-Kd 0.9647 0.8275 0.4353
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl kalkan-amblemi
+newmtl alptug-atki
 Kd 0.7216 0.6118 0.4235
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl kalkan-cemberi
-Kd 0.4784 0.2902 0.1490
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl kilic
-Kd 0.9647 0.8275 0.4353
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl kilic-kabzasi
-Kd 0.4784 0.2902 0.1490
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl uzun-pelerin
-Kd 0.4157 0.2627 0.7216
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl madalyon
-Kd 0.9294 0.7412 0.2706
 Ka 0 0 0
 Ks 0 0 0
 d 1

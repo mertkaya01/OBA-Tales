@@ -1,251 +1,321 @@
 # OBA-Tales referans renkleri: kadro-mhellingtr
-newmtl mhellingtr-bacaklar
-Kd 0.1020 0.1373 0.3137
+newmtl okyeli-bacaklar
+Kd 0.0863 0.1059 0.2353
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-cizmeler
-Kd 0.1647 0.2078 0.4392
+newmtl okyeli-cizmeler
+Kd 0.1137 0.1294 0.2588
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-cizme-kenari
-Kd 0.8745 0.9098 0.9608
+newmtl okyeli-cizme-tabani
+Kd 0.1569 0.1333 0.1176
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-govde
-Kd 0.1098 0.1647 0.4000
+newmtl okyeli-govde
+Kd 0.1020 0.1294 0.3137
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-etek
-Kd 0.8745 0.9098 0.9608
+newmtl okyeli-kemer
+Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-kemer
-Kd 0.1725 0.1412 0.2510
+newmtl okyeli-kemer-tokasi
+Kd 0.4980 0.8471 1.0000
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-toka
-Kd 1.0000 1.0000 1.0000
+newmtl okyeli-kollar
+Kd 0.0706 0.0902 0.2196
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-yildiz-amblemi
-Kd 0.4980 0.9020 1.0000
+newmtl okyeli-bileklikler
+Kd 0.9098 0.9216 0.9647
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-boyunluk
-Kd 0.8745 0.9098 0.9608
+newmtl okyeli-eller
+Kd 0.1490 0.1686 0.2706
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-omuzluk
-Kd 0.8745 0.9098 0.9608
+newmtl okyeli-boyun
+Kd 0.1059 0.1216 0.2000
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-omuz-taslari
-Kd 0.7216 0.9569 1.0000
+newmtl okyeli-kafa
+Kd 0.1490 0.1686 0.2706
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-kollar
-Kd 0.0745 0.1137 0.2902
+newmtl okyeli-gogus-zirhi-nadir-destansi
+Kd 0.9098 0.9216 0.9647
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-bileklik
-Kd 0.8745 0.9098 0.9608
+newmtl okyeli-bileklik-plakalari-nadir-destansi
+Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-eller
-Kd 0.8588 0.6471 0.4784
+newmtl okyeli-sadak-kayisi-nadir-destansi
+Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-kafa
-Kd 0.8588 0.6471 0.4784
+newmtl okyeli-cizme-plakalari-destansi
+Kd 0.9490 0.7843 0.2941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-kapuson-destansi
+Kd 0.9098 0.9216 0.9647
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-kapuson-kenari-destansi
+Kd 0.9490 0.7843 0.2941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-pelerin-destansi
+Kd 0.1059 0.1529 0.4000
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-pelerin-kenari-destansi
+Kd 0.9490 0.7843 0.2941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-omuz-zirhi-destansi
+Kd 0.9098 0.9216 0.9647
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-bileklik-nakis-destansi
+Kd 0.9490 0.7843 0.2941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-kemer-suslemesi-destansi
+Kd 0.9490 0.7843 0.2941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-yay-destansi
+Kd 0.9098 0.9216 0.9647
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-yay-kavramasi-destansi
+Kd 0.9490 0.7843 0.2941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-yay-kirisi-destansi
+Kd 0.8510 0.9647 1.0000
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-yay-plakalari-destansi
+Kd 0.9490 0.7843 0.2941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-sadak-destansi
+Kd 0.1020 0.1294 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-sadak-kenari-destansi
+Kd 0.9490 0.7843 0.2941
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-oklar-destansi
+Kd 0.9569 0.9451 0.9020
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-ok-tuyu-destansi
+Kd 0.4980 0.8471 1.0000
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-uzak-bacak
+Kd 0.1725 0.1961 0.1725
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-uzak-govde
+Kd 0.1020 0.1294 0.3137
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-uzak-kafa
+Kd 0.1490 0.1686 0.2706
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-uzak-baslik
+Kd 0.1333 0.3451 0.2588
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
 newmtl mhellingtr-gozler
-Kd 0.1059 0.0784 0.1412
+Kd 0.8510 0.9647 1.0000
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-kaslar
-Kd 0.2902 0.1804 0.1098
+newmtl mhellingtr-hale
+Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-burun
-Kd 0.7333 0.5216 0.3608
+newmtl mhellingtr-hale-yildizi
+Kd 0.8510 0.9647 1.0000
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-kulaklar
-Kd 0.8588 0.6471 0.4784
+newmtl mhellingtr-yildiz-amblemi
+Kd 0.4980 0.8471 1.0000
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-agiz
-Kd 0.3529 0.1686 0.1490
+newmtl mhellingtr-tabard
+Kd 0.9098 0.9216 0.9647
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-sakal
-Kd 0.2902 0.1804 0.1098
+newmtl mhellingtr-tabard-kenari
+Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-sac
-Kd 0.2902 0.1804 0.1098
+newmtl mhellingtr-uzun-pelerin
+Kd 0.1059 0.1529 0.4000
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-yildiz-taci
-Kd 0.7216 0.9569 1.0000
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl mhellingtr-pelerin
-Kd 0.1098 0.1647 0.4000
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl mhellingtr-pelerin-kenari
-Kd 0.8745 0.9098 0.9608
+newmtl mhellingtr-uzun-pelerin-kenari
+Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
 newmtl mhellingtr-pelerin-yildizlari
-Kd 0.7216 0.9569 1.0000
+Kd 0.8510 0.9647 1.0000
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-okluk
-Kd 0.1725 0.1412 0.2510
+newmtl mhellingtr-takimyildiz
+Kd 0.4980 0.8471 1.0000
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl mhellingtr-okluk-halkalari
-Kd 0.8745 0.9098 0.9608
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl mhellingtr-oklar
-Kd 0.9490 0.9647 1.0000
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl mhellingtr-ok-tuyleri
-Kd 0.4980 0.9020 1.0000
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl mhellingtr-yay
-Kd 0.8745 0.9098 0.9608
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl mhellingtr-yay-isigi
-Kd 0.4980 0.9020 1.0000
+newmtl mhellingtr-ok-kristalleri
+Kd 0.4980 0.8471 1.0000
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
 newmtl mhellingtr-yay-uclari
-Kd 0.7216 0.9569 1.0000
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl mhellingtr-yay-kabzasi
-Kd 0.0745 0.1137 0.2902
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl mhellingtr-kiris
-Kd 0.7216 0.9569 1.0000
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl mhellingtr-isik-oku
-Kd 0.4980 0.9020 1.0000
+Kd 0.9490 0.7843 0.2941
 Ka 0 0 0
 Ks 0 0 0
 d 1

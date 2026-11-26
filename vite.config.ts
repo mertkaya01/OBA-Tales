@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, type Plugin } from "vite";
+import { yonetimPlugin } from "./scripts/yonetimPlugin.ts";
 
 const root = import.meta.dirname;
 
@@ -62,7 +63,7 @@ function obaTalesRelease(): Plugin {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), obaTalesRelease()],
+  plugins: [react(), tailwindcss(), obaTalesRelease(), yonetimPlugin()],
   build: {
     // 3D dünya parçası (three + React Three Fiber + drei) ~1 MB; yalnızca Dünya görünümü açılınca yüklenir.
     chunkSizeWarningLimit: 1100,

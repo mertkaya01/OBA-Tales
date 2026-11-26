@@ -1,181 +1,251 @@
 # OBA-Tales referans renkleri: kadro-kursat
-newmtl bacaklar
-Kd 0.2314 0.1882 0.2745
+newmtl ocakcan-bacaklar
+Kd 0.1882 0.1725 0.2353
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl cizmeler
-Kd 0.2902 0.1843 0.1137
+newmtl ocakcan-cizmeler
+Kd 0.2275 0.1725 0.1412
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl govde
+newmtl ocakcan-cizme-tabani
+Kd 0.1647 0.1412 0.1255
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-govde
 Kd 0.6588 0.3922 0.1804
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl altin-etek
-Kd 0.9294 0.7412 0.2706
+newmtl ocakcan-yaka
+Kd 0.5882 0.6196 0.6745
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl yaka
-Kd 0.5843 0.4000 0.8784
+newmtl ocakcan-kemer
+Kd 0.3059 0.2196 0.1725
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kemer
-Kd 0.4784 0.2902 0.1490
+newmtl ocakcan-kemer-tokasi
+Kd 0.8078 0.6902 0.3765
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl toka
-Kd 0.9294 0.7412 0.2706
+newmtl ocakcan-kollar
+Kd 0.6588 0.3922 0.1804
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kese
-Kd 0.4784 0.2902 0.1490
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl nakis
-Kd 0.9294 0.7412 0.2706
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl kollar
-Kd 0.5098 0.2941 0.1294
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl eller
+newmtl ocakcan-eller
 Kd 0.9647 0.8235 0.7098
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl atki
-Kd 0.4980 0.7490 0.4157
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl kafa
-Kd 0.9647 0.8235 0.7098
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl gozler
-Kd 0.1059 0.0784 0.1412
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl kaslar
-Kd 0.4784 0.2902 0.1490
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl burun
+newmtl ocakcan-boyun
 Kd 0.8784 0.6706 0.5412
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kulaklar
+newmtl ocakcan-kafa
 Kd 0.9647 0.8235 0.7098
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl sac
+newmtl ocakcan-gozler
+Kd 0.9412 0.9255 0.8784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-goz-bebekleri
+Kd 0.2353 0.1882 0.1569
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-goz-parlamasi
+Kd 0.9961 0.9882 0.9725
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-kaslar
 Kd 0.4784 0.2902 0.1490
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kisa-sakal
+newmtl ocakcan-burun
+Kd 0.8784 0.6706 0.5412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-sac
 Kd 0.4784 0.2902 0.1490
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalpak
-Kd 0.9373 0.9020 0.8314
+newmtl ocakcan-kese
+Kd 0.6588 0.5725 0.4157
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl kalpak-tepesi
+newmtl ocakcan-kol-alt-nadir-destansi
+Kd 0.5098 0.2941 0.1294
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-kol-kenari-nadir-destansi
+Kd 0.6667 0.6902 0.7451
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-etek-kaplamasi-destansi
+Kd 0.5098 0.2941 0.1294
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-etek-destansi
 Kd 0.6588 0.3922 0.1804
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl davul
-Kd 0.9020 0.8392 0.7216
+newmtl ocakcan-etek-kenari-destansi
+Kd 0.6667 0.6902 0.7451
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl davul-tokmaklari
-Kd 0.9451 0.9137 0.8235
+newmtl ocakcan-etek-nakis-destansi
+Kd 0.8078 0.6902 0.3765
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl fener
+newmtl ocakcan-govde-suslemeleri-destansi
+Kd 0.8078 0.6902 0.3765
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-omuz-suslemeleri-destansi
+Kd 0.6745 0.6980 0.7529
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-kemer-suslemesi-destansi
+Kd 0.8078 0.6902 0.3765
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-tilsim-destansi
+Kd 0.8078 0.6902 0.3765
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-uzak-bacak
+Kd 0.1882 0.1725 0.2353
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-uzak-govde
+Kd 0.6588 0.3922 0.1804
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-uzak-kafa
+Kd 0.9647 0.8235 0.7098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl ocakcan-uzak-baslik
+Kd 0.2431 0.1725 0.3843
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kursat-kalpak
+Kd 0.9373 0.9020 0.8314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kursat-kalpak-tepesi
+Kd 0.6588 0.3922 0.1804
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kursat-fener
 Kd 1.0000 0.8431 0.4157
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
-newmtl uzun-pelerin
-Kd 0.4157 0.2627 0.7216
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl madalyon
-Kd 0.9294 0.7412 0.2706
+newmtl kursat-fener-sapi
+Kd 0.4784 0.2902 0.1490
 Ka 0 0 0
 Ks 0 0 0
 d 1

@@ -143,7 +143,7 @@ Modeli değiştirmenin iki yolu var.
 
 Üç özel kahramanın parçaları Blender kitinde ayrı gruplarda duruyor:
 - `COL_11_egetunce`: kova şapka ve gözleri, lavanta, uzun Gün Kılıcı.
-- `COL_12_mhellingtr`: yıldızlı pelerin, Yıldız Yayı, okluk, yıldız tacı.
+- `COL_12_mhellingtr`: kapüşon ve parlayan gözler, yıldızlı altın hale, takımyıldızlı pelerin, beyaz-altın Yıldız Yayı, kristal oklar.
 - `COL_13_BinTas`: senin alev kadını modelin (`modeller/kaynak/efsanevi-alev-kadini.obj`). Renkleri modeldeki gibi.
 
 Parça adları `egetunce-`, `mhellingtr-` ve `bintas-` ile başlıyor. Düzenleyip `Alt+P` ile aktarman yeterli. Renkleri 2D portreyle aynı yerden geliyor:

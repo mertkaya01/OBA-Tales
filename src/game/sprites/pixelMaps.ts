@@ -251,7 +251,7 @@ export const RARITY_LAYERS: Readonly<Record<Rarity, GearLayers>> = {
  * Özel kahramanların sınıf ekipmanı yerine kendi katmanları (kimliğe göre).
  *   egetunce   mor kova şapka (iki iri göz), sakal, sol elde lavanta, sağda uzun sarı-beyaz Gün Kılıcı
  *              (m/M şapka moru, i ak, l gün sarısı, f sakal, d lavanta, v sap yeşili)
- *   mhellingtr kıvırcık saç, kısa sakal, sırtta okluk, gümüş omuzluk, camgöbeği parlayan Yıldız Yayı
+ *   mhellingtr beyaz kapüşon, gölgede parlayan gözler, yıldızlı altın hale, kristal oklu okluk, beyaz-altın Yıldız Yayı
  *   bintas     alev taç, omuzların arkasından taşan alev kanatlar, kaldırdığı elde ateş küresi, eteğinde alevler
  *              (l alev, L kor sarısı, v kanat kızılı, g altın)
  */
@@ -279,25 +279,31 @@ export const HERO_LAYERS: Readonly<Record<string, GearLayers>> = {
   },
   mhellingtr: {
     back: layer({
-      3: "............i.i.",
-      4: "............iii.",
-      5: "............kkk.",
-      6: "............kMk.",
-      7: "............kkk.",
+      3: "............L.L.",
+      4: "............LLL.",
+      5: "............kgk.",
+      6: "............kkk.",
+      7: "............kgk.",
       8: "...........kkk..",
       9: "...........kk...",
     }),
     front: layer({
-      0: "....ohhohhho....",
-      6: "...oh......ho...",
-      7: ".L..ohhSShho....",
-      8: "wL..............",
-      9: "wL.MM......MM...",
-      10: "wL..............",
-      11: "wL..............",
-      12: "wL..............",
-      13: "wL..............",
-      14: ".L..............",
+      0: "....g.gLLg.g....",
+      1: ".....mmmmmm.....",
+      2: "....mmmmmmmm....",
+      3: "...mmmmmmmmmm...",
+      4: "...mm......mm...",
+      5: "...mm.L..L.mm...",
+      6: "g..mm......mm...",
+      7: "mL.mmm....mmm...",
+      8: "mL..............",
+      9: "mL.MM......MM...",
+      10: "mL..............",
+      11: "mL..............",
+      12: "mL..gggggggg....",
+      13: "mL..............",
+      14: "mL..............",
+      15: "g...............",
     }),
   },
   bintas: {

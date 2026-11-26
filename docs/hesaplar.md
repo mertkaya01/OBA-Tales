@@ -3,16 +3,65 @@
 Hedef: Instagram, TikTok ve YouTube'daki gerçek takipçiler haritada karakter olarak yaşasın; yeni gelen Kut Kapısı'ndan
 doğsun, yorumlar oylama olsun.
 
+## Yönetim paneli (önerilen yol)
+
+```powershell
+npm run dev
+```
+
+Tarayıcıda **http://localhost:5173/yonetim** adresini aç. Panel yalnızca senin bilgisayarında çalışır; yayındaki sitede
+bu sayfa yoktur. Paneldeki bölümler:
+
+| Bölüm | Ne yapar |
+|---|---|
+| Durum | Haritadaki takipçi sayısını, platform ve nadirlik dağılımını gösterir |
+| Takipçi ekle | Instagram ve TikTok veri dosyasını, YouTube yorumlarını, CSV'yi ya da elle yazılan listeyi okur. Önce önizleme gelir, sonra "Haritaya ekle" |
+| Haritadan çıkar | Çıkmak isteyen kişiyi kullanıcı adıyla siler |
+| Sıfırla | Örnek takipçileri siler; kadro ve özel kahramanlar kalır. Kutuya "SIFIRLA" yazınca çalışır |
+| Kontrol et ve yayına al | Veri denetimini çalıştırır, yayına alma komutlarını gösterir |
+
+**Takipçi listesi temelli yol:** Platformların API'si takipçi listesi vermez, ama hesap sahibi kendi verisini indirebilir.
+Dosya tarayıcıda okunur; yalnızca kullanıcı adları kaydedilir.
+
+- **Instagram:**
+  1. Profil → ☰ → Hesap Merkezi → Bilgilerin ve izinler → Bilgilerini indir.
+  2. "Bilgilerinin bir kısmı" → Takipçiler ve takip edilenler → Cihaza indir. Biçim JSON, tarih aralığı Tüm zamanlar.
+  3. Gelen ZIP'teki `connections/followers_and_following/followers_1.json` dosyasını panelden seç.
+- **TikTok:**
+  1. Profil → ☰ → Ayarlar ve gizlilik → Hesap → Verilerini indir → JSON → Veri iste. Hazırlanması birkaç gün sürebilir.
+  2. ZIP'teki `user_data_tiktok.json` dosyasını panelden seç. TXT seçtiysen `Follower List.txt` dosyasını seç.
+- **YouTube:** Abone listesinin tamamı alınamaz.
+  - YouTube Studio → Pano → "Son aboneler" listesinde yalnızca aboneliğini herkese açık yapanlar görünür. Oradaki adları
+    bir metin dosyasına alt alta yazıp panelden seçebilirsin.
+  - Ya da aşağıdaki API anahtarıyla yorum yapanları "Yorumlardan çek" ile alabilirsin.
+
+Haftada bir yeni dosya indirip panelden eklemen yeterli: zaten haritada olanlar atlanır, yeniler Kut Kapısı'nın önünde
+doğar. Aynı komutlar komut satırında da var: `npm run takipci:ekle` (`veri/girdi/` içindeki CSV, JSON, HTML ve TXT
+dosyalarını okur) ve `npm run takipci:ekle -- --cikar kullanici1,kullanici2`.
+
+Paneldeki değişiklikler `public/data/` içine yazılır. Yayına almak için:
+
+```powershell
+git add public/data
+```
+
+```powershell
+git commit -m "Takipçiler güncellendi"
+```
+
+```powershell
+git push
+```
+
 ## Önce gerçek durum: platformlar ne veriyor?
 
 | Platform | Takipçi listesi | Yorumlar | Ne yapıyoruz |
 |---|---|---|---|
-| **YouTube** | Resmî API vermiyor (yalnızca abone sayısı) | **Veriyor**: herkese açık yorumlar, ücretsiz API anahtarıyla | Yorum yapanlar otomatik çekilir (`npm run youtube:yorumlar`) |
-| **Instagram** | Resmî API vermiyor | Kendi gönderinin yorumları, yalnızca İşletme/İçerik Üreticisi hesabı + Meta geliştirici uygulamasıyla | Şimdilik CSV ile; sonraki adım: Meta API |
-| **TikTok** | Resmî API vermiyor | Bireysel hesaplar için yorum okuma API'si yok | CSV ile (yorumlardan elle ya da katılım formuyla) |
+| **YouTube** | Resmî API vermiyor; Studio'da yalnızca herkese açık aboneler görünür | **Veriyor**: herkese açık yorumlar, ücretsiz API anahtarıyla | Yorum yapanlar otomatik çekilir (`npm run youtube:yorumlar`) |
+| **Instagram** | Resmî API vermiyor, ama **"Bilgilerini indir" dosyasında var** (panelden yüklenir) | Kendi gönderinin yorumları, yalnızca İşletme/İçerik Üreticisi hesabı + Meta geliştirici uygulamasıyla | Şimdilik CSV ile; sonraki adım: Meta API |
+| **TikTok** | Resmî API vermiyor, ama **"Verilerini indir" dosyasında var** (panelden yüklenir) | Bireysel hesaplar için yorum okuma API'si yok | CSV ile (yorumlardan elle ya da katılım formuyla) |
 
-Bu yüzden oyunun girişi **yorum**dur: "Takip et, yoruma adını yaz, karakterin doğsun." Hem platformların kurallarına
-uygun, hem de etkileşimi artırır (algoritma yorumu sever).
+Bu yüzden ana yol **takipçi listesi dosyası**dır (yukarıdaki panel); yorumlar oylama, ad koyma ve YouTube için yardımcı yoldur.
 
 ## 1. adım (hazır): CSV ile içe aktarma
 

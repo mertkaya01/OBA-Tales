@@ -7,6 +7,7 @@
 import { lazy, Suspense, useMemo } from "react";
 import { PORTRAIT } from "../../game/fx/fxCatalog";
 import { getPortraitUrl } from "../../game/sprites/portraitCache";
+import { usePortrait3d } from "../../game/sprites/usePortrait3d";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useWebGLSupport } from "../../hooks/useWebGLSupport";
 import { usePixiTurn } from "../../pixi/pixiLease";
@@ -21,7 +22,10 @@ const CSS_SCALE = 3;
 function StillPortrait({ character, alt }: { character: Character; alt: string }) {
   const { width, height, feetX, feetY, spriteScale } = PORTRAIT;
   const scale = spriteScale * CSS_SCALE;
-  const url = useMemo(() => getPortraitUrl(character, scale), [character, scale]);
+  const pixel = useMemo(() => getPortraitUrl(character, scale), [character, scale]);
+  // 3D modelden çizilen portre (canlı portreyle aynı boyda); hazır olana kadar piksel portre.
+  const model = usePortrait3d(character, 16 * spriteScale, 20 * spriteScale);
+  const url = model ?? pixel;
   return (
     <div className="relative" style={{ width: width * CSS_SCALE, height: height * CSS_SCALE }}>
       <img

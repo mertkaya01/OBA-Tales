@@ -37,25 +37,32 @@ export const RAMPS = {
 
 // ── Canlı portre ───────────────────────────────────────────────────
 
-/** Portrede karakterin ayaklarının yeri ve tuval boyu (piksel). Sprite 2 kat büyütülür: 32 × 40. */
-export const PORTRAIT = { width: 88, height: 96, feetX: 44, feetY: 88, spriteScale: 2 } as const;
+/**
+ * Portrede karakterin ayaklarının yeri ve tuval boyu (piksel). Karakter 16 × 20'lik kutunun 3 katı yer kaplar: 48 × 60
+ * (3D portre bu kutuya pürüzsüz çizilir; WebGL yoksa piksel sprite 3 kat büyütülür).
+ */
+export const PORTRAIT = { width: 88, height: 96, feetX: 44, feetY: 88, spriteScale: 3 } as const;
+/** Karakterin portredeki boyu (piksel); auraların yüksekliği buna göre. */
+const HERO_HEIGHT = 20 * PORTRAIT.spriteScale;
+/** pixelfx halesi ayaktan sabit yükseklikte (40 piksellik karaktere göre) çizilir; daha uzun karakterde o kadar yukarı. */
+const HALO_Y = PORTRAIT.feetY - (HERO_HEIGHT - 40);
 
 /** Karakterin sürekli auraları (döngüler). */
 export function portraitAuras(c: Character): FxRecipe[] {
   const { feetX: x, feetY: y } = PORTRAIT;
   const out: FxRecipe[] = [];
   if (c.rarity === "efsanevi" || c.rarity === "ulu" || c.rarity === "goksel") {
-    out.push({ id: "holy/sunburst", options: { x, y: y - 26, palette: RAMPS[c.rarity], light: c.rarity === "efsanevi" ? 0.75 : 0.95 }, layer: "back" });
+    out.push({ id: "holy/sunburst", options: { x, y: y - Math.round(HERO_HEIGHT * 0.65), palette: RAMPS[c.rarity], light: c.rarity === "efsanevi" ? 0.75 : 0.95 }, layer: "back" });
   }
   // Göksel: arkadaki güneşin yanında bir de yıldız ışığı halesi.
-  if (c.rarity === "goksel") out.push({ id: "holy/halo", options: { x, y, palette: RAMPS.goksel } });
+  if (c.rarity === "goksel") out.push({ id: "holy/halo", options: { x, y: HALO_Y, palette: RAMPS.goksel } });
   if (c.elementAura === "alev") {
     out.push({ id: "fire/spirit-flame", options: { x, y: y + 2, palette: RAMPS.ates, light: 0.9 }, layer: "back" });
   }
   if (c.elementAura === "isik") {
-    out.push({ id: "holy/halo", options: { x, y, palette: RAMPS.isik } });
+    out.push({ id: "holy/halo", options: { x, y: HALO_Y, palette: RAMPS.isik } });
   } else if (c.rarity === "destansi") {
-    out.push({ id: "holy/halo", options: { x, y, palette: RAMPS.destansi } });
+    out.push({ id: "holy/halo", options: { x, y: HALO_Y, palette: RAMPS.destansi } });
   }
   if (c.rarity === "nadir") out.push({ id: "weather/fireflies", options: { x, y: y + 2, palette: RAMPS.zumrut } });
   if (c.rarity === "siradan" && !c.elementAura) out.push({ id: "weather/snow", options: { x, y: y + 2 } });
@@ -71,7 +78,7 @@ export function classSkill(classId: ClassId, at: { x: number; y: number }): FxRe
       return [
         {
           id: "projectiles/arrow",
-          options: { x: at.x - 70, y: at.y - 22, velocity: { x: 280, y: 0 }, lifetime: 0.55, palette: ["#2a4a6a", "#3f8cc4", "#e8e2d5", "#ffffff"] },
+          options: { x: at.x - 70, y: at.y - Math.round(HERO_HEIGHT * 0.55), velocity: { x: 280, y: 0 }, lifetime: 0.55, palette: ["#2a4a6a", "#3f8cc4", "#e8e2d5", "#ffffff"] },
           layer: "front",
         },
       ];

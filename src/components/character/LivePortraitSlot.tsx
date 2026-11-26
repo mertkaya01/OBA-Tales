@@ -23,8 +23,8 @@ function StillPortrait({ character, alt }: { character: Character; alt: string }
   const { width, height, feetX, feetY, spriteScale } = PORTRAIT;
   const scale = spriteScale * CSS_SCALE;
   const pixel = useMemo(() => getPortraitUrl(character, scale), [character, scale]);
-  // 3D modelden çizilen portre (canlı portreyle aynı boyda); hazır olana kadar piksel portre.
-  const model = usePortrait3d(character, 16 * spriteScale, 20 * spriteScale);
+  // 3D modelden ekran çözünürlüğünde çizilen tam boy portre (canlı portreyle aynı yer ve boy); hazır olana kadar piksel.
+  const model = usePortrait3d(character, 16 * scale, 20 * scale);
   const url = model ?? pixel;
   return (
     <div className="relative" style={{ width: width * CSS_SCALE, height: height * CSS_SCALE }}>
@@ -32,7 +32,7 @@ function StillPortrait({ character, alt }: { character: Character; alt: string }
         src={url}
         alt={alt}
         draggable={false}
-        className="pixelated absolute"
+        className={model ? "absolute" : "pixelated absolute"}
         width={16 * scale}
         height={20 * scale}
         style={{ left: (feetX - 8 * spriteScale) * CSS_SCALE, top: (feetY - 20 * spriteScale) * CSS_SCALE }}

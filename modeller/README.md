@@ -103,6 +103,9 @@ Modeli değiştirmek ya da yeni kademe eklemek için:
    npm run model:takipciler
    ```
 
+   Dönüştürücü ters dönmüş yüzleri kendisi düzeltir (oyun yüzlerin arkasını çizmediği için bunlar delik gibi
+   görünür; Kalkaneri perçemleri öyleydi). Kontrolü `npm test` yapar.
+
 Efsanevi (Legendary) modeller gelince aynı yere `warrior-legendary.obj` gibi koy; bağlamayı ben yaparım.
 
 ### Tam yeni bir karakter modeli: büyücü-şifacı
@@ -143,7 +146,7 @@ Modeli değiştirmenin iki yolu var.
 
 Üç özel kahramanın parçaları Blender kitinde ayrı gruplarda duruyor:
 - `COL_11_egetunce`: kova şapka ve gözleri, lavanta, uzun Gün Kılıcı.
-- `COL_12_mhellingtr`: kapüşon ve parlayan gözler, yıldızlı altın hale, takımyıldızlı pelerin, beyaz-altın Yıldız Yayı, kristal oklar.
+- `COL_12_mhellingtr`: yıldızlı altın hale, göğüs yıldızı, beyaz tabard, takımyıldızlı uzun pelerin, kristal oklar, yay uçlarındaki yıldızlar (okçu gövdesinin üstüne).
 - `COL_13_BinTas`: senin alev kadını modelin (`modeller/kaynak/efsanevi-alev-kadini.obj`). Renkleri modeldeki gibi.
 
 Parça adları `egetunce-`, `mhellingtr-` ve `bintas-` ile başlıyor. Düzenleyip `Alt+P` ile aktarman yeterli. Renkleri 2D portreyle aynı yerden geliyor:

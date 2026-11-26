@@ -251,7 +251,7 @@ export const RARITY_LAYERS: Readonly<Record<Rarity, GearLayers>> = {
  * Özel kahramanların sınıf ekipmanı yerine kendi katmanları (kimliğe göre).
  *   egetunce   mor kova şapka (iki iri göz), sakal, sol elde lavanta, sağda uzun sarı-beyaz Gün Kılıcı
  *              (m/M şapka moru, i ak, l gün sarısı, f sakal, d lavanta, v sap yeşili)
- *   mhellingtr beyaz kapüşon, gölgede parlayan gözler, yıldızlı altın hale, kristal oklu okluk, beyaz-altın Yıldız Yayı
+ *   mhellingtr beyaz kapüşon, yıldızlı altın hale, kristal oklu okluk, beyaz-altın Yıldız Yayı
  *   bintas     alev taç, omuzların arkasından taşan alev kanatlar, kaldırdığı elde ateş küresi, eteğinde alevler
  *              (l alev, L kor sarısı, v kanat kızılı, g altın)
  */
@@ -293,7 +293,7 @@ export const HERO_LAYERS: Readonly<Record<string, GearLayers>> = {
       2: "....mmmmmmmm....",
       3: "...mmmmmmmmmm...",
       4: "...mm......mm...",
-      5: "...mm.L..L.mm...",
+      5: "...mm......mm...",
       6: "g..mm......mm...",
       7: "mL.mmm....mmm...",
       8: "mL..............",

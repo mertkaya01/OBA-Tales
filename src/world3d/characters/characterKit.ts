@@ -718,7 +718,6 @@ const CAST_CLOTH: Readonly<Record<string, Paint>> = {
 
 const STAFF_PARTS = ["asa", "asa-bagi", "asa-yuvasi", "asa-tasi", "asa-yuzukleri", "asa-koruma", "asa-sarkilari", "kristaller", "parcaciklar"];
 const HAT_PARTS = ["sapka", "sapka-kenari", "sapka-bandi", "sapka-tasi", "sapka-nakis"];
-const FACE_PARTS = ["gozler", "goz-bebekleri", "goz-parlamasi", "kaslar", "burun", "agiz", "kulaklar", "sac"];
 
 /** Kişinin giymediği model parçaları (yerlerine kendi eşyaları gelir). */
 const CAST_SKIP: Readonly<Record<string, ReadonlySet<string>>> = {
@@ -726,7 +725,7 @@ const CAST_SKIP: Readonly<Record<string, ReadonlySet<string>>> = {
   yalvac: new Set(HAT_PARTS),
   isikay: new Set(["kapuson", "kapuson-kenari", "tuy", "tuy-sapi"]),
   egetunce: new Set(["yelek", "yelek-acikligi", "yaka", "bileklikler", "kalkan", "kalkan-cercedeyi", "kalkan-kabara", "kalkan-kayislari", "kilic", "kilic-koruma", "kilic-kabzasi", "kilic-tasi"]),
-  mhellingtr: new Set([...FACE_PARTS, "tuy", "tuy-sapi"]),
+  mhellingtr: new Set(["tuy", "tuy-sapi"]),
 };
 
 const fixed = (hex: string): Paint => () => hex;
@@ -828,9 +827,8 @@ const LAVENDER: readonly [number, number, number][] = [
 const E_LAVENDER_STEMS = merge(...LAVENDER.map(([x, z, tilt]) => box(0.03, 0.8, 0.03, { rz: tilt, at: [x, 2.05, z] })));
 const E_LAVENDER = merge(...LAVENDER.map(([x, z, tilt]) => box(0.09, 0.28, 0.09, { rz: tilt, at: [x - Math.sin(tilt) * 0.54, 2.05 + Math.cos(tilt) * 0.54, z] })));
 
-// mhellingtr: kapüşonun gölgesinde parlayan gözler, yıldızlı altın hale, göğüste yıldız, beyaz tabard, takımyıldızlı
+// mhellingtr: yıldızlı altın hale, göğüste yıldız, beyaz tabard, takımyıldızlı
 // uzun pelerin, kristal uçlu oklar, yayın uçlarında altın yıldızlar.
-const M_EYES = pair(0.14, 0.05, 0.03, 0.15, 3.6, 0.41);
 const HALO_AT: [number, number, number] = [0, 4.72, -0.12];
 const HALO_TILT = Math.PI / 2 - 0.42;
 const M_HALO = merge(
@@ -929,7 +927,6 @@ const CAST_EXTRAS: Readonly<Record<string, readonly HeroPart[]>> = {
     ["lavanta", E_LAVENDER, (l) => l.colors.d, { arms: true }],
   ],
   mhellingtr: [
-    ["gozler", M_EYES, (l) => l.colors.L, { glow: true }],
     ["hale", M_HALO, (l) => l.colors.g, { glow: true }],
     ["hale-yildizi", M_HALO_STAR, (l) => l.colors.L, { glow: true }],
     ["yildiz-amblemi", M_CHEST_STAR, (l) => l.colors.l, { glow: true }],

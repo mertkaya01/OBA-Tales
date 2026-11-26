@@ -56,21 +56,70 @@ d 1
 illum 1
 
 newmtl okyeli-eller
-Kd 0.1490 0.1686 0.2706
+Kd 0.9333 0.7412 0.5804
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
 newmtl okyeli-boyun
-Kd 0.1059 0.1216 0.2000
+Kd 0.8275 0.6039 0.4353
 Ka 0 0 0
 Ks 0 0 0
 d 1
 illum 1
 
 newmtl okyeli-kafa
-Kd 0.1490 0.1686 0.2706
+Kd 0.9333 0.7412 0.5804
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-gozler
+Kd 0.9412 0.9176 0.8627
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-goz-bebekleri
+Kd 0.1804 0.1333 0.1176
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-goz-parlamasi
+Kd 0.9961 0.9882 0.9725
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-kaslar
+Kd 0.2902 0.1804 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-burun
+Kd 0.8275 0.6039 0.4353
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-agiz
+Kd 0.5490 0.3216 0.2824
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl okyeli-sac
+Kd 0.2902 0.1804 0.1098
 Ka 0 0 0
 Ks 0 0 0
 d 1
@@ -224,7 +273,7 @@ d 1
 illum 1
 
 newmtl okyeli-uzak-kafa
-Kd 0.1490 0.1686 0.2706
+Kd 0.9333 0.7412 0.5804
 Ka 0 0 0
 Ks 0 0 0
 d 1
@@ -232,13 +281,6 @@ illum 1
 
 newmtl okyeli-uzak-baslik
 Kd 0.1333 0.3451 0.2588
-Ka 0 0 0
-Ks 0 0 0
-d 1
-illum 1
-
-newmtl mhellingtr-gozler
-Kd 0.8510 0.9647 1.0000
 Ka 0 0 0
 Ks 0 0 0
 d 1

@@ -128,10 +128,12 @@ export interface BattleRuntime {
   flinch: number;
   /** İzleme modunda döngü daha sık döner. */
   intense: boolean;
+  /** İzleme modunda Akın Günü'nün zamanı (raidDay.ts): turun saniyesi ve kaçıncı tur. İzleme bitince null. */
+  day: { t: number; loop: number } | null;
 }
 
 export function createBattleRuntime(): BattleRuntime {
-  return { flinch: 0, intense: false };
+  return { flinch: 0, intense: false, day: null };
 }
 
 /**

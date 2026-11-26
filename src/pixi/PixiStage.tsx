@@ -4,7 +4,9 @@
  *   <PixiStage width={320} height={180} label="…" setup={(app) => { …; return () => temizle(); }} />
  *
  * Mantıksal boy (ör. 320 × 180) tuvalin gerçek piksel boyudur; tuval kabına sığacak şekilde büyür
- * (image-rendering: pixelated). Kurulum bir kez çalışır; farklı içerik için `key` değiştirilir.
+ * (image-rendering: pixelated). `resolution` verilirse tuval o kadar kat sık çizilir: piksel efektler yine keskin
+ * (nearest) büyür ama pürüzsüz dokular (ör. 3D portre) bulanıklaşmaz. Kurulum bir kez çalışır; farklı içerik için
+ * `key` değiştirilir.
  * React'in çift bağlama (StrictMode) yarışına karşı: init bitmeden kaldırılırsa uygulama hemen yok edilir.
  */
 import { Application } from "pixi.js";
@@ -19,10 +21,12 @@ interface PixiStageProps {
   /** Ekran okuyucu için sahnenin anlatımı. */
   label: string;
   setup: (app: Application) => void | (() => void);
+  /** Mantıksal piksel başına gerçek piksel (varsayılan 1: tam piksel sanatı). */
+  resolution?: number;
   className?: string;
 }
 
-export function PixiStage({ width, height, label, setup, className }: PixiStageProps) {
+export function PixiStage({ width, height, label, setup, resolution = 1, className }: PixiStageProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const setupRef = useRef(setup);
 
@@ -37,7 +41,7 @@ export function PixiStage({ width, height, label, setup, className }: PixiStageP
     const app = new Application();
 
     app
-      .init({ width, height, backgroundAlpha: 0, antialias: false, resolution: 1, autoDensity: false, preference: "webgl", roundPixels: true })
+      .init({ width, height, backgroundAlpha: 0, antialias: false, resolution, autoDensity: false, preference: "webgl", roundPixels: resolution === 1 })
       .then(() => {
         if (cancelled) {
           app.destroy(true, { children: true, texture: true, textureSource: true });
@@ -45,7 +49,7 @@ export function PixiStage({ width, height, label, setup, className }: PixiStageP
         }
         ready = true;
         const canvas = app.canvas;
-        Object.assign(canvas.style, { width: "100%", height: "100%", display: "block", imageRendering: "pixelated" });
+        Object.assign(canvas.style, { width: "100%", height: "100%", display: "block", imageRendering: resolution === 1 ? "pixelated" : "auto" });
         canvas.setAttribute("aria-hidden", "true");
         hostRef.current?.appendChild(canvas);
         cleanup = setupRef.current(app);
@@ -62,7 +66,7 @@ export function PixiStage({ width, height, label, setup, className }: PixiStageP
       cleanup?.();
       app.destroy(true, { children: true, texture: true, textureSource: true });
     };
-  }, [width, height]);
+  }, [width, height, resolution]);
 
   return <div ref={hostRef} role="img" aria-label={label} className={cn("relative", className)} style={{ aspectRatio: `${width} / ${height}` }} />;
 }

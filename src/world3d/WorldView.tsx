@@ -12,6 +12,9 @@
  *   · Topluluğun ad koyduğu yerlerde "adını koyan @…" etiketi durur.
  */
 import { Canvas, useThree } from "@react-three/fiber";
+import { BADGES } from "../content/badges";
+import { EPISODE_BADGES } from "../lib/rules";
+import { RaidDayHud } from "./living/RaidDayHud";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { WorldClock } from "../components/hud/WorldClock";
 import { ZoomControls } from "../components/hud/ZoomControls";
@@ -203,6 +206,8 @@ export default function WorldView({ characters }: WorldViewProps) {
   // Canlı akın: kamera meydana uçup etrafında döner, savaş temposu artar. Kamerayı tutunca biter.
   useEffect(() => {
     scene.battle.intense = watching;
+    // Akın Günü her izlemede baştan başlar.
+    scene.battle.day = null;
     if (!watching) {
       rigRef.current?.stopWatch();
       return;
@@ -219,6 +224,9 @@ export default function WorldView({ characters }: WorldViewProps) {
   // Dünya görünümünden çıkınca izleme de biter.
   useEffect(() => () => useAppStore.getState().stopWatchingRaid(), []);
   const onWatchEnd = useCallback(() => useAppStore.getState().stopWatchingRaid(), []);
+  // Akın Günü göstergesi için akıncılar ve akının rozeti.
+  const raiders = useMemo(() => (formation ? [...formation.slots.keys()].map((id) => data.characterById.get(id)).filter((c): c is Character => !!c) : []), [formation, data.characterById]);
+  const raidBadge = EPISODE_BADGES[data.activeEpisode.number];
 
   const onRegionClick = useCallback((id: RegionId) => {
     const { filters, setRegions } = useAppStore.getState();
@@ -275,6 +283,7 @@ export default function WorldView({ characters }: WorldViewProps) {
       <PlaceLabelLayer labels={placeLabels} refs={placeLabelRefs} onNamerClick={onNamerClick} onBossClick={onBossClick} />
       <CharacterLabelLayer refs={characterLabelRefs} characterById={data.characterById} visibleIds={visibleIds} />
 
+      {watching && boss && formation && <RaidDayHud battle={scene.battle} bossName={boss.name} raiders={raiders} badge={raidBadge ? BADGES[raidBadge].name : null} />}
       {watching && boss && formation && (
         <div className="absolute bottom-20 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3 whitespace-nowrap rounded-full border border-alev-400/50 bg-gece-900/90 py-1.5 pl-4 pr-1.5 shadow-lg backdrop-blur sm:bottom-4" role="status">
           <span aria-hidden className="size-2.5 animate-pulse rounded-full bg-kilim-400" />

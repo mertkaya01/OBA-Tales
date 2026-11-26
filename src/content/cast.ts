@@ -266,7 +266,7 @@ export const CAST: readonly CastMember[] = [
       "gerdiğinde yıldızlar bir an parlamayı keser, oku nereye giderse oraya ışık düşer. Obanın en güçlü kahramanıdır; " +
       "yine de en çok kaybolan yoldaşlara yol göstermeyi sever.",
     appearance:
-      "Beyaz kapüşonunun gölgesinde yalnızca yıldız gibi parlayan gözleri görünür; başının üstünde yıldızlı altın bir hale. " +
+      "Altın kenarlı beyaz kapüşonunun altından kıvırcık kahverengi saçları görünür; başının üstünde yıldızlı altın bir hale. " +
       "Altın kenarlı beyaz zırh ve tabard, takımyıldızlarla işlenmiş gece mavisi pelerin; sırtında uçları kristal oklar, " +
       "elinde köşeli, beyaz-altın Yıldız Yayı ve ışıktan kirişi.",
     signature: "“Gök ne kadar uzaksa okum o kadar yakın.” der; yayından çıkan ok gecede yeni bir yıldız gibi parlar.",

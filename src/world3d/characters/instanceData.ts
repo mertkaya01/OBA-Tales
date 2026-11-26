@@ -41,12 +41,12 @@ export interface InstanceData {
  */
 export const CHARACTER_SIZE = 1.8;
 
-/** Kadro biraz daha iri, efsaneviler hafifçe, ulu ve göksel kahramanlar biraz daha iri; herkes kendi küçük farkıyla. */
-export function characterScale(c: Character): number {
-  const role = c.roleType === "follower" ? 1 : 1.15;
-  const rarity = c.rarity === "goksel" ? 1.14 : c.rarity === "ulu" ? 1.1 : c.rarity === "efsanevi" ? 1.06 : 1;
-  const jitter = 0.96 + ((hashString(`boy:${c.id}`) % 1000) / 1000) * 0.08;
-  return CHARACTER_SIZE * role * rarity * jitter;
+/**
+ * Herkes aynı boyda: takipçi, kadro ve özel kahraman. Nadirlik ve kadro farkı boyla değil; aura, çerçeve, kıyafet ve
+ * eşyalarla anlaşılır. (Bütün modellerin kafa tepesi aynı yükseklikte, y ≈ 3,95–4,0.)
+ */
+export function characterScale(_c: Character): number {
+  return CHARACTER_SIZE;
 }
 
 /** Dururken yüzleri kameraya (güneye) dönük, ±35° kadar farklı yönlere bakarlar. */

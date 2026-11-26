@@ -1,6 +1,6 @@
 /**
- * Karakterin portresi, nadirlik çerçevesi içinde: 3D modelinden çizilir (usePortrait3d); hazır olana kadar ya da
- * WebGL yoksa eski piksel portre görünür. İkisi de aynı boyda olduğu için kayma olmaz.
+ * Karakterin tam boy portresi, nadirlik çerçevesi içinde: 3D modelinden ekran çözünürlüğünde, pürüzsüz çizilir
+ * (usePortrait3d); hazır olana kadar ya da WebGL yoksa eski piksel portre görünür. İkisi de aynı boyda, kayma olmaz.
  */
 import { useMemo } from "react";
 import { getPortraitUrl } from "../../game/sprites/portraitCache";
@@ -39,7 +39,7 @@ export function CharacterPortrait({ character, size = "md", alt = "", className 
         height={SPRITE_HEIGHT * scale}
         alt={alt}
         draggable={false}
-        className="pixelated"
+        className={model ? "block" : "pixelated block"}
       />
     </RarityFrame>
   );

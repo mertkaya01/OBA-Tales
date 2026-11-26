@@ -187,10 +187,11 @@ describe("kadro kiti (kodla kurulan)", () => {
     const pm = parts(mhe);
     expect(pe).toEqual(expect.arrayContaining(["kalkaneri-govde", "egetunce-sapka", "egetunce-sapka-gozleri", "egetunce-kilic", "egetunce-kilic-isigi", "egetunce-lavanta", "egetunce-uzun-sac"]));
     expect(pe.some((id) => id.startsWith("kalkaneri-kalkan") || id.startsWith("kalkaneri-kilic") || id.startsWith("kalkaneri-yelek"))).toBe(false);
-    expect(pm).toEqual(expect.arrayContaining(["okyeli-govde", "mhellingtr-hale", "mhellingtr-hale-yildizi", "mhellingtr-gozler", "mhellingtr-uzun-pelerin", "mhellingtr-takimyildiz", "mhellingtr-ok-kristalleri"]));
+    expect(pm).toEqual(expect.arrayContaining(["okyeli-govde", "okyeli-gozler", "okyeli-sac", "mhellingtr-hale", "mhellingtr-hale-yildizi", "mhellingtr-uzun-pelerin", "mhellingtr-takimyildiz", "mhellingtr-ok-kristalleri"]));
     expect(pm.some((id) => id.startsWith("okyeli-kapuson"))).toBe(true);
     expect(pm.some((id) => id.startsWith("okyeli-yay"))).toBe(true);
-    expect(pm.some((id) => id === "okyeli-sac" || id === "okyeli-gozler")).toBe(false); // yüz kapüşonun gölgesinde
+    // Yüzü ve teni normal: kafa takipçinin değil kendi ten rengini alır.
+    expect(PARTS.find((p) => p.id === "okyeli-kafa")!.color(resolveLook(mhe), mhe)).toBe("#eebd94");
     expect(parts(ege, true)).toContain("takipci-akin-isareti");
     // Uzun kılıç dışa eğik yükselir: ucu şapkanın kenarının dışında kalır.
     const blade = box("egetunce-kilic");
@@ -309,8 +310,10 @@ describe("kopya verisi", () => {
     expect(data.motion).toHaveLength(everyone.length * 4);
   });
 
-  it("kadro takipçilerden iri, renkler 0–1 aralığında", () => {
-    expect(characterScale(CAST[0])).toBeGreaterThan(characterScale(followers[0]));
+  it("herkes aynı boyda (kadro, kahraman, takipçi), renkler 0–1 aralığında", () => {
+    const sizes = new Set(everyone.map((c) => characterScale(c)));
+    expect(sizes.size).toBe(1);
+    for (const c of everyone) expect(placements.get(c.id)!.scale, c.id).toBe(characterScale(CAST[0]));
     for (const p of data.parts) {
       for (const v of p.colors) {
         expect(v).toBeGreaterThanOrEqual(0);

@@ -7,7 +7,8 @@
  *   Ayaz dalgası boss yerden bir buz halkası yayar; halka ön saftaki Kalkanerilerin parlayan kalkan duvarında durur
  *
  * Her şey önceden ayrılmış küçük havuzlardan (InstancedMesh) çizilir; döngü yalnızca kamera meydana yakınken döner.
- * İzleme modunda (BattleRuntime.intense) hamleler daha sık gelir.
+ * İzleme modunda (BattleRuntime.intense) hamleleri Akın Günü'nün perdeleri yönetir (raidDay.ts): kalkan duvarı, ok
+ * yağmuru, ocak ışığı, hep birlikte son hamle ve boss'un sakinleşmesi.
  */
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
@@ -30,6 +31,7 @@ import type { Terrain } from "../../game/terrain";
 import type { BossId, Character, ClassId } from "../../types";
 import { groundY, worldZoomOf } from "../worldScale";
 import { BOSS_CORE_HEIGHT, type BattleRuntime, type RaidFormation } from "./raid";
+import { RAID_DAY_LENGTH, actAt } from "./raidDay";
 
 const ARROWS = 28;
 const SPARKS = 90;
@@ -139,30 +141,79 @@ export function RaidBattle({ formation, bossId, characterById, terrain, battle, 
     const near = worldZoomOf((camera as { zoom: number }).zoom, size) >= MIN_ZOOM;
     const active = animate && near;
     const delta = Math.min(rawDelta, 0.1);
+    // Akın Günü saati gerçek zamanla akar: düşük kare hızında da 42 saniye 42 saniye kalır (sekme dönüşünde en çok 0,5 sn).
+    const clock = Math.min(rawDelta, 0.5);
     const pace = battle.intense ? 1.7 : 1;
     const pick = (list: Vector3[], n: number) => Array.from({ length: Math.min(n, list.length) }, () => list[Math.floor(Math.random() * list.length)]);
 
-    if (active) {
+    // Buz Oku yağmuru: arka saftan boss'un çekirdeğine kavisli oklar.
+    const volley = (n: number) =>
+      pick(layout.byClass.okyeli, n).forEach((archer, i) => {
+        if (s.arrows.length >= ARROWS) return;
+        const from = archer.clone().add(new Vector3(0, 5.5, 0));
+        const to = layout.core.clone().add(new Vector3((Math.random() - 0.5) * 3, (Math.random() - 0.5) * 3, (Math.random() - 0.5) * 2));
+        s.arrows.push({ from, to, age: 0, duration: 1 + Math.random() * 0.3, arc: from.distanceTo(to) * 0.22, delay: i * 0.08 });
+      });
+    // Ocak ışığı: ortadaki Ocakcanlardan süzülen sıcak küreler.
+    const warmth = (n: number) =>
+      pick(layout.byClass.ocakcan, n).forEach((healer, i) => {
+        if (s.orbs.length >= ORBS) return;
+        s.orbs.push({ from: healer.clone().add(new Vector3(0, 4.5, 0)), to: layout.core.clone(), age: 0, duration: 1.8, delay: i * 0.25 });
+      });
+
+    if (active && battle.intense) {
+      // İzleme modu: Akın Günü'nün perdeleri (raidDay.ts) hamleleri yönetir.
+      const day = (battle.day ??= { t: 0, loop: 0 });
+      const prev = day.t;
+      day.t += clock;
+      const wrapped = day.t >= RAID_DAY_LENGTH;
+      if (wrapped) {
+        day.t -= RAID_DAY_LENGTH;
+        day.loop += 1;
+      }
+      const crossed = (x: number) => (wrapped ? prev < x || day.t >= x : prev < x && day.t >= x);
+      const { act } = actAt(day.t);
+      if (crossed(9.6) || crossed(12.8)) s.novaAge = 0; // Kalkan Duvarı: ayaz dalgası duvarda dağılır
+      if (act.id === "ok") {
+        s.volley -= clock;
+        if (s.volley <= 0) {
+          s.volley = 1.2;
+          volley(12);
+        }
+      }
+      if (act.id === "ocak") {
+        s.warmth -= clock;
+        if (s.warmth <= 0) {
+          s.warmth = 1.5;
+          warmth(5);
+        }
+      }
+      if (crossed(30.4)) {
+        // Omuz omuza: bütün oba aynı anda.
+        volley(20);
+        warmth(8);
+        s.novaAge = 0;
+      }
+      if (crossed(33.2)) {
+        // Son hamle: büyük parlama ve kıvılcım patlaması; boss sakinleşir.
+        s.flashAge = 0;
+        for (let k = 0; k < 40 && s.sparks.length < SPARKS; k++) {
+          s.sparks.push({ pos: layout.core.clone(), vel: new Vector3((Math.random() - 0.5) * 16, Math.random() * 14, (Math.random() - 0.5) * 16), age: 0, life: 0.8 + Math.random() * 0.5 });
+        }
+      }
+      if (act.id === "zafer") battle.flinch = 0;
+    } else if (active) {
+      battle.day = null;
       s.volley -= delta * pace;
       s.warmth -= delta * pace;
       s.nova -= delta * pace;
-      // Buz Oku yağmuru
       if (s.volley <= 0) {
         s.volley = 5.5;
-        pick(layout.byClass.okyeli, 10).forEach((archer, i) => {
-          if (s.arrows.length >= ARROWS) return;
-          const from = archer.clone().add(new Vector3(0, 5.5, 0));
-          const to = layout.core.clone().add(new Vector3((Math.random() - 0.5) * 3, (Math.random() - 0.5) * 3, (Math.random() - 0.5) * 2));
-          s.arrows.push({ from, to, age: 0, duration: 1 + Math.random() * 0.3, arc: from.distanceTo(to) * 0.22, delay: i * 0.08 });
-        });
+        volley(10);
       }
-      // Ocak ışığı
       if (s.warmth <= 0) {
         s.warmth = 7;
-        pick(layout.byClass.ocakcan, 4).forEach((healer, i) => {
-          if (s.orbs.length >= ORBS) return;
-          s.orbs.push({ from: healer.clone().add(new Vector3(0, 4.5, 0)), to: layout.core.clone(), age: 0, duration: 1.8, delay: i * 0.25 });
-        });
+        warmth(4);
       }
       // Ayaz dalgası → kalkan duvarı
       if (s.nova <= 0) {

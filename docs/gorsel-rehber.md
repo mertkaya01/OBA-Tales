@@ -7,7 +7,7 @@ her değişiklikten sonra `npm run dev` açıkken tarayıcı sayfayı kendiliği
 |---|---|---|
 | 1 | Hazır ayarların sayısını değiştir (netlik, renk, boyut) | Yalnızca VS Code |
 | 2 | Kodla çizilmiş 3D karakter parçalarını değiştir, yenisini ekle | Biraz kod okuma |
-| 3 | 2D piksel portreleri ve boss resimlerini değiştir | Harf ızgarası düzenleme |
+| 3 | 2D portreleri ve boss resimlerini değiştir | Birkaç sayı ya da harf ızgarası düzenleme |
 | 4 | Kendi 3D modellerini Blender'da yap | Blender kiti (modeller/), yükleyici hazır |
 
 Deneme adresleri: `/?saat=21` (gece), `/?saat=12` (öğle), `/?boss=ayazkurt` (başka boss'un meydanı, yalnızca
@@ -26,7 +26,7 @@ Dosyayı aç, sayıyı değiştir, kaydet. Beğenmezsen eski sayıya dön.
 | **Renk basamağı** | `src/world3d/PixelPipeline.tsx` → `levels = 16` | 16 (eskiden 12) | 24: geçişler daha da yumuşar, noktalı titreme (dither) neredeyse kaybolur. 8–12: daha "retro" |
 | Mürekkep kontur | `src/world3d/PixelPipeline.tsx` → `uInkStrength.value = 0.3 + 0.55 * …` | 0,3 → 0,85 | İkinci sayıyı küçült: konturlar incelir. Büyüt: çizgi film gibi kalın kontur |
 | Renk canlılığı | `src/world3d/living/sky.ts` → `saturation` değerleri | 1,12 (gündüz) | 1,25: daha canlı, 1,0: doğal |
-| **Karakter boyu** | `src/world3d/characters/instanceData.ts` → `CHARACTER_SIZE` | 1,8 (eskiden 1,6) | 2,0: daha da iri. Büyütürsen `src/world3d/living/raid.ts` → `COLUMN_SPACING` (4,9) ve `ROW_SPACING` (5,8) sayılarını da aynı oranda büyüt, yoksa akın safında karakterler birbirine girer |
+| **Karakter boyu** | `src/world3d/characters/instanceData.ts` → `CHARACTER_SIZE` | 1,8, herkes aynı boyda (takipçi, kadro, özel kahraman; nadirlik boyla değil aura ve kıyafetle anlaşılır) | 2,0: daha da iri. Büyütürsen `src/world3d/living/raid.ts` → `COLUMN_SPACING` (4,9) ve `ROW_SPACING` (5,8) sayılarını da aynı oranda büyüt, yoksa akın safında karakterler birbirine girer |
 | Ağaç boyu | `src/world3d/Nature.tsx` → `TREE_SIZE` | 1,35 | Küçültürsen karakterler öne çıkar |
 | Arazi ayrıntısı | `src/world3d/terrainGeometry.ts` → `MESH_STEP` | 5 | 3: tepeler daha yumuşak ve ayrıntılı (daha çok üçgen) |
 | En yakın yakınlaşma | `src/world3d/worldScale.ts` → `MAX_WORLD_ZOOM` | 22 | 30: sokak seviyesine daha çok inilir |
@@ -171,19 +171,39 @@ Efsanevinin üstünde iki kademe var. Takipçiler bunlara ulaşamaz, yalnızca �
 - **Haritadaki yer:** İkisi de Kut Kapısı'nın önünde nöbet tutar ve yerinden ayrılmaz. Yeni takipçiler onların 16 birim
   yakınına konmaz (`nearHero`).
 
-## Seviye 3: 2D piksel resimler
+## Seviye 3: 2D resimler
 
-**Portreler ve harita pinleri:** `src/game/sprites/pixelMaps.ts`
+**Kart, kadro ve çekmece portreleri:** `src/world3d/characters/portrait3d.ts`
+
+- Karakterin oyundaki 3D modelinden, tam boy çizilir: şapka, hale, yay ve kılıç dahil her şey kadraja sığar.
+- Piksel değildir: ekranın çözünürlüğünde ve onun iki katında çizilip yumuşakça küçültülür; ince koyu dış çizgi ve
+  ayak altında yumuşak gölge vardır.
+- Ayarlar dosyanın başında: kamera açısı `YAW` / `PITCH`, dış çizgi `OUTLINE_WIDTH`, kadraj payı `MARGIN`; ışıklar
+  hemen altında (yarım küre ışığı, sıcak ana ışık `key`, soğuk kenar ışığı `rim`).
+- Çekmecedeki canlı portrede karakter pürüzsüz, aura ve yetenek efektleri piksel kalır (`src/pixi/LivePortrait.tsx`).
+- WebGL yoksa aşağıdaki piksel portreler görünür.
+
+**Piksel portreler (WebGL yoksa) ve harita pinleri:** `src/game/sprites/pixelMaps.ts`
 
 - Her karakter 16 × 20 piksellik katmanlardan oluşur.
 - Her satır 16 harflik bir metin: `.` boş, harf de bir renk yuvası (`s` ten, `h` saç, `c` kıyafet, `k` kemer, `o` kontur…).
 - Katmanlar üst üste biner: gövde, saç, sınıf ekipmanı (`CLASS_LAYERS`), nadirlik süsleri (`RARITY_LAYERS`).
 
-Bir harfi değiştirince o piksel değişir. Kartlar, çekmece ve 2D harita pinleri anında güncellenir.
+Bir harfi değiştirince o piksel değişir. 2D harita pinleri (ve WebGL'siz kartlar) anında güncellenir.
 
 **Boss resimleri (sezon sayfası, akın provası):** `src/game/fx/bossSprites.ts`
 - `PixelCanvas` ile kodla çizilir: `rect`, `ellipse` (üç tonlu ışık), `tri`, `disc`, `line`; sonunda `outline()` mürekkep kontur ekler.
 - Her boss'un bir de sakin hâli var (`calm`).
+
+**Akın Günü ("Akını izle"):** `src/world3d/living/raidDay.ts`
+- "Akını izle" denince meydanda 42 saniyelik, videoya hazır bir akın döner ve kendiliğinden başa sarar:
+  Toplanma → Oba Narası → Kalkan Duvarı (Kalkaneriler) → Buz Oku yağmuru (Okyeliler) → Ocak ışığı (Ocakcanlar) →
+  Omuz omuza (son hamle) → boss sakinleşir ve bölümün rozeti ekranda yazar.
+- Perde süreleri, başlıklar ve alt yazılar: `RAID_ACTS` (`{boss}` boss'un adı, `{n}` akıncı sayısı olur).
+- Öfke çubuğunun iniş eğrisi: `RAGE` (saniye, öfke çiftleri).
+- Ekranda adı geçen takipçilerin cümleleri: `LINES` ("@{h} çekirdeği vurdu!"). Her turda o sınıftan başka kişiler seçilir.
+- Sahnedeki hamlelerin zamanı (ok yağmuru sıklığı, son parlama): `src/world3d/living/RaidBattle.tsx`.
+- Ekrandaki gösterge (Öfke çubuğu, perde başlığı, anılan adlar): `src/world3d/living/RaidDayHud.tsx`.
 
 **Paylaşım görseli:** `scripts/generate-og.ts`. Değiştirdikten sonra `npm run og` çalıştır.
 

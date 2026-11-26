@@ -4,7 +4,7 @@
  *   textureFromRgba   sprite, boss, arka plan: bir kez çizilir
  *   LayerTexture      pixelfx katmanı: her karede, yalnızca değiştiyse yeniden yüklenir
  *
- * Bütün dokular keskin (nearest) büyür: pikseller bulanıklaşmaz.
+ * Bütün dokular keskin (nearest) büyür: pikseller bulanıklaşmaz. Tek istisna smoothTextureFromRgba (3D portre).
  */
 import { Texture, TextureSource } from "pixi.js";
 import type { FxLayerOutput } from "../game/fx/PixelFxPlayer";
@@ -33,6 +33,15 @@ export function textureFromRgba(image: RgbaImage, scale = 1): Texture {
   bigCtx.imageSmoothingEnabled = false;
   bigCtx.drawImage(source, 0, 0, big.width, big.height);
   return Texture.from(big);
+}
+
+/** Pürüzsüz (linear) doku: yüksek çözünürlüklü 3D portre gibi, küçültülünce de yumuşak kalması gerekenler için. */
+export function smoothTextureFromRgba(image: RgbaImage): Texture {
+  const [source, ctx] = canvasOf(image.width, image.height);
+  ctx.putImageData(new ImageData(image.data, image.width, image.height), 0, 0);
+  const texture = Texture.from(source);
+  texture.source.scaleMode = "linear";
+  return texture;
 }
 
 /** Bir pixelfx katmanını Pixi dokusuna bağlar. */

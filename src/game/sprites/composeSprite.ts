@@ -61,13 +61,14 @@ const CAST_LOOKS: Readonly<Record<string, LookOverride>> = {
   kursat: { colors: { c: "#a8642e", C: "#824b21", w: "#7fbf6a", h: "#7a4a26" }, hair: "topuz" },
   yalvac: { colors: { c: "#d0603a", C: "#a8482a", h: "#8a2f2a" }, hair: "uzun" },
   isikay: { colors: { c: "#9cc7e6", C: "#6fa3c8", h: "#e8e2d5" }, hair: "uzun" },
-  // Özel kahramanlar: egetunce siyah tişört-şort, mor kova şapka, sarı saç; mhellingtr beyaz kapüşon, gölgede yüz, altın hale.
+  // Özel kahramanlar: egetunce siyah tişört-şort, mor kova şapka, sarı saç; mhellingtr buğday ten (SKIN_TONES ikinci ton),
+  // beyaz kapüşon, kahverengi saç, altın hale.
   egetunce: {
     colors: { s: "#f1c9a2", S: "#d9a67c", c: "#1e1c24", C: "#141218", p: "#1e1c24", b: "#efeee9", h: "#e8c55c", f: "#b8893a", m: "#5a2e94", M: "#7c4cc0", i: "#ffffff", l: "#ffe680", L: "#fff6c0", g: "#ffd23f", d: "#9a7fd6", v: "#4f8a3c", k: "#6b4a2a" },
     hair: "uzun",
   },
   mhellingtr: {
-    colors: { s: "#262b45", S: "#1b1f33", c: "#1a2150", C: "#121738", p: "#161b3c", b: "#1d2142", h: "#262b45", m: "#e8ebf6", M: "#ffffff", g: "#f2c84b", i: "#f4f1e6", l: "#7fd8ff", L: "#d9f6ff", v: "#1b2766", k: "#2a2440", w: "#f2c84b" },
+    colors: { s: "#eebd94", S: "#d39a6f", c: "#1a2150", C: "#121738", p: "#161b3c", b: "#1d2142", h: "#4a2e1c", m: "#e8ebf6", M: "#ffffff", g: "#f2c84b", i: "#f4f1e6", l: "#7fd8ff", L: "#d9f6ff", v: "#1b2766", k: "#2a2440", w: "#f2c84b" },
     hair: "kisa",
   },
   // BinTaş: kırmızı-altın elbise, koyu kızıl saç, alev rengi parıltılar.

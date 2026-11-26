@@ -58,15 +58,28 @@ export interface MotionOptions {
   turn?: boolean;
   /** Adım ve nara zıplaması. */
   hop?: boolean;
+  /** Eklemler (yoksa kodla kurulan kitinkiler). Takipçi modellerinin iskeleti farklıdır. */
+  joints?: Joints;
   /** Hareketten önce yerel koordinatta çalışacak ek GLSL (ör. aura nabzı). */
   before?: string;
 }
 
 const BOB = 0.12;
-/** Omuz eklemi (yerel koordinat): kollar buradan döner. */
-const SHOULDER = { x: 0.82, y: 2.62 };
+/** Eklemler (yerel koordinat): kollar omuzdan, bacaklar kalçadan döner. */
+export interface Joints {
+  shoulder: { x: number; y: number };
+  hip: number;
+}
+
+/** Kodla kurulan kit (kadro) ve büyücü, kahraman modelleri. */
+export const KIT_JOINTS: Joints = { shoulder: { x: 0.82, y: 2.62 }, hip: 1.0 };
+/** Takipçi modellerinin iskeleti (oba-rig: kol başı x ±5,5 z 29,3; bacak başı z 18, ×0,1). */
+export const FOLLOWER_JOINTS: Joints = { shoulder: { x: 0.55, y: 2.93 }, hip: 1.8 };
+
+const f1 = (v: number) => v.toFixed(3);
 
 function motionVertex(o: MotionOptions): string {
+  const { shoulder, hip } = o.joints ?? KIT_JOINTS;
   return /* glsl */ `
 #ifdef USE_INSTANCING
 {
@@ -79,8 +92,8 @@ function motionVertex(o: MotionOptions): string {
     o.legs
       ? /* glsl */ `
   float kbSwing = ( position.x > 0.0 ? 1.0 : -1.0 ) * sin( uTime * ${STEP_RATE.toFixed(1)} + aMotion.y * 20.0 ) * 0.6 * kbWalk;
-  vec2 kbHip = vec2( transformed.y - 1.0, transformed.z );
-  transformed.y = 1.0 + kbHip.x * cos( kbSwing ) - kbHip.y * sin( kbSwing );
+  vec2 kbHip = vec2( transformed.y - ${f1(hip)}, transformed.z );
+  transformed.y = ${f1(hip)} + kbHip.x * cos( kbSwing ) - kbHip.y * sin( kbSwing );
   transformed.z = kbHip.x * sin( kbSwing ) + kbHip.y * cos( kbSwing );`
       : ""
   }
@@ -94,13 +107,13 @@ function motionVertex(o: MotionOptions): string {
     float kbCheer = mod( uTime - aMotion.w + 0.12, ${CHEER_PERIOD.toFixed(1)} );
     kbRaise = kbCheer < 1.3 ? sin( kbCheer / 1.3 * PI ) : 0.0;
   }
-  vec2 kbShoulder = vec2( kbSide * ${SHOULDER.x}, ${SHOULDER.y} );
+  vec2 kbShoulder = vec2( kbSide * ${f1(shoulder.x)}, ${f1(shoulder.y)} );
   vec2 kbArm = transformed.xy - kbShoulder;
   float kbA = kbSide * kbRaise * 2.5;
   transformed.xy = kbShoulder + vec2( kbArm.x * cos( kbA ) - kbArm.y * sin( kbA ), kbArm.x * sin( kbA ) + kbArm.y * cos( kbA ) );
   float kbArmSwing = -kbSide * sin( uTime * ${STEP_RATE.toFixed(1)} + aMotion.y * 20.0 ) * 0.5 * kbWalk;
-  vec2 kbFore = vec2( transformed.y - ${SHOULDER.y}, transformed.z );
-  transformed.y = ${SHOULDER.y} + kbFore.x * cos( kbArmSwing ) - kbFore.y * sin( kbArmSwing );
+  vec2 kbFore = vec2( transformed.y - ${f1(shoulder.y)}, transformed.z );
+  transformed.y = ${f1(shoulder.y)} + kbFore.x * cos( kbArmSwing ) - kbFore.y * sin( kbArmSwing );
   transformed.z = kbFore.x * sin( kbArmSwing ) + kbFore.y * cos( kbArmSwing );`
       : ""
   }
@@ -108,7 +121,7 @@ function motionVertex(o: MotionOptions): string {
     o.breathe
       ? /* glsl */ `
   float kbBreath = sin( uTime * 2.2 + aMotion.y * 37.0 ) * 0.5 + 0.5;
-  transformed.y += kbBreath * ${BOB} * smoothstep( 0.6, 1.4, position.y ) * ( 1.0 - kbWalk );`
+  transformed.y += kbBreath * ${BOB} * smoothstep( ${f1(hip * 0.6)}, ${f1(hip * 1.4)}, position.y ) * ( 1.0 - kbWalk );`
       : ""
   }
   ${
@@ -141,6 +154,7 @@ export function withCharacterMotion<T extends Material>(material: T, uniforms: C
 
 export function createCharacterMaterials(uniforms: CharacterUniforms) {
   const body = { breathe: true, turn: true, hop: true } as const;
+  const follower = { ...body, joints: FOLLOWER_JOINTS } as const;
   return {
     /** Kumaş, ten, saç, metal: köşeli ve ışıktan etkilenen. */
     tinted: withCharacterMotion(new MeshLambertMaterial({ color: "#ffffff", flatShading: true }), uniforms, { key: "govde", ...body }),
@@ -155,6 +169,14 @@ export function createCharacterMaterials(uniforms: CharacterUniforms) {
     /** Gölge haritası: gölgeler de karakterle birlikte yürür. */
     depth: withCharacterMotion(new MeshDepthMaterial({ depthPacking: RGBADepthPacking }), uniforms, { key: "golge", ...body }),
     depthArms: withCharacterMotion(new MeshDepthMaterial({ depthPacking: RGBADepthPacking }), uniforms, { key: "golge-kol", ...body, arms: true }),
+    // Takipçi modelleri: aynı malzemeler, kendi iskeletlerinin omuz ve kalça noktalarıyla.
+    followerTinted: withCharacterMotion(new MeshLambertMaterial({ color: "#ffffff", flatShading: true }), uniforms, { key: "t-govde", ...follower }),
+    followerLegs: withCharacterMotion(new MeshLambertMaterial({ color: "#ffffff", flatShading: true }), uniforms, { key: "t-bacak", ...follower, legs: true }),
+    followerArms: withCharacterMotion(new MeshLambertMaterial({ color: "#ffffff", flatShading: true }), uniforms, { key: "t-kol", ...follower, arms: true }),
+    followerGlow: withCharacterMotion(new MeshBasicMaterial({ color: "#ffffff" }), uniforms, { key: "t-parilti", ...follower }),
+    followerGlowArms: withCharacterMotion(new MeshBasicMaterial({ color: "#ffffff" }), uniforms, { key: "t-parilti-kol", ...follower, arms: true }),
+    followerDepth: withCharacterMotion(new MeshDepthMaterial({ depthPacking: RGBADepthPacking }), uniforms, { key: "t-golge", ...follower }),
+    followerDepthArms: withCharacterMotion(new MeshDepthMaterial({ depthPacking: RGBADepthPacking }), uniforms, { key: "t-golge-kol", ...follower, arms: true }),
     /** Tıklama alanı: görünmez ama ışın testine girer. */
     hit: new MeshBasicMaterial({ visible: false }),
   };

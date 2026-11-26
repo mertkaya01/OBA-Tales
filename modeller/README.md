@@ -71,12 +71,46 @@ Blender dosyasını sıfırdan kurmak için `npm run blender:kit -- --yenile` ku
 - **Kod gerektirenler:** Yeni bir seçenek (örneğin yeni bir başlık türü ya da kadroya özel bir parça) hangi takipçide
   görüneceğine dair bir kural ister. Modelini yap, adını söyle, kuralı ben eklerim.
 
+### Takipçi modelleri (Savaşçı, Okçu, Büyücü)
+
+Haritadaki takipçiler artık sınıflarının hazır modelini giyiyor. Kaynak dosyalar `modeller/kaynak/takipciler/` içinde,
+`29+2/final_output` klasöründen kopyalandı.
+
+| Sınıf | Model | Sıradan | Nadir | Destansı | Efsanevi |
+|---|---|---|---|---|---|
+| Kalkaneri | `warrior-*` | common | rare | epic | epic (Legendary gelene kadar) |
+| Okyeli | `ranger-*` | common | rare | epic | epic (Legendary gelene kadar) |
+| Ocakcan | `mage-*` | common | rare | epic | büyücü-şifacı |
+
+- **Ortak gövde:** Bir sınıfın gövdesi, yüzü ve saçı kademeler arasında ortaktır; oyunda bir kez çizilir, rengi
+  kademeye göre değişir. Ekipman (zırh, kalkan süsleri, pelerin…) kademe yükseldikçe eklenir.
+- **Herkes başka görünür:** Ten ve saç rengi her takipçinin kendisinden gelir. Kumaş ve zırh renkleri modeldeki gibi kalır.
+- **Hareket:** Kollar ve bacaklar modelin kendi iskeletinden döner: omuz (±0,55; 2,93), kalça 1,8. Ayarı
+  `characterMaterials.ts` → `FOLLOWER_JOINTS` içinde.
+- **Uzaklık kademeleri:**
+  - En uzakta modelin yerine sınıf ve kademe renginde 4 kutuluk bir siluet çizilir (`-uzak-` parçalar).
+  - Orta mesafede asıl model gelir.
+  - Perçin, nakış, süsleme ve taş gibi küçük süsler yalnızca yakından çizilir.
+  - Kamera dışındaki takipçiler hiç çizilmez.
+- **Blender'da:** Parçalar `COL_14_Takipci_kalkaneri`, `_okyeli`, `_ocakcan` gruplarında. Kademeye özel parçaların adında
+  kademesi yazar, örneğin `kalkaneri-kalkan-nadir-destansi`.
+
+Modeli değiştirmek ya da yeni kademe eklemek için:
+1. OBJ'yi `modeller/kaynak/takipciler/` içinde aynı adla değiştir.
+2. Kodu yeniden üret:
+
+   ```powershell
+   npm run model:takipciler
+   ```
+
+Efsanevi (Legendary) modeller gelince aynı yere `warrior-legendary.obj` gibi koy; bağlamayı ben yaparım.
+
 ### Tam yeni bir karakter modeli: büyücü-şifacı
 
 ![Büyücü-şifacı](kaynak/buyucu-sifaci-onizleme.png)
 
 Senin yaptığın büyücü-şifacı modeli oyunda.
-- **Kimler giyer:** Destansı ve efsanevi Ocakcanlar ile Dede Toygar. Bu karakterler ortak gövde yerine bu modeli
+- **Kimler giyer:** Efsanevi Ocakcanlar ile Dede Toygar (destansı Ocakcanlar artık büyücü takipçi modelini giyer). Bu karakterler ortak gövde yerine bu modeli
   giyer: sivri şapka, cüppe, sakal, ay amblemi, taşlı asa, iksir ve kese.
 - **Renkler:** Her takipçinin kendi renkleri kullanılır. Cüppe ve şapka kaftan rengini, süsler altın rengini, uzun
   pelerin nadirlik rengini alır.

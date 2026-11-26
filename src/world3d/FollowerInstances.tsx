@@ -6,6 +6,9 @@
  *   · Üç kademe: en uzakta yalnızca gövde, kafa, atkı, başlık ve pelerin; orta mesafede kollar, saç, ekipman;
  *     yakında yüz, toka, eller ve runlar gibi ayrıntılar.
  *   · Parçaların şekli koddan gelir; public/models/karakter-kit.glb varsa (Blender kiti) oradan.
+ *   · Uzakta takipçi modelleri yerine sınıf ve kademe renginde basit siluetler çizilir (`far` parçalar).
+ *   · Kamera dışındakiler ayıklanır: görüş alanındaki karakterler her parçanın tamponunun başına toplanır,
+ *     kalanı hiç çizilmez (kamera kıpırdayınca birkaç karede bir yeniden hesaplanır).
  *   · Görünmez bir silindir katmanı tıklama ve üzerine gelmeyi yakalar; ışın testinden hemen önce
  *     silindirler karakterlerin o anki yerine taşınır.
  */
@@ -13,6 +16,9 @@ import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import {
   BufferGeometry,
+  Frustum,
+  Matrix4,
+  Sphere,
   InstancedBufferAttribute,
   InstancedMesh,
   type Intersection,
@@ -33,6 +39,19 @@ import { worldZoomOf } from "./worldScale";
 const DETAIL_ZOOM = 2.4;
 /** Bu dünya zoom'unun altında yalnızca çekirdek parçalar çizilir (karakterler birkaç piksel boyunda). */
 const SILHOUETTE_ZOOM = 1.1;
+/** Kamera dışı ayıklamada karakterin çevresine bırakılan pay (dünya birimi): gezinme yarıçapı ve gölgesi sığsın. */
+const CULL_MARGIN = 16;
+/** Kamera kıpırdarken görünürlük en fazla bu kadar karede bir yeniden hesaplanır. */
+const CULL_EVERY = 3;
+
+/** Hangi karakterlerin görüş alanında olduğu (karakter sırasına göre); sürüm değişince parçalar tamponlarını toplar. */
+interface Visibility {
+  flags: Uint8Array;
+  version: number;
+  /** Neredeyse herkes görünüyorsa ayıklama yapılmaz, tam tampon çizilir. */
+  all: boolean;
+}
+
 /** Tıklama silindirleri en fazla bu kadar saniyede bir yeniden konumlanır. */
 const HIT_SYNC_SECONDS = 0.08;
 
@@ -45,14 +64,92 @@ function withMotionAttribute(source: BufferGeometry, motion: Float32Array): Buff
   return geometry;
 }
 
-function PartMesh({ part, materials, kit }: { part: PartInstances; materials: CharacterMaterials; kit: KitGeometries | null }) {
+interface PartWork {
+  colors: Float32Array;
+  motion: Float32Array;
+  version: number;
+  full: boolean;
+}
+
+/** Görüş alanındaki kopyaları tamponun başına toplar (ya da herkes görünüyorsa tam tamponu geri koyar). */
+function compact(mesh: InstancedMesh, part: PartInstances, work: PartWork, visibility: Visibility): void {
+  const matrix = mesh.instanceMatrix;
+  const color = mesh.instanceColor;
+  const motion = mesh.geometry.getAttribute("aMotion") as InstancedBufferAttribute;
+  if (!color) return;
+  const attributes = [matrix, color, motion] as const;
+  if (visibility.all) {
+    if (work.full) return;
+    (matrix.array as Float32Array).set(part.matrices);
+    work.colors.set(part.colors);
+    work.motion.set(part.motion);
+    mesh.count = part.count;
+    work.full = true;
+    for (const a of attributes) {
+      a.clearUpdateRanges();
+      a.needsUpdate = true;
+    }
+    return;
+  }
+  const m = matrix.array as Float32Array;
+  let n = 0;
+  for (let k = 0; k < part.count; k++) {
+    if (!visibility.flags[part.members[k]]) continue;
+    m.set(part.matrices.subarray(k * 16, k * 16 + 16), n * 16);
+    work.colors.set(part.colors.subarray(k * 3, k * 3 + 3), n * 3);
+    work.motion.set(part.motion.subarray(k * 4, k * 4 + 4), n * 4);
+    n++;
+  }
+  mesh.count = n;
+  work.full = false;
+  if (n === 0) return;
+  for (const a of attributes) {
+    a.clearUpdateRanges();
+    a.addUpdateRange(0, n * a.itemSize);
+    a.needsUpdate = true;
+  }
+}
+
+function PartMesh({
+  part,
+  materials,
+  kit,
+  visibility,
+}: {
+  part: PartInstances;
+  materials: CharacterMaterials;
+  kit: KitGeometries | null;
+  visibility: { current: Visibility };
+}) {
   const ref = useRef<InstancedMesh>(null);
   const { size } = useThree();
   // Blender kiti (public/models/karakter-kit.glb) bu parçanın şeklini veriyorsa o, yoksa koddaki şekil.
   const source = kit?.get(part.spec.id) ?? part.spec.geometry;
-  const geometry = useMemo(() => withMotionAttribute(source, part.motion), [source, part]);
-  const { glow, legs, arms } = part.spec;
-  const material: Material = glow ? (arms ? materials.glowArms : materials.glow) : legs ? materials.legs : arms ? materials.arms : materials.tinted;
+  // Kopya bilgisi kendi tamponlarında: kamera dışındakiler ayıklanınca görünenler başa toplanır, kaynak bozulmaz.
+  const work = useMemo<PartWork>(() => ({ colors: Float32Array.from(part.colors), motion: Float32Array.from(part.motion), version: -1, full: true }), [part]);
+  const geometry = useMemo(() => withMotionAttribute(source, work.motion), [source, work]);
+  const { glow, legs, arms, rig } = part.spec;
+  // Takipçi modellerinin kolları ve bacakları kendi iskeletlerinin eklemlerinden döner.
+  const material: Material =
+    rig === "takipci"
+      ? glow
+        ? arms
+          ? materials.followerGlowArms
+          : materials.followerGlow
+        : legs
+          ? materials.followerLegs
+          : arms
+            ? materials.followerArms
+            : materials.followerTinted
+      : glow
+        ? arms
+          ? materials.glowArms
+          : materials.glow
+        : legs
+          ? materials.legs
+          : arms
+            ? materials.arms
+            : materials.tinted;
 
   useEffect(() => () => geometry.dispose(), [geometry]);
 
@@ -61,17 +158,31 @@ function PartMesh({ part, materials, kit }: { part: PartInstances; materials: Ch
     if (!mesh) return;
     mesh.instanceMatrix.array.set(part.matrices);
     mesh.instanceMatrix.needsUpdate = true;
-    mesh.instanceColor = new InstancedBufferAttribute(part.colors, 3);
-    if (part.spec.shadow) mesh.customDepthMaterial = part.spec.arms ? materials.depthArms : materials.depth;
+    work.colors.set(part.colors);
+    work.motion.set(part.motion);
+    mesh.instanceColor = new InstancedBufferAttribute(work.colors, 3);
+    mesh.count = part.count;
+    work.version = -1;
+    work.full = true;
+    if (part.spec.shadow)
+      mesh.customDepthMaterial =
+        part.spec.rig === "takipci" ? (part.spec.arms ? materials.followerDepthArms : materials.followerDepth) : part.spec.arms ? materials.depthArms : materials.depth;
     mesh.computeBoundingSphere();
     // Gezinenler evlerinden biraz uzaklaşır: sınır küresi buna yer bıraksın.
     if (mesh.boundingSphere) mesh.boundingSphere.radius += 16;
     // Geometri değişince (Blender kiti geldi) InstancedMesh yeniden kurulur: kopya bilgisi yeniden yazılır.
-  }, [part, materials, geometry]);
+  }, [part, materials, geometry, work]);
 
   useFrame(({ camera }) => {
-    if (part.spec.core || !ref.current) return;
-    ref.current.visible = worldZoomOf((camera as { zoom: number }).zoom, size) >= (part.spec.detail ? DETAIL_ZOOM : SILHOUETTE_ZOOM);
+    const mesh = ref.current;
+    if (!mesh) return;
+    if (!part.spec.core) {
+      const zoom = worldZoomOf((camera as { zoom: number }).zoom, size);
+      mesh.visible = part.spec.far ? zoom < SILHOUETTE_ZOOM : zoom >= (part.spec.detail ? DETAIL_ZOOM : SILHOUETTE_ZOOM);
+    }
+    if (!mesh.visible || work.version === visibility.current.version) return;
+    work.version = visibility.current.version;
+    compact(mesh, part, work, visibility.current);
   });
 
   if (part.count === 0) return null;
@@ -103,6 +214,41 @@ export function FollowerInstances({ characters, placements, terrain, uniforms, a
   const data = useMemo(() => buildInstanceData(characters, placements, activeParticipantIds), [characters, placements, activeParticipantIds]);
   const hitRef = useRef<InstancedMesh>(null);
   const lastSync = useRef(Number.NEGATIVE_INFINITY);
+  const visibility = useRef<Visibility>({ flags: new Uint8Array(0), version: 0, all: true });
+  const cull = useMemo(() => ({ frustum: new Frustum(), matrix: new Matrix4(), sphere: new Sphere(), camera: new Matrix4(), zoom: 0, pending: true, since: CULL_EVERY }), []);
+
+  // Veri değişince herkes görünür sayılır; ilk karede görüş alanı yeniden hesaplanır.
+  useLayoutEffect(() => {
+    visibility.current = { flags: new Uint8Array(data.ids.length).fill(1), version: visibility.current.version + 1, all: true };
+    cull.pending = true;
+  }, [data, cull]);
+
+  useFrame(({ camera }) => {
+    const zoom = (camera as { zoom: number }).zoom;
+    if (!cull.camera.equals(camera.matrixWorld) || cull.zoom !== zoom) {
+      cull.camera.copy(camera.matrixWorld);
+      cull.zoom = zoom;
+      cull.pending = true;
+    }
+    cull.since++;
+    if (!cull.pending || cull.since < CULL_EVERY) return;
+    cull.pending = false;
+    cull.since = 0;
+    cull.frustum.setFromProjectionMatrix(cull.matrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
+    const { flags } = visibility.current;
+    const m = data.matrices;
+    let seen = 0;
+    for (let i = 0; i < flags.length; i++) {
+      const o = i * 16;
+      const scale = m[o];
+      cull.sphere.center.set(m[o + 12], m[o + 13] + 2.5 * scale, m[o + 14]);
+      cull.sphere.radius = 3.5 * scale + CULL_MARGIN;
+      const inside = cull.frustum.intersectsSphere(cull.sphere) ? 1 : 0;
+      flags[i] = inside;
+      seen += inside;
+    }
+    visibility.current = { flags, version: visibility.current.version + 1, all: seen > flags.length * 0.9 };
+  });
 
   useEffect(() => () => Object.values(materials).forEach((m) => m.dispose()), [materials]);
 
@@ -146,7 +292,7 @@ export function FollowerInstances({ characters, placements, terrain, uniforms, a
   return (
     <group>
       {data.parts.map((part) => (
-        <PartMesh key={`${part.spec.id}:${part.count}`} part={part} materials={materials} kit={kit} />
+        <PartMesh key={`${part.spec.id}:${part.count}`} part={part} materials={materials} kit={kit} visibility={visibility} />
       ))}
       {data.ids.length > 0 && (
         <instancedMesh

@@ -12,7 +12,10 @@
  * görünüyorsa dünyada da öyle görünür. Kişiye özgü seçimler takipçi kimliğinden türetilir: herkes her
  * açılışta aynı görünür, ama iki takipçi neredeyse hiç birbirinin aynısı olmaz.
  *
- * Büyücü-şifacı: destansı ve efsanevi Ocakcanlar ile Dede Toygar, ortak gövde yerine kendi modelini giyer (sivri şapka,
+ * Takipçiler sınıflarının modelini giyer (modeller/kaynak/takipciler): Kalkaneri savaşçı, Okyeli okçu, Ocakcan büyücü;
+ * sıradan, nadir ve destansı kademelerde ekipman ve renkler büyür. Kodla kurulan ortak gövde artık kadronundur.
+ *
+ * Büyücü-şifacı: efsanevi Ocakcanlar ile Dede Toygar, ortak gövde yerine kendi modelini giyer (sivri şapka,
  * cüppe, asa, iksir). Model modeller/kaynak/buyucu-sifaci.obj dosyasından gelir (npm run model:cevir); renkleri yine
  * takipçinin kendi renkleridir. Parça kimlikleri "buyucu-" ile başlar.
  *
@@ -29,7 +32,8 @@ import type { SpriteLook } from "../../game/sprites/composeSprite";
 import { hashString } from "../../lib/random";
 import type { Character, Rarity } from "../../types";
 import { alevKadini } from "./models/alevKadini";
-import { buyucuSifaci, type ModelPart } from "./models/buyucuSifaci";
+import { buyucuSifaci } from "./models/buyucuSifaci";
+import { TAKIPCI_MODELLERI, type FollowerBody, type FollowerTier } from "./models/takipciler";
 
 export interface PartContext {
   inRaid: boolean;
@@ -40,8 +44,8 @@ export interface PartSpec {
   geometry: BufferGeometry;
   /** Bu parça bu karakterde var mı? */
   applies: (character: Character, look: SpriteLook, ctx: PartContext) => boolean;
-  /** Parçanın rengi (hex). */
-  color: (look: SpriteLook) => string;
+  /** Parçanın rengi (hex). Takipçi modellerinde kademeye göre değiştiği için karakter de verilir. */
+  color: (look: SpriteLook, character?: Character) => string;
   /** Kendi ışığıyla parlar (fener, madalyon, akın işareti). */
   glow?: boolean;
   /** Ayrıntı: yalnızca yakından çizilir (yüz, toka, el, runlar…). */
@@ -54,6 +58,10 @@ export interface PartSpec {
   legs?: boolean;
   /** Kollar ve tuttukları: yürürken omuzdan sallanır, Oba Narası'nda havaya kalkar (x < 0 sol, x > 0 sağ). */
   arms?: boolean;
+  /** Takipçi modeli: kollar ve bacaklar onun iskeletine göre döner (characterMaterials → FOLLOWER_JOINTS). */
+  rig?: "takipci";
+  /** Uzak siluet: yalnızca en uzak görünümde çizilir, yaklaşınca yerini asıl modele bırakır. */
+  far?: boolean;
 }
 
 // ── Geometri yardımcıları ──────────────────────────────────────────
@@ -109,10 +117,12 @@ export interface KitChoice {
   nazar: boolean;
   /** Göğüsten çapraz geçen okluk kayışı (Okyeli). */
   strap: boolean;
-  /** Büyücü-şifacı modeli (destansı ve efsanevi Ocakcan, Dede Toygar). */
+  /** Büyücü-şifacı modeli (efsanevi Ocakcan, Dede Toygar). */
   wizard: boolean;
-  /** Özel kahraman: ortak gövde yerine kendi parçaları (egetunce, mhellingtr). */
+  /** Özel kahraman: ortak gövde yerine kendi parçaları (egetunce, mhellingtr, BinTaş). */
   hero: HeroId | null;
+  /** Takipçi modeli kademesi (sınıfın savaşçı / okçu / büyücü modeli); kadroda ve büyücü-şifacıda null. */
+  model: FollowerTier | null;
 }
 
 /** Kadronun hikâyedeki görünüşü. */
@@ -130,6 +140,8 @@ const variant = (c: Character, key: string, n: number) => hashString(`${key}:${c
 /** Soğuk bölgelerde yaşayanların çizmeleri kürklü. */
 const COLD_REGIONS: ReadonlySet<string> = new Set(["ayazbogazi", "kiragiduzu", "gunozu_tepesi", "pusluada"]);
 const isRich = (r: Rarity) => r === "destansi" || r === "efsanevi";
+/** Takipçi modeli kademesi: efsanevi (ve üstü) destansı modeli giyer. */
+const tierOf = (rarity: Rarity): FollowerTier => (rarity === "siradan" ? "siradan" : rarity === "nadir" ? "nadir" : "destansi");
 const choices = new Map<string, KitChoice>();
 
 /** Karakterin kişiye özgü görünüş seçimleri (kimlikten türetilir, önbelleğe alınır). */
@@ -157,8 +169,9 @@ export function kitChoice(c: Character, look: SpriteLook): KitChoice {
     nazar: variant(c, "nazar", 10) < 3,
     strap: cls === "okyeli",
     // Kadro kendi görünüşünü korur; büyücü olan kadro üyesi CAST_KIT içinde seçilir.
-    wizard: cls === "ocakcan" && isRich(c.rarity) && c.roleType === "follower",
+    wizard: cls === "ocakcan" && c.rarity === "efsanevi" && c.roleType === "follower",
     hero: null,
+    model: c.roleType === "follower" && !(cls === "ocakcan" && c.rarity === "efsanevi") ? tierOf(c.rarity) : null,
   };
   const override = c.roleType !== "follower" ? CAST_KIT[c.id] : undefined;
   if (override) Object.assign(choice, override);
@@ -381,7 +394,7 @@ const BASE_PARTS: readonly PartSpec[] = [
 
 // ── Büyücü-şifacı (modeller/kaynak/buyucu-sifaci.obj) ─────────────
 
-function modelGeometry(part: ModelPart | undefined, id: string): BufferGeometry {
+function modelGeometry(part: { readonly p: readonly number[]; readonly i: readonly number[] } | undefined, id: string): BufferGeometry {
   if (!part) throw new Error(`Büyücü-şifacı modelinde "${id}" parçası yok`);
   const geometry = new BufferGeometry();
   geometry.setAttribute("position", new Float32BufferAttribute(part.p as number[], 3));
@@ -730,16 +743,140 @@ const HERO_PARTS: readonly PartSpec[] = [
   },
 ];
 
-/** Büyücüler ve özel kahramanlar ortak gövdeyi değil kendi modellerini giyer (kahramanlarda akın işareti ortak). */
+// ── Takipçi modelleri (modeller/kaynak/takipciler, npm run model:takipciler) ──
+//
+// Sıradan, nadir ve destansı takipçiler (efsanevi Kalkaneri ve Okyeli de destansı modeli) sınıflarının modelini giyer:
+// Kalkaneri savaşçı, Okyeli okçu, Ocakcan büyücü. Efsanevi Ocakcan ise büyücü-şifacıdır.
+// Gövde, yüz ve saç kademeler arasında ortaktır; renkleri kademeye göre değişir. Ten ve saç rengi takipçinin kendisinden
+// gelir (herkes başka görünür). Kollar ve bacaklar modelin iskeletine göre döner (FOLLOWER_JOINTS).
+
+const TIER_NAMES: Readonly<Record<FollowerTier, string>> = { siradan: "siradan", nadir: "nadir", destansi: "destansi" };
+
+const FOLLOWER_SKIN = new Set(["kafa", "eller", "kulaklar"]);
+const FOLLOWER_SKIN_SHADE = new Set(["boyun", "burun"]);
+const FOLLOWER_HAIR = new Set(["sac", "kaslar", "sakal", "biyik"]);
+const FOLLOWER_LEGS = new Set(["bacaklar", "cizmeler", "cizme-tabani", "cizme-plakalari"]);
+const FOLLOWER_ARMS = new Set([
+  "kollar", "eller", "bileklikler", "bileklik-plakalari", "bileklik-nakis", "kol-zirhlari", "kol-alt", "kol-kenari",
+  "omuzluklar", "omuz-plakalari", "omuz-zirhi", "omuz-suslemeleri",
+  "kilic", "kilic-koruma", "kilic-kabzasi", "kilic-tasi", "kilic-suslemesi",
+  "kalkan", "kalkan-cercedeyi", "kalkan-kabara", "kalkan-kayislari", "kalkan-suslemeleri", "kalkan-amblemi", "kalkan-percinleri",
+  "yay", "yay-kavramasi", "yay-kirisi", "yay-plakalari",
+  "asa", "asa-bagi", "asa-yuvasi", "asa-tasi", "asa-yuzukleri", "asa-koruma", "asa-sarkilari", "kristaller",
+]);
+const FOLLOWER_CORE = new Set(["govde", "kafa", "sac", "kapuson", "sapka", "sapka-kenari", "pelerin", "etek", "gogus-zirhi", "yelek"]);
+const FOLLOWER_SHADOW = new Set(["govde", "kafa", "kapuson", "sapka", "pelerin", "etek", "kalkan", "yelek"]);
+const FOLLOWER_GLOW = new Set(["asa-tasi", "kristaller", "parcaciklar", "sapka-tasi"]);
+const FOLLOWER_DETAIL = new Set([
+  "gozler", "goz-bebekleri", "goz-parlamasi", "kaslar", "burun", "agiz", "kulaklar", "eller", "boyun", "yaka", "yelek-acikligi",
+  "kemer-tokasi", "kemer-suslemesi", "zirh-percinleri", "zirh-kayislari", "kalkan-percinleri", "kalkan-kayislari",
+  "nakis", "etek-nakis", "sapka-nakis", "bileklik-nakis", "gogus-suslemesi", "govde-suslemeleri", "cizme-tabani",
+  "kilic-tasi", "kilic-suslemesi", "sapka-tasi", "sapka-bandi", "tilsim", "kese-kucuk", "ok-tuyu", "sadak-kayisi",
+  "asa-bagi", "asa-yuvasi", "asa-yuzukleri", "asa-sarkilari", "parcaciklar",
+]);
+
+/** Süsler (perçin, nakış, süsleme, taş, tüy, kayış…) yalnızca yakından çizilir. */
+const FOLLOWER_ORNAMENT = /(susleme|percin|nakis|tasi|tuyu|kayis|tokasi|parcacik|kristal|kenari|bagi|halka|yuzuk|sarki)/;
+const followerModel = has((k) => k.model !== null);
+
+// Uzak görünüm: karakterler birkaç piksel boyundayken model yerine sınıfın ve kademenin renginde basit bir siluet
+// (bacak, gövde, kafa ve başlık kutuları). Binlerce takipçi uzaktan da akıcı çizilir; yaklaşınca asıl model gelir.
+const boxOf = (p: readonly number[]) => {
+  const min = [Infinity, Infinity, Infinity];
+  const max = [-Infinity, -Infinity, -Infinity];
+  for (let k = 0; k < p.length; k += 3)
+    for (let a = 0; a < 3; a++) {
+      min[a] = Math.min(min[a], p[k + a]);
+      max[a] = Math.max(max[a], p[k + a]);
+    }
+  return { min, max };
+};
+const proxyBox = (parts: readonly { p: readonly number[] }[], inset = 0.85) => {
+  const all = boxOf(parts.flatMap((m) => [...m.p]));
+  const size = [0, 1, 2].map((a) => (all.max[a] - all.min[a]) * (a === 1 ? 1 : inset));
+  const at = [0, 1, 2].map((a) => (all.max[a] + all.min[a]) / 2) as [number, number, number];
+  return box(size[0], size[1], size[2], { at });
+};
+
+const FOLLOWER_FAR_PARTS: readonly PartSpec[] = (Object.keys(TAKIPCI_MODELLERI) as FollowerBody[]).flatMap((body) => {
+  const model = TAKIPCI_MODELLERI[body];
+  const named = (...names: string[]) => model.filter((m) => names.includes(m.name));
+  const tierColor =
+    (...names: string[]): PartSpec["color"] =>
+    (_l, c) => {
+      const tier = c ? tierOf(c.rarity) : "siradan";
+      for (const name of names) {
+        const hit = model.find((m) => m.name === name && m.k.includes(tier));
+        if (hit?.c[tier]) return hit.c[tier]!;
+      }
+      return "#808080";
+    };
+  const hat = named("sapka", "kapuson");
+  const applies: PartSpec["applies"] = (c, l) => kitChoice(c, l).model !== null && c.class.id === body;
+  const far = { far: true, rig: "takipci" as const, applies };
+  return [
+    { id: `${body}-uzak-bacak`, geometry: proxyBox(named("bacaklar", "cizmeler")), color: tierColor("bacaklar"), legs: true, ...far },
+    { id: `${body}-uzak-govde`, geometry: proxyBox(named("govde", "kollar"), 0.8), color: tierColor("gogus-zirhi", "yelek", "govde"), shadow: true, ...far },
+    { id: `${body}-uzak-kafa`, geometry: proxyBox(named("kafa")), color: (l: SpriteLook) => l.colors.s, ...far },
+    hat.length
+      ? { id: `${body}-uzak-baslik`, geometry: proxyBox(hat, 0.75), color: tierColor("sapka", "kapuson"), ...far }
+      : { id: `${body}-uzak-sac`, geometry: proxyBox(named("sac"), 0.9), color: (l: SpriteLook) => l.colors.h, ...far },
+  ];
+});
+
+const FOLLOWER_PARTS: readonly PartSpec[] = [
+  ...(Object.keys(TAKIPCI_MODELLERI) as FollowerBody[]).flatMap((body) =>
+    TAKIPCI_MODELLERI[body].map<PartSpec>((part) => {
+      const everywhere = part.k.length === 3;
+      const tiers = new Set(part.k);
+      const fallback = part.c[part.k[0]] ?? "#ffffff";
+      const color: PartSpec["color"] = FOLLOWER_SKIN.has(part.name)
+        ? (l) => l.colors.s
+        : FOLLOWER_SKIN_SHADE.has(part.name)
+          ? (l) => l.colors.S
+          : FOLLOWER_HAIR.has(part.name)
+            ? (l) => l.colors.h
+            : (_l, c) => (c ? part.c[tierOf(c.rarity)] : undefined) ?? fallback;
+      return {
+        id: everywhere ? `${body}-${part.name}` : `${body}-${part.name}-${part.k.map((t) => TIER_NAMES[t]).join("-")}`,
+        geometry: modelGeometry(part, part.name),
+        applies: (c, l) => {
+          const tier = kitChoice(c, l).model;
+          return tier !== null && c.class.id === body && tiers.has(tier);
+        },
+        color,
+        rig: "takipci",
+        legs: FOLLOWER_LEGS.has(part.name) || undefined,
+        arms: FOLLOWER_ARMS.has(part.name) || undefined,
+        shadow: FOLLOWER_SHADOW.has(part.name) || undefined,
+        glow: FOLLOWER_GLOW.has(part.name) || undefined,
+        detail: (FOLLOWER_DETAIL.has(part.name) || FOLLOWER_ORNAMENT.test(part.name)) && !FOLLOWER_CORE.has(part.name) && part.name !== "asa-tasi" ? true : undefined,
+      };
+    }),
+  ),
+  ...FOLLOWER_FAR_PARTS,
+  // Büyücü şapkasının ucu da altında kalsın diye akın işareti biraz daha yukarıda.
+  {
+    id: "takipci-akin-isareti",
+    geometry: place(new OctahedronGeometry(0.3, 0), { at: [0, 5.6, 0] }),
+    applies: (c, l, ctx) => ctx.inRaid && followerModel(c, l),
+    color: () => "#f6d36f",
+    glow: true,
+    core: true,
+    rig: "takipci",
+  },
+];
+
+/** Takipçiler, büyücüler ve özel kahramanlar ortak gövdeyi değil kendi modellerini giyer (bazı kahramanlarda akın işareti ortak). */
 const unlessCustom = (part: PartSpec): PartSpec => ({
   ...part,
   applies: (c, l, ctx) => {
     const k = kitChoice(c, l);
-    return !k.wizard && (!k.hero || (part.id === "akin-isareti" && !OWN_RAID_MARKER.has(k.hero))) && part.applies(c, l, ctx);
+    return !k.wizard && !k.model && (!k.hero || (part.id === "akin-isareti" && !OWN_RAID_MARKER.has(k.hero))) && part.applies(c, l, ctx);
   },
 });
 
-export const PARTS: readonly PartSpec[] = [...BASE_PARTS.map(unlessCustom), ...WIZARD_PARTS, ...HERO_PARTS];
+export const PARTS: readonly PartSpec[] = [...BASE_PARTS.map(unlessCustom), ...WIZARD_PARTS, ...HERO_PARTS, ...FOLLOWER_PARTS];
 
 /** Karakterin taşıdığı parçaların kimlikleri (test ve hata ayıklama için). */
 export function partsOf(character: Character, look: SpriteLook, ctx: PartContext): string[] {

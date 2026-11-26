@@ -136,6 +136,15 @@ Boss'lar `src/world3d/living/bossModels.tsx` (Karaçay, Ayazkurt, Kışgölgesi 
 
 ---
 
+### Takipçi modelleri
+
+Takipçiler artık sınıflarının hazır modelini giyiyor: Kalkaneri savaşçı, Okyeli okçu, Ocakcan büyücü.
+- Sıradan, nadir ve destansı kademelerin her birinin kendi modeli var. Ten ve saç rengi kişiye özgü.
+- Kaynak dosyalar `modeller/kaynak/takipciler/` içinde; kodu `npm run model:takipciler` üretir.
+- Yukarıda anlatılan kodla kurulan kit artık yalnızca hikâye kadrosunda kullanılıyor.
+
+Ayrıntılar [modeller/README.md](../modeller/README.md) içinde.
+
 ### Özel kahramanlar ve Ulu, Göksel kademeleri
 
 Efsanevinin üstünde iki kademe var. Takipçiler bunlara ulaşamaz, yalnızca özel kahramanlara elle verilir.
@@ -204,7 +213,7 @@ Renkler, sınıflar, seçenekler, uzaklık kademeleri ve hareketler koddaki kura
 
 Ölçüleri ve değişen parçaları denetlemek için `npm run blender:kontrol` kullan.
 
-**Tam yeni model (örnek: büyücü-şifacı):** Destansı ve efsanevi Ocakcanlar ile Dede Toygar senin büyücü-şifacı modelini
+**Tam yeni model (örnek: büyücü-şifacı):** Efsanevi Ocakcanlar ile Dede Toygar senin büyücü-şifacı modelini
 giyer. Model `modeller/kaynak/buyucu-sifaci.obj` dosyasında. `npm run model:cevir` onu kod geometrisine çevirir, kimin
 giyeceği `characterKit.ts` içinde. Ayrıntı [modeller/README.md](../modeller/README.md) içinde.
 

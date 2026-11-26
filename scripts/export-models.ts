@@ -30,10 +30,13 @@ const BASE_PARTS = new Set(["bacaklar", "cizmeler", "govde", "etek", "yaka", "ke
 
 const now = new Date("2026-11-25T12:00:00Z");
 
-/** İstenen seçimleri veren bir örnek takipçi bulur (seçimler kimlikten türediği için adları dener). */
-function sample(platform: Platform, rarity: Rarity, wanted: Partial<KitChoice>): Character {
+/**
+ * İstenen seçimleri veren bir örnek karakter bulur (seçimler kimlikten türediği için adları dener).
+ * Kodla kurulan kit artık kadronundur: kalıp dosyaları için örnekler kadrodan sayılır (takipçiler sınıf modelini giyer).
+ */
+function sample(platform: Platform, rarity: Rarity, wanted: Partial<KitChoice>, roleType: Character["roleType"] = "side"): Character {
   for (let i = 0; i < 5000; i++) {
-    const c: Character = { ...createStarterCharacter({ handle: `referans_${platform}_${i}`, platform, region: "kutada", coordinates: { x: 1600, y: 1140 }, now }), rarity };
+    const c: Character = { ...createStarterCharacter({ handle: `referans_${platform}_${i}`, platform, region: "kutada", coordinates: { x: 1600, y: 1140 }, now }), rarity, roleType };
     const k = kitChoice(c, resolveLook(c));
     if (Object.entries(wanted).every(([key, value]) => k[key as keyof KitChoice] === value)) return c;
   }
@@ -68,7 +71,7 @@ function exportCharacter(name: string, character: Character, filter?: (id: strin
         obj.push(`f ${a}//${a} ${b}//${b} ${c}//${c}`);
       }
       vertexOffset += pos.count;
-      mtl.push(`newmtl ${part.id}`, `Kd ${hexToRgb(part.color(look))}`, "Ka 0 0 0", "Ks 0 0 0", "d 1", "illum 1", "");
+      mtl.push(`newmtl ${part.id}`, `Kd ${hexToRgb(part.color(look, character))}`, "Ka 0 0 0", "Ks 0 0 0", "d 1", "illum 1", "");
     }
     writeFileSync(resolve(dir, `${name}.obj`), `${obj.join("\n")}\n`, "utf8");
     writeFileSync(resolve(dir, `${name}.mtl`), `${mtl.join("\n")}\n`, "utf8");
@@ -83,7 +86,7 @@ exportCharacter("kalkaneri", kalkaneri);
 exportCharacter("kalkaneri-borklu-baltali", sample("instagram", "siradan", { hat: "bork", weapon: "balta", beard: "uzun" }));
 exportCharacter("okyeli", sample("tiktok", "nadir", { beard: "biyik" }));
 exportCharacter("ocakcan", sample("youtube", "nadir", { hat: "kalpak", kopuz: true, beard: null }));
-exportCharacter("efsanevi-ocakcan", sample("youtube", "efsanevi", { hat: null, beard: "kisa" })); // büyücü-şifacı modeli
+exportCharacter("efsanevi-ocakcan", sample("youtube", "efsanevi", { hat: null, beard: "kisa" }, "follower")); // büyücü-şifacı modeli
 for (const member of CAST) exportCharacter(`kadro-${member.id}`, member);
 
 // ── Blender kiti: bütün parçalar tek dosyada (npm run blender:kit bunu .blend dosyasına çevirir) ──
@@ -97,6 +100,8 @@ const GROUPS: Record<string, string[]> = {
   "07 Ocakcan": ["davul", "davul-tokmaklari", "fener", "kopuz", "yumusak-pelerin"],
   "08 Nadirlik ve kadro": ["uzun-pelerin", "pelerin-runlari", "madalyon", "kadim-tuy", "akin-isareti", "asa", "asa-tasi"],
 };
+/** Takipçi modelleri (kalkaneri-*, okyeli-*, ocakcan-*, takipci-akin-isareti) kendi gruplarında. */
+const FOLLOWER_GROUP = /^(kalkaneri|okyeli|ocakcan|takipci)-/;
 const groupOf = (id: string) =>
   id.startsWith("buyucu-")
     ? "10 Buyucu-sifaci"
@@ -106,9 +111,15 @@ const groupOf = (id: string) =>
         ? "12 mhellingtr"
         : id.startsWith("bintas-")
           ? "13 BinTas"
-          : (Object.entries(GROUPS).find(([, ids]) => ids.includes(id))?.[0] ?? "09 Diger");
-// Her parçanın örnek rengi: o parçayı taşıyan ilk örnek karakterden. Açılışta görünen: tolgalı, kılıçlı Kalkaneri.
-const samples = [kalkaneri, sample("tiktok", "nadir", { beard: "biyik" }), sample("youtube", "efsanevi", { hat: "kalpak", kopuz: true }), ...CAST];
+          : FOLLOWER_GROUP.exec(id)
+            ? `14 Takipci ${FOLLOWER_GROUP.exec(id)![1]}`
+            : (Object.entries(GROUPS).find(([, ids]) => ids.includes(id))?.[0] ?? "09 Diger");
+// Her parçanın örnek rengi: o parçayı taşıyan ilk örnek karakterden. Açılışta görünen: nadir Kalkaneri takipçi modeli.
+const followerSamples = (["instagram", "tiktok", "youtube"] as const).flatMap((platform) =>
+  (["nadir", "siradan", "destansi", "efsanevi"] as const).map((rarity) => sample(platform, rarity, {}, "follower")),
+);
+const shown = followerSamples[0];
+const samples = [...followerSamples, kalkaneri, sample("tiktok", "nadir", { beard: "biyik" }), sample("youtube", "efsanevi", { hat: "kalpak", kopuz: true }), ...CAST];
 const kit = PARTS.map((part) => {
   const owner = samples.find((c) => part.applies(c, resolveLook(c), { inRaid: true })) ?? kalkaneri;
   const geometry = part.geometry.index ? part.geometry.toNonIndexed() : part.geometry;
@@ -116,8 +127,8 @@ const kit = PARTS.map((part) => {
   return {
     id: part.id,
     group: groupOf(part.id),
-    color: part.color(resolveLook(owner)),
-    visible: part.applies(kalkaneri, resolveLook(kalkaneri), { inRaid: false }),
+    color: part.color(resolveLook(owner), owner),
+    visible: part.applies(shown, resolveLook(shown), { inRaid: false }) && !part.far,
     arms: part.arms ?? false,
     legs: part.legs ?? false,
     positions,

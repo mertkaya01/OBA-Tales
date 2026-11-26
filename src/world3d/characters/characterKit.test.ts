@@ -15,12 +15,81 @@ const make = (handle: string, platform: Character["platform"], rarity: Rarity = 
   ...createStarterCharacter({ handle, platform, region: "akinburnu", coordinates: { x: 215, y: 560 }, now }),
   rarity,
 });
+/** Kodla kurulan kit artık kadronun: onu denemek için kadrodan sayılan (takipçi olmayan) bir karakter. */
+const makeKit = (handle: string, platform: Character["platform"], rarity: Rarity = "siradan"): Character => ({ ...make(handle, platform, rarity), roleType: "side" });
 const parts = (c: Character, inRaid = false) => partsOf(c, resolveLook(c), { inRaid });
+const box = (id: string) => {
+  const g = PARTS.find((p) => p.id === id)!.geometry;
+  g.computeBoundingBox();
+  return g.boundingBox!;
+};
 
-describe("karakter parça kiti", () => {
+describe("takipçi modelleri", () => {
+  const CLASSES = [
+    ["instagram", "kalkaneri"],
+    ["tiktok", "okyeli"],
+    ["youtube", "ocakcan"],
+  ] as const;
+
+  it("takipçiler sınıflarının modelini giyer: gövde ortak, ekipman kademeyle büyür", () => {
+    const sizes = { kalkaneri: [30, 40, 40], okyeli: [30, 37, 39], ocakcan: [32, 37, 43] };
+    for (const [platform, cls] of CLASSES) {
+      (["siradan", "nadir", "destansi"] as const).forEach((rarity, t) => {
+        const p = parts(make(`model_${cls}`, platform, rarity));
+        expect(p.every((id) => id.startsWith(`${cls}-`)), `${cls}:${rarity} ${p.join()}`).toBe(true);
+        // Modelin parçaları ve en uzak görünüm için 4 parçalık siluet (bacak, gövde, kafa, başlık ya da saç).
+        expect(p.filter((id) => !id.includes("-uzak-")), `${cls}:${rarity}`).toHaveLength(sizes[cls][t]);
+        expect(p.filter((id) => id.includes("-uzak-")), `${cls}:${rarity}`).toHaveLength(4);
+        expect(p).toEqual(expect.arrayContaining([`${cls}-kafa`, `${cls}-govde`, `${cls}-bacaklar`, `${cls}-kollar`]));
+      });
+    }
+    // Efsanevi Kalkaneri ve Okyeli şimdilik destansı modeli giyer.
+    expect(parts(make("efsane", "instagram", "efsanevi")).sort()).toEqual(parts(make("efsane", "instagram", "destansi")).sort());
+    expect(parts(make("efsane", "tiktok", "efsanevi")).sort()).toEqual(parts(make("efsane", "tiktok", "destansi")).sort());
+  });
+
+  it("ten ve saç kişiye özgü; kumaş ve zırh kademenin rengi", () => {
+    const crowd = Array.from({ length: 40 }, (_, i) => make(`renk_${i}`, "instagram", "nadir"));
+    const head = PARTS.find((p) => p.id === "kalkaneri-kafa")!;
+    const hair = PARTS.find((p) => p.id === "kalkaneri-sac")!;
+    const body = PARTS.find((p) => p.id === "kalkaneri-govde")!;
+    expect(new Set(crowd.map((c) => head.color(resolveLook(c), c))).size).toBeGreaterThan(2);
+    expect(new Set(crowd.map((c) => hair.color(resolveLook(c), c))).size).toBeGreaterThan(2);
+    expect(new Set(crowd.map((c) => body.color(resolveLook(c), c)))).toEqual(new Set(["#36486a"]));
+    const common = make("renk_sade", "instagram", "siradan");
+    expect(body.color(resolveLook(common), common)).toBe("#4a423a");
+  });
+
+  it("silahlar kolla, çizmeler bacakla birlikte modelin iskeletine göre sallanır", () => {
+    for (const prefix of ["kalkaneri-kilic", "kalkaneri-kalkan", "okyeli-yay", "ocakcan-asa", "kalkaneri-kollar", "okyeli-eller"]) {
+      const group = PARTS.filter((p) => p.id.startsWith(prefix));
+      expect(group.length, prefix).toBeGreaterThan(0);
+      for (const p of group) {
+        expect(p.arms, p.id).toBe(true);
+        expect(p.rig, p.id).toBe("takipci");
+      }
+    }
+    expect(PARTS.find((p) => p.id === "kalkaneri-bacaklar")?.legs).toBe(true);
+    // Kılıç ve asa sağ elde (x < 0), kalkan ve yay sol elde (x > 0).
+    const side = (prefix: string) => PARTS.filter((p) => p.id.startsWith(prefix)).map((p) => box(p.id));
+    for (const b of side("kalkaneri-kilic")) expect(b.max.x).toBeLessThan(0);
+    for (const b of side("ocakcan-asa")) expect(b.max.x).toBeLessThan(0);
+    for (const b of side("kalkaneri-kalkan")) expect(b.min.x).toBeGreaterThan(0);
+    for (const b of side("okyeli-yay")) expect(b.min.x).toBeGreaterThan(0);
+  });
+
+  it("akında takipçinin işareti şapkanın üstünde", () => {
+    const c = make("akinci", "youtube", "destansi");
+    expect(parts(c, true)).toContain("takipci-akin-isareti");
+    expect(parts(c, true)).not.toContain("akin-isareti");
+    expect(parts(c, false)).not.toContain("takipci-akin-isareti");
+  });
+});
+
+describe("kadro kiti (kodla kurulan)", () => {
   it("her karakter ortak gövdeyi taşır", () => {
     for (const platform of ["instagram", "tiktok", "youtube"] as const) {
-      const p = parts(make("ornek", platform));
+      const p = parts(makeKit("ornek", platform));
       for (const id of ["bacaklar", "cizmeler", "govde", "yaka", "kemer", "toka", "kollar", "eller", "atki", "kafa", "gozler", "kaslar", "burun"]) {
         expect(p, `${platform}:${id}`).toContain(id);
       }
@@ -28,9 +97,9 @@ describe("karakter parça kiti", () => {
   });
 
   it("sınıflar kendi ekipmanını taşır, başkasınınkini taşımaz", () => {
-    const kalkaneri = parts(make("k", "instagram"));
-    const okyeli = parts(make("o", "tiktok"));
-    const ocakcan = parts(make("c", "youtube"));
+    const kalkaneri = parts(makeKit("k", "instagram"));
+    const okyeli = parts(makeKit("o", "tiktok"));
+    const ocakcan = parts(makeKit("c", "youtube"));
     expect(kalkaneri).toEqual(expect.arrayContaining(["kalkan", "kalkan-kabarasi", "omuzluk", "kurk-yaka", "sac"]));
     expect(kalkaneri.includes("balta-sapi") !== kalkaneri.includes("kilic")).toBe(true);
     expect(kalkaneri).not.toContain("yay");
@@ -42,7 +111,7 @@ describe("karakter parça kiti", () => {
   });
 
   it("nadirlik yükseldikçe süs eklenir", () => {
-    const base = make("kar_tanesi", "instagram");
+    const base = makeKit("kar_tanesi", "instagram");
     expect(parts({ ...base, rarity: "nadir" })).not.toContain("uzun-pelerin");
     const epic = parts({ ...base, rarity: "destansi" });
     expect(epic).toEqual(expect.arrayContaining(["uzun-pelerin", "madalyon", "altin-etek"]));
@@ -51,8 +120,8 @@ describe("karakter parça kiti", () => {
     expect(parts({ ...base, rarity: "efsanevi" })).toEqual(expect.arrayContaining(["pelerin-runlari"]));
   });
 
-  it("takipçiler kişiye özgü: başlık, sakal, perçem ve silah çeşitleri birbirinden farklı", () => {
-    const crowd = Array.from({ length: 240 }, (_, i) => make(`yoldas_${i}`, (["instagram", "tiktok", "youtube"] as const)[i % 3]));
+  it("kişiye özgü: başlık, sakal, perçem ve silah çeşitleri birbirinden farklı", () => {
+    const crowd = Array.from({ length: 240 }, (_, i) => makeKit(`yoldas_${i}`, (["instagram", "tiktok", "youtube"] as const)[i % 3]));
     const kits = crowd.map((c) => kitChoice(c, resolveLook(c)));
     expect(new Set(kits.map((k) => k.hat)).size).toBeGreaterThanOrEqual(5); // 4 başlık + başlıksız
     expect(new Set(kits.map((k) => k.beard)).size).toBe(4);
@@ -82,23 +151,22 @@ describe("karakter parça kiti", () => {
     for (const id of ["kursat", "yalvac"]) expect(parts(CAST.find((c) => c.id === id)!), id).toContain("fener");
   });
 
-  it("destansı ve efsanevi Ocakcanlar büyücü-şifacı modelini giyer, ötekiler giymez", () => {
+  it("efsanevi Ocakcanlar büyücü-şifacı modelini giyer; öteki kademeler büyücü takipçi modelini", () => {
     const base = make("sifaci", "youtube");
     const wizardParts = PARTS.filter((p) => p.id.startsWith("buyucu-")).map((p) => p.id);
     expect(wizardParts.length).toBeGreaterThan(35);
-    for (const rarity of ["siradan", "nadir"] as const) {
+    for (const rarity of ["siradan", "nadir", "destansi"] as const) {
       const p = parts({ ...base, rarity });
       expect(p.filter((id) => id.startsWith("buyucu-")), rarity).toEqual([]);
+      expect(p.every((id) => id.startsWith("ocakcan-")), rarity).toBe(true);
     }
     expect(parts({ ...make("kalkanci", "instagram"), rarity: "efsanevi" }).some((id) => id.startsWith("buyucu-"))).toBe(false);
-    const epic = parts({ ...base, rarity: "destansi" });
-    expect(epic).toEqual(expect.arrayContaining(["buyucu-govde", "buyucu-sapka", "buyucu-asa", "buyucu-iksir", "buyucu-uzun-pelerin"]));
-    expect(epic).not.toContain("buyucu-pelerin-runlari");
+    const legend = parts({ ...base, rarity: "efsanevi" });
+    expect(legend).toEqual(expect.arrayContaining(["buyucu-govde", "buyucu-sapka", "buyucu-asa", "buyucu-iksir", "buyucu-uzun-pelerin", "buyucu-pelerin-runlari"]));
     // Ortak gövdeden ve sınıf ekipmanından hiçbir şey kalmaz.
-    expect(epic.filter((id) => !id.startsWith("buyucu-"))).toEqual([]);
-    expect(parts({ ...base, rarity: "efsanevi" })).toContain("buyucu-pelerin-runlari");
-    expect(parts({ ...base, rarity: "destansi" }, true)).toContain("buyucu-akin-isareti");
-    expect(parts({ ...base, rarity: "destansi" }, true)).not.toContain("akin-isareti");
+    expect(legend.filter((id) => !id.startsWith("buyucu-"))).toEqual([]);
+    expect(parts({ ...base, rarity: "efsanevi" }, true)).toContain("buyucu-akin-isareti");
+    expect(parts({ ...base, rarity: "efsanevi" }, true)).not.toContain("akin-isareti");
   });
 
   it("özel kahramanlar kendi parçalarını giyer: egetunce kova şapkalı ve Gün Kılıçlı, mhellingtr Yıldız Yaylı", () => {
@@ -150,7 +218,7 @@ describe("karakter parça kiti", () => {
   });
 
   it("akın işareti yalnızca aktif akındakilerde", () => {
-    const c = make("akinci", "tiktok");
+    const c = makeKit("akinci", "tiktok");
     expect(parts(c, true)).toContain("akin-isareti");
     expect(parts(c, false)).not.toContain("akin-isareti");
   });
@@ -166,7 +234,8 @@ describe("karakter parça kiti", () => {
     for (const part of PARTS) {
       part.geometry.computeBoundingBox();
       all.union(part.geometry.boundingBox!);
-      expect(part.color(resolveLook(make("renk", "instagram"))), part.id).toMatch(/^#[0-9a-f]{6}$/i);
+      const sample = make("renk", "instagram");
+      expect(part.color(resolveLook(sample), sample), part.id).toMatch(/^#[0-9a-f]{6}$/i);
     }
     expect(all.min.y).toBeCloseTo(0, 1);
     expect(all.max.y).toBeLessThan(6.1); // büyücünün akın işareti sivri şapkanın üstünde
@@ -185,19 +254,24 @@ describe("kopya verisi", () => {
   const part = (id: string) => data.parts.find((p) => p.spec.id === id)!;
   const wizards = everyone.filter((c) => kitChoice(c, resolveLook(c)).wizard);
   const heroes = everyone.filter((c) => kitChoice(c, resolveLook(c)).hero);
+  const models = everyone.filter((c) => kitChoice(c, resolveLook(c)).model);
+  const kitOnly = (c: Character) => !heroes.includes(c) && !models.includes(c);
 
   it("her parçanın kopya sayısı o parçayı taşıyan karakter sayısı kadar", () => {
     expect(data.ids).toHaveLength(everyone.length);
     expect(wizards.map((c) => c.id).sort()).toEqual(["buyucu_dort", "dede_toygar"]);
     expect(heroes.map((c) => c.id).sort()).toEqual(["bintas", "egetunce", "mhellingtr"]);
-    expect(part("govde").count).toBe(everyone.length - wizards.length - heroes.length);
+    expect(models.map((c) => c.id).sort()).toEqual(["kalkan_iki", "ocak_uc", "okcu_bir"]);
+    expect(part("govde").count).toBe(everyone.length - wizards.length - heroes.length - models.length);
+    for (const cls of ["kalkaneri", "okyeli", "ocakcan"]) expect(part(`${cls}-govde`).count, cls).toBe(1);
     expect(part("buyucu-govde").count).toBe(wizards.length);
-    expect(part("kalkan").count).toBe(everyone.filter((c) => c.class.id === "kalkaneri" && !heroes.includes(c)).length);
-    expect(part("yay").count).toBe(everyone.filter((c) => c.class.id === "okyeli" && !heroes.includes(c)).length);
+    expect(part("kalkan").count).toBe(everyone.filter((c) => c.class.id === "kalkaneri" && kitOnly(c)).length);
+    expect(part("yay").count).toBe(everyone.filter((c) => c.class.id === "okyeli" && kitOnly(c)).length);
     expect(part("egetunce-kilic").count).toBe(1);
     expect(part("mhellingtr-yay").count).toBe(1);
-    expect(part("akin-isareti").count).toBe(2);
-    expect(part("pelerin-runlari").count + part("buyucu-pelerin-runlari").count).toBe(everyone.filter((c) => c.rarity === "efsanevi" && !heroes.includes(c)).length);
+    expect(part("akin-isareti").count).toBe(1); // alptug
+    expect(part("takipci-akin-isareti").count).toBe(1); // okcu_bir
+    expect(part("pelerin-runlari").count + part("buyucu-pelerin-runlari").count).toBe(everyone.filter((c) => c.rarity === "efsanevi" && kitOnly(c)).length);
   });
 
   it("karakterler kendi koordinatlarında ve zeminin üstünde durur", () => {
@@ -213,10 +287,11 @@ describe("kopya verisi", () => {
   });
 
   it("her parça kendi kopyalarının hareket bilgisini taşır", () => {
-    const yay = part("yay");
+    const legs = part("okyeli-bacaklar");
     const okcu = placements.get("okcu_bir")!;
-    const k = everyone.filter((c) => c.class.id === "okyeli" && !heroes.includes(c)).findIndex((c) => c.id === "okcu_bir");
-    expect([...yay.motion.subarray(k * 4, k * 4 + 4)].map((v) => +v.toFixed(4))).toEqual(
+    const k = 0; // bu kalabalıkta okçu modelini giyen tek kişi
+    expect(legs.count).toBe(1);
+    expect([...legs.motion.subarray(k * 4, k * 4 + 4)].map((v) => +v.toFixed(4))).toEqual(
       [okcu.motion.radius, okcu.motion.seed, okcu.motion.yaw, okcu.motion.cheer].map((v) => +Math.fround(v).toFixed(4)),
     );
     expect(data.motion).toHaveLength(everyone.length * 4);

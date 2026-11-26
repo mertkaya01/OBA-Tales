@@ -21,6 +21,8 @@ export interface PartInstances {
   colors: Float32Array;
   /** count × 4: (yarıçap, tohum, yön, nara gecikmesi) */
   motion: Float32Array;
+  /** Kopya sırası → karakter sırası (kamera dışındakileri ayıklamak için). */
+  members: Int32Array;
 }
 
 export interface InstanceData {
@@ -96,12 +98,12 @@ export function buildInstanceData(
     members.forEach((charIndex, k) => {
       partMatrices.set(matrices.subarray(charIndex * 16, charIndex * 16 + 16), k * 16);
       partMotion.set(motion.subarray(charIndex * 4, charIndex * 4 + 4), k * 4);
-      const color = linear(spec.color(looks[charIndex]));
+      const color = linear(spec.color(looks[charIndex], placed[charIndex]));
       partColors[k * 3] = color.r;
       partColors[k * 3 + 1] = color.g;
       partColors[k * 3 + 2] = color.b;
     });
-    return { spec, count: members.length, matrices: partMatrices, colors: partColors, motion: partMotion };
+    return { spec, count: members.length, matrices: partMatrices, colors: partColors, motion: partMotion, members: Int32Array.from(members) };
   });
 
   return { ids: placed.map((c) => c.id), matrices, motion, parts };

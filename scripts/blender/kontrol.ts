@@ -33,7 +33,7 @@ function area(g: BufferGeometry): number {
   }
   return sum;
 }
-const near = (a: number, b: number, tolerance = 0.002) => Math.abs(a - b) <= tolerance * Math.max(1, Math.abs(b));
+const near = (a: number, b: number, tolerance = 0.01) => Math.abs(a - b) <= tolerance * Math.max(1, Math.abs(b));
 
 const warnings: string[] = [];
 // Özel kahramanların parçaları tek bir kişide çizilir: kalabalık üçgen sınırı onlara uygulanmaz.

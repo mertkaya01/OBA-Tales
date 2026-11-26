@@ -1,0 +1,224 @@
+newmtl bacaklar
+Kd 0.2039 0.1961 0.1804
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizmeler
+Kd 0.3765 0.2667 0.1725
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizme-tabani
+Kd 0.1961 0.1647 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl govde
+Kd 0.2196 0.4627 0.4392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yaka
+Kd 0.8392 0.7765 0.6196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer
+Kd 0.3843 0.2667 0.1725
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer-tokasi
+Kd 0.5961 0.5804 0.5176
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kollar
+Kd 0.2196 0.4627 0.4392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl eller
+Kd 0.8706 0.6980 0.5176
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl boyun
+Kd 0.8314 0.6353 0.4549
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kafa
+Kd 0.8706 0.6980 0.5176
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gozler
+Kd 0.9412 0.9255 0.8784
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl goz-bebekleri
+Kd 0.2353 0.1882 0.1569
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl goz-parlamasi
+Kd 0.9961 0.9882 0.9725
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kaslar
+Kd 0.8863 0.8627 0.8078
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl burun
+Kd 0.8078 0.6118 0.4392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sac
+Kd 0.8941 0.8706 0.8157
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl etek
+Kd 0.2196 0.4627 0.4392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl etek-kenari
+Kd 0.8392 0.7765 0.6196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kol-kenari
+Kd 0.8392 0.7765 0.6196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sakal
+Kd 0.9098 0.8863 0.8314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl biyik
+Kd 0.9098 0.8863 0.8314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sapka-kenari
+Kd 0.1725 0.3765 0.3608
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sapka
+Kd 0.2431 0.5098 0.4863
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sapka-bandi
+Kd 0.4392 0.3137 0.1961
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl pelerin
+Kd 0.1569 0.3373 0.3294
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl pelerin-kenari
+Kd 0.8392 0.7765 0.6196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kese
+Kd 0.6902 0.5961 0.4314
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl asa
+Kd 0.4627 0.3216 0.1882
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl asa-bagi
+Kd 0.2902 0.2118 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl asa-yuvasi
+Kd 0.3294 0.2275 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl asa-tasi
+Kd 0.4941 0.8392 0.8157
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+

@@ -1,0 +1,280 @@
+newmtl bacaklar
+Kd 0.1804 0.2039 0.2667
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizmeler
+Kd 0.3686 0.2588 0.1647
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizme-tabani
+Kd 0.2118 0.1804 0.1490
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl cizme-plakalari
+Kd 0.4941 0.5255 0.5804
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl govde
+Kd 0.2118 0.2824 0.4157
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gogus-zirhi
+Kd 0.4471 0.3137 0.1882
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl yaka
+Kd 0.8157 0.7765 0.6745
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer
+Kd 0.3529 0.2431 0.1569
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kemer-tokasi
+Kd 0.7059 0.5569 0.2902
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kollar
+Kd 0.2118 0.2824 0.4157
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bileklikler
+Kd 0.4314 0.2980 0.1804
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl bileklik-plakalari
+Kd 0.5255 0.5647 0.6196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl eller
+Kd 0.8471 0.6392 0.4549
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl boyun
+Kd 0.8078 0.5961 0.4235
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kafa
+Kd 0.8471 0.6392 0.4549
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl gozler
+Kd 0.9333 0.9059 0.8392
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl goz-bebekleri
+Kd 0.1725 0.1216 0.1098
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl goz-parlamasi
+Kd 0.9882 0.9804 0.9608
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kaslar
+Kd 0.2588 0.1765 0.1176
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl burun
+Kd 0.7765 0.5608 0.3922
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl agiz
+Kd 0.4863 0.2667 0.2353
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kulaklar
+Kd 0.8471 0.6392 0.4549
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl sac
+Kd 0.3373 0.2353 0.1569
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl nakis
+Kd 0.6980 0.5569 0.2980
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl zirh-kayislari
+Kd 0.5333 0.5725 0.6275
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl zirh-percinleri
+Kd 0.6745 0.7059 0.7529
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl omuzluklar
+Kd 0.5255 0.5647 0.6196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl pelerin
+Kd 0.3137 0.4157 0.5882
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl pelerin-kenari
+Kd 0.6980 0.5569 0.2980
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kilic
+Kd 0.6745 0.7059 0.7529
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kilic-koruma
+Kd 0.6980 0.5569 0.2980
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kilic-suslemesi
+Kd 0.6980 0.5569 0.2980
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kilic-kabzasi
+Kd 0.2667 0.1961 0.1412
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kilic-tasi
+Kd 0.7059 0.5569 0.2902
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkan
+Kd 0.5412 0.3765 0.2196
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkan-cercedeyi
+Kd 0.7059 0.5569 0.2902
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkan-suslemeleri
+Kd 0.7059 0.5569 0.2902
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkan-kabara
+Kd 0.5098 0.5490 0.6039
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkan-percinleri
+Kd 0.5882 0.6196 0.6667
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl kalkan-kayislari
+Kd 0.3529 0.2431 0.1569
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+

@@ -177,6 +177,83 @@ Modeli değiştirmenin iki yolu var.
 Parça adları `egetunce-`, `mhellingtr-` ve `bintas-` ile başlıyor. Düzenleyip `Alt+P` ile aktarman yeterli. Renkleri 2D portreyle aynı yerden geliyor:
 `src/game/sprites/composeSprite.ts` → `CAST_LOOKS`.
 
+### Kahramanların iskeleti ve animasyonları
+
+Haritada yürüyen, koşan, el sallayan üç kahraman iskeletli ve animasyonludur. Her biri kendi dosyasındadır:
+`public/models/kahraman-<kimlik>.glb`. Yeniden üretmek için:
+
+```powershell
+npm run blender:kahramanlar
+```
+
+Yalnızca birini üretmek için (örnek BinTaş):
+
+```powershell
+npx tsx scripts/blender/calistir.ts kahramanlar bintas
+```
+
+Betik (`scripts/blender/kahraman_iskelet.py`) sırayla şunları yapar:
+1. Oyundaki modeli `modeller/referans/kadro-<kimlik>.obj` olarak alır (`npm run modeller` yazar). Parça içinde çakışan
+   köşeleri kaynaştırır.
+2. 20 kemiklik bir iskelet kurar: kalça, bel, göğüs, boyun, kafa; iki yanda omuz, ön kol, el; uyluk, baldır, ayak;
+   pelerin için iki kemik. BinTaş'ın iskeleti farklıdır: bir kolu küreyi havada tutar.
+3. Her köşeyi en yakın kemiğe bağlar. Eklem yerlerinde iki kemik yumuşakça paylaşır.
+4. 13 klibi kodla yazar ve GLB'ye aktarır.
+5. Kontrol için bir önizleme sayfası çizer: `modeller/kahramanlar/<kimlik>-onizleme.png` (14 kare, her klipten bir an).
+
+| Klip | Ne zaman |
+|---|---|
+| `bosta` | dururken nefes alır |
+| `yuru`, `kos` | gezinirken; hız ayak adımına göre ayarlanır, ayak kaymaz |
+| `balta` | ağaç keser |
+| `yay` | germe, nişan, bırakma |
+| `topla` | çömelip bitki toplar |
+| `tasi` | sırtta odun ya da av |
+| `otur`, `sohbet` | ateş başında |
+| `selam` | kameraya el sallar |
+| `esne` | uyanınca esner (bir kez oynar) |
+| `cadir` | çadıra eğilip girer |
+| `yika` | derede yüz yıkar |
+
+Bir klibi değiştirmek için betikteki `clip_<ad>` işlevindeki açıları değiştir. Açılar derece cinsindendir: öne eğme,
+yana açma, kendi ekseninde dönme. Sonra komutu yeniden çalıştırıp önizleme sayfasına bak.
+
+Oyunda:
+- Yükleyici `src/world3d/story/heroModel.ts`. Renkler ve parıltı oyundaki parça listesinden gelir, Blender'daki renk
+  yalnızca yedektir.
+- Sahnedeki kahraman `src/world3d/story/AnimatedHero.tsx`. Klipler arasında 0,25 sn yumuşak geçiş olur.
+- Hangi klibin hangi hızda oynayacağı `src/world3d/story/heroMotion.ts` içinde.
+- GLB yoksa ya da bozuksa kahraman eski kalabalık çiziminde görünür, site bozulmaz.
+- Oyunda renk parçaları tek ağda birleşir, renkler köşelere yazılır (`src/world3d/story/mergeSkinned.ts`). Bu yüzden
+  Blender'da parça (malzeme) eklemek çizim sayısını artırmaz. Yalnızca malzeme adı oyundaki parça listesinde olmalı.
+
+### Hayvanlar: geyik, tavşan, kuş
+
+Av çayırının hayvanları da Blender'da koddan kurulur. Hepsi düşük poligonlu ve iskeletli; her parça bir kemiğe
+bağlıdır. Yeniden üretmek için:
+
+```powershell
+npm run blender:hayvanlar
+```
+
+Yalnızca birini üretmek için (örnek kuş):
+
+```powershell
+npx tsx scripts/blender/calistir.ts hayvanlar kus
+```
+
+| Tür | Klipler | Üçgen |
+|---|---|---|
+| geyik | `dur`, `otla`, `yuru`, `kos`, `yigil` | 452 |
+| tavşan | `bekle`, `kemir`, `zipla`, `kac`, `yigil` | 216 |
+| kuş | `dur`, `gagala`, `kanat`, `suzul`, `yigil` | 180 |
+
+- `yigil` bir kez oynar ve son karesinde kalır: avlanan hayvan yere yığılır, kan yok.
+- Betik `scripts/blender/hayvanlar.py`. Gövde parçaları, renkleri ve kemikleri dosyanın başındaki `SPECIES` içinde;
+  klipler `deer_clips`, `rabbit_clips`, `bird_clips` işlevlerinde.
+- Çıktılar `public/models/hayvan-<tür>.glb` ve önizleme `modeller/hayvanlar/<tür>-onizleme.png`.
+- Boynuzlar geyik modelinde hep var. Oyunda yalnızca sürünün başındaki erkek geyikte görünür, bu geyik avlanmaz.
+
 ### Dosyalar ve komutlar
 
 | Ne | Nerede |
@@ -187,6 +264,10 @@ Parça adları `egetunce-`, `mhellingtr-` ve `bintas-` ile başlıyor. Düzenley
 | Kiti kuran betik | `scripts/blender/kit_olustur.py` (`npm run blender:kit`) |
 | Aktaran betik | `scripts/blender/oyuna_aktar.py` (Blender içinde de gömülü) |
 | Oyundaki yükleyici | `src/world3d/characters/kitModel.ts`, `useKitModel.ts` |
+| İskeletli kahramanlar | `public/models/kahraman-<kimlik>.glb` (`npm run blender:kahramanlar`) |
+| İskelet ve klipleri kuran betik | `scripts/blender/kahraman_iskelet.py` |
+| Klip önizlemeleri | `modeller/kahramanlar/<kimlik>-onizleme.png` |
+| Hayvanlar | `public/models/hayvan-<tür>.glb` (`npm run blender:hayvanlar`, betik `scripts/blender/hayvanlar.py`) |
 
 Blender kendiliğinden bulunur (`C:\Program Files\Blender Foundation\Blender X.Y\`). Başka bir yerdeyse `.env.local`
 dosyasına `BLENDER_PATH=C:\…\blender.exe` satırını ekle.

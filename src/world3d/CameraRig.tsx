@@ -36,6 +36,8 @@ export interface CameraRigHandle {
    */
   watch: (center: Coordinates, worldZoom: number, yaw?: number, fitRadius?: number) => void;
   stopWatch: () => void;
+  /** Verilen noktaya doğru yakınlaşır (çift tıklama): nokta ekranın ortasına gelir, yakınlık `factor` katı. */
+  zoomAt: (point: Coordinates, factor: number) => void;
 }
 
 interface Pose {
@@ -74,9 +76,11 @@ interface CameraRigProps {
   onWatchEnd?: () => void;
   /** Zeminin yüksekliği (Three.js y); verilirse uçuşlar hedefi zemine oturtur. */
   groundAt?: (point: Coordinates) => number;
+  /** Ev görünümü: açılışta ve "sıfırla"da kadraja alınan alan (hikâyede açık adalar ve çevresi). Yoksa bütün adalar. */
+  home?: Bounds | null;
 }
 
-export function CameraRig({ ref, reducedMotion, compassRef, onWatchEnd, groundAt }: CameraRigProps) {
+export function CameraRig({ ref, reducedMotion, compassRef, onWatchEnd, groundAt, home }: CameraRigProps) {
   const controlsRef = useRef<MapControlsImpl>(null);
   const flight = useRef<Flight | null>(null);
   const watching = useRef(false);
@@ -88,6 +92,14 @@ export function CameraRig({ ref, reducedMotion, compassRef, onWatchEnd, groundAt
   const overview = overviewCameraZoom(size);
   const minZoom = overview * MIN_OVERVIEW_FACTOR;
   const maxZoom = detailCameraZoom(size) * MAX_WORLD_ZOOM;
+  /** Ev görünümünün hedefi ve yakınlığı (üstteki bant ve alttaki düğmeler için dikeyde pay). */
+  const homePose = (): { x: number; z: number; zoom: number } => {
+    if (!home) return { x: CENTER.x, z: CENTER.z, zoom: overviewCameraZoom(size) };
+    const width = Math.max(1, home.maxX - home.minX);
+    const height = Math.max(1, home.maxY - home.minY);
+    const zoom = Math.min(size.width / width, Math.max(1, size.height - 160) / height);
+    return { x: (home.minX + home.maxX) / 2, z: (home.minY + home.maxY) / 2 - 20, zoom: clamp(zoom, minZoom, maxZoom) };
+  };
 
   useEffect(() => {
     onWatchEndRef.current = onWatchEnd;
@@ -145,15 +157,16 @@ export function CameraRig({ ref, reducedMotion, compassRef, onWatchEnd, groundAt
     if (notify) onWatchEndRef.current?.();
   };
 
-  // İlk yerleşim: bütün adalar, tepeden.
+  // İlk yerleşim: ev görünümü (hikâyede açık adalar), tepeden.
   useLayoutEffect(() => {
     const controls = controlsRef.current;
     if (!controls) return;
-    controls.target.set(CENTER.x, 0, CENTER.z);
-    cam.position.set(CENTER.x, DISTANCE, CENTER.z + 0.01);
+    const start = homePose();
+    controls.target.set(start.x, 0, start.z);
+    cam.position.set(start.x, DISTANCE, start.z + 0.01);
     cam.near = 10;
     cam.far = DISTANCE * 2.7;
-    cam.zoom = overviewCameraZoom(size);
+    cam.zoom = start.zoom;
     cam.updateProjectionMatrix();
     controls.update();
     // Yalnızca ilk açılışta; sonraki boyut değişikliklerinde kullanıcının görünümü korunur.
@@ -242,7 +255,12 @@ export function CameraRig({ ref, reducedMotion, compassRef, onWatchEnd, groundAt
     },
     reset: () => {
       stopWatching(false);
-      startFlight({ x: CENTER.x, z: CENTER.z, zoom: overviewCameraZoom(size), yaw: 0, y: 0 }, 0.9);
+      const view = homePose();
+      startFlight({ x: view.x, z: view.z, zoom: view.zoom, yaw: 0, y: 0 }, 0.9);
+    },
+    zoomAt: (point, factor) => {
+      stopWatching(true);
+      startFlight({ x: point.x, z: point.y, zoom: cam.zoom * factor }, 0.6);
     },
     rotateBy: (angle) => {
       const controls = controlsRef.current;

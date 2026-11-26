@@ -24,8 +24,6 @@ export interface AppState {
   filterPanelOpen: boolean;
   /** Haritanın uçması istenen karakter. nonce, aynı karaktere tekrar odaklanmayı da tetikler. */
   focus: { id: string; nonce: number } | null;
-  /** Aktif bölümün boss akını paneli açık mı? (URL'ye yazılmaz.) */
-  raidOpen: boolean;
   /** 3D dünyada canlı akın izleniyor mu? (kamera meydanın etrafında döner) */
   watchingRaid: boolean;
   /** İlk oba turu açık mı? (Dede Toygar anlatır; URL'ye yazılmaz.) */
@@ -45,7 +43,6 @@ export interface AppState {
   setFilterPanelOpen: (open: boolean) => void;
   /** Karakteri seçer ve haritayı ona uçurur (ör. aramadan seçilince). */
   focusCharacter: (id: string) => void;
-  setRaidOpen: (open: boolean) => void;
   /** Canlı akını izlemeye başlar: panel kapanır, görünüm Dünya'ya geçer. */
   watchRaid: () => void;
   stopWatchingRaid: () => void;
@@ -63,7 +60,6 @@ export const useAppStore = create<AppState>()((set) => ({
   hoveredId: null,
   filterPanelOpen: false,
   focus: null,
-  raidOpen: false,
   watchingRaid: false,
   tourOpen: false,
 
@@ -79,10 +75,9 @@ export const useAppStore = create<AppState>()((set) => ({
   setHovered: (hoveredId) => set((s) => (s.hoveredId === hoveredId ? s : { hoveredId })),
   setFilterPanelOpen: (filterPanelOpen) => set({ filterPanelOpen }),
   focusCharacter: (id) => set((s) => ({ selectedId: id, focus: { id, nonce: (s.focus?.nonce ?? 0) + 1 } })),
-  setRaidOpen: (raidOpen) => set({ raidOpen }),
-  watchRaid: () => set({ raidOpen: false, view: "dunya", watchingRaid: true, tourOpen: false }),
+  watchRaid: () => set({ view: "dunya", watchingRaid: true, tourOpen: false }),
   stopWatchingRaid: () => set((s) => (s.watchingRaid ? { watchingRaid: false } : s)),
-  startTour: () => set({ tourOpen: true, view: "dunya", watchingRaid: false, raidOpen: false }),
+  startTour: () => set({ tourOpen: true, view: "dunya", watchingRaid: false }),
   endTour: () => set((s) => (s.tourOpen ? { tourOpen: false } : s)),
 
   hydrateFromUrl: (params) =>

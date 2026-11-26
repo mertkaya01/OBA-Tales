@@ -31,7 +31,7 @@ export function createEmptyFilters(): FilterState {
   return { query: '', classes: [], rarities: [], regions: [], special: [] };
 }
 
-/** Ana Akın Haritası'nın iki görünümü: Three.js Dünya ve Leaflet Harita. */
+/** Haritanın iki görünümü: Three.js Dünya ve Leaflet Harita. */
 export const VIEW_MODES = ['dunya', 'harita'] as const;
 export type ViewMode = (typeof VIEW_MODES)[number];
 

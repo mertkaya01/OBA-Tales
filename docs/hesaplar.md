@@ -3,6 +3,21 @@
 Hedef: Instagram, TikTok ve YouTube'daki gerçek takipçiler haritada karakter olarak yaşasın; yeni gelen Kut Kapısı'ndan
 doğsun, yorumlar oylama olsun.
 
+## Hikâyeyi ilerletmek (Yönetim paneli → Hikâye)
+
+1. gün ada boştur. Kahramanlar sırayla gelir: **mhellingtr → egetunce → BinTaş**.
+
+1. `npm run dev` ile paneli aç (http://localhost:5173/yonetim).
+2. **Hikâye** kartında **Sıradakini getir** de. Geliş `public/data/world.json` → `story.arrivals` içine yazılır.
+3. Commit ve push et. Sitede kahraman Kut Kapısı'ndan doğar; o hafta siteye giren herkes gelişi bir kez izler.
+   Işık kahramanın o anki işinin başına iner (gece geldiyse çadırının kapısına; çıkıp selam verir, geri girer).
+
+Gelen kahraman o andan itibaren İstanbul saatine göre yaşar: sabah odun, öğle toplama, ikindi av, akşam ateş başı,
+gece 01–05 çadırında uyku. Ayrıntılar `docs/gorsel-rehber.md` → "Gün düzeni".
+
+Yanlışlıkla getirdiysen **Son gelişi geri al**. Aynı kartta **Adaları aç / kapat** ile karartılı bir bölgeyi ya da
+yabani adayı hikâyede açarsın: karartı kalkar, obaları, ağaçları ve iki yakası da açıksa köprüleri belirir.
+
 ## Yönetim paneli (önerilen yol)
 
 ```powershell

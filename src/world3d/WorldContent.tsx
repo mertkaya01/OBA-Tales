@@ -1,13 +1,18 @@
 /**
  * DÜNYA SAHNESİ — <Canvas> içindeki her şey: gün-gece ışıkları, ada, deniz, doğa, yapılar, sis,
- * akın meydanı, boss ve canlı akın (oklar, ocak ışıkları, ayaz dalgası), takipçiler, auralar ve piksel
- * diorama çizim hattı (kar dahil).
+ * akın meydanı, boss ve canlı akın (oklar, ocak ışıkları, ayaz dalgası), takipçiler, iskeletli kahramanlar
+ * (story/AnimatedHero.tsx), auralar ve piksel diorama çizim hattı (kar dahil).
  *
  * Akın haritası (WorldView) üstüne kamera kontrolü, seçim ve etiketler ekler; Reel Stüdyosu senaryolu
  * kamera ve video kaydı ekler. İkisi de bu sahneyi paylaşır.
  */
 import { useFrame } from "@react-three/fiber";
-import type { Character, RegionId, Weather } from "../types";
+import { useMemo } from "react";
+import { ARRIVAL_ORDER } from "../content/story";
+import { ArrivalEffect } from "./story/ArrivalEffect";
+import { useHeroModels } from "./story/heroModel";
+import { StoryLayer } from "./story/StoryLayer";
+import type { Character, Coordinates, Weather } from "../types";
 import { AuraRings } from "./characters/AuraRings";
 import type { CharacterUniforms } from "./characters/characterMaterials";
 import { FollowerInstances } from "./FollowerInstances";
@@ -53,32 +58,43 @@ interface WorldContentProps {
   weather?: Weather;
   onSelect?: (id: string) => void;
   onHover?: (id: string | null) => void;
-  onRegionClick?: (id: RegionId) => void;
+  onGroundClick?: (point: Coordinates) => void;
+  onGroundDoubleClick?: (point: Coordinates) => void;
 }
 
-export function WorldContent({ scene, characters, animate, pixelSize, weather, onSelect = noop, onHover = noop, onRegionClick = noop }: WorldContentProps) {
+export function WorldContent({ scene, characters, animate, pixelSize, weather, onSelect = noop, onHover = noop, onGroundClick = noop, onGroundDoubleClick = noop }: WorldContentProps) {
   const { data, seed, terrain, terrainTexture, fogUniforms, motionUniforms, sky, boss, formation, placements, battle } = scene;
   const snow = animate ? SNOW[weather ?? data.world.weather] : SNOW.acik;
+
+  // Gelmiş kahramanların iskeletli modelleri (geliş sinemasında gizlenen de önceden insin diye bütün veriden).
+  const heroIds = useMemo(() => ARRIVAL_ORDER.filter((id) => data.characterById.has(id)), [data.characterById]);
+  const heroModels = useHeroModels(heroIds);
+  const { animated, instanced } = useMemo(() => {
+    const animatedHeroes = characters.filter((c) => heroModels.has(c.id) && placements.has(c.id));
+    if (animatedHeroes.length === 0) return { animated: animatedHeroes, instanced: characters };
+    return { animated: animatedHeroes, instanced: characters.filter((c) => !animatedHeroes.includes(c)) };
+  }, [characters, heroModels, placements]);
 
   return (
     <>
       <WorldClockTicker uniforms={motionUniforms} animate={animate} />
-      <DayNight terrain={terrain} sky={sky} fogUniforms={fogUniforms} />
-      <IslandTerrain terrain={terrain} texture={terrainTexture} fogUniforms={fogUniforms} onRegionClick={onRegionClick} />
-      <Waters terrain={terrain} fogUniforms={fogUniforms} />
+      <DayNight terrain={terrain} sky={sky} visibility={data.visibility} />
+      <IslandTerrain terrain={terrain} texture={terrainTexture} fogUniforms={fogUniforms} onGroundClick={onGroundClick} onGroundDoubleClick={onGroundDoubleClick} />
+      <Waters terrain={terrain} fogUniforms={fogUniforms} visibility={data.visibility} />
       <Ocean terrain={terrain} animate={animate} sky={sky} />
-      <Nature terrain={terrain} seed={seed} fogUniforms={fogUniforms} animate={animate} />
-      <Details terrain={terrain} seed={seed} fogUniforms={fogUniforms} animate={animate} />
-      <Landmarks terrain={terrain} seed={seed} fogUniforms={fogUniforms} animate={animate} sky={sky} />
-      <Settlements terrain={terrain} fogUniforms={fogUniforms} animate={animate} sky={sky} />
-      <Portal terrain={terrain} fogUniforms={fogUniforms} animate={animate} sky={sky} />
-      <FogOfWar terrain={terrain} revealedRegions={data.revealedRegions} seed={seed} animate={animate} />
+      <Nature terrain={terrain} seed={seed} fogUniforms={fogUniforms} visibility={data.visibility} animate={animate} />
+      <Details terrain={terrain} seed={seed} fogUniforms={fogUniforms} visibility={data.visibility} animate={animate} />
+      <Landmarks terrain={terrain} seed={seed} fogUniforms={fogUniforms} animate={animate} sky={sky} visibility={data.visibility} />
+      <Settlements terrain={terrain} fogUniforms={fogUniforms} animate={animate} sky={sky} visibility={data.visibility} />
+      <Portal terrain={terrain} fogUniforms={fogUniforms} animate={animate} sky={sky} arrival={scene.arrival} />
+      <ArrivalEffect runtime={scene.arrival} />
+      <FogOfWar terrain={terrain} visibility={data.visibility} seed={seed} animate={animate} />
       {formation && <RaidGround formation={formation} bossId={boss?.id ?? null} terrain={terrain} animate={animate} battle={battle} />}
       {formation && boss && (
         <RaidBattle formation={formation} bossId={boss.id} characterById={data.characterById} terrain={terrain} battle={battle} animate={animate} />
       )}
       <FollowerInstances
-        characters={characters}
+        characters={instanced}
         placements={placements}
         terrain={terrain}
         uniforms={motionUniforms}
@@ -86,7 +102,8 @@ export function WorldContent({ scene, characters, animate, pixelSize, weather, o
         onSelect={onSelect}
         onHover={onHover}
       />
-      <AuraRings characters={characters} placements={placements} uniforms={motionUniforms} />
+      <StoryLayer scene={scene} characters={animated} models={heroModels} animate={animate} onSelect={onSelect} onHover={onHover} />
+      <AuraRings characters={instanced} placements={placements} uniforms={motionUniforms} />
       <PixelPipeline pixelSize={pixelSize} sky={sky} snow={snow} clock={motionUniforms.uTime} />
     </>
   );

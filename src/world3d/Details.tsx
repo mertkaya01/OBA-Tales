@@ -12,6 +12,7 @@ import type { Terrain } from "../game/terrain";
 import { box, cone, cylinder, dodeca, merge } from "./geometryKit";
 import { InstancedParts, type InstanceTransform } from "./InstancedParts";
 import { scatterSeaRocks, scatterTufts } from "./layout";
+import { isHiddenAt, type LandVisibility } from "../game/visibility";
 import { foggedLambert } from "./materials";
 import type { FogUniforms } from "./shaders/fog";
 import { WATER_LEVEL, groundY, worldZoomOf } from "./worldScale";
@@ -31,10 +32,12 @@ interface DetailsProps {
   terrain: Terrain;
   seed: number;
   fogUniforms: FogUniforms;
+  /** Karartılı karada çayır otu ve çiçek çizilmez. */
+  visibility: LandVisibility;
   animate: boolean;
 }
 
-export function Details({ terrain, seed, fogUniforms, animate }: DetailsProps) {
+export function Details({ terrain, seed, fogUniforms, visibility, animate }: DetailsProps) {
   const m = useMemo(
     () => ({
       tinted: foggedLambert(fogUniforms, { color: "#ffffff" }),
@@ -46,10 +49,10 @@ export function Details({ terrain, seed, fogUniforms, animate }: DetailsProps) {
   useEffect(() => () => Object.values(m).forEach((material) => material.dispose()), [m]);
 
   const tufts = useMemo(() => {
-    const all = scatterTufts(terrain, seed);
+    const all = scatterTufts(terrain, seed).filter((t) => !isHiddenAt(terrain, visibility, t));
     const toItem = (t: (typeof all)[number]): InstanceTransform => ({ position: [t.x, groundY(terrain, t) - 0.1, t.y], rotationY: t.rotation, scale: t.scale, color: t.color });
     return { grass: all.filter((t) => !t.flower).map(toItem), flowers: all.filter((t) => t.flower).map(toItem) };
-  }, [terrain, seed]);
+  }, [terrain, seed, visibility]);
 
   const rocks = useMemo(
     () =>

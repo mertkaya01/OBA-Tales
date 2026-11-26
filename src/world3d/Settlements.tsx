@@ -36,6 +36,7 @@ import type { Coordinates } from "../types";
 import { box, cone, cylinder, dodeca, ico, merge, ring } from "./geometryKit";
 import { InstancedParts, type InstanceTransform } from "./InstancedParts";
 import { CORRAL_RADIUS, FLOCK_RADIUS, balbalPlacements, campLayouts, shipwreckPlacement } from "./layout";
+import { isHiddenAt, type LandVisibility } from "../game/visibility";
 import type { SkyRuntime } from "./living/sky";
 import { foggedLambert } from "./materials";
 import type { FogUniforms } from "./shaders/fog";
@@ -231,12 +232,14 @@ interface SettlementsProps {
   fogUniforms: FogUniforms;
   animate: boolean;
   sky: SkyRuntime;
+  /** Karartılı karadaki obalar, anıtlar ve köprüler çizilmez. */
+  visibility: LandVisibility;
 }
 
 const HORSE_COLORS = ["#6b4226", "#3b2a20", "#d8d0c2", "#8a5a33", "#2a2522", "#a39a8c"];
 const RIBBON_COLORS = ["#c4413a", "#e2b23c", "#3f6f8a", "#2a9677", "#f3efe6", "#6a43b8"];
 
-export function Settlements({ terrain, fogUniforms, animate, sky }: SettlementsProps) {
+export function Settlements({ terrain, fogUniforms, animate, sky, visibility }: SettlementsProps) {
   const m = useMemo(() => createMaterials(fogUniforms), [fogUniforms]);
   useEffect(
     () => () =>
@@ -248,7 +251,8 @@ export function Settlements({ terrain, fogUniforms, animate, sky }: SettlementsP
   );
 
   const at = useCallback((p: Coordinates, lift = 0): [number, number, number] => [p.x, groundY(terrain, p) + lift, p.y], [terrain]);
-  const camps = useMemo(() => campLayouts(terrain), [terrain]);
+  const show = useCallback((p: Coordinates, reach = 0) => !isHiddenAt(terrain, visibility, p, reach), [terrain, visibility]);
+  const camps = useMemo(() => campLayouts(terrain).filter((c) => show(c.village.center)), [terrain, show]);
 
   // ── Kamp parçaları ──
   const parts = useMemo(() => {
@@ -291,7 +295,7 @@ export function Settlements({ terrain, fogUniforms, animate, sky }: SettlementsP
 
   // ── Anıt parçaları ──
   const monuments = useMemo(() => {
-    const balbals = balbalPlacements().map<InstanceTransform>((p) => ({ position: at(p, -0.3), rotationY: p.rotation, scale: 0.9 + (hashString(`${p.x}`) % 3) * 0.08 }));
+    const balbals = balbalPlacements().filter((p) => show(p)).map<InstanceTransform>((p) => ({ position: at(p, -0.3), rotationY: p.rotation, scale: 0.9 + (hashString(`${p.x}`) % 3) * 0.08 }));
     const steles = ring(7, 7, 0.3).map<InstanceTransform>((p) => {
       const q = { x: MONUMENTS.yazitliTaslar.x + p.x, y: MONUMENTS.yazitliTaslar.y + p.z };
       // Yüzü halkanın ortasına dönük.
@@ -304,17 +308,23 @@ export function Settlements({ terrain, fogUniforms, animate, sky }: SettlementsP
       return { position: [p.x + Math.cos(a) * r, groundY(terrain, p) + 5.2 + (k % 3) * 0.9, p.y + Math.sin(a) * r], rotationY: a, color: RIBBON_COLORS[k % RIBBON_COLORS.length] };
     });
     const wreck = shipwreckPlacement(terrain);
-    return { balbals, steles, ribbons, wreck };
-  }, [terrain, at]);
+    // Yazıtlı taşlar, dilek ağacının bezleri ve batık gemi de kendi adalarıyla birlikte görünür.
+    return {
+      balbals,
+      steles: show(MONUMENTS.yazitliTaslar) ? steles : [],
+      ribbons: show(MONUMENTS.dilekAgaci) ? ribbons : [],
+      wreck: show(wreck, 40) ? wreck : null,
+    };
+  }, [terrain, at, show]);
 
   const bridges = useMemo(
     () =>
-      getTrails(terrain).bridges.map((b) => {
+      getTrails(terrain).bridges.filter((b) => show(b.center, 6)).map((b) => {
         const half = b.length / 2;
         const ends = [-1, 1].map((s) => groundY(terrain, { x: b.center.x + Math.cos(b.angle) * half * s, y: b.center.y + Math.sin(b.angle) * half * s }));
         return { ...b, y: Math.max(ends[0], ends[1], groundY(terrain, b.center)) + 0.9 };
       }),
-    [terrain],
+    [terrain, show],
   );
 
   // ── Canlılık: alev, duman, gece ışığı, runlar ──
@@ -382,10 +392,12 @@ export function Settlements({ terrain, fogUniforms, animate, sky }: SettlementsP
       <InstancedParts geometry={SHEEP_HEAD} material={m.sheepHead} items={parts.sheep} />
 
       {/* Ata Heykeli */}
-      <group position={at(MONUMENTS.ataHeykeli, -0.4)} rotation-y={0.35}>
-        <mesh geometry={ATA} material={m.stone} castShadow receiveShadow />
-        <mesh geometry={ATA_STAFF} material={m.stoneDark} castShadow />
-      </group>
+      {show(MONUMENTS.ataHeykeli) && (
+        <group position={at(MONUMENTS.ataHeykeli, -0.4)} rotation-y={0.35}>
+          <mesh geometry={ATA} material={m.stone} castShadow receiveShadow />
+          <mesh geometry={ATA_STAFF} material={m.stoneDark} castShadow />
+        </group>
+      )}
 
       {/* Balbal Yolu ve Yazıtlı Taşlar */}
       <InstancedParts geometry={BALBAL} material={m.stone} items={monuments.balbals} />
@@ -393,20 +405,24 @@ export function Settlements({ terrain, fogUniforms, animate, sky }: SettlementsP
       <InstancedParts geometry={RUNES} material={m.rune} items={monuments.steles} castShadow={false} />
 
       {/* Kartal Anıtı */}
-      <group position={at(MONUMENTS.kartalAniti, -0.3)} rotation-y={-0.6}>
-        <mesh geometry={KARTAL_PILLAR} material={m.stone} castShadow receiveShadow />
-        <mesh geometry={KARTAL} material={m.bronze} castShadow />
-      </group>
+      {show(MONUMENTS.kartalAniti) && (
+        <group position={at(MONUMENTS.kartalAniti, -0.3)} rotation-y={-0.6}>
+          <mesh geometry={KARTAL_PILLAR} material={m.stone} castShadow receiveShadow />
+          <mesh geometry={KARTAL} material={m.bronze} castShadow />
+        </group>
+      )}
 
       {/* Dilek Ağacı */}
-      <group position={at(MONUMENTS.dilekAgaci, -0.3)}>
-        <mesh geometry={TREE_TRUNK} material={m.wood} castShadow />
-        <mesh geometry={TREE_CROWN} material={m.leaves} castShadow />
-      </group>
+      {show(MONUMENTS.dilekAgaci) && (
+        <group position={at(MONUMENTS.dilekAgaci, -0.3)}>
+          <mesh geometry={TREE_TRUNK} material={m.wood} castShadow />
+          <mesh geometry={TREE_CROWN} material={m.leaves} castShadow />
+        </group>
+      )}
       <InstancedParts geometry={RIBBON} material={m.tinted} items={monuments.ribbons} castShadow={false} />
 
       {/* Gözcü kuleleri */}
-      {MONUMENTS.gozcuKuleleri.map((p, i) => (
+      {MONUMENTS.gozcuKuleleri.map((p, i) => show(p) && (
         <group key={i} position={at(p, -0.3)} rotation-y={i * 0.7}>
           <mesh geometry={TOWER} material={m.wood} castShadow receiveShadow />
           <mesh geometry={TOWER_ROOF} material={m.roof} castShadow />
@@ -414,82 +430,94 @@ export function Settlements({ terrain, fogUniforms, animate, sky }: SettlementsP
       ))}
 
       {/* Üçkardeş Feneri: mavi-beyaz kule, dönen huzme */}
-      <group position={at(MONUMENTS.uckardesFeneri, -0.3)}>
-        <mesh material={m.stone} position-y={0.8} castShadow receiveShadow>
-          <cylinderGeometry args={[2.8, 3.2, 1.6, 8]} />
-        </mesh>
-        {[0, 1, 2].map((i) => (
-          <mesh key={i} material={i % 2 === 0 ? m.wool : m.blueBand} position-y={1.6 + i * 2.5 + 1.25} castShadow>
-            <cylinderGeometry args={[1.7 - (i + 1) * 0.12, 1.7 - i * 0.12, 2.5, 8]} />
+      {show(MONUMENTS.uckardesFeneri) && (
+        <group position={at(MONUMENTS.uckardesFeneri, -0.3)}>
+          <mesh material={m.stone} position-y={0.8} castShadow receiveShadow>
+            <cylinderGeometry args={[2.8, 3.2, 1.6, 8]} />
           </mesh>
-        ))}
-        <mesh material={m.flameCore} position-y={10.2}>
-          <cylinderGeometry args={[1.25, 1.25, 1.4, 8]} />
-        </mesh>
-        <mesh material={m.roof} position-y={11.6} castShadow>
-          <coneGeometry args={[1.7, 1.4, 8]} />
-        </mesh>
-        <group
-          ref={(el) => {
-            if (el) beamsRef.current[0] = el;
-          }}
-          position-y={10.2}
-        >
-          <mesh material={m.beam} position-x={12} rotation-z={Math.PI / 2}>
-            <coneGeometry args={[2, 24, 8, 1, true]} />
+          {[0, 1, 2].map((i) => (
+            <mesh key={i} material={i % 2 === 0 ? m.wool : m.blueBand} position-y={1.6 + i * 2.5 + 1.25} castShadow>
+              <cylinderGeometry args={[1.7 - (i + 1) * 0.12, 1.7 - i * 0.12, 2.5, 8]} />
+            </mesh>
+          ))}
+          <mesh material={m.flameCore} position-y={10.2}>
+            <cylinderGeometry args={[1.25, 1.25, 1.4, 8]} />
           </mesh>
+          <mesh material={m.roof} position-y={11.6} castShadow>
+            <coneGeometry args={[1.7, 1.4, 8]} />
+          </mesh>
+          <group
+            ref={(el) => {
+              if (el) beamsRef.current[0] = el;
+            }}
+            position-y={10.2}
+          >
+            <mesh material={m.beam} position-x={12} rotation-z={Math.PI / 2}>
+              <coneGeometry args={[2, 24, 8, 1, true]} />
+            </mesh>
+          </group>
         </group>
-      </group>
+      )}
 
       {/* Fırtına Feneri: kırmızı-beyaz kule */}
-      <group position={at(MONUMENTS.firtinaFeneri, -0.3)}>
-        <mesh material={m.stone} position-y={0.8} castShadow receiveShadow>
-          <cylinderGeometry args={[2.8, 3.2, 1.6, 8]} />
-        </mesh>
-        {[0, 1, 2].map((i) => (
-          <mesh key={i} material={i % 2 === 0 ? m.wool : m.roof} position-y={1.6 + i * 2.5 + 1.25} castShadow>
-            <cylinderGeometry args={[1.7 - (i + 1) * 0.12, 1.7 - i * 0.12, 2.5, 8]} />
+      {show(MONUMENTS.firtinaFeneri) && (
+        <group position={at(MONUMENTS.firtinaFeneri, -0.3)}>
+          <mesh material={m.stone} position-y={0.8} castShadow receiveShadow>
+            <cylinderGeometry args={[2.8, 3.2, 1.6, 8]} />
           </mesh>
-        ))}
-        <mesh material={m.flameCore} position-y={10.2}>
-          <cylinderGeometry args={[1.25, 1.25, 1.4, 8]} />
-        </mesh>
-        <mesh material={m.roof} position-y={11.6} castShadow>
-          <coneGeometry args={[1.7, 1.4, 8]} />
-        </mesh>
-        <group
-          ref={(el) => {
-            if (el) beamsRef.current[1] = el;
-          }}
-          position-y={10.2}
-        >
-          <mesh material={m.beam} position-x={12} rotation-z={Math.PI / 2}>
-            <coneGeometry args={[2, 24, 8, 1, true]} />
+          {[0, 1, 2].map((i) => (
+            <mesh key={i} material={i % 2 === 0 ? m.wool : m.roof} position-y={1.6 + i * 2.5 + 1.25} castShadow>
+              <cylinderGeometry args={[1.7 - (i + 1) * 0.12, 1.7 - i * 0.12, 2.5, 8]} />
+            </mesh>
+          ))}
+          <mesh material={m.flameCore} position-y={10.2}>
+            <cylinderGeometry args={[1.25, 1.25, 1.4, 8]} />
           </mesh>
+          <mesh material={m.roof} position-y={11.6} castShadow>
+            <coneGeometry args={[1.7, 1.4, 8]} />
+          </mesh>
+          <group
+            ref={(el) => {
+              if (el) beamsRef.current[1] = el;
+            }}
+            position-y={10.2}
+          >
+            <mesh material={m.beam} position-x={12} rotation-z={Math.PI / 2}>
+              <coneGeometry args={[2, 24, 8, 1, true]} />
+            </mesh>
+          </group>
         </group>
-      </group>
+      )}
 
       {/* Yıkık Kale: yarısı çökmüş surlar, kırık kuleler, moloz */}
-      <group position={at(MONUMENTS.yikikKale, -0.6)} rotation-y={0.3}>
-        <mesh geometry={RUIN_WALLS} material={m.stoneDark} castShadow receiveShadow />
-        <mesh geometry={RUIN_RUBBLE} material={m.stone} castShadow />
-      </group>
+      {show(MONUMENTS.yikikKale) && (
+        <group position={at(MONUMENTS.yikikKale, -0.6)} rotation-y={0.3}>
+          <mesh geometry={RUIN_WALLS} material={m.stoneDark} castShadow receiveShadow />
+          <mesh geometry={RUIN_RUBBLE} material={m.stone} castShadow />
+        </group>
+      )}
 
       {/* Ulu Kayın: Kuzgunorman'ın dev ağacı */}
-      <group position={at(MONUMENTS.uluKayin, -0.5)} scale={2.3}>
-        <mesh geometry={TREE_TRUNK} material={m.woodDark} castShadow />
-        <mesh geometry={TREE_CROWN} material={m.darkLeaves} castShadow />
-      </group>
+      {show(MONUMENTS.uluKayin) && (
+        <group position={at(MONUMENTS.uluKayin, -0.5)} scale={2.3}>
+          <mesh geometry={TREE_TRUNK} material={m.woodDark} castShadow />
+          <mesh geometry={TREE_CROWN} material={m.darkLeaves} castShadow />
+        </group>
+      )}
 
       {/* Batık gemi */}
-      <group position={[monuments.wreck.x, WATER_LEVEL - 0.5, monuments.wreck.y]} rotation={[0.12, 0.8, 0.32]}>
-        <mesh geometry={WRECK} material={m.woodDark} castShadow />
-      </group>
+      {monuments.wreck && (
+        <group position={[monuments.wreck.x, WATER_LEVEL - 0.5, monuments.wreck.y]} rotation={[0.12, 0.8, 0.32]}>
+          <mesh geometry={WRECK} material={m.woodDark} castShadow />
+        </group>
+      )}
 
       {/* Donmuş şelale */}
-      <group position={at(MONUMENTS.donmusSelale, -0.5)} rotation-y={0}>
-        <mesh geometry={ICE_FALL} material={m.ice} castShadow />
-      </group>
+      {show(MONUMENTS.donmusSelale) && (
+        <group position={at(MONUMENTS.donmusSelale, -0.5)} rotation-y={0}>
+          <mesh geometry={ICE_FALL} material={m.ice} castShadow />
+        </group>
+      )}
 
       {/* Patika köprüleri */}
       {bridges.map((b, i) => (

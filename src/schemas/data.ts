@@ -8,6 +8,8 @@
  * scripts/validate-data.ts içinde src/content ile birlikte yapılır.
  */
 import { z } from 'zod';
+import { ISLAND_IDS } from '../content/islands';
+import { ARRIVAL_ORDER, arrivalsInOrder } from '../content/story';
 import {
   ARCHETYPES,
   BADGE_IDS,
@@ -233,6 +235,7 @@ export const worldStateSchema = z
     seed: z.number().int().min(0).max(0xffffffff),
     fogSoftness: z.number().positive().max(200),
     revealedRegions: z.array(regionIdSchema),
+    revealedIslands: z.array(z.enum(ISLAND_IDS)).default([]),
     glimpses: z.array(
       z.object({
         name: z.string().trim().min(1),
@@ -255,9 +258,21 @@ export const worldStateSchema = z
       tiktok: httpsUrlOrNull,
       youtube: httpsUrlOrNull,
     }),
+    story: z
+      .object({
+        day: z.number().int().min(1),
+        arrivals: z.array(z.object({ id: z.enum(ARRIVAL_ORDER), at: isoDateTime })),
+      })
+      .default({ day: 1, arrivals: [] }),
     updatedAt: isoDateTime,
   })
   .superRefine((world, ctx) => {
+    if (!arrivalsInOrder(world.story)) {
+      ctx.addIssue({ code: 'custom', path: ['story', 'arrivals'], message: `Kahramanlar sırayla gelir: ${ARRIVAL_ORDER.join(' → ')}` });
+    }
+    if (hasDuplicates(world.revealedIslands)) {
+      ctx.addIssue({ code: 'custom', path: ['revealedIslands'], message: 'Aynı ada iki kez yazılmış' });
+    }
     if (hasDuplicates(world.revealedRegions)) {
       ctx.addIssue({ code: 'custom', path: ['revealedRegions'], message: 'Aynı bölge iki kez yazılmış' });
     }

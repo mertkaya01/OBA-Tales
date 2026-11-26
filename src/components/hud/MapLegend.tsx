@@ -1,5 +1,5 @@
 /**
- * Lejant: nadirlik çerçeveleri, sınıf simgeleri, akın işareti ve sis; tanıtım turunu yeniden açan düğme. Açılıp kapanabilir.
+ * Lejant: nadirlik çerçeveleri, sınıf simgeleri ve karartılı adalar; tanıtım turunu yeniden açan düğme. Açılıp kapanabilir.
  */
 import { Compass, Info } from "lucide-react";
 import { CLASS_LIST } from "../../content/classes";
@@ -52,12 +52,8 @@ export function MapLegend({ className }: { className?: string }) {
         </button>
         <ul className="grid gap-1 text-buz-300">
           <li className="flex items-center gap-2">
-            <span aria-hidden className="size-2 bg-gunozu-300 shadow-[0_0_6px_var(--color-gunozu-300)]" />
-            Aktif bölüm akınında
-          </li>
-          <li className="flex items-center gap-2">
-            <span aria-hidden className="size-3 rounded-sm bg-buz-100/60" />
-            Sisli bölge: akın henüz ulaşmadı
+            <span aria-hidden className="grid size-4 place-items-center rounded-full border border-gunozu-300/60 bg-[#0b1322] text-[10px] font-bold text-gunozu-200">?</span>
+            Karartılı ada: sizlerin desteğiyle yakında
           </li>
         </ul>
       </div>

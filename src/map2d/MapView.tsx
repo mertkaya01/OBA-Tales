@@ -22,6 +22,8 @@ import { BaseMapLayer } from "./BaseMapLayer";
 import { ClusterLayer } from "./ClusterLayer";
 import { PAN_LAT_LNG_BOUNDS, WORLD_LAT_LNG_BOUNDS, toLatLngBounds } from "./mapCoords";
 import { PIN_SCALE } from "./markerIcons";
+import { HiddenMarks } from "./HiddenMarks";
+import { visibleBounds } from "../game/visibility";
 import { RegionPolygons } from "./RegionPolygons";
 
 /** Kenarlardaki arayüz parçaları için odak boşluğu (piksel). */
@@ -62,11 +64,13 @@ export default function MapView({ characters }: MapViewProps) {
   // Bütün dünyanın ekrana sığdığı zoom; en uzak zoom ve balon eşiği buna göre ayarlanır.
   useEffect(() => {
     if (!map) return;
-    map.getContainer().setAttribute("aria-label", "OBA-Tales akın haritası. Ok tuşlarıyla kaydırın, artı ve eksiyle yakınlaşın.");
+    map.getContainer().setAttribute("aria-label", "OBA-Tales haritası. Ok tuşlarıyla kaydırın, artı ve eksiyle yakınlaşın.");
     // Geliştirme sırasında tarayıcı konsolundan incelemek için: window.__kbMap
     if (import.meta.env.DEV) (window as unknown as { __kbMap?: L.Map }).__kbMap = map;
     const update = () => {
-      // Bütün adaların, arayüz boşlukları bırakılarak sığdığı zoom.
+      // Bütün adaların, arayüz boşlukları bırakılarak sığdığı zoom. getBoundsZoom sonucu o anki en uzak zoom'la
+      // sınırlar: kap ilk açılışta küçükken hesaplanan yüksek bir sınır sonsuza kadar takılı kalmasın diye önce gevşetilir.
+      map.setMinZoom(-10);
       const overview = map.getBoundsZoom(WORLD_LAT_LNG_BOUNDS, false, L.point(OVERVIEW_PADDING));
       // En uzak zoom tam sayı olmalı: markercluster kesirli minZoom'da tek kalan pinleri çizmiyor.
       map.setMinZoom(Math.floor(overview - 0.5));
@@ -74,8 +78,12 @@ export default function MapView({ characters }: MapViewProps) {
     };
     update();
     map.on("resize", update);
+    // Kap boyu pencere değişmeden de değişebilir (yan panel, gizli sekme): Leaflet'e haber ver.
+    const observer = new ResizeObserver(() => map.invalidateSize());
+    observer.observe(map.getContainer());
     return () => {
       map.off("resize", update);
+      observer.disconnect();
     };
   }, [map]);
 
@@ -114,7 +122,9 @@ export default function MapView({ characters }: MapViewProps) {
   const firstFocus = useRef(true);
   useEffect(() => {
     if (!map) return;
-    const bounds = toLatLngBounds(regionsBounds(regionKey ? (regionKey.split(",") as RegionId[]) : []));
+    // Filtre yoksa ev görünümü: hikâyede açık adalar ve çevresi (1. günde Kutada).
+    const home = visibleBounds(data.visibility);
+    const bounds = toLatLngBounds(regionKey ? regionsBounds(regionKey.split(",") as RegionId[]) : (home ?? regionsBounds([])));
     const options = { paddingTopLeft: FOCUS_PADDING_TOP_LEFT, paddingBottomRight: FOCUS_PADDING_BOTTOM_RIGHT };
     if (firstFocus.current) {
       firstFocus.current = false;
@@ -124,13 +134,7 @@ export default function MapView({ characters }: MapViewProps) {
     } else {
       map.flyToBounds(bounds, { ...options, duration: 0.8 });
     }
-  }, [map, regionKey, reducedMotion]);
-
-  // Bölgeye tıklama: o bölgeyi seç; zaten tek seçili bölgeyse seçimi kaldır.
-  const onRegionClick = useCallback((id: RegionId) => {
-    const { filters, setRegions } = useAppStore.getState();
-    setRegions(filters.regions.length === 1 && filters.regions[0] === id ? [] : [id]);
-  }, []);
+  }, [map, regionKey, reducedMotion, data.visibility]);
 
   const onSelect = useCallback((id: string) => useAppStore.getState().select(id), []);
 
@@ -151,13 +155,9 @@ export default function MapView({ characters }: MapViewProps) {
         attributionControl={false}
         className="kb-harita h-full w-full"
       >
-        <BaseMapLayer
-          seed={data.world.seed}
-          revealedRegions={data.revealedRegions}
-          glimpses={data.world.glimpses}
-          fogSoftness={data.world.fogSoftness}
-        />
-        <RegionPolygons revealedRegions={data.revealedRegions} selectedRegions={regions} onRegionClick={onRegionClick} />
+        <BaseMapLayer seed={data.world.seed} visibility={data.visibility} />
+        <RegionPolygons revealedRegions={data.revealedRegions} selectedRegions={regions} />
+        <HiddenMarks seed={data.world.seed} visibility={data.visibility} />
         {bubbleThreshold !== null && (
           <ClusterLayer
             characters={characters}
@@ -179,7 +179,8 @@ export default function MapView({ characters }: MapViewProps) {
         onZoomOut={() => map?.zoomOut()}
         onReset={() => {
           useAppStore.getState().setRegions([]);
-          map?.flyToBounds(WORLD_LAT_LNG_BOUNDS, { duration: reducedMotion ? 0 : 0.8 });
+          const home = visibleBounds(data.visibility);
+          map?.flyToBounds(home ? toLatLngBounds(home) : WORLD_LAT_LNG_BOUNDS, { duration: reducedMotion ? 0 : 0.8 });
         }}
       />
     </div>

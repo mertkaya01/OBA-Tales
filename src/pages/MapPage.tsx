@@ -15,10 +15,8 @@ import { CharacterDrawer } from "../components/character/CharacterDrawer";
 import { ActiveFilterBar } from "../components/filters/ActiveFilterBar";
 import { FilterPanel } from "../components/filters/FilterPanel";
 import { HeroSearch } from "../components/hud/HeroSearch";
-import { MapHud } from "../components/hud/MapHud";
 import { MapLegend } from "../components/hud/MapLegend";
 import { ViewSwitcher } from "../components/hud/ViewSwitcher";
-import { RaidDialog } from "../components/season/RaidDialog";
 import { LoadingScreen } from "../components/ui/LoadingScreen";
 import { useFilteredCharacters } from "../hooks/useFilteredCharacters";
 import { useWebGLSupport } from "../hooks/useWebGLSupport";
@@ -39,8 +37,8 @@ export default function MapPage() {
 
   return (
     <>
-      <title>Akın Haritası · OBA-Tales</title>
-      <h1 className="sr-only">OBA-Tales Akın Haritası</h1>
+      <title>Harita · OBA-Tales</title>
+      <h1 className="sr-only">OBA-Tales Haritası</h1>
 
       <div className="relative flex-1 overflow-hidden bg-gece-950">
         <Suspense
@@ -64,7 +62,6 @@ export default function MapPage() {
           </div>
 
           <div className="order-3 flex flex-col items-center gap-2 md:order-2">
-            <MapHud visible={filtered} className="pointer-events-auto hidden sm:flex" />
             <ActiveFilterBar resultCount={filtered.length} totalCount={all.length} className="pointer-events-auto" />
           </div>
 
@@ -75,7 +72,6 @@ export default function MapPage() {
 
         <MapLegend className="absolute bottom-4 left-3 z-10" />
         <CharacterDrawer />
-        <RaidDialog />
       </div>
     </>
   );

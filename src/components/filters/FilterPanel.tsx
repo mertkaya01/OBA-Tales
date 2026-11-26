@@ -44,7 +44,7 @@ export function FilterPanel({ facets, resultCount }: FilterPanelProps) {
   const open = useAppStore((s) => s.filterPanelOpen);
   const filters = useAppStore((s) => s.filters);
   const { setFilterPanelOpen, toggleClass, toggleRarity, toggleRegion, toggleSpecial, resetFilters } = useAppStore.getState();
-  const { activeEpisode, revealedRegions } = useGameData();
+  const { revealedRegions } = useGameData();
   const panelId = useId();
   const activeCount = countActiveFilters(filters) - (filters.query.trim() ? 1 : 0);
 
@@ -56,9 +56,8 @@ export function FilterPanel({ facets, resultCount }: FilterPanelProps) {
   }, [open, setFilterPanelOpen]);
 
   const specialOptions: FilterOption<SpecialFilterId>[] = [
-    { value: "kadro", label: "Ana & Yan Kadro", count: facets.special.kadro },
+    { value: "kadro", label: "Kahramanlar", count: facets.special.kadro },
     { value: "coklu", label: "Çoklu Platform Rozetliler", count: facets.special.coklu },
-    { value: "akin", label: `Bölüm ${activeEpisode.number} Akınındakiler`, count: facets.special.akin },
   ];
 
   return (
@@ -125,9 +124,10 @@ export function FilterPanel({ facets, resultCount }: FilterPanelProps) {
             <FilterGroup
               title="Bölge"
               hint="Seçilen bölgeye harita odaklanır"
-              options={REGION_LIST.map((r) => ({
+              // Karartılı bölgeler henüz hikâyede yok: yalnızca açık bölgeler listelenir.
+              options={REGION_LIST.filter((r) => revealedRegions.has(r.id)).map((r) => ({
                 value: r.id,
-                label: revealedRegions.has(r.id) ? r.name : `${r.name} (sisli)`,
+                label: r.name,
                 count: facets.regions[r.id],
               }))}
               selected={filters.regions}

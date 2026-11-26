@@ -1,24 +1,22 @@
 /**
- * İlk oba turu: Dede Toygar'ın anlattığı, kamerayı adalar, Kut Kapısı, Akınburnu obası ve akın meydanı arasında
- * uçuran kısa tanıtım (adımlar: content/tour.ts). İleri/Geri düğmeleri ya da ok tuşları; Esc ya da "Turu geç" kapatır.
+ * İlk oba turu: Dede Toygar'ın anlattığı (haritada değil, portresi ve sesiyle), kamerayı Kutada, Kut Kapısı, Konuk
+ * obası ve karanlıktaki adalar arasında uçuran kısa tanıtım (adımlar: content/tour.ts). İleri/Geri düğmeleri ya da ok tuşları; Esc ya da "Turu geç" kapatır.
  * Haritayı kapatmaz: dünya arkada çalışmaya devam eder, ama tur açıkken kamerayı tur yönetir.
  */
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import { useEffect, useMemo, useState, type RefObject } from "react";
+import { useEffect, useState, type RefObject } from "react";
 import { Link } from "react-router";
 import { CharacterPortrait } from "../components/character/CharacterPortrait";
-import { tourSteps, type TourStep } from "../content/tour";
+import { TOUR_STEPS, type TourStep } from "../content/tour";
+import { WORLD_SIZE } from "../types";
 import { cn } from "../lib/cn";
-import type { Character, Coordinates } from "../types";
+import type { Character } from "../types";
 import type { CameraRigHandle } from "./CameraRig";
 import { LANDMARKS, VILLAGES } from "./layout";
 
 interface WelcomeTourProps {
   rig: RefObject<CameraRigHandle | null>;
   narrator: Character | undefined;
-  boss: string | null;
-  /** Akın meydanının ortası (aktif akın yoksa null). */
-  raidCenter: Coordinates | null;
   onClose: () => void;
 }
 
@@ -27,8 +25,11 @@ function focusSearch(): void {
   document.querySelector<HTMLInputElement>("[data-hero-search]")?.focus();
 }
 
-export function WelcomeTour({ rig, narrator, boss, raidCenter, onClose }: WelcomeTourProps) {
-  const steps = useMemo(() => tourSteps(raidCenter ? boss : null), [boss, raidCenter]);
+/** Kutada'nın obası (yeni gelenlerin ve kahramanların evi). */
+const KONUK_OBASI = VILLAGES.find((v) => v.region === "kutada") ?? VILLAGES[0];
+
+export function WelcomeTour({ rig, narrator, onClose }: WelcomeTourProps) {
+  const steps = TOUR_STEPS;
   const [index, setIndex] = useState(0);
   const step: TourStep = steps[index];
   const last = index === steps.length - 1;
@@ -39,9 +40,10 @@ export function WelcomeTour({ rig, narrator, boss, raidCenter, onClose }: Welcom
     if (!camera) return;
     if (step.target === "adalar" || step.target === "arama") camera.reset();
     else if (step.target === "kapi") camera.flyTo(LANDMARKS.kutKapisi, 9);
-    else if (step.target === "oba") camera.flyTo(VILLAGES[0].center, 7.5);
-    else if (step.target === "meydan" && raidCenter) camera.flyTo(raidCenter, 6.5);
-  }, [step, rig, raidCenter]);
+    else if (step.target === "oba") camera.flyTo(KONUK_OBASI.center, 7.5);
+    // Karanlıktaki adalar: bütün takımada görünecek kadar uzaklaş.
+    else if (step.target === "gizli") camera.flyTo({ x: WORLD_SIZE.width / 2, y: WORLD_SIZE.height / 2 }, 0.55);
+  }, [step, rig]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {

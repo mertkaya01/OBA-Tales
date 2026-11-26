@@ -23,6 +23,7 @@ import type { Coordinates } from "../types";
 import { InstancedParts, type InstanceTransform } from "./InstancedParts";
 import type { SkyRuntime } from "./living/sky";
 import { LANDMARKS, YURT_SIZE, boatPlacements, pierPlacement, yurtPlacements } from "./layout";
+import { isHiddenAt, type LandVisibility } from "../game/visibility";
 import { foggedLambert, pickByPosition } from "./materials";
 import type { FogUniforms } from "./shaders/fog";
 import { WATER_LEVEL, groundY } from "./worldScale";
@@ -66,9 +67,11 @@ interface LandmarksProps {
   fogUniforms: FogUniforms;
   animate: boolean;
   sky: SkyRuntime;
+  /** Karartılı karadaki yapılar çizilmez; taş köprü iki yakası da açıksa görünür. */
+  visibility: LandVisibility;
 }
 
-export function Landmarks({ terrain, seed, fogUniforms, animate, sky }: LandmarksProps) {
+export function Landmarks({ terrain, seed, fogUniforms, animate, sky, visibility }: LandmarksProps) {
   const m = useMemo(() => createMaterials(fogUniforms), [fogUniforms]);
   useEffect(() => () => Object.values(m).forEach((material) => material.dispose()), [m]);
 
@@ -98,34 +101,37 @@ export function Landmarks({ terrain, seed, fogUniforms, animate, sky }: Landmark
   });
 
   const at = (p: Coordinates, lift = 0): [number, number, number] => [p.x, groundY(terrain, p) + lift, p.y];
+  const show = (p: Coordinates, reach = 0) => !isHiddenAt(terrain, visibility, p, reach);
 
   return (
     <group>
-      <Yurts terrain={terrain} seed={seed} m={m} />
+      <Yurts terrain={terrain} seed={seed} m={m} visibility={visibility} />
 
       {/* Akınburnu feneri: beyaz-kırmızı kule, sıcak kandil, dönen ışık huzmesi */}
-      <group position={at(LANDMARKS.fener, -0.3)}>
-        <mesh material={m.stone} position-y={0.8} castShadow receiveShadow>
-          <cylinderGeometry args={[3, 3.4, 1.6, 8]} />
-        </mesh>
-        {[0, 1, 2, 3].map((i) => (
-          <mesh key={i} material={i % 2 === 0 ? m.white : m.red} position-y={1.6 + i * 2.6 + 1.3} castShadow>
-            <cylinderGeometry args={[1.9 - (i + 1) * 0.12, 1.9 - i * 0.12, 2.6, 8]} />
+      {show(LANDMARKS.fener) && (
+        <group position={at(LANDMARKS.fener, -0.3)}>
+          <mesh material={m.stone} position-y={0.8} castShadow receiveShadow>
+            <cylinderGeometry args={[3, 3.4, 1.6, 8]} />
           </mesh>
-        ))}
-        <mesh material={m.glow} position-y={12.8}>
-          <cylinderGeometry args={[1.45, 1.45, 1.6, 8]} />
-        </mesh>
-        <mesh material={m.red} position-y={14.4} castShadow>
-          <coneGeometry args={[1.9, 1.6, 8]} />
-        </mesh>
-        <group ref={beamRef} position-y={12.8}>
-          <mesh geometry={BEAM} material={m.beam} />
+          {[0, 1, 2, 3].map((i) => (
+            <mesh key={i} material={i % 2 === 0 ? m.white : m.red} position-y={1.6 + i * 2.6 + 1.3} castShadow>
+              <cylinderGeometry args={[1.9 - (i + 1) * 0.12, 1.9 - i * 0.12, 2.6, 8]} />
+            </mesh>
+          ))}
+          <mesh material={m.glow} position-y={12.8}>
+            <cylinderGeometry args={[1.45, 1.45, 1.6, 8]} />
+          </mesh>
+          <mesh material={m.red} position-y={14.4} castShadow>
+            <coneGeometry args={[1.9, 1.6, 8]} />
+          </mesh>
+          <group ref={beamRef} position-y={12.8}>
+            <mesh geometry={BEAM} material={m.beam} />
+          </group>
         </group>
-      </group>
+      )}
 
       {/* Rüzgâr gülleri */}
-      {LANDMARKS.ruzgarGulleri.map((p, i) => (
+      {LANDMARKS.ruzgarGulleri.map((p, i) => show(p) && (
         <group key={i} position={at(p, -0.2)}>
           <mesh material={m.wood} position-y={3.5} castShadow>
             <cylinderGeometry args={[0.9, 1.5, 7, 4]} />
@@ -147,35 +153,37 @@ export function Landmarks({ terrain, seed, fogUniforms, animate, sky }: Landmark
       ))}
 
       {/* Günözü Tapınağı: basamaklı taş platform, sütun halkası, ortada parlayan Günözü Taşı */}
-      <group position={at(LANDMARKS.tapinak, -0.6)}>
-        {[
-          [26, 0.8],
-          [19, 2.4],
-          [12, 4.0],
-        ].map(([size, y]) => (
-          <mesh key={size} material={m.stone} position-y={y} castShadow receiveShadow>
-            <boxGeometry args={[size, 1.6, size]} />
-          </mesh>
-        ))}
-        {Array.from({ length: 8 }, (_, k) => {
-          const a = (k / 8) * Math.PI * 2;
-          return (
-            <mesh key={k} material={m.white} position={[Math.cos(a) * 7.6, 6.2, Math.sin(a) * 7.6]} castShadow>
-              <cylinderGeometry args={[0.75, 0.9, 6, 6]} />
+      {show(LANDMARKS.tapinak) && (
+        <group position={at(LANDMARKS.tapinak, -0.6)}>
+          {[
+            [26, 0.8],
+            [19, 2.4],
+            [12, 4.0],
+          ].map(([size, y]) => (
+            <mesh key={size} material={m.stone} position-y={y} castShadow receiveShadow>
+              <boxGeometry args={[size, 1.6, size]} />
             </mesh>
-          );
-        })}
-        <mesh material={m.stoneDark} position-y={9.5} rotation-x={Math.PI / 2}>
-          <torusGeometry args={[7.6, 0.45, 4, 16]} />
-        </mesh>
-        <mesh material={m.stoneDark} position-y={5.8} castShadow>
-          <cylinderGeometry args={[1.6, 2, 2, 8]} />
-        </mesh>
-        <mesh ref={gemRef} geometry={STONE_GEM} material={m.gold} position-y={10} castShadow />
-      </group>
+          ))}
+          {Array.from({ length: 8 }, (_, k) => {
+            const a = (k / 8) * Math.PI * 2;
+            return (
+              <mesh key={k} material={m.white} position={[Math.cos(a) * 7.6, 6.2, Math.sin(a) * 7.6]} castShadow>
+                <cylinderGeometry args={[0.75, 0.9, 6, 6]} />
+              </mesh>
+            );
+          })}
+          <mesh material={m.stoneDark} position-y={9.5} rotation-x={Math.PI / 2}>
+            <torusGeometry args={[7.6, 0.45, 4, 16]} />
+          </mesh>
+          <mesh material={m.stoneDark} position-y={5.8} castShadow>
+            <cylinderGeometry args={[1.6, 2, 2, 8]} />
+          </mesh>
+          <mesh ref={gemRef} geometry={STONE_GEM} material={m.gold} position-y={10} castShadow />
+        </group>
+      )}
 
       {/* Pusluada'nın taş kemerleri */}
-      {LANDMARKS.kemerler.map((p, i) => (
+      {LANDMARKS.kemerler.map((p, i) => show(p) && (
         <group key={i} position={at(p, -0.5)} rotation-y={[0, 0.9, -0.6][i]}>
           {[-3.2, 3.2].map((x) => (
             <mesh key={x} material={m.stoneDark} position={[x, 4, 0]} castShadow>
@@ -188,18 +196,18 @@ export function Landmarks({ terrain, seed, fogUniforms, animate, sky }: Landmark
         </group>
       ))}
 
-      <Bridge terrain={terrain} m={m} span={LANDMARKS.kadimKemer} />
-      <Bridge terrain={terrain} m={m} span={LANDMARKS.batiKemer} />
-      <PierAndBoats terrain={terrain} m={m} boatsRef={boatsRef} />
+      {show(LANDMARKS.kadimKemer.from) && show(LANDMARKS.kadimKemer.to) && <Bridge terrain={terrain} m={m} span={LANDMARKS.kadimKemer} />}
+      {show(LANDMARKS.batiKemer.from) && show(LANDMARKS.batiKemer.to) && <Bridge terrain={terrain} m={m} span={LANDMARKS.batiKemer} />}
+      <PierAndBoats terrain={terrain} m={m} boatsRef={boatsRef} show={show} />
     </group>
   );
 }
 
 // ── Oba çadırları ──────────────────────────────────────────────────
 
-function Yurts({ terrain, seed, m }: { terrain: Terrain; seed: number; m: Materials }) {
+function Yurts({ terrain, seed, m, visibility }: { terrain: Terrain; seed: number; m: Materials; visibility: LandVisibility }) {
   const parts = useMemo(() => {
-    const placements = yurtPlacements(terrain, seed);
+    const placements = yurtPlacements(terrain, seed).filter((p) => !isHiddenAt(terrain, visibility, p));
     const base = placements.map<InstanceTransform>((p) => ({
       position: [p.x, groundY(terrain, p) - 0.3, p.y],
       rotationY: p.rotation,
@@ -209,7 +217,7 @@ function Yurts({ terrain, seed, m }: { terrain: Terrain; seed: number; m: Materi
       base,
       roofs: base.map((b, i) => ({ ...b, color: pickByPosition(ROOF_COLORS, placements[i].x, placements[i].y) })),
     };
-  }, [terrain, seed]);
+  }, [terrain, seed, visibility]);
 
   return (
     <group>
@@ -263,8 +271,10 @@ function Bridge({ terrain, m, span }: { terrain: Terrain; m: Materials; span: { 
 
 // ── İskele ve tekneler ─────────────────────────────────────────────
 
-function PierAndBoats({ terrain, m, boatsRef }: { terrain: Terrain; m: Materials; boatsRef: RefObject<Group[]> }) {
+function PierAndBoats({ terrain, m, boatsRef, show }: { terrain: Terrain; m: Materials; boatsRef: RefObject<Group[]>; show: (p: Coordinates, reach?: number) => boolean }) {
   const { pier, boats } = useMemo(() => ({ pier: pierPlacement(terrain), boats: boatPlacements(terrain) }), [terrain]);
+  // İskele ve kayıklar kıyıdaki obanın; ada karartılıysa onlar da yok.
+  if (!show(pier.start, 12)) return null;
   const length = pier.end.y - pier.start.y;
   const deckY = WATER_LEVEL + 1.3;
 

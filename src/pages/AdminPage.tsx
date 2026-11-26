@@ -9,7 +9,7 @@
  *   · Yayına al: değişiklikler public/data/ içine yazılır; git ile commit + push yapınca site güncellenir
  * Uç noktalar: scripts/yonetimPlugin.ts · kurallar: scripts/lib/followers.ts · dosya okuyucular: src/admin/followerFiles.ts
  */
-import { Download, FileUp, RefreshCw, ShieldAlert, Trash2, UserMinus, UserPlus } from "lucide-react";
+import { BookOpen, Download, FileUp, RefreshCw, ShieldAlert, Sparkles, Trash2, Undo2, UserMinus, UserPlus } from "lucide-react";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { parseFollowerFile, type FollowerEntry, type ParsedFile } from "../admin/followerFiles";
 import { SectionTitle } from "../components/ui/SectionTitle";
@@ -28,6 +28,7 @@ interface Summary {
 }
 interface Status {
   summary: Summary;
+  story: StorySummary;
   youtube: { key: boolean; channel: string | null };
 }
 interface ImportReport {
@@ -38,6 +39,15 @@ interface ImportReport {
   linked: string[];
   skipped: string[];
   cleaned: number;
+}
+
+interface StorySummary {
+  day: number;
+  arrivals: { id: string; name: string; at: string }[];
+  next: { id: string; name: string } | null;
+  order: { id: string; name: string }[];
+  regions: { id: string; name: string; open: boolean }[];
+  islands: { id: string; name: string; open: boolean }[];
 }
 
 async function api<T>(path: string, body?: unknown): Promise<T> {
@@ -231,7 +241,7 @@ export default function AdminPage() {
         as="h1"
         eyebrow="Yönetim (yalnızca bu bilgisayarda)"
         title="Oba yönetim paneli"
-        description="Takipçileri ekle, çıkar, örnek veriyi sıfırla. Değişiklikler public/data/ içine yazılır; yayına almak için en alttaki komutları çalıştır."
+        description="Hikâyeyi ilerlet (kahramanları getir, adaları aç), takipçileri ekle ya da çıkar. Değişiklikler public/data/ içine yazılır; yayına almak için en alttaki komutları çalıştır."
       />
 
       <Card title="Durum" icon={<RefreshCw aria-hidden className="size-5 text-buz-300" />}>
@@ -256,6 +266,84 @@ export default function AdminPage() {
                 </p>
               ))}
             </div>
+          </div>
+        ) : (
+          <p className="text-sm text-buz-300">Yükleniyor…</p>
+        )}
+      </Card>
+
+      <Card title="Hikâye" icon={<BookOpen aria-hidden className="size-5 text-gunozu-300" />}>
+        {status?.story ? (
+          <div className="space-y-4">
+            <p className="text-sm text-buz-300">
+              Kahramanlar sırayla gelir. "Getir" deyince world.json'a yazılır; commit + push sonrası sitede Kut Kapısı'ndan doğar ve o gün
+              siteye giren herkes gelişi bir kez izler.
+            </p>
+            <ol className="grid gap-2 sm:grid-cols-3">
+              {status.story.order.map((hero, i) => {
+                const arrival = status.story.arrivals.find((a) => a.id === hero.id);
+                return (
+                  <li key={hero.id} className={`rounded-xl border p-3 text-sm ${arrival ? "border-zumrut-400/40 bg-zumrut-400/10" : "border-white/10 bg-white/5"}`}>
+                    <p className="text-xs text-buz-300">{i + 1}. kahraman</p>
+                    <p className="font-display text-lg text-buz-50">{hero.name}</p>
+                    <p className="text-xs text-buz-300">{arrival ? `Geldi: ${new Date(arrival.at).toLocaleString("tr-TR")}` : "Henüz gelmedi"}</p>
+                  </li>
+                );
+              })}
+            </ol>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                className={primary}
+                disabled={busy || !status.story.next}
+                onClick={() => run(async () => (await api<{ message: string }>("/hikaye", { islem: "getir" })).message)}
+              >
+                <Sparkles aria-hidden className="size-4" />
+                {status.story.next ? `Sıradakini getir: ${status.story.next.name}` : "Hepsi geldi"}
+              </button>
+              <button
+                type="button"
+                className={secondary}
+                disabled={busy || status.story.arrivals.length === 0}
+                onClick={() => run(async () => (await api<{ message: string }>("/hikaye", { islem: "geri-al" })).message)}
+              >
+                <Undo2 aria-hidden className="size-4" />
+                Son gelişi geri al
+              </button>
+              <label className="ml-auto flex items-center gap-2 text-sm text-buz-200">
+                Hikâye günü
+                <input
+                  type="number"
+                  min={1}
+                  value={status.story.day}
+                  disabled={busy}
+                  onChange={(event) => {
+                    const gun = Number(event.target.value);
+                    if (gun >= 1) void run(async () => (await api<{ message: string }>("/hikaye", { islem: "gun", gun })).message);
+                  }}
+                  className="w-20 rounded-lg border border-white/15 bg-gece-950/80 px-2 py-1 text-buz-50"
+                />
+              </label>
+            </div>
+            <details className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm">
+              <summary className="cursor-pointer font-display text-buz-100">Adaları aç / kapat ({status.story.regions.filter((r) => r.open).length + status.story.islands.filter((i) => i.open).length} açık)</summary>
+              <p className="mt-2 text-xs text-buz-300">Kapalı adalar haritada karartılı ve "?" ile görünür; açınca obaları, ağaçları ve köprüleri belirir.</p>
+              <div className="mt-3 grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
+                {[...status.story.regions.map((r) => ({ ...r, kind: "bolge" as const })), ...status.story.islands.map((i) => ({ ...i, kind: "ada" as const }))].map((land) => (
+                  <label key={land.id} className="flex items-center gap-2 text-buz-200">
+                    <input
+                      type="checkbox"
+                      checked={land.open}
+                      disabled={busy || land.id === "kutada"}
+                      onChange={(event) => void run(async () => (await api<{ message: string }>("/hikaye", { islem: land.kind, id: land.id, acik: event.target.checked })).message)}
+                      className="size-4 accent-gunozu-400"
+                    />
+                    {land.name}
+                    <span className="text-xs text-buz-400">{land.kind === "ada" ? "yabani ada" : "bölge"}</span>
+                  </label>
+                ))}
+              </div>
+            </details>
           </div>
         ) : (
           <p className="text-sm text-buz-300">Yükleniyor…</p>

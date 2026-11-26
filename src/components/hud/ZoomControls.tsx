@@ -3,7 +3,7 @@
  * 3D dünyada üstte bir de döndürme grubu: sola çevir · pusula (tıklayınca kuzey yukarı) · sağa çevir.
  * Masaüstünde detay çekmecesi açıkken onun soluna kayar.
  */
-import { Maximize2, Minus, Navigation2, Plus, RotateCcw, RotateCw } from "lucide-react";
+import { Maximize2, Minus, Navigation2, Plus, RotateCcw, RotateCw, Volume2, VolumeX } from "lucide-react";
 import type { RefObject } from "react";
 import { cn } from "../../lib/cn";
 import { useAppStore } from "../../state/useAppStore";
@@ -22,16 +22,33 @@ interface ZoomControlsProps {
   onReset: () => void;
   /** Yalnızca 3D dünyada: kamerayı döndürme düğmeleri ve pusula. */
   rotation?: RotationControls;
+  /** Yalnızca 3D dünyada: ada seslerini aç/kapat. */
+  sound?: { on: boolean; onToggle: () => void };
 }
 
 const groupClass = "flex flex-col overflow-hidden rounded-xl border border-white/15 bg-gece-900/90 shadow-lg backdrop-blur";
 const buttonClass =
   "grid size-10 place-items-center text-buz-100 transition-colors hover:bg-white/10 hover:text-buz-50 focus-visible:relative";
 
-export function ZoomControls({ onZoomIn, onZoomOut, onReset, rotation }: ZoomControlsProps) {
+export function ZoomControls({ onZoomIn, onZoomOut, onReset, rotation, sound }: ZoomControlsProps) {
   const drawerOpen = useAppStore((s) => s.selectedId !== null);
+  const SoundIcon = sound?.on ? Volume2 : VolumeX;
   return (
     <div className={cn("absolute bottom-4 right-3 z-10 flex flex-col gap-2", drawerOpen && "md:right-[412px]")}>
+      {sound && (
+        <div className={groupClass}>
+          <button
+            type="button"
+            className={cn(buttonClass, sound.on && "text-gunozu-300")}
+            onClick={sound.onToggle}
+            aria-pressed={sound.on}
+            aria-label={sound.on ? "Ada seslerini kapat" : "Ada seslerini aç"}
+            title={sound.on ? "Ada seslerini kapat" : "Ada sesleri: balta, kuşlar, ocak, rüzgâr"}
+          >
+            <SoundIcon aria-hidden className="size-4" />
+          </button>
+        </div>
+      )}
       {rotation && (
         <div className={groupClass} role="group" aria-label="Kamera yönü">
           <button type="button" className={buttonClass} onClick={rotation.onRotateLeft} aria-label="Kamerayı sola çevir" title="Sola çevir (Q)">

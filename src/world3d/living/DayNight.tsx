@@ -12,6 +12,7 @@
  * oturtulur ki kamera kayarken gölge kenarları titremesin.
  */
 import { useFrame, useThree } from "@react-three/fiber";
+import { isHiddenAt, type LandVisibility } from "../../game/visibility";
 import { useEffect, useMemo } from "react";
 import { Color, DirectionalLight, HemisphereLight, OrthographicCamera, PointLight, SRGBColorSpace, Vector3 } from "three";
 import type { Terrain } from "../../game/terrain";
@@ -19,7 +20,6 @@ import { readWorldHour } from "../../state/useWorldTime";
 import type { Coordinates } from "../../types";
 import { MONUMENTS } from "../../content/sites";
 import { LANDMARKS, VILLAGES } from "../layout";
-import type { FogUniforms } from "../shaders/fog";
 import { groundY, worldZoomOf } from "../worldScale";
 import { skyAt, type Rgb, type SkyRuntime } from "./sky";
 
@@ -48,10 +48,11 @@ const setColor = (target: Color, rgb: Rgb) => target.setRGB(rgb[0], rgb[1], rgb[
 interface DayNightProps {
   terrain: Terrain;
   sky: SkyRuntime;
-  fogUniforms: FogUniforms;
+  /** Karartılı karadaki ocak ve fenerler yanmaz. */
+  visibility: LandVisibility;
 }
 
-export function DayNight({ terrain, sky, fogUniforms }: DayNightProps) {
+export function DayNight({ terrain, sky, visibility }: DayNightProps) {
   const { sun, hemi, lamps, spots } = useMemo(() => {
     const light = new DirectionalLight("#fff0d8", 2.6);
     light.castShadow = true;
@@ -64,9 +65,9 @@ export function DayNight({ terrain, sky, fogUniforms }: DayNightProps) {
     // Işık havuzu: sayısı hiç değişmez (gündüz gücü 0), böylece malzemeler yeniden derlenmez.
     // Her ışık, kameranın baktığı yere en yakın ocaklardan birine taşınır.
     const points = Array.from({ length: LAMP_POOL }, () => ({ lamp: new PointLight("#ffb45c", 0, 95, 1.2), power: 0 }));
-    const spots = LAMP_SPOTS.map((spot) => ({ ...spot, y: groundY(terrain, spot.at) + 7 }));
+    const spots = LAMP_SPOTS.filter((spot) => !isHiddenAt(terrain, visibility, spot.at, 6)).map((spot) => ({ ...spot, y: groundY(terrain, spot.at) + 7 }));
     return { sun: light, hemi: hemisphere, lamps: points, spots };
-  }, [terrain]);
+  }, [terrain, visibility]);
 
   const { camera, gl, size } = useThree();
   // Gölge haritası elle güncellenir: yakında her karede, uzakta (gölgeler zaten seçilemez) birkaç karede bir.
@@ -137,7 +138,7 @@ export function DayNight({ terrain, sky, fogUniforms }: DayNightProps) {
       });
     }
     for (const { lamp, power } of lamps) lamp.intensity = state.lamp * 55 * power;
-    setColor(fogUniforms.uMist.value, state.mist);
+    // Karartının rengi saatten bağımsızdır (shaders/fog.ts → VEIL_COLOR): gizli adalar gündüz de koyu kalır.
 
     sky.hour = hour;
     sky.lamp = state.lamp;

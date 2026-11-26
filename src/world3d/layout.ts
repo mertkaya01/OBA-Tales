@@ -302,7 +302,8 @@ export function placeAnchors(terrain: Terrain): Record<PlaceId, PlaceAnchor> {
     batik_gemi: { point: shipwreckPlacement(terrain), lift: 8 },
     donmus_selale: { point: MONUMENTS.donmusSelale, lift: 14 },
   };
-  for (const v of VILLAGES) if (v.id) anchors[v.id] = { point: v.center, lift: 9 };
+  // Konuk obasında kahramanlar ateşin başında oturur: etiket başlarının üstünde dursun.
+  for (const v of VILLAGES) if (v.id) anchors[v.id] = { point: v.center, lift: v.id === "konuk_obasi" ? 17 : 9 };
   for (const island of ISLAND_LIST) anchors[island.id] = { point: island.label, lift: 16 };
   return anchors as Record<PlaceId, PlaceAnchor>;
 }

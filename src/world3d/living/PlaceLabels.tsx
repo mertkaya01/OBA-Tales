@@ -1,5 +1,5 @@
 /**
- * YER ETİKETLERİ — topluluğun ad koyduğu yerler ve akın meydanı.
+ * YER ETİKETLERİ — topluluğun ad koyduğu yerler, Kut Kapısı ve karartılı adaların "?" işareti.
  *
  *   Yıldızgözü Feneri
  *   adını koyan @kopuz_okcu55      ← tıklanınca o takipçiye uçar ve kartını açar
@@ -12,13 +12,15 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo, type RefObject } from "react";
 import { Vector3 } from "three";
 import type { Terrain } from "../../game/terrain";
+import { HiddenMark } from "../../components/ui/HiddenMark";
 import { cn } from "../../lib/cn";
 import type { Coordinates } from "../../types";
 import { groundY, worldZoomOf } from "../worldScale";
 
 export interface PlaceLabel {
   key: string;
-  kind: "yer" | "boss" | "meydan";
+  /** gizli: karartılı yabani ada ("?" ve ipucu). */
+  kind: "yer" | "boss" | "meydan" | "gizli";
   point: Coordinates;
   /** Zeminden yükseklik (Three.js birimi). */
   lift: number;
@@ -56,7 +58,9 @@ export function PlaceLabelLayer({
           className={cn("kb-yer absolute left-0 top-0", `kb-yer--${label.kind}`)}
           style={{ transform: HIDDEN }}
         >
-          {label.kind === "boss" && onBossClick ? (
+          {label.kind === "gizli" ? (
+            <HiddenMark size="lg" />
+          ) : label.kind === "boss" && onBossClick ? (
             <button type="button" className="kb-yer__ad pointer-events-auto cursor-pointer" onClick={onBossClick} title="Akını izle ve provasını yap">
               {label.title}
             </button>

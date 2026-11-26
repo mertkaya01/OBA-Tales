@@ -14,6 +14,7 @@ import { TERRAIN_KINDS } from "../types";
 import { merge } from "./geometryKit";
 import { InstancedParts, type InstanceTransform } from "./InstancedParts";
 import { scatterIce, scatterRocks, scatterTrees } from "./layout";
+import { isHiddenAt, type LandVisibility } from "../game/visibility";
 import { foggedLambert, pickByPosition } from "./materials";
 import type { FogUniforms } from "./shaders/fog";
 import { groundY } from "./worldScale";
@@ -83,10 +84,12 @@ interface NatureProps {
   terrain: Terrain;
   seed: number;
   fogUniforms: FogUniforms;
+  /** Karartılı karada ağaç, kaya ve buz çizilmez. */
+  visibility: LandVisibility;
   animate?: boolean;
 }
 
-export function Nature({ terrain, seed, fogUniforms, animate = true }: NatureProps) {
+export function Nature({ terrain, seed, fogUniforms, visibility, animate = true }: NatureProps) {
   const sway = useMemo(() => ({ value: 0 }), []);
   const materials = useMemo(
     () => ({
@@ -105,7 +108,8 @@ export function Nature({ terrain, seed, fogUniforms, animate = true }: NaturePro
   });
 
   const parts = useMemo(() => {
-    const trees = scatterTrees(terrain, seed);
+    const shown = (p: { x: number; y: number }) => !isHiddenAt(terrain, visibility, p);
+    const trees = scatterTrees(terrain, seed).filter(shown);
     const trunks: InstanceTransform[] = [];
     const tallTrunks: InstanceTransform[] = [];
     const pines: InstanceTransform[] = [];
@@ -132,20 +136,20 @@ export function Nature({ terrain, seed, fogUniforms, animate = true }: NaturePro
         leafy.push({ ...crown, color: pickByPosition(LEAFY_COLORS, t.x, t.y) });
       }
     }
-    const rocks = scatterRocks(terrain, seed).map<InstanceTransform>((r) => ({
+    const rocks = scatterRocks(terrain, seed).filter(shown).map<InstanceTransform>((r) => ({
       position: [r.x, groundY(terrain, r) - 0.3, r.y],
       rotationY: r.rotation,
       scale: [r.scale, r.scale * 0.7, r.scale],
       color: pickByPosition(ROCK_COLORS, r.x, r.y),
     }));
-    const ice = scatterIce(terrain, seed).map<InstanceTransform>((p) => ({
+    const ice = scatterIce(terrain, seed).filter(shown).map<InstanceTransform>((p) => ({
       position: [p.x, groundY(terrain, p) - 0.4, p.y],
       rotationY: p.rotation,
       scale: p.scale,
       color: pickByPosition(ICE_COLORS, p.x, p.y),
     }));
     return { trunks, tallTrunks, pines, snowCaps, leafy, poplars, rocks, ice };
-  }, [terrain, seed]);
+  }, [terrain, seed, visibility]);
 
   return (
     <group>

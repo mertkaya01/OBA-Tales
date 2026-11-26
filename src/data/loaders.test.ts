@@ -39,16 +39,20 @@ const world: WorldState = {
   weather: "kar",
   namedPlaces: [],
   socialLinks: { instagram: null, tiktok: null, youtube: null },
+  revealedIslands: [],
+  story: { day: 1, arrivals: [{ id: "mhellingtr", at: iso }, { id: "egetunce", at: iso }] },
   updatedAt: iso,
 };
 
 describe("buildGameData", () => {
   const data = buildGameData(roster, season, world);
 
-  it("kadroyu ve takipçileri birleştirir, kadroyla çakışan kaydı atlar", () => {
-    expect(data.characters).toHaveLength(CAST.length + 1); // 7 hikâye kadrosu + 2 özel kahraman + 1 takipçi
-    expect(data.characters[0].id).toBe("baturay");
-    expect(data.characterById.get("baturay")?.roleType).toBe("leader");
+  it("yalnızca gelmiş kahramanları ve takipçileri alır; kadro kimliğini taşıyan kaydı atlar", () => {
+    // 2 gelmiş kahraman (mhellingtr, egetunce) + 1 takipçi; BinTaş henüz gelmedi, hikâye kadrosu haritada yok.
+    expect(data.characters.map((c) => c.id)).toEqual(["mhellingtr", "egetunce", "ayaz_okcu"]);
+    expect(data.characterById.get("bintas")).toBeUndefined();
+    expect(data.characterById.get("baturay")).toBeUndefined();
+    expect(CAST.some((c) => c.id === "baturay")).toBe(true);
     expect(data.characterById.get("ayaz_okcu")).toBe(follower);
     expect(data.skippedIds).toEqual(["baturay"]);
   });
@@ -61,8 +65,9 @@ describe("buildGameData", () => {
     expect(data.activeEpisode.title).toBe("Fısıltılı İskele");
   });
 
-  it("aktif akın katılımcılarından bilinmeyenleri ayıklar", () => {
-    expect([...data.activeParticipantIds].sort()).toEqual(["alptug", "ayaz_okcu"]);
+  it("aktif akın katılımcılarından haritada olmayanları ayıklar", () => {
+    // alptug hikâye kadrosunda ama henüz haritada değil; kayip_biri hiç yok.
+    expect([...data.activeParticipantIds].sort()).toEqual(["ayaz_okcu"]);
     expect(data.revealedRegions.has("akinburnu")).toBe(true);
     expect(data.revealedRegions.has("pusluada")).toBe(false);
   });
@@ -113,7 +118,7 @@ describe("dosya yükleme", () => {
     });
     const first = loadGameData();
     expect(loadGameData()).toBe(first);
-    expect((await first).characters).toHaveLength(CAST.length + 1);
+    expect((await first).characters).toHaveLength(3);
     expect(fetchMock).toHaveBeenCalledTimes(3);
 
     clearDataCache();

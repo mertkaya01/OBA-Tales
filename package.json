@@ -19,12 +19,14 @@
     "blender:kit": "tsx scripts/export-models.ts && tsx scripts/blender/calistir.ts kit",
     "blender:aktar": "tsx scripts/blender/calistir.ts aktar && tsx scripts/blender/kontrol.ts",
     "blender:kontrol": "tsx scripts/blender/kontrol.ts",
+    "blender:kahramanlar": "tsx scripts/export-models.ts && tsx scripts/blender/calistir.ts kahramanlar",
     "model:cevir": "tsx scripts/obj-to-kit.ts",
     "model:takipciler": "tsx scripts/takipci-modelleri.ts",
     "model:efsanevi": "tsx scripts/efsanevi-takipciler.ts",
     "takipci:ekle": "tsx scripts/import-followers.ts",
     "youtube:yorumlar": "tsx scripts/fetch-youtube-comments.ts",
-    "deploy": "npm run build && npx wrangler@4 deploy"
+    "deploy": "npm run build && npx wrangler@4 deploy",
+    "blender:hayvanlar": "tsx scripts/blender/calistir.ts hayvanlar"
   },
   "dependencies": {
     "@fontsource-variable/nunito": "^5.3.0",

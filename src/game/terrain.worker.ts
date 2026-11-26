@@ -21,6 +21,7 @@ self.onmessage = (event: MessageEvent<TerrainJob>) => {
   const transfer: Transferable[] = [
     terrain.heights.buffer,
     terrain.regions.buffer,
+    terrain.islands.buffer,
     terrain.kinds.buffer,
     terrain.shore.buffer,
     terrain.river.buffer,

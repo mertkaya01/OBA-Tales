@@ -5,11 +5,13 @@
  * Dokular bileşen kalkınca serbest bırakılır. Sahnenin kendisi WorldContent.tsx içinde.
  */
 import { useEffect, useMemo } from "react";
+import { createArrivalRuntime, type ArrivalRuntime } from "./story/arrival";
+import { createStoryRuntime, type StoryRuntime } from "./story/storyRuntime";
 import { BOSSES } from "../content/bosses";
 import type { GameData } from "../data/loaders";
 import { useGameData } from "../data/useGameData";
 import { getPaintedTerrain, getTerrain } from "../game/terrainCache";
-import { paintFog } from "../game/terrainPaint";
+import { paintVeil } from "../game/terrainPaint";
 import type { Terrain } from "../game/terrain";
 import type { Boss, Character } from "../types";
 import { createCharacterUniforms, type CharacterUniforms } from "./characters/characterMaterials";
@@ -36,6 +38,10 @@ export interface WorldScene {
   placements: ReadonlyMap<string, CharacterPlacement>;
   /** Canlı akının paylaşılan durumu (boss irkilmesi, izleme modunda hız). */
   battle: BattleRuntime;
+  /** Geliş sinemasının paylaşılan durumu (kapının parlaması, ışık küresi). */
+  arrival: ArrivalRuntime;
+  /** Gün düzeninin saati ve kahramanlara seslenme istekleri. */
+  story: StoryRuntime;
 }
 
 export function useWorldScene(): WorldScene {
@@ -46,15 +52,15 @@ export function useWorldScene(): WorldScene {
   const terrainTexture = useMemo(() => toDataTexture(getPaintedTerrain(seed, "dunya"), "renk"), [seed]);
   const fogUniforms = useMemo(() => {
     const uniforms = createFogUniforms();
-    uniforms.uFogMap.value = toDataTexture(
-      paintFog({ revealedRegions: data.revealedRegions, glimpses: data.world.glimpses, softness: data.world.fogSoftness }),
-      "maske",
-    );
+    // Karartı: hikâyede henüz açılmamış kara koyu bir silüete döner (shaders/fog.ts).
+    uniforms.uFogMap.value = toDataTexture(paintVeil(terrain, data.visibility), "maske");
     return uniforms;
-  }, [data.revealedRegions, data.world]);
+  }, [terrain, data.visibility]);
   const motionUniforms = useMemo(() => createCharacterUniforms(terrain), [terrain]);
   const sky = useMemo(() => createSkyRuntime(), []);
   const battle = useMemo(() => createBattleRuntime(), []);
+  const arrival = useMemo(() => createArrivalRuntime(), []);
+  const story = useMemo(() => createStoryRuntime(), []);
 
   useEffect(() => () => terrainTexture.dispose(), [terrainTexture]);
   useEffect(() => () => fogUniforms.uFogMap.value?.dispose(), [fogUniforms]);
@@ -77,5 +83,5 @@ export function useWorldScene(): WorldScene {
     return placeCharacters(data.characters, terrain, { obstacles, formation });
   }, [data.characters, terrain, seed, formation, boss]);
 
-  return { data, seed, terrain, terrainTexture, fogUniforms, motionUniforms, sky, boss, formation, placements, battle };
+  return { data, seed, terrain, terrainTexture, fogUniforms, motionUniforms, sky, boss, formation, placements, battle, arrival, story };
 }

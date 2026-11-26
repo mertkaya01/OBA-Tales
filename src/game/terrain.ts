@@ -62,6 +62,8 @@ export interface Terrain {
   heights: Float32Array;
   /** REGION_IDS içindeki sıra; su ve yabani adalar için -1. */
   regions: Int8Array;
+  /** ISLAND_IDS içindeki sıra (yabani adanın karası); bölgelerde ve suda -1. */
+  islands: Int8Array;
   /** TERRAIN_KINDS içindeki sıra; su için -1. */
   kinds: Int8Array;
   /** Kıyı çizgisine işaretli uzaklık (dünya birimi): karada pozitif, denizde negatif. */
@@ -346,6 +348,8 @@ interface Shape {
   elevation: number;
   /** REGION_IDS sırası; yabani adada -1. */
   region: number;
+  /** ISLAND_LIST sırası; bölgede -1. */
+  island: number;
   ridge: number;
   center: Coordinates;
   core: number;
@@ -360,12 +364,13 @@ function buildShapes(): Shape[] {
       kind: TERRAIN_KINDS.indexOf(region.terrain),
       elevation: region.elevation,
       region: index,
+      island: -1,
       ridge: REGION_RIDGES[id],
       center: region.center,
       core: PROTECT_DEPTH,
     };
   });
-  for (const island of ISLAND_LIST) {
+  ISLAND_LIST.forEach((island, islandIndex) => {
     for (const polygon of island.polygons) {
       shapes.push({
         polygon,
@@ -373,12 +378,13 @@ function buildShapes(): Shape[] {
         kind: TERRAIN_KINDS.indexOf(island.terrain),
         elevation: island.elevation,
         region: -1,
+        island: islandIndex,
         ridge: island.ridgeAngle,
         center: island.label,
         core: ISLAND_CORE,
       });
     }
-  }
+  });
   return shapes;
 }
 
@@ -521,12 +527,14 @@ export function generateTerrain({ seed, cellSize = 4 }: TerrainOptions): Terrain
   const toLand = distanceTransform(isLandCell, cols, rows);
   const shore = new Float32Array(n);
   const regions = new Int8Array(n).fill(-1);
+  const islands = new Int8Array(n).fill(-1);
   const kinds = new Int8Array(n).fill(-1);
   for (let i = 0; i < n; i++) {
     if (isLandCell[i]) {
       shore[i] = (toWater.dist[i] - 0.5) * cellSize;
       const shape = nearestShape[i] >= 0 ? shapes[nearestShape[i]] : shapes[0];
       regions[i] = shape.region;
+      islands[i] = shape.island;
       kinds[i] = shape.kind;
     } else {
       shore[i] = -(toLand.dist[i] - 0.5) * cellSize;
@@ -798,7 +806,7 @@ export function generateTerrain({ seed, cellSize = 4 }: TerrainOptions): Terrain
   // Nehir yatağı hafifçe oyulur (kuşbakışı haritada vadiler belirginleşir).
   for (let i = 0; i < n; i++) if (river[i] > 0) heights[i] = Math.max(0.015, heights[i] - (0.004 + 0.01 * river[i]));
 
-  return { seed, cellSize, cols, rows, heights, regions, kinds, shore, river, rivers, lakeIds, lakes };
+  return { seed, cellSize, cols, rows, heights, regions, islands, kinds, shore, river, rivers, lakeIds, lakes };
 }
 
 interface TraceInput {

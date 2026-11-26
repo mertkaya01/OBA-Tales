@@ -8,6 +8,7 @@
  * Gece bütün ışıklar güçlenir. Hareket azaltılınca girdap ve kıvılcımlar durur.
  */
 import { useFrame } from "@react-three/fiber";
+import { arrivalAt, type ArrivalRuntime } from "./story/arrival";
 import { useEffect, useMemo, useRef } from "react";
 import {
   AdditiveBlending,
@@ -84,9 +85,11 @@ interface PortalProps {
   fogUniforms: FogUniforms;
   animate: boolean;
   sky: SkyRuntime;
+  /** Geliş sinemasında kapı parlar (girdap, runlar, huzme, kıvılcımlar). */
+  arrival?: ArrivalRuntime;
 }
 
-export function Portal({ terrain, fogUniforms, animate, sky }: PortalProps) {
+export function Portal({ terrain, fogUniforms, animate, sky, arrival }: PortalProps) {
   const center = LANDMARKS.kutKapisi;
   const baseY = groundY(terrain, center) - 0.4;
 
@@ -120,10 +123,11 @@ export function Portal({ terrain, fogUniforms, animate, sky }: PortalProps) {
   useFrame(({ clock }) => {
     const t = animate ? clock.elapsedTime : 0;
     const night = sky.lamp;
-    m.vortex.uniforms.uTime.value = t;
-    m.vortex.uniforms.uPower.value = 1.1 + night * 0.9;
-    m.rune.emissiveIntensity = 0.8 + night * 2.4;
-    m.beam.opacity = 0.05 + night * 0.12;
+    const flare = arrival?.active ? arrivalAt(arrival.t).flare : 0;
+    m.vortex.uniforms.uTime.value = t * (1 + flare * 1.5);
+    m.vortex.uniforms.uPower.value = 1.1 + night * 0.9 + flare * 2.6;
+    m.rune.emissiveIntensity = 0.8 + night * 2.4 + flare * 4;
+    m.beam.opacity = 0.05 + night * 0.12 + flare * 0.5;
     // Işık kıvılcımları: halkanın çevresinde sarmal çizerek yükselir, tepede söner, dipten yeniden doğar.
     const motes = motesRef.current;
     if (motes) {
@@ -132,7 +136,7 @@ export function Portal({ terrain, fogUniforms, animate, sky }: PortalProps) {
         const phase = (t * 0.16 + i / MOTES) % 1;
         const angle = i * 2.4 + t * 0.9;
         const radius = 9 - phase * 4;
-        const size = Math.sin(phase * Math.PI) * 1.1 + 0.1;
+        const size = (Math.sin(phase * Math.PI) * 1.1 + 0.1) * (1 + flare * 0.9);
         p.set(Math.cos(angle) * radius, 2.5 + phase * 22, Math.sin(angle) * radius * 0.6);
         q.setFromAxisAngle(work.axis, angle * 2);
         motes.setMatrixAt(i, matrix.compose(p, q, s.setScalar(size)));

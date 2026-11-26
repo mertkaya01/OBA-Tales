@@ -4,6 +4,10 @@
  *   npm run blender:kit       modeller/kit.json → modeller/OBA-Tales-karakter-kit.blend (+ onizleme.png)
  *                             Dosya zaten varsa dokunmaz: içinde senin emeğin olabilir.
  *                             `npm run blender:kit -- --yenile` eskisini yedekleyip (…-yedek-<tarih>.blend) yeniden kurar.
+ *   npm run blender:kahramanlar  kadro OBJ'leri → iskeletli ve animasyonlu public/models/kahraman-<kimlik>.glb
+ *                             (+ modeller/kahramanlar/<kimlik>-onizleme.png). İsteğe bağlı: -- mhellingtr,bintas
+ *   npm run blender:hayvanlar Kutada'nın hayvanları (geyik, tavşan, kuş) → iskeletli public/models/hayvan-<tür>.glb
+ *                             (+ modeller/hayvanlar/<tür>-onizleme.png). İsteğe bağlı: -- geyik,kus
  *   npm run blender:aktar     .blend → public/models/karakter-kit.glb, ardından npm run blender:kontrol
  *                             (Blender açıkken Alt+P ile aktarmakla aynı şey.)
  *
@@ -94,7 +98,11 @@ try {
   const command = positionals[0];
   if (command === "kit") buildKit();
   else if (command === "aktar") exportKit(positionals[1] ? resolve(positionals[1]) : GLB);
-  else throw new Error("Kullanım: tsx scripts/blender/calistir.ts kit [--yenile] | aktar [cikti.glb]");
+  else if (command === "hayvanlar")
+    runBlender(["--factory-startup", "--python-exit-code", "1", "--python", join(SCRIPTS, "hayvanlar.py"), "--", resolve("public/models"), resolve("modeller/hayvanlar"), positionals[1] ?? ""]);
+  else if (command === "kahramanlar")
+    runBlender(["--factory-startup", "--python-exit-code", "1", "--python", join(SCRIPTS, "kahraman_iskelet.py"), "--", resolve("modeller/referans"), resolve("public/models"), resolve("modeller/kahramanlar"), positionals[1] ?? ""]);
+  else throw new Error("Kullanım: tsx scripts/blender/calistir.ts kit [--yenile] | aktar [cikti.glb] | kahramanlar [kimlik,kimlik] | hayvanlar [tur,tur]");
 } catch (error) {
   console.error(`✘ ${(error as Error).message}`);
   process.exit(1);

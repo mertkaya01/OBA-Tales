@@ -1,10 +1,12 @@
 /**
- * SİS RENKLENDİRMESİ — açılmamış bölgelerdeki arazi, ağaç ve yapıları mavimsi sisle boyar.
+ * KARARTI — hikâyede henüz açılmamış karayı (arazi, kıyıdaki sığlık) koyu bir gece silüetine boyar.
  *
- * Standart Three.js malzemelerine (Lambert) küçük bir ek yapılır: dünya konumundan sis dokusu
- * okunur ve renk sis rengine doğru karıştırılır. Karakterler bu eki almaz; sisin içinde de net görünürler.
+ * Standart Three.js malzemelerine (Lambert) küçük bir ek yapılır: dünya konumundan karartı dokusu (paintVeil)
+ * okunur ve renk karartı rengine doğru karıştırılır. Karartı tam kapatmaz: kabartmanın gölgesi hafifçe seçilir.
+ * Karartılı karadaki ağaç, oba ve köprüler zaten çizilmez (game/visibility.ts).
  */
 import { Color, type Material, type Texture } from "three";
+import { VEIL_COLOR } from "../../game/terrainPaint";
 import { WORLD_SIZE } from "../../types";
 
 export interface FogUniforms {
@@ -17,8 +19,8 @@ export interface FogUniforms {
 export function createFogUniforms(): FogUniforms {
   return {
     uFogMap: { value: null },
-    uMist: { value: new Color("#b9cadb") },
-    uFogStrength: { value: 0.75 },
+    uMist: { value: new Color(VEIL_COLOR) },
+    uFogStrength: { value: 0.9 },
   };
 }
 

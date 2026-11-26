@@ -1,12 +1,12 @@
 /**
- * ARAZİ BOYAYICI — yükseklik haritasını kuşbakışı piksel haritaya ve sis maskesine çevirir.
+ * ARAZİ BOYAYICI — yükseklik haritasını kuşbakışı piksel haritaya ve karartı maskesine çevirir.
  *
  *   paintTerrain → deniz: kıyıyı saran basamaklı sığlık şeritleri, lekeli açık deniz, kıyı köpüğü
  *                  kara: arazi türüne ve yüksekliğe göre renk rampası, kuzeybatı ışıklı kabartma gölgesi,
  *                        koyu kıyı çizgisi, nehirler, göller (soğukta donmuş), tapınak avlusu
  *                  iki üslup: "harita" (Leaflet; dik yamaçlarda ince tarama çizgileri, güçlü gölge) ve
  *                  "dunya" (3D adanın dokusu; ışığı sahne verdiği için hafif gölge, tarama yok)
- *   paintFog     → açılmamış bölgelerin üstüne yumuşak kenarlı sis; kısa bakış halkaları sisi aralar
+ *   paintVeil    → hikâyede henüz açılmamış karanın üstüne koyu örtü (karartı); kıyıda yumuşak
  *
  * Çıktılar ham RGBA dizisidir: Leaflet bir canvas'a, Three.js bir dokuya çevirir.
  */
@@ -14,11 +14,12 @@ import { createNoise2D } from "simplex-noise";
 import { REGIONS } from "../content/regions";
 import { clamp, distance } from "../lib/geometry";
 import { createRng, seedFrom } from "../lib/random";
-import { REGION_IDS, TERRAIN_KINDS, WORLD_SIZE } from "../types";
-import type { Coordinates, RegionId, RevealCircle, TerrainKind } from "../types";
+import { TERRAIN_KINDS, WORLD_SIZE } from "../types";
+import type { Coordinates, TerrainKind } from "../types";
 import { TERRAIN_COLORS, hexToRgba, type Rgba } from "./palette";
 import { TRAIL_WIDTH } from "./paths";
-import { COLD_KINDS, signedDistance, smoothstep, type Terrain } from "./terrain";
+import { COLD_KINDS, smoothstep, type Terrain } from "./terrain";
+import { hiddenMask, type LandVisibility } from "./visibility";
 
 export interface PaintedImage {
   width: number;
@@ -298,44 +299,45 @@ export function paintTerrain(terrain: Terrain, { style = "dunya", texel = PAINT_
 /** Gölgelendirmede yükseklik farkının abartısı (3D'deki HEIGHT_SCALE ile aynı mertebede). */
 const HEIGHT_RELIEF = 42;
 
-export interface FogOptions {
-  revealedRegions: ReadonlySet<RegionId>;
-  glimpses: readonly RevealCircle[];
-  /** Sis kenarı yumuşaklığı (dünya birimi). */
-  softness: number;
-  /** Sis ızgarasının hücre boyu; tarayıcı büyütürken zaten yumuşatır. */
-  cellSize?: number;
-  /** En yoğun sis opaklığı (0–1). */
-  maxOpacity?: number;
-}
+/** Karartının rengi: gece mavisi, neredeyse siyah (kabartma gölgelendiricide hafifçe seçilir). */
+export const VEIL_COLOR = "#0b1322";
 
-export function paintFog({ revealedRegions, glimpses, softness, cellSize = 4, maxOpacity = 0.6 }: FogOptions): PaintedImage {
-  const cols = Math.ceil(WORLD_SIZE.width / cellSize);
-  const rows = Math.ceil(WORLD_SIZE.height / cellSize);
+/**
+ * Karartı maskesi: görünmeyen (hikâyede henüz açılmamış) karanın üstüne koyu örtü. Arazi ızgarasıyla aynı boyda; kıyıda
+ * iki kez yumuşatılır, böylece karartılı adanın çevresindeki sığlık da hafifçe kararır ve kenar sert durmaz.
+ */
+export function paintVeil(terrain: Terrain, visibility: LandVisibility): PaintedImage {
+  const { cols, rows } = terrain;
+  let alpha = new Float32Array(cols * rows);
+  const mask = hiddenMask(terrain, visibility);
+  for (let i = 0; i < alpha.length; i++) alpha[i] = mask[i];
+  for (let pass = 0; pass < 2; pass++) {
+    const next = new Float32Array(alpha.length);
+    for (let row = 0; row < rows; row++)
+      for (let col = 0; col < cols; col++) {
+        let sum = 0;
+        let count = 0;
+        for (let dy = -1; dy <= 1; dy++)
+          for (let dx = -1; dx <= 1; dx++) {
+            const r = row + dy;
+            const c = col + dx;
+            if (r < 0 || c < 0 || r >= rows || c >= cols) continue;
+            sum += alpha[r * cols + c];
+            count++;
+          }
+        const i = row * cols + col;
+        // Karartılı karanın içi hep tam koyu kalır; yumuşama yalnızca dışa (suya) taşar.
+        next[i] = mask[i] ? 1 : sum / count;
+      }
+    alpha = next;
+  }
+  const color = hexToRgba(VEIL_COLOR);
   const data = new Uint8ClampedArray(cols * rows * 4);
-  const hidden = REGION_IDS.filter((id) => !revealedRegions.has(id)).map((id) => REGIONS[id]);
-  // Mavimsi gri sis: beyaz kırağı arazisinden ayırt edilsin.
-  const mist = hexToRgba("#b9cadb");
-  const soft = Math.max(1, softness);
-
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols; col++) {
-      const point = { x: (col + 0.5) * cellSize, y: (row + 0.5) * cellSize };
-      let fog = 0;
-      for (const region of hidden) {
-        fog = Math.max(fog, smoothstep(-soft, soft, signedDistance(point, region)));
-        if (fog >= 1) break;
-      }
-      for (const glimpse of glimpses) {
-        const clear = 1 - smoothstep(glimpse.radius - soft, glimpse.radius, distance(point, glimpse.center));
-        fog *= 1 - clear * 0.85;
-      }
-      const i = (row * cols + col) * 4;
-      data[i] = mist[0];
-      data[i + 1] = mist[1];
-      data[i + 2] = mist[2];
-      data[i + 3] = Math.round(fog * maxOpacity * 255);
-    }
+  for (let i = 0; i < alpha.length; i++) {
+    data[i * 4] = color[0];
+    data[i * 4 + 1] = color[1];
+    data[i * 4 + 2] = color[2];
+    data[i * 4 + 3] = Math.round(alpha[i] * 255);
   }
   return { width: cols, height: rows, data };
 }

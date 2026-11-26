@@ -8,6 +8,7 @@
  * Hepsi tek çizim çağrısında (köşe renkli tek ağ), açılmamış bölgelerde sisin rengini alır.
  */
 import { useEffect, useMemo } from "react";
+import { isHiddenAt, isHiddenIndex, type LandVisibility } from "../game/visibility";
 import { BufferAttribute, BufferGeometry, Color } from "three";
 import { COLD_KINDS, sampleTerrain, type Terrain } from "../game/terrain";
 import { TERRAIN_COLORS } from "../game/palette";
@@ -23,7 +24,7 @@ const LAKE_ICE = new Color(TERRAIN_COLORS.lakeIce);
 /** Nehir şeridinin zeminden yüksekliği: alçak poligonlu arazinin üstünde kalsın. */
 const RIVER_LIFT = 0.45;
 
-function buildWaterGeometry(terrain: Terrain): BufferGeometry {
+function buildWaterGeometry(terrain: Terrain, visibility: LandVisibility): BufferGeometry {
   const positions: number[] = [];
   const colors: number[] = [];
   const indices: number[] = [];
@@ -47,6 +48,11 @@ function buildWaterGeometry(terrain: Terrain): BufferGeometry {
       ty /= len;
       const half = widths[k] / 2;
       const p = points[k];
+      // Karartılı karadaki nehir çizilmez (şerit orada kesilir).
+      if (isHiddenAt(terrain, visibility, p)) {
+        previous = null;
+        continue;
+      }
       const sample = sampleTerrain(terrain, p);
       const cold = sample.kind !== null && COLD_KINDS.has(sample.kind) && sample.height > 0.2;
       const color = cold ? RIVER_ICE : RIVER;
@@ -64,7 +70,7 @@ function buildWaterGeometry(terrain: Terrain): BufferGeometry {
   const covered = new Int32Array(cols * rows).fill(-1);
   for (let i = 0; i < lakeIds.length; i++) {
     const lake = lakeIds[i];
-    if (lake < 0) continue;
+    if (lake < 0 || isHiddenIndex(terrain, visibility, i)) continue;
     const col = i % cols;
     const row = (i / cols) | 0;
     for (let dr = -1; dr <= 1; dr++) {
@@ -97,8 +103,8 @@ function buildWaterGeometry(terrain: Terrain): BufferGeometry {
   return geometry;
 }
 
-export function Waters({ terrain, fogUniforms }: { terrain: Terrain; fogUniforms: FogUniforms }) {
-  const geometry = useMemo(() => buildWaterGeometry(terrain), [terrain]);
+export function Waters({ terrain, fogUniforms, visibility }: { terrain: Terrain; fogUniforms: FogUniforms; visibility: LandVisibility }) {
+  const geometry = useMemo(() => buildWaterGeometry(terrain, visibility), [terrain, visibility]);
   const material = useMemo(
     () =>
       foggedLambert(fogUniforms, {

@@ -11,6 +11,7 @@
  *   POST /__yonetim/sifirla    { onay: "SIFIRLA" } → bütün takipçileri siler (kadro kalır)
  *   POST /__yonetim/youtube    YouTube yorumlarını çeker (npm run youtube:yorumlar), adları döndürür
  *   POST /__yonetim/kontrol    veri denetimi (npm run data:check)
+ *   POST /__yonetim/hikaye     { islem: "getir" | "geri-al" | "gun" | "bolge" | "ada", ... } → world.json → story
  *
  * Güvenlik: başka bir sitenin tarayıcın üzerinden istek atmasına karşı yalnızca bu sunucunun kendi adresinden gelen,
  * "X-Yonetim: 1" başlıklı ve JSON gövdeli istekler kabul edilir; Host başlığı localhost olmalıdır.
@@ -31,6 +32,13 @@ interface FollowersLib {
   removeHandles(handles: string[]): { roster: { characters: unknown[] }; removed: string[]; missing: string[] };
   saveRoster(roster: unknown): number;
   rosterSummary(): unknown;
+}
+interface StoryLib {
+  storySummary(): unknown;
+  bringNext(): string | null;
+  undoLast(): string | null;
+  setDay(day: number): void;
+  setLandOpen(kind: "bolge" | "ada", id: string, open: boolean): void;
 }
 interface FilesLib {
   parseFollowerFile(name: string, text: string, platform: string): { kind: string; entries: Entry[]; skipped: number };
@@ -93,9 +101,10 @@ function trusted(req: IncomingMessage): boolean {
 async function handle(server: ViteDevServer, req: IncomingMessage, res: ServerResponse): Promise<void> {
   const route = (req.url ?? "").replace(/^\/__yonetim/, "").split("?")[0];
   const lib = (await server.ssrLoadModule("/scripts/lib/followers.ts")) as FollowersLib;
+  const story = (await server.ssrLoadModule("/scripts/lib/story.ts")) as StoryLib;
   if (req.method === "GET" && route === "/durum") {
     const env = existsSync(resolve(".env.local")) ? readFileSync(resolve(".env.local"), "utf8") : "";
-    send(res, 200, { summary: lib.rosterSummary(), youtube: { key: /^YOUTUBE_API_KEY=\S+/m.test(env), channel: /^YOUTUBE_KANAL=(.+)$/m.exec(env)?.[1]?.trim() ?? null } });
+    send(res, 200, { summary: lib.rosterSummary(), story: story.storySummary(), youtube: { key: /^YOUTUBE_API_KEY=\S+/m.test(env), channel: /^YOUTUBE_KANAL=(.+)$/m.exec(env)?.[1]?.trim() ?? null } });
     return;
   }
   if (req.method !== "POST") return send(res, 405, { error: "Yöntem desteklenmiyor" });
@@ -130,6 +139,25 @@ async function handle(server: ViteDevServer, req: IncomingMessage, res: ServerRe
       const files = (await server.ssrLoadModule("/src/admin/followerFiles.ts")) as FilesLib;
       const parsed = files.parseFollowerFile("youtube-yorumlar.csv", readFileSync(csv, "utf8"), "youtube");
       send(res, 200, { kind: "YouTube yorumları", entries: parsed.entries, log: run.output.trim().split("\n").slice(-3).join("\n") });
+      return;
+    }
+    case "/hikaye": {
+      const islem = String(body.islem ?? "");
+      let message: string;
+      if (islem === "getir") {
+        const name = story.bringNext();
+        message = name ? `${name} geldi! Yayına almak için commit + push.` : "Bütün kahramanlar zaten geldi.";
+      } else if (islem === "geri-al") {
+        const name = story.undoLast();
+        message = name ? `${name} gelişi geri alındı.` : "Geri alınacak geliş yok.";
+      } else if (islem === "gun" && typeof body.gun === "number") {
+        story.setDay(body.gun);
+        message = `Hikâye ${body.gun}. günde.`;
+      } else if ((islem === "bolge" || islem === "ada") && typeof body.id === "string" && typeof body.acik === "boolean") {
+        story.setLandOpen(islem, body.id, body.acik);
+        message = body.acik ? "Açıldı: karartı kalktı." : "Kapatıldı: yeniden karartıldı.";
+      } else return send(res, 400, { error: "Bilinmeyen hikâye işlemi" });
+      send(res, 200, { message, story: story.storySummary() });
       return;
     }
     case "/kontrol": {

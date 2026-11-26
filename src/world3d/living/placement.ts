@@ -23,6 +23,21 @@ export interface Obstacle {
   r: number;
 }
 
+/**
+ * İskeletli kahramanın canlı yeri: sahnedeki kahraman (story/AnimatedHero.tsx) her karede yazar. Etkinken
+ * currentPosition bunu döndürür; böylece ad plakası, seçim halkası ve kamera gün düzenindeki kahramanı izler.
+ */
+export interface HeroTrack {
+  active: boolean;
+  x: number;
+  y: number;
+  z: number;
+  /** Çadırında uyuyor (görünmez; yeri kapının eşiği). */
+  hidden: boolean;
+  /** Şu an söylediği söz (balon), yoksa null. */
+  speech: string | null;
+}
+
 export interface CharacterPlacement {
   /** Durduğu ya da etrafında gezindiği nokta (dünya birimi). */
   home: Coordinates;
@@ -32,6 +47,8 @@ export interface CharacterPlacement {
   motion: MotionParams;
   /** Akın meydanında, sırasında duruyor. */
   inFormation: boolean;
+  /** Yalnızca özel kahramanlarda: iskeletli çizim etkinken canlı yer. */
+  track?: HeroTrack;
 }
 
 export interface PlacementOptions {
@@ -44,6 +61,8 @@ const STATIONARY_SHARE = 0.22;
 const MIN_WANDER = 4;
 const MAX_WANDER = 12;
 const CAST_WANDER = 3;
+/** Kahramanların ateş çevresindeki dolaşma yarıçapı. */
+const HERO_WANDER = 12;
 
 const unit = (key: string) => (hashString(key) % 10007) / 10007;
 
@@ -68,8 +87,8 @@ export function safeRadius(terrain: Terrain, home: Coordinates, wanted: number, 
 }
 
 function wantedRadius(c: Character): number {
-  // Özel kahramanlar Kut Kapısı'nın önünde nöbet tutar: yerlerinden ayrılmazlar.
-  if (c.roleType === "hero") return 0;
+  // Özel kahramanlar Konuk obasında yaşar: ateşin çevresinde dolaşırlar (gün düzeni gelene kadar).
+  if (c.roleType === "hero") return HERO_WANDER;
   if (c.roleType !== "follower") return CAST_WANDER;
   const h = unit(`gez:${c.id}`);
   if (h < STATIONARY_SHARE) return 0;
@@ -126,6 +145,7 @@ export function placeCharacters(
       scale: characterScale(c),
       motion: { radius: safeRadius(terrain, home, wantedRadius(c), blocked), seed, yaw: characterFacing(c), cheer: -1 },
       inFormation: false,
+      ...(c.roleType === "hero" ? { track: { active: false, x: home.x, y: 0, z: home.y, hidden: false, speech: null } } : {}),
     });
   }
   return out;
@@ -141,6 +161,13 @@ const scratch: MotionState = { dx: 0, dz: 0, yaw: 0, walk: 0, hop: 0 };
 
 /** Karakterin t anındaki ayak konumu (Three.js x, y, z). */
 export function currentPosition(placement: CharacterPlacement, terrain: Terrain, t: number, out: WorldPoint = { x: 0, y: 0, z: 0 }): WorldPoint {
+  const track = placement.track;
+  if (track?.active) {
+    out.x = track.x;
+    out.y = track.y;
+    out.z = track.z;
+    return out;
+  }
   motionAt(placement.motion, t, scratch);
   out.x = placement.home.x + scratch.dx;
   out.z = placement.home.y + scratch.dz;

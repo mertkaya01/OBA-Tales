@@ -17,10 +17,17 @@ import { EPISODE_BADGES } from "../lib/rules";
 import { RaidDayHud } from "./living/RaidDayHud";
 import { RaidSoundToggle } from "./living/RaidSoundToggle";
 import { TOUR_SEEN_KEY } from "../content/tour";
+import { CAST } from "../content/cast";
+import { NARRATOR_ID } from "../content/story";
 import { WelcomeTour } from "./WelcomeTour";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { ArrivalCinematic } from "./story/ArrivalCinematic";
+import { ARRIVAL_SEEN_KEY, pendingArrival } from "./story/arrival";
+import { LANDMARKS } from "../content/sites";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WorldClock } from "../components/hud/WorldClock";
 import { ZoomControls } from "../components/hud/ZoomControls";
+import { soundSupported } from "../audio/kutadaSound";
+import { useKutadaSound } from "../state/useKutadaSound";
 import { TERRAIN_COLORS } from "../game/palette";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { regionsBounds } from "../lib/clustering";
@@ -30,6 +37,7 @@ import { PLACE_IDS, REGION_IDS, WORLD_SIZE } from "../types";
 import type { Character, PlaceId, RegionId } from "../types";
 import { CameraRig, type CameraRigHandle } from "./CameraRig";
 import { CharacterLabelLayer, CharacterLabelProjector, type CharacterLabelRefs } from "./characters/CharacterLabels";
+import { scheduledSpot } from "./story/storyRuntime";
 import { SelectionMarker } from "./characters/SelectionMarker";
 import { placeAnchors } from "./layout";
 import { ISLAND_IDS, ISLAND_LIST } from "../content/islands";
@@ -41,6 +49,7 @@ import { LabelProjector, RegionLabelLayer } from "./RegionLabels";
 import { useWorldScene } from "./useWorldScene";
 import { WorldContent } from "./WorldContent";
 import { groundY } from "./worldScale";
+import { hiddenLandmasses, isHiddenAt, visibleBounds } from "../game/visibility";
 
 /** Bir karaktere odaklanırken kullanılan yakınlık (1 = bütün adalar). */
 const CHARACTER_FOCUS_ZOOM = 11;
@@ -69,9 +78,32 @@ interface WorldViewProps {
   characters: readonly Character[];
 }
 
-export default function WorldView({ characters }: WorldViewProps) {
+/** Bu tarayıcının gördüğü gelişler. */
+function readSeenArrivals(): Set<string> {
+  try {
+    return new Set(JSON.parse(window.localStorage.getItem(ARRIVAL_SEEN_KEY) ?? "[]") as string[]);
+  } catch {
+    return new Set();
+  }
+}
+
+export default function WorldView({ characters: filtered }: WorldViewProps) {
   const scene = useWorldScene();
-  const { data, terrain, motionUniforms, boss, formation, placements } = scene;
+  // Ada sesleri: düğmeyle açılır, haritadan çıkınca susar.
+  const soundOn = useKutadaSound((s) => s.engine !== null);
+  const toggleSound = useKutadaSound((s) => s.toggle);
+  useEffect(() => () => useKutadaSound.getState().stop(), []);
+  const { data, terrain, motionUniforms, boss, formation, placements, story, seed } = scene;
+
+  // Geliş sineması: bu tarayıcının görmediği yeni bir kahraman varsa bir kez oynar (geliştirmede ?gelis=<kimlik> zorlar).
+  const [cinematic, setCinematic] = useState<string | null>(() => {
+    const forced = import.meta.env.DEV ? new URLSearchParams(window.location.search).get("gelis") : null;
+    if (forced && data.characterById.has(forced)) return forced;
+    return pendingArrival(data.world.story, readSeenArrivals(), new Date());
+  });
+  // Kahraman ışık sütunu inene kadar haritada görünmez.
+  const [hiddenHero, setHiddenHero] = useState<string | null>(cinematic);
+  const characters = useMemo(() => (hiddenHero ? filtered.filter((c) => c.id !== hiddenHero) : filtered), [filtered, hiddenHero]);
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const regions = useAppStore((s) => s.filters.regions);
   const focus = useAppStore((s) => s.focus);
@@ -97,7 +129,7 @@ export default function WorldView({ characters }: WorldViewProps) {
   const placeLabels = useMemo<PlaceLabel[]>(() => {
     const anchors = placeAnchors(terrain);
     const islandIds = new Set<string>(ISLAND_IDS);
-    const labels: PlaceLabel[] = data.world.namedPlaces.map((named) => {
+    const labels: PlaceLabel[] = data.world.namedPlaces.filter((p) => !isHiddenAt(terrain, data.visibility, anchors[p.place].point)).map((named) => {
       const namer = data.characterById.get(named.namedBy);
       return {
         key: `yer:${named.place}`,
@@ -121,11 +153,13 @@ export default function WorldView({ characters }: WorldViewProps) {
       point: anchors.kut_kapisi.point,
       lift: anchors.kut_kapisi.lift,
       title: portalNamed?.name ?? PLACE_NAMES.kut_kapisi,
-      subtitle: `yeni yoldaşlar buradan gelir · ${formatNumber(newcomers)} yeni`,
+      subtitle: data.characters.length === 0 ? "İlk yoldaş yolda…" : `yeni yoldaşlar buradan gelir · ${formatNumber(newcomers)} yeni`,
       minZoom: 1.2,
     });
     for (const place of PLACE_IDS) {
       if (named.has(place) || islandIds.has(place) || place === "kut_kapisi") continue;
+      // Karartılı karadaki yerlerin etiketi yok.
+      if (isHiddenAt(terrain, data.visibility, anchors[place].point)) continue;
       labels.push({
         key: `yer:${place}`,
         kind: "yer",
@@ -136,8 +170,10 @@ export default function WorldView({ characters }: WorldViewProps) {
         minZoom: UNNAMED_LABEL_ZOOM,
       });
     }
+    // Karartılı her kara parçasına tek "?" (ana ada beş bölge olsa da tek işaret).
+    hiddenLandmasses(terrain, data.visibility).forEach((point, i) => labels.push({ key: `gizli:${i}`, kind: "gizli", point, lift: 10, title: "?", minZoom: 0 }));
     for (const island of ISLAND_LIST) {
-      if (named.has(island.id)) continue;
+      if (!data.visibility.islands.has(island.id) || named.has(island.id)) continue;
       labels.push({
         key: `ada:${island.id}`,
         kind: "yer",
@@ -157,11 +193,10 @@ export default function WorldView({ characters }: WorldViewProps) {
       );
     }
     return labels;
-  }, [terrain, data.world.namedPlaces, data.characterById, data.characters, formation, boss, episodeNumber]);
+  }, [terrain, data.world.namedPlaces, data.characterById, data.characters, data.visibility, formation, boss, episodeNumber]);
 
   const groundAt = useCallback((p: { x: number; y: number }) => groundY(terrain, p), [terrain]);
   const onNamerClick = useCallback((id: string) => useAppStore.getState().focusCharacter(id), []);
-  const onBossClick = useCallback(() => useAppStore.getState().setRaidOpen(true), []);
 
   /** Karakterin şu anki yeri (yürüyor olabilir). */
   const positionOf = useCallback(
@@ -240,10 +275,11 @@ export default function WorldView({ characters }: WorldViewProps) {
       // Depolama kapalıysa tur kendiliğinden açılmaz (Lejant'tan açılabilir).
     }
     const { selectedId, watchingRaid } = useAppStore.getState();
-    if (seen || selectedId || watchingRaid) return;
+    // Geliş sineması önce oynar; tur onun ardından açılır.
+    if (seen || selectedId || watchingRaid || cinematic) return;
     const timer = window.setTimeout(() => useAppStore.getState().startTour(), 1400);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [cinematic]);
   useEffect(() => () => useAppStore.getState().endTour(), []);
   const endTour = useCallback(() => {
     try {
@@ -253,18 +289,44 @@ export default function WorldView({ characters }: WorldViewProps) {
     }
     useAppStore.getState().endTour();
   }, []);
-  const raidCenter = useMemo(
-    () => (formation ? { x: formation.ground.square.x * 0.6 + formation.ground.focus.x * 0.4, y: formation.ground.square.y * 0.6 + formation.ground.focus.y * 0.4 } : null),
-    [formation],
-  );
+  const cinematicHero = cinematic ? data.characterById.get(cinematic) : undefined;
+  const cinematicSpot = useMemo(() => {
+    const placement = cinematic ? placements.get(cinematic) : undefined;
+    if (!placement || !cinematic) return null;
+    // Işık kahramanın gün düzenindeki o anki yerine iner (odun keserken koruya, gece çadırının kapısına).
+    const spot = scheduledSpot({ data, terrain, seed, story, motionUniforms }, cinematic) ?? placement.home;
+    const portal = LANDMARKS.kutKapisi;
+    scene.arrival.from = { x: portal.x, y: groundY(terrain, portal) + 20, z: portal.y };
+    scene.arrival.to = { x: spot.x, y: groundY(terrain, spot) + 1.5, z: spot.y };
+    return spot;
+  }, [cinematic, placements, terrain, scene.arrival, data, seed, story, motionUniforms]);
+  // Belirince kameraya döner, el sallar (uyuyorsa çadırından çıkıp selam verir, geri girer).
+  const onArrivalReveal = useCallback(() => {
+    setHiddenHero(null);
+    if (cinematic) story.calls.set(cinematic, motionUniforms.uTime.value + 0.5);
+  }, [cinematic, story, motionUniforms]);
+  const onArrivalDone = useCallback(() => {
+    try {
+      window.localStorage.setItem(ARRIVAL_SEEN_KEY, JSON.stringify(data.world.story.arrivals.map((a) => a.id)));
+    } catch {
+      // Depolama kapalıysa sinema bir dahaki ziyarette yine oynar.
+    }
+    setHiddenHero(null);
+    setCinematic(null);
+  }, [data.world.story.arrivals]);
+
   // Akın Günü göstergesi için akıncılar ve akının rozeti.
   const raiders = useMemo(() => (formation ? [...formation.slots.keys()].map((id) => data.characterById.get(id)).filter((c): c is Character => !!c) : []), [formation, data.characterById]);
   const raidBadge = EPISODE_BADGES[data.activeEpisode.number];
 
-  const onRegionClick = useCallback((id: RegionId) => {
-    const { filters, setRegions } = useAppStore.getState();
-    setRegions(filters.regions.length === 1 && filters.regions[0] === id ? [] : [id]);
+  // Zemine tek tıklama kamerayı oynatmaz (yalnızca açık çekmeceyi kapatır); çift tıklama oraya yakınlaşır.
+  // Bölge filtresi yalnızca Filtreler panelinden değişir.
+  const onGroundClick = useCallback(() => {
+    if (useAppStore.getState().selectedId) useAppStore.getState().select(null);
   }, []);
+  const onGroundDoubleClick = useCallback((point: { x: number; y: number }) => rigRef.current?.zoomAt(point, 1.8), []);
+  // Ev görünümü: açık adalar (1. günde Kutada) ve çevresindeki "?" adaların kıyıları.
+  const home = useMemo(() => visibleBounds(data.visibility), [data.visibility]);
 
   return (
     <div className="absolute inset-0">
@@ -279,7 +341,7 @@ export default function WorldView({ characters }: WorldViewProps) {
           gl.setClearColor(TERRAIN_COLORS.deepSea);
           gl.domElement.setAttribute(
             "aria-label",
-            "OBA-Tales üç boyutlu dünyası. Sürükleyerek kaydırın, tekerlekle yakınlaşın, sağ tıkla sürükleyerek ya da Q ve E tuşlarıyla döndürün; odaklanınca ok tuşları da çalışır.",
+            "OBA-Tales üç boyutlu dünyası. Sürükleyerek kaydırın, tekerlekle ya da çift tıklayarak yakınlaşın, sağ tıkla sürükleyerek ya da Q ve E tuşlarıyla döndürün; odaklanınca ok tuşları da çalışır.",
           );
         }}
         className="kb-dunya"
@@ -291,7 +353,8 @@ export default function WorldView({ characters }: WorldViewProps) {
           pixelSize={PIXEL_SIZE}
           onSelect={onSelect}
           onHover={onHover}
-          onRegionClick={onRegionClick}
+          onGroundClick={onGroundClick}
+          onGroundDoubleClick={onGroundDoubleClick}
         />
         <SelectionMarker
           terrain={terrain}
@@ -300,7 +363,7 @@ export default function WorldView({ characters }: WorldViewProps) {
           uniforms={motionUniforms}
           visibleIds={visibleIds}
         />
-        <CameraRig ref={rigRef} reducedMotion={reducedMotion} compassRef={compassRef} onWatchEnd={onWatchEnd} groundAt={groundAt} />
+        <CameraRig ref={rigRef} reducedMotion={reducedMotion} compassRef={compassRef} onWatchEnd={onWatchEnd} groundAt={groundAt} home={home} />
         <LabelProjector refs={labelRefs} terrain={terrain} />
         <PlaceLabelProjector labels={placeLabels} refs={placeLabelRefs} terrain={terrain} />
         <CharacterLabelProjector
@@ -313,10 +376,21 @@ export default function WorldView({ characters }: WorldViewProps) {
         <DevHandle living={import.meta.env.DEV ? { placements, uniforms: motionUniforms, formation, select: onSelect } : null} />
       </Canvas>
       <RegionLabelLayer refs={labelRefs} revealedRegions={data.revealedRegions} counts={regionCounts} />
-      <PlaceLabelLayer labels={placeLabels} refs={placeLabelRefs} onNamerClick={onNamerClick} onBossClick={onBossClick} />
+      <PlaceLabelLayer labels={placeLabels} refs={placeLabelRefs} onNamerClick={onNamerClick} />
       <CharacterLabelLayer refs={characterLabelRefs} characterById={data.characterById} visibleIds={visibleIds} />
 
-      {touring && !watching && <WelcomeTour rig={rigRef} narrator={data.characterById.get("dede_toygar")} boss={boss?.name ?? null} raidCenter={raidCenter} onClose={endTour} />}
+      {cinematicHero && cinematicSpot && (
+        <ArrivalCinematic
+          hero={cinematicHero}
+          spot={cinematicSpot}
+          runtime={scene.arrival}
+          rig={rigRef}
+          reducedMotion={reducedMotion}
+          onReveal={onArrivalReveal}
+          onDone={onArrivalDone}
+        />
+      )}
+      {touring && !watching && !cinematic && <WelcomeTour rig={rigRef} narrator={CAST.find((c) => c.id === NARRATOR_ID)} onClose={endTour} />}
       {watching && boss && formation && <RaidDayHud battle={scene.battle} bossName={boss.name} raiders={raiders} badge={raidBadge ? BADGES[raidBadge].name : null} />}
       {watching && boss && formation && (
         <div className="absolute bottom-20 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3 whitespace-nowrap rounded-full border border-alev-400/50 bg-gece-900/90 py-1.5 pl-4 pr-1.5 shadow-lg backdrop-blur sm:bottom-4" role="status">
@@ -337,6 +411,7 @@ export default function WorldView({ characters }: WorldViewProps) {
       )}
       <WorldClock seasonStart={data.episodes[0]?.progress?.airedAt ?? null} weather={data.world.weather} />
       <ZoomControls
+        sound={soundSupported() ? { on: soundOn, onToggle: () => void toggleSound() } : undefined}
         onZoomIn={() => rigRef.current?.zoomBy(1.6)}
         onZoomOut={() => rigRef.current?.zoomBy(1 / 1.6)}
         onReset={() => {

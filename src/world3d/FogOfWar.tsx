@@ -1,17 +1,16 @@
 /**
- * Ayaz sisi: açılmamış bölgelerin üstünde yavaşça süzülen yarı saydam bulut kümeleri.
- * (Arazinin kendisi de shaders/fog.ts ile sis rengine boyanır; bu bileşen havadaki bulutlardır.)
- * Bulutlar seyrektir; altındaki karakterler aralarından görünmeye devam eder.
+ * Karartı bulutları: hikâyede henüz açılmamış bölge ve adaların üstünde yavaşça dönen koyu bulut kümeleri.
+ * (Arazinin kendisi de shaders/fog.ts ile karartılır; bu bileşen havadaki bulutlardır.)
  */
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import { IcosahedronGeometry, Matrix4, MeshLambertMaterial, Quaternion, Vector3, type InstancedMesh } from "three";
+import { ISLANDS } from "../content/islands";
 import { REGIONS } from "../content/regions";
+import { hiddenLands, type LandVisibility } from "../game/visibility";
 import type { Terrain } from "../game/terrain";
 import { polygonArea, randomPointInPolygon } from "../lib/geometry";
 import { createRng, seedFrom } from "../lib/random";
-import { REGION_IDS } from "../types";
-import type { RegionId } from "../types";
 import { groundY, worldZoomOf } from "./worldScale";
 
 interface Puff {
@@ -24,15 +23,14 @@ interface Puff {
   phase: number;
 }
 
-function buildPuffs(terrain: Terrain, revealed: ReadonlySet<RegionId>, seed: number): Puff[] {
+function buildPuffs(terrain: Terrain, visibility: LandVisibility, seed: number): Puff[] {
   const rng = createRng(seedFrom("bulutlar", seed));
   const puffs: Puff[] = [];
-  for (const id of REGION_IDS) {
-    if (revealed.has(id)) continue;
-    const region = REGIONS[id];
-    const count = Math.round(polygonArea(region.polygon) / 3500);
+  const polygons = hiddenLands(visibility).flatMap((land) => (land.kind === "bolge" ? [REGIONS[land.id].polygon] : ISLANDS[land.id].polygons));
+  for (const polygon of polygons) {
+    const count = Math.max(1, Math.round(polygonArea(polygon) / 3500));
     for (let i = 0; i < count; i++) {
-      const p = randomPointInPolygon(region.polygon, rng, { margin: 10 });
+      const p = randomPointInPolygon(polygon, rng, { margin: 10 });
       const base = Math.max(groundY(terrain, p), 8);
       puffs.push({
         x: p.x,
@@ -50,17 +48,17 @@ function buildPuffs(terrain: Terrain, revealed: ReadonlySet<RegionId>, seed: num
 
 interface FogOfWarProps {
   terrain: Terrain;
-  revealedRegions: ReadonlySet<RegionId>;
+  visibility: LandVisibility;
   seed: number;
   animate: boolean;
 }
 
-export function FogOfWar({ terrain, revealedRegions, seed, animate }: FogOfWarProps) {
+export function FogOfWar({ terrain, visibility, seed, animate }: FogOfWarProps) {
   const ref = useRef<InstancedMesh>(null);
-  const puffs = useMemo(() => buildPuffs(terrain, revealedRegions, seed), [terrain, revealedRegions, seed]);
+  const puffs = useMemo(() => buildPuffs(terrain, visibility, seed), [terrain, visibility, seed]);
   const geometry = useMemo(() => new IcosahedronGeometry(1, 1), []);
   const material = useMemo(
-    () => new MeshLambertMaterial({ color: "#eef4fa", transparent: true, opacity: 0.5, depthWrite: false, flatShading: true }),
+    () => new MeshLambertMaterial({ color: "#1e2a3d", transparent: true, opacity: 0.55, depthWrite: false, flatShading: true }),
     [],
   );
 
@@ -80,7 +78,7 @@ export function FogOfWar({ terrain, revealedRegions, seed, animate }: FogOfWarPr
     if (!mesh) return;
     // Yaklaştıkça bulutlar incelir; yakın planı kapatmasınlar.
     const worldZoom = worldZoomOf((camera as { zoom: number }).zoom, size);
-    material.opacity = 0.5 - 0.38 * Math.min(1, Math.max(0, (worldZoom - 1.5) / 4));
+    material.opacity = 0.55 - 0.3 * Math.min(1, Math.max(0, (worldZoom - 1.5) / 4));
     const t = animate ? clock.elapsedTime : 0;
     puffs.forEach((puff, i) => {
       scratch.p.set(puff.x + Math.sin(t * 0.08 + puff.phase) * 6, puff.y + Math.sin(t * 0.3 + puff.phase) * 0.6, puff.z);

@@ -3,17 +3,16 @@
  */
 import { Menu, Sparkles, X } from "lucide-react";
 import { useEffect, useId, useState } from "react";
-import { Link, NavLink } from "react-router";
-import { EPISODE_STATUS_LABELS } from "../../content/episodes";
+import { Link, NavLink, useNavigate } from "react-router";
 import { WORLD } from "../../content/world";
 import { useGameData } from "../../data/useGameData";
 import { cn } from "../../lib/cn";
+import { useAppStore } from "../../state/useAppStore";
 import { Logo } from "../ui/Logo";
 
 const NAV_ITEMS = [
-  { to: "/", label: "Akın Haritası", end: true },
+  { to: "/", label: "Harita", end: true },
   { to: "/karakterler", label: "Oba Kadrosu", end: false },
-  { to: "/bolumler", label: "Sezon", end: false },
   { to: "/katil", label: "Obaya Katıl", end: false },
 ] as const;
 
@@ -24,7 +23,14 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   );
 
 export function Header() {
-  const { activeEpisode } = useGameData();
+  const { world } = useGameData();
+  const navigate = useNavigate();
+  // Hikâye günü: tıklanınca haritaya gider ve tanıtım turunu açar.
+  const openStory = () => {
+    closeMenu();
+    navigate("/");
+    useAppStore.getState().startTour();
+  };
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
 
@@ -54,16 +60,15 @@ export function Header() {
           ))}
         </nav>
 
-        <Link
-          to={`/bolumler#${activeEpisode.id}`}
+        <button
+          type="button"
+          onClick={openStory}
           className="ml-auto hidden items-center gap-2 rounded-full border border-gunozu-400/40 bg-gunozu-400/10 px-3 py-1 text-sm text-gunozu-200 hover:bg-gunozu-400/20 sm:flex"
-          title={`${EPISODE_STATUS_LABELS[activeEpisode.status]}: ${activeEpisode.title}`}
+          title="Tanıtım turunu izle"
         >
           <Sparkles aria-hidden className="size-4" />
-          <span>
-            Bölüm {activeEpisode.number} · {activeEpisode.title}
-          </span>
-        </Link>
+          <span>Hikâye · {world.story.day}. gün</span>
+        </button>
 
         <button
           type="button"
@@ -88,14 +93,10 @@ export function Header() {
               </li>
             ))}
           </ul>
-          <Link
-            to={`/bolumler#${activeEpisode.id}`}
-            onClick={closeMenu}
-            className="mt-3 flex items-center gap-2 rounded-lg bg-gunozu-400/10 px-3 py-2 text-sm text-gunozu-200"
-          >
+          <button type="button" onClick={openStory} className="mt-3 flex w-full items-center gap-2 rounded-lg bg-gunozu-400/10 px-3 py-2 text-left text-sm text-gunozu-200">
             <Sparkles aria-hidden className="size-4" />
-            Bölüm {activeEpisode.number} · {activeEpisode.title} · {EPISODE_STATUS_LABELS[activeEpisode.status]}
-          </Link>
+            Hikâye · {world.story.day}. gün · tanıtım turunu izle
+          </button>
         </nav>
       )}
     </header>

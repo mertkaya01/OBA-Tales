@@ -22,7 +22,7 @@ import { useGameData } from "../data/useGameData";
 const STEPS = [
   { icon: UserPlus, title: "Takip et", text: "Instagram, TikTok ya da YouTube'da OBA-Tales hesabını takip et. Birden fazlasında takip edersen daha güçlü başlarsın." },
   { icon: Compass, title: "Sınıfın belli olur", text: "Ana platformun sınıfını seçer: Kalkaneri, Okyeli ya da Ocakcan. Karakterin haritada belirir." },
-  { icon: MessageCircle, title: "Hikâyeye yön ver", text: "Her bölümde yorumlarla oy ver, akınlara katıl, rozet topla. Oba senin kararınla ilerler." },
+  { icon: MessageCircle, title: "Hikâyeye yön ver", text: "Yorumlarla hikâyeye yön ver, kapalı adaların açılmasına destek ol, rozet topla. Oba senin kararınla ilerler." },
 ] as const;
 
 /** Takip edenlere kendiliğinden verilen rozetler dışındakiler (kadroya özel olan gösterilmez). */
@@ -88,7 +88,7 @@ export default function JoinPage() {
       </section>
 
       <section aria-labelledby="rozetler" className="mt-14">
-        <SectionTitle title={<span id="rozetler">Rozetler</span>} description="Akınlara katıldıkça ve oy verdikçe rozet kazanırsın; hepsi kartında ve çekmecende görünür." />
+        <SectionTitle title={<span id="rozetler">Rozetler</span>} description="Hikâyede yer aldıkça ve yorumlarla yön verdikçe rozet kazanırsın; hepsi kartında ve çekmecende görünür." />
         <BadgeList badges={EARNABLE_BADGES} detailed howToEarn className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3" />
       </section>
 

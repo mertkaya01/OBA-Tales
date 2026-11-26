@@ -1,6 +1,6 @@
 /**
  * Karakter etiketleri: seçili karakterin başının üstünde isim plakası (ad + nadirlik + sınıf),
- * üzerine gelinen karakterde küçük isim etiketi.
+ * üzerine gelinen karakterde küçük isim etiketi, seslenilen kahramanın söylediği sözün balonu.
  *
  * Etiketler tuvalin üstündeki React DOM'unda durur; sahnedeki CharacterLabelProjector her karede
  * onları karakterin ekran konumuna taşır (bölge etiketleriyle aynı yöntem).
@@ -13,6 +13,7 @@ import { RARITY_INFO } from "../../content/rarities";
 import type { Terrain } from "../../game/terrain";
 import { cn } from "../../lib/cn";
 import { useAppStore } from "../../state/useAppStore";
+import { ARRIVAL_ORDER } from "../../content/story";
 import type { Character } from "../../types";
 import { currentPosition, type CharacterPlacement, type WorldPoint } from "../living/placement";
 import type { CharacterUniforms } from "./characterMaterials";
@@ -20,6 +21,8 @@ import type { CharacterUniforms } from "./characterMaterials";
 export interface CharacterLabelRefs {
   selected: HTMLDivElement | null;
   hovered: HTMLDivElement | null;
+  /** Konuşma balonu (kahraman el sallarken). */
+  speech?: HTMLDivElement | null;
 }
 
 const RARITY_PLATE: Record<Character["rarity"], string> = {
@@ -75,6 +78,14 @@ export function CharacterLabelLayer({
       >
         {hovered?.displayName}
       </div>
+      <div
+        ref={(el) => {
+          refs.current.speech = el;
+        }}
+        className="kb-balon absolute left-0 top-0"
+        style={{ transform: HIDDEN }}
+        role="status"
+      />
     </div>
   );
 }
@@ -111,10 +122,46 @@ export function CharacterLabelProjector({
     el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%)`;
   };
 
+  /** Sözü olan kahramanın başının üstüne balonu koyar (seçiliyse plakanın da üstüne). */
+  const speak = (el: HTMLDivElement | null | undefined, selectedId: string | null) => {
+    if (!el) return;
+    let text: string | null = null;
+    let speaker: CharacterPlacement | undefined;
+    let speakerId: string | null = null;
+    for (const id of ARRIVAL_ORDER) {
+      const placement = visibleIds.has(id) ? placements.get(id) : undefined;
+      const speech = placement?.track?.active ? placement.track.speech : null;
+      if (speech) {
+        text = speech;
+        speaker = placement;
+        speakerId = id;
+        break;
+      }
+    }
+    if (!text || !speaker) {
+      if (el.dataset.text) {
+        el.dataset.text = "";
+        el.textContent = "";
+      }
+      el.style.transform = HIDDEN;
+      return;
+    }
+    if (el.dataset.text !== text) {
+      el.dataset.text = text;
+      el.textContent = text;
+    }
+    currentPosition(speaker, terrain, uniforms.uTime.value, point);
+    scratch.set(point.x, point.y + 6.2 * speaker.scale, point.z).project(camera);
+    const x = (scratch.x * 0.5 + 0.5) * size.width;
+    const y = (-scratch.y * 0.5 + 0.5) * size.height - (speakerId === selectedId ? 52 : 10);
+    el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%)`;
+  };
+
   useFrame(() => {
     const { selectedId, hoveredId } = useAppStore.getState();
     place(refs.current.selected, selectedId, 6.2);
     place(refs.current.hovered, hoveredId === selectedId ? null : hoveredId, 5.6);
+    speak(refs.current.speech, selectedId);
   });
 
   return null;

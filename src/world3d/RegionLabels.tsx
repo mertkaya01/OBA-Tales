@@ -1,5 +1,5 @@
 /**
- * Bölge adları — dünyaya iliştirilmiş etiketler.
+ * Bölge adları — dünyaya iliştirilmiş etiketler. Karartılı (henüz açılmamış) bölgenin adı gösterilmez.
  *
  * Etiketler normal React DOM'unda (tuvalin üstünde) durur; sahnenin içindeki LabelProjector her karede
  * 3D konumlarını ekrana izdüşürüp etiketleri oraya taşır. Ek React kökü açılmaz.
@@ -37,10 +37,13 @@ export function RegionLabelLayer({
           className="kb-bolge-etiketi-3d absolute left-0 top-0"
           style={{ transform: "translate(-9999px, -9999px)" }}
         >
-          {region.name}
-          <span className="kb-bolge-etiketi-3d__sis">
-            {formatNumber(counts[region.id])} kahraman{revealedRegions.has(region.id) ? "" : " · sisli"}
-          </span>
+          {/* Karartılı bölgenin adı yok; "?" işaretini kara parçası başına yer etiketleri koyar. */}
+          {revealedRegions.has(region.id) && (
+            <>
+              {region.name}
+              <span className="kb-bolge-etiketi-3d__sis">{formatNumber(counts[region.id])} kahraman</span>
+            </>
+          )}
         </div>
       ))}
     </div>

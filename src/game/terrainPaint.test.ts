@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { REGIONS } from "../content/regions";
 import { generateTerrain } from "./terrain";
-import { PAINT_TEXEL, paintFog, paintTerrain, type PaintedImage } from "./terrainPaint";
+import { PAINT_TEXEL, paintTerrain, paintVeil, type PaintedImage } from "./terrainPaint";
+import { createVisibility } from "./visibility";
+import { ISLANDS } from "../content/islands";
 import { WORLD_SIZE } from "../types";
 
 const terrain = generateTerrain({ seed: 20261124 });
@@ -57,30 +59,24 @@ describe("arazi boyama", () => {
   });
 });
 
-describe("sis maskesi", () => {
-  const fog = paintFog({
-    revealedRegions: new Set(["akinburnu", "ayazbogazi"]),
-    glimpses: [{ name: "Süzülkoy'un ışıkları", center: REGIONS.suzulkoy.center, radius: 90 }],
-    softness: 24,
-  });
-  const alpha = (x: number, y: number) => pixelAt(fog, x, y, 4)[3];
+describe("karartı maskesi", () => {
+  const visibility = createVisibility(["kutada"], []);
+  const veil = paintVeil(terrain, visibility);
+  const alpha = (x: number, y: number) => pixelAt(veil, x, y, terrain.cellSize)[3];
 
-  it("açılmış bölgeler sissiz, açılmamışlar sislidir", () => {
-    expect(alpha(REGIONS.akinburnu.center.x, REGIONS.akinburnu.center.y)).toBe(0);
-    expect(alpha(REGIONS.ayazbogazi.center.x, REGIONS.ayazbogazi.center.y)).toBe(0);
-    expect(alpha(REGIONS.pusluada.center.x, REGIONS.pusluada.center.y)).toBeGreaterThan(120);
-    expect(alpha(REGIONS.gunozu_tepesi.center.x, REGIONS.gunozu_tepesi.center.y)).toBeGreaterThan(120);
+  it("açık bölge karartısız, kapalı bölge ve yabani adalar tam koyu; deniz karartılmaz", () => {
+    expect(alpha(REGIONS.kutada.center.x, REGIONS.kutada.center.y)).toBe(0);
+    expect(alpha(REGIONS.pusluada.center.x, REGIONS.pusluada.center.y)).toBe(255);
+    expect(alpha(REGIONS.akinburnu.center.x, REGIONS.akinburnu.center.y)).toBe(255);
+    expect(alpha(ISLANDS.kartalyuva.label.x, ISLANDS.kartalyuva.label.y)).toBe(255);
+    expect(alpha(40, 40)).toBe(0); // açık deniz
   });
 
-  it("kısa bakış halkası sisi aralar", () => {
-    const glimpse = alpha(REGIONS.suzulkoy.center.x, REGIONS.suzulkoy.center.y);
-    const edge = alpha(REGIONS.suzulkoy.center.x + 120, REGIONS.suzulkoy.center.y + 30);
-    expect(glimpse).toBeLessThan(60);
-    expect(edge).toBeGreaterThan(glimpse);
-  });
-
-  it("bütün bölgeler açıksa hiç sis kalmaz", () => {
-    const clear = paintFog({ revealedRegions: new Set(Object.keys(REGIONS) as (keyof typeof REGIONS)[]), glimpses: [], softness: 24 });
-    expect(clear.data.filter((_, i) => i % 4 === 3).every((a) => a === 0)).toBe(true);
+  it("açılan ada aydınlanır; her şey açıksa hiç karartı kalmaz", () => {
+    const open = paintVeil(terrain, createVisibility(["kutada", "pusluada"], ["kartalyuva"]));
+    expect(pixelAt(open, REGIONS.pusluada.center.x, REGIONS.pusluada.center.y, terrain.cellSize)[3]).toBe(0);
+    expect(pixelAt(open, ISLANDS.kartalyuva.label.x, ISLANDS.kartalyuva.label.y, terrain.cellSize)[3]).toBe(0);
+    const all = paintVeil(terrain, createVisibility(Object.keys(REGIONS), Object.keys(ISLANDS)));
+    expect(all.data.filter((_, i) => i % 4 === 3).every((a) => a === 0)).toBe(true);
   });
 });

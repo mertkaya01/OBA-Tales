@@ -5,6 +5,8 @@
  * İleride veriler bir API'den (Cloudflare Pages Functions) gelirse yalnızca bu dosya değişir.
  */
 import { CAST } from "../content/cast";
+import { arrivedHeroIds } from "../content/story";
+import { createVisibility, type LandVisibility } from "../game/visibility";
 import { EPISODES } from "../content/episodes";
 import { DATA_SCHEMAS, formatDataError, type DataFileName } from "../schemas/data";
 import type {
@@ -85,7 +87,7 @@ export interface GameData {
   roster: RosterFile;
   season: SeasonState;
   world: WorldState;
-  /** Önce kadro, sonra takipçiler. */
+  /** Önce gelmiş kahramanlar (geliş sırasıyla), sonra takipçiler. Hikâye kadrosu henüz haritada yok. */
   characters: readonly Character[];
   characterById: ReadonlyMap<string, Character>;
   /** 12 bölüm; season.json'da olmayanlar "kilitli". */
@@ -94,17 +96,25 @@ export interface GameData {
   /** Aktif bölüm akınına katılanlar (yalnızca bilinen karakterler). */
   activeParticipantIds: ReadonlySet<string>;
   revealedRegions: ReadonlySet<RegionId>;
+  /** Görünen kara: açık bölgeler ve yabani adalar (kalanı karartılı, "?"). */
+  visibility: LandVisibility;
   /** Kimliği bir kadro üyesiyle çakıştığı için atlanan roster kayıtları. */
   skippedIds: readonly string[];
 }
 
 export function buildGameData(roster: RosterFile, season: SeasonState, world: WorldState): GameData {
   const characterById = new Map<string, Character>();
-  for (const member of CAST) characterById.set(member.id, member);
+  // Yalnızca gelmiş kahramanlar (content/story.ts); hikâye kadrosu kodda durur ama haritada yok.
+  for (const id of arrivedHeroIds(world.story)) {
+    const member = CAST.find((c) => c.id === id);
+    if (member) characterById.set(member.id, member);
+  }
+  // Kadro kimlikleri takipçilere verilmez (ileride gelecek olanlar da dahil).
+  const castIds = new Set(CAST.map((c) => c.id));
 
   const skippedIds: string[] = [];
   for (const c of roster.characters) {
-    if (characterById.has(c.id)) skippedIds.push(c.id);
+    if (castIds.has(c.id) || characterById.has(c.id)) skippedIds.push(c.id);
     else characterById.set(c.id, c);
   }
 
@@ -125,6 +135,7 @@ export function buildGameData(roster: RosterFile, season: SeasonState, world: Wo
     activeEpisode,
     activeParticipantIds: new Set((activeEpisode.progress?.participantIds ?? []).filter((id) => characterById.has(id))),
     revealedRegions: new Set(world.revealedRegions),
+    visibility: createVisibility(world.revealedRegions, world.revealedIslands),
     skippedIds,
   };
 }

@@ -209,9 +209,102 @@ Bir harfi değiştirince o piksel değişir. 2D harita pinleri (ve WebGL'siz kar
   içinde (hepsi kodla üretilir, ses dosyası yok). Müziğin ezgisi `MELODY`, davul düzeni `DRUM` (aksak 9/8), makam `HICAZ`.
 
 **İlk oba turu:** `src/content/tour.ts`
-- Siteye ilk gelene Dede Toygar anlatır; kamera adalar → Kut Kapısı → Akınburnu obası → akın meydanı arasında uçar.
-- Metinler `TOUR_STEPS` içinde. Tur bir kez kendiliğinden açılır; Lejant'taki **Tanıtım turunu izle** ile yeniden açılır.
-- Herkese yeniden göstermek istersen `TOUR_SEEN_KEY` sonundaki sürümü artır (`v1` → `v2`).
+- Siteye ilk gelene Dede Toygar anlatır (haritada değil, portresiyle); kamera Kutada → Kut Kapısı → Konuk obası →
+  karanlıktaki adalar arasında uçar.
+- Metinler `TOUR_STEPS` içinde. Tur bir kez kendiliğinden açılır; Lejant'taki **Tanıtım turunu izle** ya da üstteki
+  **Hikâye · 1. gün** düğmesi yeniden açar.
+- Herkese yeniden göstermek istersen `TOUR_SEEN_KEY` sonundaki sürümü artır (`v2` → `v3`).
+
+**Karartı ve "?" işaretleri:** `src/game/visibility.ts`
+- Hikâyede açık olmayan bölge ve adalar koyu bir silüet olur; üstlerindeki ağaç, oba, köprü ve etiketler çizilmez.
+- Karartının rengi `src/game/terrainPaint.ts` → `VEIL_COLOR`, gücü `src/world3d/shaders/fog.ts` → `uFogStrength`.
+- Her kesintisiz karartılı kara parçasına tek "?" konur (ana ada beş bölge olsa da tek işaret); ipucu metni
+  `src/content/story.ts` → `HIDDEN_LAND_HINT`.
+
+**Geliş sineması:** `src/world3d/story/arrival.ts`
+- Yönetim panelinden bir kahraman getirilince sitede bir kez oynar: Kut Kapısı parlar, ışık küresi kahramanın
+  obasına iner, "… geldi!" kartı çıkar. Zamanlama `arrivalAt`; küre ve sütun `ArrivalEffect.tsx`; kart
+  `ArrivalCinematic.tsx`.
+- Geliştirmede yeniden izlemek için adresin sonuna `?gelis=mhellingtr` ekle.
+
+**İskeletli kahramanlar:** `src/world3d/story/AnimatedHero.tsx`
+- mhellingtr, egetunce ve BinTaş Blender'da iskeletlenip canlandırıldı (`public/models/kahraman-<kimlik>.glb`).
+  Hattın tamamı `modeller/README.md` → "Kahramanların iskeleti ve animasyonları".
+- Klip hızları (adım uzunluğu): `src/world3d/story/heroMotion.ts`.
+- Takipçiler eskisi gibi kalabalık çiziminde (binlercesi ≈ 25 çizim); iskelet yalnızca kahramanlarda.
+
+**Gün düzeni (İstanbul saatine bağlı):** `src/world3d/story/daySchedule.ts`
+
+| Saat | mhellingtr | egetunce | BinTaş |
+|---|---|---|---|
+| 01–05 | çadırında uyur | uyur | uyur (04:48'de kalkar, ocağı yakar) |
+| 05–07 | çadırdan çıkar, gerinir, derede yüz yıkar, kahvaltı | aynı | ocak, yüz yıkama, kazan |
+| 07–12 | odunu istife taşır | ağaç keser ve yarar | dereden su taşır, kazana bakar |
+| 12–15 | meyve toplar | ot toplar | şifalı ot toplar |
+| 15–19 | çayırda avlanır | iz sürer | otları kurutur, ocağa bakar |
+| 19–01 | ateş başında oturur, sohbet | aynı | aynı, ara ara ateşe odun atar |
+
+- Saatler ve süreler dosyanın başındaki sabitlerde (`WAKE_AT`, `SLEEP_AT`, `WORK_START`…) ve her işin işlevinde.
+- Herkes aynı anda aynı şeyi görür; günlük çeşitlilik (hangi ağaç, hangi çalı) tarihten gelir.
+- egetunce henüz gelmemişse ağacı mhellingtr kendi keser ve taşır; kim gelmişse ona göre kurulur.
+- İş yerleri (koru, çalılar, ot öbekleri, av çayırı, dere kıyısı, oturaklar, çadırlar) araziye göre bir kez bulunur:
+  `src/world3d/story/kutadaSites.ts`. Yollar çadırlara ve suya girmez: `walkGrid.ts`.
+- Dünyadaki izler (`worldMarks.ts`, çizimi `KutadaWork.tsx`): ağaç balta vurdukça sarsılır, devrilir, yarılır,
+  kütük kalır, ertesi sabah fidan büyür; istif gün içinde büyür; toplanan çalının meyvesi azalır. Uyuyanların
+  çadırının üstünde "Zzz" yükselir.
+- Denemek için: `?saat=9` (odun), `?saat=13` (toplama), `?saat=16` (av; o günün atış saati değişir), `?saat=21` (ateş
+  başı), `?saat=3` (uyku).
+  Sabitlenen saatten itibaren kahramanlar gerçek hızda yaşar.
+
+**Av çayırı ve hayvanlar:** `src/world3d/story/animals.ts`
+- Kut Kapısı'nın kuzeyindeki çayırda dört geyik (biri boynuzlu, sürünün başı), beş tavşan ve yedi kuş yaşar.
+- **Geyikler:** sürüyle otlar; sürünün yeri on dakikada bir değişir.
+- **Tavşanlar:** her birinin kendi köşesi var, zıplayıp kemirir.
+- **Kuşlar:** sürüyle çayıra ya da meyve çalılarına konar. Akşam 19:20'de uzaklara uçar, sabah 05:30'da döner.
+- Her hayvanın günü kısa bölümlerden kurulur (geyikte 10, tavşanda 5 dakika, kuşta her konak). Yalnızca o anın
+  bölümü hesaplanır, bütün gün bellekte tutulmaz.
+- Sayılar, ölçekler ve hızlar `ANIMALS` içinde. Çizim `MeadowLife.tsx`.
+
+**Av (15:00–18:40):** `src/world3d/story/daySchedule.ts` → `hunt`
+- Her gün bir av seçilir: yarı yarıya geyik, sonra tavşan, kuş (`huntTarget`).
+- mhellingtr önce çayırın kenarında yarım saat ile bir saat gözler. Hayvan bir yerde otlarken yürüyerek yaklaşır,
+  son metreleri eğilerek gider, yayı gerer.
+- 1–3 ok atar. Iskalanan ok toprağa saplanır ve hayvan kaçar; avcı kenara çekilip bekler. Son ok isabet eder:
+  hayvan yere yığılır (kan yok).
+- Avcı yanına yürür, diz çöküp sırtlar, kamptaki asacağa (çadırının yanında) asar, ateş başında dinlenir.
+- Asılan av o akşam ve ertesi sabah 07:00'ye kadar asacakta durur. Ertesi gün aynı hayvan çayırda yeniden doğar.
+- Pusu mesafeleri `AMBUSH`, okun hızı `ARROW_SPEED`. Oklar, asacak ve donmuş av `MeadowLife.tsx`, sırttaki av
+  `AnimatedHero.tsx` içinde.
+
+- Geliştirmede günün avını seçmek için adrese `?av=geyik` (ya da `tavsan`, `kus`) ekle; yayında yok sayılır.
+
+**Ada sesleri:** `src/audio/kutadaSound.ts`
+- Sağ alttaki kamera düğmelerinin en üstündeki hoparlör düğmesi açar. Tarayıcılar sesi ancak tıklamayla başlattığı
+  için her açılışta kapalıdır; haritadan çıkınca susar.
+- Hepsi kodla üretilir, ses dosyası yok:
+  - balta "tok"u (egetunce her vurduğunda)
+  - yayın tıngırtısı, okun saplanması
+  - kuş cıvıltısı (gündüz)
+  - ocağın uğultusu ve çıtırtısı (gece daha güçlü)
+  - gece cırcır böcekleri, hep biraz rüzgâr
+- Ses, kameranın baktığı yere yakınsa duyulur, ekranın solundaysa soldan gelir. Uzaktan bakarken yalnızca rüzgâr
+  duyulur. Duyma mesafesi ve sağ-sol ayarı `src/audio/soundMix.ts`, ne zaman hangi sesin çalacağı
+  `src/world3d/story/KutadaSoundDirector.tsx`.
+
+**Performans:** iskeletli kahraman ve hayvanların renk parçaları tek ağda birleşir, renk köşelere yazılır
+(`src/world3d/story/mergeSkinned.ts`). Karakter başına 1–4 çizim kalır (önce 10–48'di). Bu makinede ölçülen değerler:
+
+| Görünüm | Kare süresi | Çizim |
+|---|---|---|
+| Çayır, yakın | 1,5 ms | 101 |
+| Oba, yakın | 1,8 ms | 155 |
+| Kutada, genel | 2,5 ms | 274 |
+
+**Seslenince el sallama:** `src/world3d/story/reactions.ts`
+- Aranan ya da tıklanan kahraman kameraya döner, el sallar ve balonda bir söz söyler; uyuyorsa çadırından çıkar,
+  esner, el sallar ("Uyuyordum… Hoş geldin!") ve geri girer. Geliş sinemasında da el sallar.
+- Sözler: `src/content/heroLines.ts` (kahraman ve iş başına). Yeni söz eklemek için listeye bir satır yeter.
+- Elindeki eşyalar (balta, sırtta odun, su testisi, sepet): `src/world3d/story/heroProps.ts`.
 
 **Paylaşım görseli:** `scripts/generate-og.ts`. Değiştirdikten sonra `npm run og` çalıştır.
 

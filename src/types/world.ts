@@ -147,6 +147,20 @@ export interface NamedPlace {
   namedBy: string;
 }
 
+/** Hikâyede bir kahramanın gelişi. */
+export interface StoryArrival {
+  /** Kahramanın kimliği (content/story.ts → ARRIVAL_ORDER). */
+  id: string;
+  /** ISO 8601 tarih-saat. */
+  at: string;
+}
+
+/** Hikâyenin durumu: kaçıncı gün ve kimler geldi. */
+export interface StoryState {
+  day: number;
+  arrivals: StoryArrival[];
+}
+
 /** public/data/world.json dosyasının şekli. */
 export interface WorldState {
   version: 1;
@@ -154,14 +168,18 @@ export interface WorldState {
   seed: number;
   /** Sis kenarının yumuşaklığı (dünya birimi). */
   fogSoftness: number;
-  /** Sisten çıkmış bölgeler. */
+  /** Görünen (karartısı kalkmış) bölgeler. */
   revealedRegions: RegionId[];
+  /** Görünen yabani adalar (yazılmazsa hiçbiri). */
+  revealedIslands: PlaceId[];
   glimpses: RevealCircle[];
   /** Adalardaki hava (yazılmazsa "kar"). */
   weather: Weather;
   /** Topluluğun ad koyduğu yerler (yazılmazsa boş). */
   namedPlaces: NamedPlace[];
   socialLinks: SocialLinks;
+  /** Hikâye: gün ve gelen kahramanlar (yazılmazsa 1. gün, kimse yok). */
+  story: StoryState;
   /** ISO 8601 tarih-saat, ör. "2026-11-24T18:00:00+03:00". */
   updatedAt: string;
 }

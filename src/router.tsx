@@ -1,6 +1,6 @@
 /**
  * ROTALAR
- *   /             Ana Akın Haritası (tam ekran)
+ *   /             Harita (tam ekran)
  *   /karakterler  Oba Kadrosu ve Nadirlik Dizini
  *   /bolumler     12 Bölümlük Sezon ve Boss Günlüğü
  *   /katil        Obaya Katıl ve Sınıf Rehberi
@@ -10,7 +10,7 @@
  * Sayfalar ayrı parçalar (chunk) halinde, yalnızca açıldıklarında yüklenir.
  */
 import type { ComponentType } from "react";
-import { createBrowserRouter, type RouteObject } from "react-router";
+import { createBrowserRouter, type RouteObject, redirect } from "react-router";
 import { AppLayout } from "./components/layout/AppLayout";
 import { LoadingScreen } from "./components/ui/LoadingScreen";
 import NotFoundPage, { RouteErrorPage } from "./pages/NotFoundPage";
@@ -26,7 +26,8 @@ export const routes: RouteObject[] = [
     children: [
       { index: true, lazy: page(() => import("./pages/MapPage")), handle: { fullBleed: true } },
       { path: "karakterler", lazy: page(() => import("./pages/CharactersPage")) },
-      { path: "bolumler", lazy: page(() => import("./pages/EpisodesPage")) },
+      // Sezon sayfası kalktı (akın videoları platformlarda paylaşılıyor); eski bağlantılar haritaya döner.
+      { path: "bolumler", loader: () => redirect("/") },
       { path: "katil", lazy: page(() => import("./pages/JoinPage")) },
       { path: "studyo", lazy: page(() => import("./pages/StudioPage")) },
       // Yönetim paneli yalnızca geliştirme sunucusunda (npm run dev): yayın sürümüne girmez.

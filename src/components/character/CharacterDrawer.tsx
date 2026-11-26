@@ -4,7 +4,7 @@
  * Harita ve kadro sayfası bu bileşeni bir kez yerleştirir; hangi karakterin gösterileceğini
  * depodaki selectedId belirler. Kimlik bulunamazsa nazik bir uyarı gösterir.
  */
-import { Check, Link2, MapPin, Sparkles } from "lucide-react";
+import { Check, Link2, MapPin } from "lucide-react";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { ROLE_LABELS, isCastMember } from "../../content/cast";
@@ -72,14 +72,12 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 }
 
 function CharacterDetails({ character: c }: { character: Character }) {
-  const { activeParticipantIds, activeEpisode } = useGameData();
   const setRegions = useAppStore((s) => s.setRegions);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const cls = CLASSES[c.class.id];
   const rarity = RARITY_INFO[c.rarity];
   const region = REGIONS[c.region];
-  const inRaid = activeParticipantIds.has(c.id);
 
   return (
     <article>
@@ -96,19 +94,14 @@ function CharacterDetails({ character: c }: { character: Character }) {
           <Badge tone="ice" icon={<ClassIcon classId={c.class.id} className="size-3.5" />}>
             {cls.name} · {cls.archetypeLabel}
           </Badge>
-          {inRaid && (
-            <Badge tone="gold" icon={<Sparkles aria-hidden className="size-3.5" />}>
-              Bölüm {activeEpisode.number} akınında
-            </Badge>
-          )}
         </div>
       </div>
 
       <dl className="mt-5 grid grid-cols-3 gap-2 text-center">
         {[
           ["Puan", c.points],
-          ["Oy", c.seasonContributions.votesCast],
-          ["Akın", c.seasonContributions.raidsJoined],
+          ["Rozet", c.badges.length],
+          ["Platform", c.linkedPlatforms.length],
         ].map(([label, value]) => (
           <div key={label} className="rounded-xl bg-white/5 p-2">
             <dt className="text-xs text-buz-300">{label}</dt>

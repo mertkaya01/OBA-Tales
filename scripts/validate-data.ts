@@ -12,7 +12,7 @@ import { resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { CAST } from "../src/content/cast";
 import { EPISODES } from "../src/content/episodes";
-import { REGIONS, REGION_LIST } from "../src/content/regions";
+import { REGIONS } from "../src/content/regions";
 import { pointInPolygon } from "../src/lib/geometry";
 import { multiPlatformBadge } from "../src/lib/rules";
 import { DATA_SCHEMAS, formatDataError, type DataFileName } from "../src/schemas/data";
@@ -140,19 +140,7 @@ if (season) {
   }
 }
 
-// ── world.json ↔ sezon ─────────────────────────────────────────────
-
-if (world && season) {
-  const revealed = new Set(world.revealedRegions);
-  const shouldBeOpen = REGION_LIST.filter((r) => r.unlockEpisode <= season.activeEpisode);
-  const notYet = REGION_LIST.filter((r) => r.unlockEpisode > season.activeEpisode && revealed.has(r.id));
-  report(
-    warnings,
-    "world.json: aktif bölüme göre açılmış olması gereken bölgeler",
-    shouldBeOpen.filter((r) => !revealed.has(r.id)).map((r) => `${r.id} (B${r.unlockEpisode})`),
-  );
-  report(warnings, "world.json: erken açılmış bölgeler (bilerek yaptıysanız sorun yok)", notYet.map((r) => `${r.id} (B${r.unlockEpisode})`));
-}
+// Bölgeler artık hikâyeyle açılır (yönetim paneli → Hikâye); sezonla karşılaştırılmaz.
 
 // ── world.json ↔ roster: "adını koyan" karakterler ─────────────────
 
@@ -170,7 +158,7 @@ if (world && roster) {
 console.log("OBA-Tales veri denetimi");
 if (roster) console.log(`  roster.json   ${roster.characters.length} takipçi`);
 if (season) console.log(`  season.json   aktif bölüm ${season.activeEpisode}, ${season.episodes.length} bölüm kaydı`);
-if (world) console.log(`  world.json    ${world.revealedRegions.length} bölge açık, tohum ${world.seed}`);
+if (world) console.log(`  world.json    ${world.revealedRegions.length} bölge ve ${world.revealedIslands.length} ada açık, ${world.story.day}. gün, ${world.story.arrivals.length} kahraman geldi`);
 
 if (warnings.length > 0) console.log(`\n⚠ Uyarılar\n${warnings.map((w) => `  ${w}`).join("\n")}`);
 if (errors.length > 0) {

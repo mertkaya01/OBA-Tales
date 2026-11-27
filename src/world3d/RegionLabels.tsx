@@ -11,7 +11,11 @@ import { REGION_LIST } from "../content/regions";
 import type { Terrain } from "../game/terrain";
 import { formatNumber } from "../lib/text";
 import type { RegionId } from "../types";
-import { groundY } from "./worldScale";
+import { groundY, worldZoomOf } from "./worldScale";
+
+/** Bu dünya yakınlıkları arasında bölge adları solar: yakından bakınca yer etiketleri (Kut Kapısı, obalar) konuşsun. */
+const FADE_FROM = 1.8;
+const FADE_TO = 2.6;
 
 type LabelRefs = RefObject<(HTMLDivElement | null)[]>;
 
@@ -50,7 +54,10 @@ export function RegionLabelLayer({
   );
 }
 
-/** Sahnenin içinde: etiketleri her karede bölge merkezlerinin ekran konumuna taşır. */
+/**
+ * Sahnenin içinde: etiketleri her karede bölge merkezlerinin ekran konumuna taşır. Yakınlaştıkça solar (Kutada'nın
+ * merkezi Kut Kapısı'nın üstünde: yakından iki etiket çakışmasın).
+ */
 export function LabelProjector({ refs, terrain }: { refs: LabelRefs; terrain: Terrain }) {
   const { camera, size } = useThree();
   const anchors = useMemo(
@@ -60,11 +67,15 @@ export function LabelProjector({ refs, terrain }: { refs: LabelRefs; terrain: Te
   const scratch = useMemo(() => new Vector3(), []);
 
   useFrame(() => {
+    const zoom = worldZoomOf((camera as { zoom: number }).zoom, size);
+    const fade = Math.min(1, Math.max(0, (zoom - FADE_FROM) / (FADE_TO - FADE_FROM)));
+    const opacity = 1 - fade * fade * (3 - 2 * fade);
     anchors.forEach((anchor, i) => {
       const el = refs.current[i];
       if (!el) return;
       scratch.copy(anchor).project(camera);
-      const visible = Math.abs(scratch.x) <= 1.1 && Math.abs(scratch.y) <= 1.1;
+      const visible = opacity > 0.02 && Math.abs(scratch.x) <= 1.1 && Math.abs(scratch.y) <= 1.1;
+      el.style.opacity = opacity.toFixed(2);
       const x = (scratch.x * 0.5 + 0.5) * size.width;
       const y = (-scratch.y * 0.5 + 0.5) * size.height;
       el.style.transform = visible ? `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%)` : "translate(-9999px, -9999px)";

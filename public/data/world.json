@@ -14,9 +14,15 @@
     "tiktok": "https://www.tiktok.com/@obatales_",
     "youtube": "https://www.youtube.com/@OBA-tales"
   },
+  "supportUrl": null,
   "story": {
     "day": 1,
-    "arrivals": []
+    "arrivals": [
+      {
+        "id": "mhellingtr",
+        "at": "2026-11-27T07:51:42.302Z"
+      }
+    ]
   },
-  "updatedAt": "2026-11-26T18:00:00+03:00"
+  "updatedAt": "2026-11-27T07:51:42.302Z"
 }

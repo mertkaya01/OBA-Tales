@@ -96,6 +96,14 @@ export interface SignatureSkill {
   darkness?: readonly [number, number, number, number];
 }
 
+/** Kararmanın gücü (0 → 1 → 0) bir anda: [başla, tam, aydınlan, bitti] çizelgesine göre. */
+export function darknessAt(t: number, [d0, d1, d2, d3]: readonly [number, number, number, number]): number {
+  if (t <= d0 || t >= d3) return 0;
+  if (t < d1) return (t - d0) / (d1 - d0);
+  if (t <= d2) return 1;
+  return 1 - (t - d2) / (d3 - d2);
+}
+
 /** Kahramanlara özel imza yetenekleri; diğer herkes sınıfının yeteneğini kullanır. */
 export function signatureSkill(c: Character, at: { x: number; y: number }): SignatureSkill {
   switch (c.id) {

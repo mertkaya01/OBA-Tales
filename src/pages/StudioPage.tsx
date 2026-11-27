@@ -2,8 +2,8 @@
  * REEL STÜDYOSU ( /studyo )
  *
  * Dünyayı dikey (9:16) sinematik kamerayla çekip Instagram Reels ve TikTok için video dosyası üretir:
- *   şablon seç (bölüm tanıtımı · Akın Günü · obaya katıl · Kut Kapısı · adsız ada · kahraman) → saati ve havayı ayarla →
- *   altyazıları düzenle → önizle → "Kaydet ve indir"
+ *   şablon seç (karşılama · kahraman yetenekleri · bölüm tanıtımı · Akın Günü · obaya katıl · Kut Kapısı · adsız ada ·
+ *   kahraman) → saati ve havayı ayarla → altyazıları düzenle → önizle → "Kaydet ve indir"
  *
  * Kayıt tarayıcıda yapılır, hiçbir şey sunucuya gönderilmez. Kapak görseli PNG olarak da indirilebilir.
  */
@@ -36,6 +36,8 @@ import {
 } from "../studio/reel";
 import { ReelPainter, StudioDevHandle, StudioDirector } from "../studio/StudioStage";
 import { ISLAND_LIST } from "../content/islands";
+import { ARRIVAL_ORDER } from "../content/story";
+import { PORTRAIT, signatureSkill } from "../game/fx/fxCatalog";
 import { LANDMARKS, VILLAGES } from "../world3d/layout";
 import { useWorldScene } from "../world3d/useWorldScene";
 import { WorldContent } from "../world3d/WorldContent";
@@ -55,13 +57,20 @@ const HOURS: readonly { id: string; label: string; hour: number | null | "sablon
 
 const WEATHER_LABELS: Readonly<Record<Weather, string>> = { acik: "Açık", kar: "Kar", tipi: "Tipi" };
 
+/** Kahramanların obası: şablonların "oba" çekimleri burada (1. günde açık olan tek oba). */
+const KONUK_OBASI = VILLAGES.find((v) => v.id === "konuk_obasi") ?? VILLAGES[0];
+
 type Status = { kind: "bos" } | { kind: "oynuyor" } | { kind: "kaydediyor" } | { kind: "bitti"; text: string } | { kind: "hata"; text: string };
 
 export default function StudioPage() {
   const scene = useWorldScene();
   const { data, formation, boss, placements } = scene;
-  const [template, setTemplate] = useState<TemplateId>(formation ? "bolum" : "katil");
-  const [heroQuery, setHeroQuery] = useState("baturay");
+  const arrivedHeroes = useMemo(() => ARRIVAL_ORDER.map((id) => data.characterById.get(id)).filter((c) => c !== undefined), [data.characterById]);
+  const [template, setTemplate] = useState<TemplateId>(arrivedHeroes.length > 0 ? "karsilama" : formation ? "bolum" : "katil");
+  const [heroQuery, setHeroQuery] = useState("mhellingtr");
+  // Karşılamada henüz doğmamış kahramanlar sahneden çıkarılır (yönetmen söyler).
+  const [hiddenHeroes, setHiddenHeroes] = useState<readonly string[]>([]);
+  const stageCharacters = useMemo(() => (hiddenHeroes.length ? data.characters.filter((c) => !hiddenHeroes.includes(c.id)) : data.characters), [data.characters, hiddenHeroes]);
   const [hourId, setHourId] = useState("sablon");
   const [weather, setWeather] = useState<Weather>(data.world.weather);
   const [showCards, setShowCards] = useState(true);
@@ -90,7 +99,12 @@ export default function StudioPage() {
         return island ? { position: island.label, nickname: island.nickname } : null;
       })(),
       newcomers: data.characters.filter((c) => c.region === "kutada").length,
-      village: VILLAGES[0].center,
+      village: KONUK_OBASI.center,
+      heroes: arrivedHeroes.map((character) => ({
+        character,
+        position: placements.get(character.id)?.home ?? KONUK_OBASI.center,
+        skill: signatureSkill(character, { x: PORTRAIT.feetX, y: PORTRAIT.feetY }).name,
+      })),
       episode: { number: episode.number, title: episode.title, question: poll?.question ?? null, options: poll?.options.map((o) => o.label) ?? [] },
       raid: formation
         ? {
@@ -116,7 +130,7 @@ export default function StudioPage() {
             }
           : null,
     };
-  }, [data.activeEpisode, data.world.namedPlaces, data.characters, data.characterById, formation, boss, hero, placements]);
+  }, [data.activeEpisode, data.world.namedPlaces, data.characters, data.characterById, formation, boss, hero, placements, arrivedHeroes]);
 
   const baseScript = useMemo(() => buildTemplate(template, context), [template, context]);
   // Altyazılar düzenlenebilir: şablon değişince şablonun önerisine döner.
@@ -256,8 +270,8 @@ export default function StudioPage() {
                 camera={{ position: [WORLD_SIZE.width / 2, 1500, WORLD_SIZE.height / 2 + 0.01], zoom: 1, near: 10, far: 4000 }}
                 onCreated={({ gl }) => gl.setClearColor(TERRAIN_COLORS.deepSea)}
               >
-                <WorldContent scene={scene} characters={data.characters} animate pixelSize={2} weather={weather} />
-                <StudioDirector timeline={timelineRef} scene={scene} />
+                <WorldContent scene={scene} characters={stageCharacters} animate pixelSize={2} weather={weather} />
+                <StudioDirector timeline={timelineRef} scene={scene} onHiddenHeroes={setHiddenHeroes} />
                 <ReelPainter timeline={timelineRef} />
                 <StudioDevHandle timeline={timelineRef} />
               </Canvas>
@@ -299,6 +313,12 @@ export default function StudioPage() {
                   )}
                 >
                   <span className="font-display">{TEMPLATE_LABELS[id]}</span>
+                  {id === "karsilama" && (
+                    <span className="block text-xs text-buz-300">
+                      {arrivedHeroes.length ? `${arrivedHeroes.length} kahraman Kut Kapısı'ndan ışık olarak doğar` : "Henüz kahraman gelmedi; Kut Kapısı çekilir"}
+                    </span>
+                  )}
+                  {id === "yetenekler" && <span className="block text-xs text-buz-300">Her kahraman imza yeteneğini oynar (kalkan, yıldırım, ateş)</span>}
                   {id === "bolum" && <span className="block text-xs text-buz-300">{formation ? `Bölüm ${data.activeEpisode.number} akın meydanı` : "Oba çekimleri"}</span>}
                   {id === "akin" && (
                     <span className="block text-xs text-buz-300">{formation ? "36 sn savaş: Öfke çubuğu ve takipçi adları" : "Aktif akın yok; bölüm tanıtımı çekilir"}</span>

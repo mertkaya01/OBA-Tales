@@ -28,6 +28,8 @@ dist-ssr
 
 # Gerçek takipçi listeleri ve yorum dökümleri (kişisel veri, git'e girmez)
 veri/girdi/
+# Stüdyo için örnek alınan başkalarının videoları ve çıkarılan kareler (yalnızca incelemek için, git'e girmez)
+veri/referans/
 
 # Claude Code yerel ayarları
 .claude/settings.local.json

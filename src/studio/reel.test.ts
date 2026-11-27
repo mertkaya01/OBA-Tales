@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { createStarterCharacter } from "../lib/rules";
 import { RAID_DAY_LENGTH, actAt } from "../world3d/living/raidDay";
-import { AKIN_REEL_START, TEMPLATE_IDS, WORD_INTERVAL, buildTemplate, cameraAt, cameraDirection, captionAt, cardAt, signatureFrom, totalDuration, type StudioContext } from "./reel";
+import { ORB_STAGGER, orbAt } from "../world3d/story/arrival";
+import { AKIN_REEL_START, ARRIVAL_REEL_AT, SKILL_PART, TEMPLATE_IDS, WORD_INTERVAL, buildTemplate, cameraAt, cameraDirection, captionAt, cardAt, signatureFrom, totalDuration, type StudioContext } from "./reel";
 
 const raiders = ["kalkan_a", "ok_b", "ocak_c"].map((handle, i) =>
   createStarterCharacter({ handle, platform: (["instagram", "tiktok", "youtube"] as const)[i], region: "ayazbogazi", coordinates: { x: 236, y: 336 }, now: new Date("2026-11-26T12:00:00Z") }),
@@ -17,6 +18,11 @@ const ctx: StudioContext = {
   raid: { square: { x: 236, y: 336 }, focus: { x: 236, y: 290 }, facing: Math.PI, count: 90, raiders },
   boss: { name: "Buzkıran Tekgöz" },
   hero: { id: "baturay", position: { x: 220, y: 570 }, displayName: "Baturay", handle: "baturay", title: "Akın Lideri", rarity: "Efsanevi", className: "Kalkaneri", region: "Akınburnu" },
+  heroes: [
+    { character: { ...raiders[1], id: "mhellingtr", displayName: "mhellingtr", title: "Yıldızların Okçusu" }, position: { x: 210, y: 575 }, skill: "Gök Gürültüsü" },
+    { character: { ...raiders[0], id: "egetunce", displayName: "egetunce", title: "Gün Kılıçlı Alp" }, position: { x: 222, y: 585 }, skill: "Lavanta Kalkanı · Gün Kılıcı" },
+    { character: { ...raiders[2], id: "bintas", displayName: "BinTaş", title: "Alev Hatun" }, position: { x: 230, y: 572 }, skill: "Bin Taş Ocağı" },
+  ],
 };
 
 describe("kamera çekimleri", () => {
@@ -89,6 +95,37 @@ describe("kamera çekimleri", () => {
     expect(card.at + card.duration).toBeLessThanOrEqual(total);
     expect(actAt(AKIN_REEL_START + card.at).act.id).toBe("zafer");
     expect(buildTemplate("akin", { ...ctx, raid: null }).template).toBe("bolum");
+  });
+
+  it("karşılama: geliş sineması kapıya inince başlar, kahramanlar inişten sonra kartta, video bitmeden kart kapanır", () => {
+    const reel = buildTemplate("karsilama", ctx);
+    const total = totalDuration(reel.shots);
+    expect(reel.arrival).toEqual({ at: ARRIVAL_REEL_AT, heroes: ["mhellingtr", "egetunce", "bintas"] });
+    // Son küre indiğinde kahramanlar kartı açılır; adlar Türkçe büyük harfle.
+    const landed = ARRIVAL_REEL_AT + 4.8 + 2 * ORB_STAGGER;
+    expect(orbAt(landed - ARRIVAL_REEL_AT, 2).revealed).toBe(true);
+    const heroesCard = reel.cards[0];
+    expect(heroesCard.at).toBeGreaterThanOrEqual(landed);
+    expect(heroesCard.lines).toContain("BİNTAŞ · ALEV HATUN");
+    for (const card of reel.cards) expect(card.at + card.duration).toBeLessThanOrEqual(total);
+    // Küreler uçarken kamera kapı ile oba arasında.
+    expect(cameraAt(reel.shots, ARRIVAL_REEL_AT + 3.5).shot).toBe(1);
+    expect(buildTemplate("karsilama", { ...ctx, heroes: [] }).template).toBe("kapi");
+  });
+
+  it("yetenekler: her kahramana eşit bölüm, kamera onu takip eder, panel bölümün içinde açılıp kapanır", () => {
+    const reel = buildTemplate("yetenekler", ctx);
+    const total = totalDuration(reel.shots);
+    expect(total).toBeCloseTo(SKILL_PART * 5);
+    expect(reel.skills?.map((s) => s.hero.id)).toEqual(["mhellingtr", "egetunce", "bintas"]);
+    reel.skills!.forEach((s, i) => {
+      expect(s.at).toBeGreaterThanOrEqual(SKILL_PART * (i + 1));
+      expect(s.at + s.duration).toBeLessThanOrEqual(SKILL_PART * (i + 2));
+      expect(cameraAt(reel.shots, s.at + 1).pose.follow).toBe(s.hero.id);
+    });
+    // Altyazılar bölümlerle aynı anda değişir: ikinci satır ilk kahramanın bölümünde.
+    expect(captionAt(reel.captions, SKILL_PART + 1.5, total)?.words.join(" ")).toBe("mhellingtr: Gök Gürültüsü");
+    expect(buildTemplate("yetenekler", { ...ctx, heroes: [] }).template).toBe("katil");
   });
 });
 

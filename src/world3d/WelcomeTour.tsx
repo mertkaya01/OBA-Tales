@@ -10,6 +10,7 @@ import { CharacterPortrait } from "../components/character/CharacterPortrait";
 import { TOUR_STEPS, type TourStep } from "../content/tour";
 import { WORLD_SIZE } from "../types";
 import { cn } from "../lib/cn";
+import { useAppStore } from "../state/useAppStore";
 import type { Character } from "../types";
 import type { CameraRigHandle } from "./CameraRig";
 import { LANDMARKS, VILLAGES } from "./layout";
@@ -20,10 +21,6 @@ interface WelcomeTourProps {
   onClose: () => void;
 }
 
-/** Arama kutusuna odaklanır (HeroSearch, data-hero-search). */
-function focusSearch(): void {
-  document.querySelector<HTMLInputElement>("[data-hero-search]")?.focus();
-}
 
 /** Kutada'nın obası (yeni gelenlerin ve kahramanların evi). */
 const KONUK_OBASI = VILLAGES.find((v) => v.region === "kutada") ?? VILLAGES[0];
@@ -84,7 +81,8 @@ export function WelcomeTour({ rig, narrator, onClose }: WelcomeTourProps) {
             type="button"
             onClick={() => {
               onClose();
-              window.setTimeout(focusSearch, 50);
+              // Arama kutusu parlar ve odaklanır: "kullanıcı adını yaz" (HeroSearch).
+              window.setTimeout(() => useAppStore.getState().showSearchHint(), 50);
             }}
             className="rounded-xl border border-gunozu-400/60 bg-gunozu-400/15 px-3 py-1.5 font-display text-sm text-gunozu-100 hover:bg-gunozu-400/25"
           >

@@ -241,6 +241,17 @@ function AnimatedHero({ hero, character, model, placement, world, onSelect, onHo
       }
     }
 
+    // Sahne (karşılama): gün düzeni ve tepki yerine kapının önünde durur, kameraya bakar, istenince el sallar.
+    const staged = story.stage.get(hero);
+    if (staged) {
+      x = staged.x;
+      z = staged.z;
+      hidden = false;
+      speech = null;
+      clip = staged.wave ? "selam" : "bosta";
+      targetYaw = toCamera(x, z);
+    }
+
     // Klip: değişince yumuşak geçiş ve belirlenen yerden başlar; sürüyorsa zamanı akar.
     const oneShot = ONE_SHOT_CLIPS.has(clip);
     if (clip !== s.clip) {

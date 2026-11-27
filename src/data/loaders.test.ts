@@ -41,7 +41,7 @@ const world: WorldState = {
   socialLinks: { instagram: null, tiktok: null, youtube: null },
   supportUrl: null,
   revealedIslands: [],
-  story: { day: 1, arrivals: [{ id: "mhellingtr", at: iso }, { id: "egetunce", at: iso }] },
+  story: { day: 1, arrivals: [{ id: "mhellingtr", at: iso }, { id: "egetunce", at: iso }], welcome: "uclu" },
   updatedAt: iso,
 };
 

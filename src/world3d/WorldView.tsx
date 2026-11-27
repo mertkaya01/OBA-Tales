@@ -21,7 +21,9 @@ import { CAST } from "../content/cast";
 import { NARRATOR_ID } from "../content/story";
 import { WelcomeTour } from "./WelcomeTour";
 import { ArrivalCinematic } from "./story/ArrivalCinematic";
-import { ARRIVAL_SEEN_KEY, pendingArrival } from "./story/arrival";
+import { WelcomeCinematic } from "./story/WelcomeCinematic";
+import { welcomeSpots } from "./story/welcome";
+import { ARRIVAL_SEEN_KEY, WELCOME_SEEN_KEY, openingCinematic, type OpeningCinematic } from "./story/arrival";
 import { LANDMARKS, VILLAGES } from "../content/sites";
 import { cn } from "../lib/cn";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -92,6 +94,30 @@ function readSeenArrivals(): Set<string> {
   }
 }
 
+/** Siteyi bu tarayıcıda ilk kez mi açıyor? (karşılama da tur da görülmemiş; depolama kapalıysa ilk kez sayılmaz) */
+function isFirstVisit(): boolean {
+  try {
+    return window.localStorage.getItem(WELCOME_SEEN_KEY) === null && window.localStorage.getItem(TOUR_SEEN_KEY) === null;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Açılış sineması. Geliştirmede ?gelis=<kimlik> tek bir gelişi, ?karsilama ilk ziyaret karşılamasını zorlar.
+ * Paylaşılan bir karakter bağlantısıyla (?k=) gelinmişse sinema oynamaz: kamera doğrudan o karaktere gider.
+ */
+function initialCinematic(data: { world: { story: Parameters<typeof openingCinematic>[0] }; characterById: ReadonlyMap<string, Character> }): OpeningCinematic | null {
+  const params = new URLSearchParams(window.location.search);
+  if (import.meta.env.DEV) {
+    const forced = params.get("gelis");
+    if (forced && data.characterById.has(forced)) return { kind: "gelis", heroes: [forced] };
+    if (params.has("karsilama")) return openingCinematic(data.world.story, new Set(), new Date(), true);
+  }
+  if (useAppStore.getState().selectedId) return null;
+  return openingCinematic(data.world.story, readSeenArrivals(), new Date(), isFirstVisit());
+}
+
 export default function WorldView({ characters: filtered }: WorldViewProps) {
   const scene = useWorldScene();
   // Ada sesleri: düğmeyle açılır, haritadan çıkınca susar.
@@ -100,15 +126,17 @@ export default function WorldView({ characters: filtered }: WorldViewProps) {
   useEffect(() => () => useKutadaSound.getState().stop(), []);
   const { data, terrain, motionUniforms, boss, formation, placements, story, seed } = scene;
 
-  // Geliş sineması: bu tarayıcının görmediği yeni bir kahraman varsa bir kez oynar (geliştirmede ?gelis=<kimlik> zorlar).
-  const [cinematic, setCinematic] = useState<string | null>(() => {
-    const forced = import.meta.env.DEV ? new URLSearchParams(window.location.search).get("gelis") : null;
-    if (forced && data.characterById.has(forced)) return forced;
-    return pendingArrival(data.world.story, readSeenArrivals(), new Date());
-  });
-  // Kahraman ışık sütunu inene kadar haritada görünmez.
-  const [hiddenHero, setHiddenHero] = useState<string | null>(cinematic);
-  const characters = useMemo(() => (hiddenHero ? filtered.filter((c) => c.id !== hiddenHero) : filtered), [filtered, hiddenHero]);
+  // Açılış sineması: ilk ziyarette karşılama (kahramanlar Kut Kapısı'ndan doğar), sonra yalnızca yeni gelişler.
+  const [cinematic, setCinematic] = useState<OpeningCinematic | null>(() => initialCinematic(data));
+  // Kahramanlar ışık sütunu inene kadar haritada görünmez.
+  const [hiddenHeroes, setHiddenHeroes] = useState<ReadonlySet<string>>(() => new Set(cinematic?.heroes ?? []));
+  // Sinema sürerken harita arayüzü (arama, filtreler, lejant) çekilir.
+  const cinematicOn = cinematic !== null;
+  useEffect(() => {
+    useAppStore.getState().setCinematic(cinematicOn);
+    return () => useAppStore.getState().setCinematic(false);
+  }, [cinematicOn]);
+  const characters = useMemo(() => (hiddenHeroes.size ? filtered.filter((c) => !hiddenHeroes.has(c.id)) : filtered), [filtered, hiddenHeroes]);
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const regions = useAppStore((s) => s.filters.regions);
   const focus = useAppStore((s) => s.focus);
@@ -295,31 +323,61 @@ export default function WorldView({ characters: filtered }: WorldViewProps) {
     }
     useAppStore.getState().endTour();
   }, []);
-  const cinematicHero = cinematic ? data.characterById.get(cinematic) : undefined;
-  const cinematicSpot = useMemo(() => {
-    const placement = cinematic ? placements.get(cinematic) : undefined;
-    if (!placement || !cinematic) return null;
-    // Işık kahramanın gün düzenindeki o anki yerine iner (odun keserken koruya, gece çadırının kapısına).
-    const spot = scheduledSpot({ data, terrain, seed, story, motionUniforms }, cinematic) ?? placement.home;
+  // Karşılamada (birden çok kahraman) hepsi Kut Kapısı'nın önüne yan yana doğar ve tek tek tanıtılır.
+  const welcome = cinematic?.kind === "karsilama" && cinematic.heroes.length > 1;
+  // Doğacak kahramanlar ve ışığın ineceği yerler: karşılamada kapının önü, yeni gelişte gün düzenindeki o anki yeri
+  // (odun keserken koru, gece çadır kapısı).
+  const arriving = useMemo(() => {
+    if (!cinematic) return [];
+    const stage = welcome ? welcomeSpots(LANDMARKS.kutKapisi, cinematic.heroes.length) : null;
+    const list = cinematic.heroes.flatMap((id, i) => {
+      const hero = data.characterById.get(id);
+      const placement = placements.get(id);
+      if (!hero || !placement) return [];
+      return [{ hero, spot: stage?.[i] ?? scheduledSpot({ data, terrain, seed, story, motionUniforms }, id) ?? placement.home }];
+    });
     const portal = LANDMARKS.kutKapisi;
     scene.arrival.from = { x: portal.x, y: groundY(terrain, portal) + 20, z: portal.y };
-    scene.arrival.to = { x: spot.x, y: groundY(terrain, spot) + 1.5, z: spot.y };
-    return spot;
-  }, [cinematic, placements, terrain, scene.arrival, data, seed, story, motionUniforms]);
-  // Belirince kameraya döner, el sallar (uyuyorsa çadırından çıkıp selam verir, geri girer).
-  const onArrivalReveal = useCallback(() => {
-    setHiddenHero(null);
-    if (cinematic) story.calls.set(cinematic, motionUniforms.uTime.value + 0.5);
-  }, [cinematic, story, motionUniforms]);
+    scene.arrival.targets = list.map(({ spot }) => ({ x: spot.x, y: groundY(terrain, spot) + 1.5, z: spot.y }));
+    return list;
+  }, [cinematic, welcome, placements, terrain, scene.arrival, data, seed, story, motionUniforms]);
+  // Karşılamada kahramanlar kapının önünde durur (gün düzeni bekler); bitince yerlerine dönerler.
+  const onStage = useCallback(
+    (id: string, wave: boolean | null) => {
+      const spot = arriving.find((a) => a.hero.id === id)?.spot;
+      if (wave === null || !spot) story.stage.delete(id);
+      else story.stage.set(id, { x: spot.x, z: spot.y, wave });
+    },
+    [arriving, story],
+  );
+  // Belirince haritaya eklenir. Yeni gelişte ayrıca kameraya döner, el sallar (uyuyorsa çadırından çıkıp selam
+  // verir, geri girer); karşılamada el sallamayı sahne (onStage) yönetir.
+  const showHero = useCallback((id: string) => {
+    setHiddenHeroes((prev) => {
+      if (!prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+  }, []);
+  const onArrivalReveal = useCallback(
+    (id: string) => {
+      showHero(id);
+      story.calls.set(id, motionUniforms.uTime.value + 0.5);
+    },
+    [showHero, story, motionUniforms],
+  );
   const onArrivalDone = useCallback(() => {
     try {
       window.localStorage.setItem(ARRIVAL_SEEN_KEY, JSON.stringify(data.world.story.arrivals.map((a) => a.id)));
+      // Karşılama bitince (ya da atlanınca) bir daha oynamaz; tur ardından açılır.
+      if (cinematic?.kind === "karsilama") window.localStorage.setItem(WELCOME_SEEN_KEY, new Date().toISOString());
     } catch {
       // Depolama kapalıysa sinema bir dahaki ziyarette yine oynar.
     }
-    setHiddenHero(null);
+    setHiddenHeroes(new Set());
     setCinematic(null);
-  }, [data.world.story.arrivals]);
+  }, [data.world.story.arrivals, cinematic]);
 
   // Akın Günü göstergesi için akıncılar ve akının rozeti.
   const raiders = useMemo(() => (formation ? [...formation.slots.keys()].map((id) => data.characterById.get(id)).filter((c): c is Character => !!c) : []), [formation, data.characterById]);
@@ -385,10 +443,21 @@ export default function WorldView({ characters: filtered }: WorldViewProps) {
       <PlaceLabelLayer labels={placeLabels} refs={placeLabelRefs} onNamerClick={onNamerClick} />
       <CharacterLabelLayer refs={characterLabelRefs} characterById={data.characterById} visibleIds={visibleIds} />
 
-      {cinematicHero && cinematicSpot && (
+      {cinematic && welcome && arriving.length > 1 && (
+        <WelcomeCinematic
+          heroes={arriving}
+          runtime={scene.arrival}
+          rig={rigRef}
+          reducedMotion={reducedMotion}
+          onReveal={showHero}
+          onStage={onStage}
+          onDone={onArrivalDone}
+        />
+      )}
+      {cinematic && !welcome && arriving.length > 0 && (
         <ArrivalCinematic
-          hero={cinematicHero}
-          spot={cinematicSpot}
+          heroes={arriving}
+          welcome={cinematic.kind === "karsilama"}
           runtime={scene.arrival}
           rig={rigRef}
           reducedMotion={reducedMotion}
@@ -426,6 +495,8 @@ export default function WorldView({ characters: filtered }: WorldViewProps) {
           ]}
         />
       )}
+      {/* Sinema sürerken saat ve kamera düğmeleri çekilir (görüntü temiz kalsın). */}
+      <div className={cn("transition-[opacity,visibility] duration-500", cinematic && "invisible opacity-0")}>
       <WorldClock seasonStart={data.episodes[0]?.progress?.airedAt ?? null} weather={data.world.weather} />
       <ZoomControls
         sound={soundSupported() ? { on: soundOn, onToggle: () => void toggleSound() } : undefined}
@@ -442,6 +513,7 @@ export default function WorldView({ characters: filtered }: WorldViewProps) {
           compassRef,
         }}
       />
+      </div>
     </div>
   );
 }

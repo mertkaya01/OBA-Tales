@@ -155,10 +155,12 @@ export interface StoryArrival {
   at: string;
 }
 
-/** Hikâyenin durumu: kaçıncı gün ve kimler geldi. */
+/** Hikâyenin durumu: kaçıncı gün, kimler geldi ve ilk kez gelenin nasıl karşılanacağı. */
 export interface StoryState {
   day: number;
   arrivals: StoryArrival[];
+  /** İlk ziyaret karşılaması (content/story.ts → WELCOME_MODES); yoksa "uclu". */
+  welcome?: "uclu" | "son" | "kapali";
 }
 
 /** public/data/world.json dosyasının şekli. */

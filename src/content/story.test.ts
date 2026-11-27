@@ -38,7 +38,7 @@ describe("hikâye: kahramanların gelişi", () => {
     };
     // story ve revealedIslands yazılmazsa 1. gün, kimse yok.
     const parsed = worldStateSchema.parse(world);
-    expect(parsed.story).toEqual({ day: 1, arrivals: [] });
+    expect(parsed.story).toEqual({ day: 1, arrivals: [], welcome: "uclu" });
     expect(parsed.revealedIslands).toEqual([]);
     expect(worldStateSchema.safeParse({ ...world, story: { day: 1, arrivals: [{ id: "bintas", at: at.toISOString() }] } }).success).toBe(false);
   });

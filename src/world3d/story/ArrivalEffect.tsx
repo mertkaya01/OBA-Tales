@@ -1,15 +1,29 @@
 /**
- * Geliş sinemasının 3D parçası: Kut Kapısı'ndan kavisle süzülen ışık küresi, arkasında kıvılcım izi, indiği yerde
- * gökyüzüne uzanan ışık sütunu ve yerde yayılan halka. Zamanlamayı arrival.ts verir; sinema (DOM) runtime'ı yazar.
+ * Geliş sinemasının 3D parçası: Kut Kapısı'ndan kavisle süzülen ışık küreleri, arkalarında kıvılcım izi, indikleri
+ * yerde gökyüzüne uzanan ışık sütunu ve yerde yayılan halka. Karşılamada en çok MAX_ORBS küre art arda kalkar.
+ * Zamanlamayı arrival.ts verir; sinema (DOM) runtime'ı yazar.
  */
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import { AdditiveBlending, CylinderGeometry, DoubleSide, Group, IcosahedronGeometry, Matrix4, MeshBasicMaterial, Quaternion, RingGeometry, Vector3, type InstancedMesh, type Mesh } from "three";
-import { arrivalAt, orbPath, type ArrivalRuntime } from "./arrival";
+import { orbAt, orbPath, type ArrivalRuntime } from "./arrival";
 
 const TRAIL = 18;
+/** Aynı anda en çok bu kadar kahraman doğar (geliş sırası: content/story.ts). */
+const MAX_ORBS = 3;
 
 export function ArrivalEffect({ runtime }: { runtime: ArrivalRuntime }) {
+  return (
+    <>
+      {Array.from({ length: MAX_ORBS }, (_, i) => (
+        <ArrivalOrb key={i} runtime={runtime} index={i} />
+      ))}
+    </>
+  );
+}
+
+/** Tek bir kürenin uçuşu ve inişi (runtime.targets[index]). */
+function ArrivalOrb({ runtime, index }: { runtime: ArrivalRuntime; index: number }) {
   const groupRef = useRef<Group>(null);
   const orbRef = useRef<Mesh>(null);
   const haloRef = useRef<Mesh>(null);
@@ -44,10 +58,11 @@ export function ArrivalEffect({ runtime }: { runtime: ArrivalRuntime }) {
   useFrame(({ clock }) => {
     const group = groupRef.current;
     if (!group) return;
-    group.visible = runtime.active;
-    if (!runtime.active) return;
-    const frame = arrivalAt(runtime.t);
-    const pulse = 1 + Math.sin(clock.elapsedTime * 14) * 0.12;
+    const to = runtime.targets[index];
+    group.visible = runtime.active && !!to;
+    if (!runtime.active || !to) return;
+    const frame = orbAt(runtime.t, index);
+    const pulse = 1 + Math.sin(clock.elapsedTime * 14 + index * 2.1) * 0.12;
 
     // Küre ve izi
     const flying = frame.orb !== null;
@@ -55,7 +70,7 @@ export function ArrivalEffect({ runtime }: { runtime: ArrivalRuntime }) {
       orbRef.current.visible = flying;
       haloRef.current.visible = flying;
       if (flying) {
-        const [x, y, z] = orbPath(runtime.from, runtime.to, frame.orb!);
+        const [x, y, z] = orbPath(runtime.from, to, frame.orb!);
         orbRef.current.position.set(x, y, z);
         orbRef.current.scale.setScalar(pulse);
         haloRef.current.position.set(x, y, z);
@@ -68,7 +83,7 @@ export function ArrivalEffect({ runtime }: { runtime: ArrivalRuntime }) {
       if (flying) {
         for (let i = 0; i < TRAIL; i++) {
           const k = Math.max(0, frame.orb! - (i + 1) * 0.018);
-          const [x, y, z] = orbPath(runtime.from, runtime.to, k);
+          const [x, y, z] = orbPath(runtime.from, to, k);
           const size = (1 - i / TRAIL) * 1.2;
           work.p.set(x + Math.sin(i * 2.3 + clock.elapsedTime * 6) * 0.6, y, z + Math.cos(i * 1.7 + clock.elapsedTime * 5) * 0.6);
           trail.setMatrixAt(i, work.m.compose(work.p, work.q, work.s.setScalar(size)));
@@ -78,7 +93,6 @@ export function ArrivalEffect({ runtime }: { runtime: ArrivalRuntime }) {
     }
 
     // Varış: ışık sütunu ve yayılan halka
-    const { to } = runtime;
     if (columnRef.current) {
       columnRef.current.position.set(to.x, to.y - 1.5, to.z);
       columnRef.current.scale.set(0.6 + frame.column * 0.6, 1, 0.6 + frame.column * 0.6);

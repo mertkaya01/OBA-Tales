@@ -19,6 +19,7 @@ import { parseFollowerFile, readFollowerFile, type FollowerEntry, type ReadFile 
 import { SectionTitle } from "../components/ui/SectionTitle";
 import { PLATFORM_LABELS } from "../content/classes";
 import { RARITY_INFO } from "../content/rarities";
+import { WELCOME_LABELS, WELCOME_MODES, type WelcomeMode } from "../content/story";
 import { formatNumber } from "../lib/text";
 import { PLATFORMS, type Platform, type Rarity } from "../types";
 
@@ -54,6 +55,7 @@ interface StorySummary {
   order: { id: string; name: string }[];
   regions: { id: string; name: string; open: boolean }[];
   islands: { id: string; name: string; open: boolean }[];
+  welcome: WelcomeMode;
 }
 
 function Card({ title, icon, children }: { title: string; icon: ReactNode; children: ReactNode }) {
@@ -274,9 +276,31 @@ export default function AdminPage() {
         {status?.story ? (
           <div className="space-y-4">
             <p className="text-sm text-buz-300">
-              Kahramanlar sırayla gelir. "Getir" deyince world.json'a yazılır; commit + push sonrası sitede Kut Kapısı'ndan doğar ve o gün
-              siteye giren herkes gelişi bir kez izler.
+              Kahramanlar sırayla gelir. "Getir" deyince world.json'a yazılır; commit + push sonrası sitede Kut Kapısı'ndan doğar ve o hafta
+              siteye giren herkes gelişi bir kez izler. Siteye ilk kez gelenler ise aşağıdaki karşılamayı görür, ardından Dede'nin turu açılır.
             </p>
+            <fieldset className="rounded-xl border border-white/10 bg-white/5 p-3 text-sm">
+              <legend className="px-1 font-display text-buz-100">Yeni ziyaretçi karşılaması</legend>
+              <div className="mt-1 grid gap-1.5">
+                {WELCOME_MODES.map((mode) => (
+                  <label key={mode} className="flex items-center gap-2 text-buz-200">
+                    <input
+                      type="radio"
+                      name="karsilama"
+                      checked={status.story.welcome === mode}
+                      disabled={busy}
+                      onChange={() => void run(async () => (await api<{ message: string }>("/hikaye", { islem: "karsilama", mod: mode })).message)}
+                      className="size-4 accent-gunozu-400"
+                    />
+                    {WELCOME_LABELS[mode]}
+                    {mode === "uclu" && <span className="text-xs text-buz-400">(önerilen)</span>}
+                  </label>
+                ))}
+              </div>
+              <p className="mt-2 text-xs text-buz-300">
+                Kendi tarayıcında denemek için: adres çubuğuna http://localhost:5173/?karsilama yaz (yalnızca geliştirmede).
+              </p>
+            </fieldset>
             <ol className="grid gap-2 sm:grid-cols-3">
               {status.story.order.map((hero, i) => {
                 const arrival = status.story.arrivals.find((a) => a.id === hero.id);

@@ -15,6 +15,14 @@ doğsun, yorumlar oylama olsun.
 Gelen kahraman o andan itibaren İstanbul saatine göre yaşar: sabah odun, öğle toplama, ikindi av, akşam ateş başı,
 gece 01–05 çadırında uyku. Ayrıntılar `docs/gorsel-rehber.md` → "Gün düzeni".
 
+**Yeni ziyaretçi karşılaması** (aynı kart): siteye ilk kez gelen biri, gelişlerin tarihine bakılmaksızın bir karşılama
+sineması görür, ardından Dede'nin turu açılır, tur "Kendimi bul" ile arama kutusunda biter. Seçenekler:
+gelmiş kahramanların **hepsi birden** Kut Kapısı'ndan doğar (önerilen: kapının önünde yan yana dururlar, kamera her
+birini yakından tanıtır: unvan, sınıf, nadirlik, özel yetenekler; yaklaşık 16 sn), yalnızca **son gelen** doğar ya da
+**sinema yok**. Sinema sürerken harita arayüzü gizlenir.
+Geri gelen ziyaretçi yalnızca yeni bir gelişi (son 7 gün) izler. Paylaşılan karakter bağlantısıyla (`?k=`) gelen
+sinemasız, doğrudan o karaktere gider. Kendi tarayıcında denemek için: `http://localhost:5173/?karsilama`.
+
 Yanlışlıkla getirdiysen **Son gelişi geri al**. Aynı kartta **Adaları aç / kapat** ile karartılı bir bölgeyi ya da
 yabani adayı hikâyede açarsın: karartı kalkar, obaları, ağaçları ve iki yakası da açıksa köprüleri belirir.
 

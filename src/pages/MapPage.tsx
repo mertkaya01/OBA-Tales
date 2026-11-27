@@ -38,6 +38,8 @@ export default function MapPage() {
   const { all, filtered, facets } = useFilteredCharacters();
   const view = useAppStore((s) => s.view);
   const drawerOpen = useAppStore((s) => s.selectedId !== null);
+  // Geliş ya da karşılama sineması sürerken üst arayüz ve lejant çekilir.
+  const cinematic = useAppStore((s) => s.cinematic);
   const worldSupported = useWebGLSupport();
   const effectiveView = worldSupported ? view : "harita";
 
@@ -54,7 +56,12 @@ export default function MapPage() {
         </Suspense>
 
         {/* Üst arayüz. Kapsayıcı tıklamaları haritaya geçirir, içindeki parçalar yakalar. */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 grid gap-2 p-3 md:grid-cols-[1fr_auto_1fr] md:items-start">
+        <div
+          className={cn(
+            "pointer-events-none absolute inset-x-0 top-0 z-10 grid gap-2 p-3 transition-[opacity,visibility] duration-500 md:grid-cols-[1fr_auto_1fr] md:items-start",
+            cinematic && "invisible opacity-0",
+          )}
+        >
           <div className="pointer-events-auto order-2 flex items-start gap-2 md:order-1">
             <div className="relative">
               <FilterPanel facets={facets} resultCount={filtered.length} />
@@ -77,7 +84,7 @@ export default function MapPage() {
           </div>
         </div>
 
-        <MapLegend className="absolute bottom-4 left-3 z-10" />
+        <MapLegend className={cn("absolute bottom-4 left-3 z-10 transition-[opacity,visibility] duration-500", cinematic && "invisible opacity-0")} />
         <CharacterDrawer />
       </div>
     </>

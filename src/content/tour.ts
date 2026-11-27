@@ -17,19 +17,25 @@ export const TOUR_STEPS: readonly TourStep[] = [
     id: "hosgeldin",
     target: "adalar",
     title: "Hoş geldin yoldaş!",
-    text: "Burası Kutada, OBA-Tales dünyasının kalbi. Bizi takip eden herkes burada bir karakter olarak yaşayacak.",
+    text: "Ben Dede Toygar. Burası Kutada, OBA-Tales dünyasının kalbi. Bizi takip eden herkes bu adada bir karakter olarak doğar ve yaşar.",
   },
   {
     id: "kapi",
     target: "kapi",
     title: "Kut Kapısı",
-    text: "Yeni gelenler Kut Kapısı'ndan doğar. İlk kahramanlarımız buradan geldi; takip ettiğin gün senin karakterin de buradan adım atar.",
+    text: "Gökle yeri bağlayan kapı bu. Takip ettiğin gün senin karakterin de buradan, bir ışık küresinin içinde adım atar.",
+  },
+  {
+    id: "kahramanlar",
+    target: "oba",
+    title: "İlk üç kahraman",
+    text: "Kapıdan ilk geçenler onlar oldu: Yıldızların Okçusu mhellingtr, Gün Kılıçlı Alp egetunce ve Alev Hatun BinTaş. Birine dokun, yeteneğini gör.",
   },
   {
     id: "oba",
     target: "oba",
     title: "Konuk obası",
-    text: "Kahramanlar Konuk obasında yaşar: sabah odun keser, gün boyu avlanır, ot toplar; gece ateş başında sohbet eder.",
+    text: "Kahramanlar Konuk obasında yaşar: sabah odun keser, gün boyu avlanır, ot toplar; gece ateş başında sohbet eder. Saatleri İstanbul saatidir.",
   },
   {
     id: "gizli",
@@ -41,7 +47,7 @@ export const TOUR_STEPS: readonly TourStep[] = [
     id: "sen",
     target: "arama",
     title: "Sıra sende",
-    text: "Adını yazıp kendini bul, ya da henüz aramızda değilsen obaya katıl.",
+    text: "Bizi takip ediyorsan kullanıcı adını yaz, karakterini bul. Henüz haritada yoksan takip et: karakterin Kut Kapısı'ndan doğsun.",
   },
 ];
 

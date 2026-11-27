@@ -15,6 +15,18 @@ export type ArrivalHeroId = (typeof ARRIVAL_ORDER)[number];
 /** Turu ve hikâyeyi anlatan (haritada değil, sesi ve portresiyle). */
 export const NARRATOR_ID = "dede_toygar";
 
+/**
+ * Siteye ilk kez gelenin karşılaması (yönetim paneli → Hikâye): gelmiş kahramanların hepsi Kut Kapısı'ndan art arda
+ * doğar (uclu), yalnızca son gelen doğar (son) ya da karşılama sineması yoktur (kapali). Ardından Dede'nin turu açılır.
+ */
+export const WELCOME_MODES = ["uclu", "son", "kapali"] as const;
+export type WelcomeMode = (typeof WELCOME_MODES)[number];
+export const WELCOME_LABELS: Readonly<Record<WelcomeMode, string>> = {
+  uclu: "Kahramanların hepsi birden Kut Kapısı'ndan doğar",
+  son: "Yalnızca son gelen kahraman doğar",
+  kapali: "Sinema yok, doğrudan Dede'nin turu",
+};
+
 /** Gizli adaların ipucu. */
 export const HIDDEN_LAND_HINT = "Sizlerin desteğiyle yakında";
 

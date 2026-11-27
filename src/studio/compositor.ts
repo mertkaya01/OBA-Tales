@@ -33,6 +33,8 @@ export interface ReelOverlay {
   /** Alttaki imza, ör. "@oba.tales". */
   signature: string;
   raid?: RaidOverlay | null;
+  /** Damganın üstüne, kart ve altyazının altına çizilen ek katman (ör. yetenek paneli). */
+  extra?: ((ctx: CanvasRenderingContext2D) => void) | null;
 }
 
 /** Sınıf renkleri (index.css'tekilerin videoda okunan açık tonları). */
@@ -197,6 +199,7 @@ export function drawReelFrame(ctx: CanvasRenderingContext2D, source: CanvasImage
   outlinedText(ctx, "OBA-TALES", REEL.width / 2, 190, GOLD, 10);
 
   if (overlay.raid) drawRaid(ctx, overlay.raid);
+  overlay.extra?.(ctx);
   if (overlay.card) drawCard(ctx, overlay.card);
   if (overlay.caption) drawCaption(ctx, overlay.caption);
 

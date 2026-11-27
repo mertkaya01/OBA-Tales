@@ -123,7 +123,7 @@ export function Portal({ terrain, fogUniforms, animate, sky, arrival }: PortalPr
   useFrame(({ clock }) => {
     const t = animate ? clock.elapsedTime : 0;
     const night = sky.lamp;
-    const flare = arrival?.active ? arrivalAt(arrival.t).flare : 0;
+    const flare = arrival?.active ? arrivalAt(arrival.t, Math.max(1, arrival.targets.length)).flare : 0;
     m.vortex.uniforms.uTime.value = t * (1 + flare * 1.5);
     m.vortex.uniforms.uPower.value = 1.1 + night * 0.9 + flare * 2.6;
     m.rune.emissiveIntensity = 0.8 + night * 2.4 + flare * 4;

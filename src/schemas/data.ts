@@ -9,7 +9,7 @@
  */
 import { z } from 'zod';
 import { ISLAND_IDS } from '../content/islands';
-import { ARRIVAL_ORDER, arrivalsInOrder } from '../content/story';
+import { ARRIVAL_ORDER, WELCOME_MODES, arrivalsInOrder } from '../content/story';
 import {
   ARCHETYPES,
   BADGE_IDS,
@@ -264,8 +264,9 @@ export const worldStateSchema = z
       .object({
         day: z.number().int().min(1),
         arrivals: z.array(z.object({ id: z.enum(ARRIVAL_ORDER), at: isoDateTime })),
+        welcome: z.enum(WELCOME_MODES).default('uclu'),
       })
-      .default({ day: 1, arrivals: [] }),
+      .default({ day: 1, arrivals: [], welcome: 'uclu' }),
     updatedAt: isoDateTime,
   })
   .superRefine((world, ctx) => {

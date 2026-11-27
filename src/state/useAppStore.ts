@@ -28,6 +28,10 @@ export interface AppState {
   watchingRaid: boolean;
   /** İlk oba turu açık mı? (Dede Toygar anlatır; URL'ye yazılmaz.) */
   tourOpen: boolean;
+  /** Arama kutusu "kullanıcı adını yaz" diye parlıyor mu? (turun son adımı "Kendimi bul") */
+  searchHint: boolean;
+  /** Geliş ya da karşılama sineması oynuyor mu? (harita arayüzü çekilir) */
+  cinematic: boolean;
 
   setQuery: (query: string) => void;
   toggleClass: (id: ClassId) => void;
@@ -49,6 +53,10 @@ export interface AppState {
   /** Tanıtım turunu açar (görünüm Dünya'ya geçer, canlı akın izleme biter). */
   startTour: () => void;
   endTour: () => void;
+  /** Arama kutusunu parlatır ve odaklar ("kendini bul"); yazınca ya da birkaç saniye sonra söner. */
+  showSearchHint: () => void;
+  hideSearchHint: () => void;
+  setCinematic: (on: boolean) => void;
   /** URL değişince (ilk açılış, geri/ileri) durumu URL'den kurar. */
   hydrateFromUrl: (params: URLSearchParams) => void;
 }
@@ -62,6 +70,8 @@ export const useAppStore = create<AppState>()((set) => ({
   focus: null,
   watchingRaid: false,
   tourOpen: false,
+  searchHint: false,
+  cinematic: false,
 
   setQuery: (query) => set((s) => ({ filters: { ...s.filters, query } })),
   toggleClass: (id) => set((s) => ({ filters: { ...s.filters, classes: toggleInList(s.filters.classes, id) } })),
@@ -79,6 +89,9 @@ export const useAppStore = create<AppState>()((set) => ({
   stopWatchingRaid: () => set((s) => (s.watchingRaid ? { watchingRaid: false } : s)),
   startTour: () => set({ tourOpen: true, view: "dunya", watchingRaid: false }),
   endTour: () => set((s) => (s.tourOpen ? { tourOpen: false } : s)),
+  showSearchHint: () => set({ searchHint: true, tourOpen: false }),
+  hideSearchHint: () => set((s) => (s.searchHint ? { searchHint: false } : s)),
+  setCinematic: (cinematic) => set((s) => (s.cinematic === cinematic ? s : { cinematic })),
 
   hydrateFromUrl: (params) =>
     set((s) => {

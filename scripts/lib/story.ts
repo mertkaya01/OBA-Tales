@@ -7,7 +7,7 @@ import { resolve } from "node:path";
 import { CAST } from "../../src/content/cast";
 import { ISLAND_IDS, ISLANDS } from "../../src/content/islands";
 import { REGION_LIST } from "../../src/content/regions";
-import { ARRIVAL_ORDER, nextArrival, withNextArrival, withoutLastArrival } from "../../src/content/story";
+import { ARRIVAL_ORDER, WELCOME_MODES, nextArrival, withNextArrival, withoutLastArrival, type WelcomeMode } from "../../src/content/story";
 import { formatDataError, worldStateSchema } from "../../src/schemas/data";
 import type { WorldState } from "../../src/types";
 
@@ -34,6 +34,8 @@ export interface StorySummary {
   order: { id: string; name: string }[];
   regions: { id: string; name: string; open: boolean }[];
   islands: { id: string; name: string; open: boolean }[];
+  /** İlk ziyaret karşılaması (uclu / son / kapali). */
+  welcome: WelcomeMode;
 }
 
 export function storySummary(): StorySummary {
@@ -48,7 +50,15 @@ export function storySummary(): StorySummary {
     order: ARRIVAL_ORDER.map((id) => ({ id, name: nameOf(id) })),
     regions: REGION_LIST.map((r) => ({ id: r.id, name: r.name, open: openRegions.has(r.id) })),
     islands: ISLAND_IDS.map((id) => ({ id, name: ISLANDS[id].nickname, open: openIslands.has(id) })),
+    welcome: world.story.welcome ?? "uclu",
   };
+}
+
+/** İlk ziyaret karşılamasını ayarlar: kahramanların hepsi birden, yalnızca son gelen ya da yok. */
+export function setWelcome(mode: string, now = new Date()): void {
+  if (!(WELCOME_MODES as readonly string[]).includes(mode)) throw new Error(`Bilinmeyen karşılama: ${mode}`);
+  const world = readWorld();
+  writeWorld({ ...world, story: { ...world.story, welcome: mode as WelcomeMode } }, now);
 }
 
 /** Sıradaki kahramanı getirir; getirilenin adını döndürür (hepsi geldiyse null). */

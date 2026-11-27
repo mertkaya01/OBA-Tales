@@ -10,6 +10,8 @@
  * takipçi adları kayıtla aynı saniyede akar.
  */
 import type { Character, Coordinates } from "../types";
+import { ORB_STAGGER, arrivalLength } from "../world3d/story/arrival";
+import type { SkillSegment } from "./skillShow";
 
 export interface CamPose {
   /** Bakılan nokta (dünya birimi). */
@@ -42,10 +44,12 @@ export interface RuleCard {
   lines: string[];
 }
 
-export const TEMPLATE_IDS = ["bolum", "akin", "katil", "kapi", "ada", "kahraman"] as const;
+export const TEMPLATE_IDS = ["karsilama", "yetenekler", "bolum", "akin", "katil", "kapi", "ada", "kahraman"] as const;
 export type TemplateId = (typeof TEMPLATE_IDS)[number];
 
 export const TEMPLATE_LABELS: Readonly<Record<TemplateId, string>> = {
+  karsilama: "Karşılama: kahramanlar doğuyor",
+  yetenekler: "Kahraman yetenekleri",
   bolum: "Bölüm tanıtımı",
   akin: "Akın Günü",
   katil: "Obaya katıl çağrısı",
@@ -53,6 +57,13 @@ export const TEMPLATE_LABELS: Readonly<Record<TemplateId, string>> = {
   ada: "Adsız adaya ad koy",
   kahraman: "Kahraman yakın çekimi",
 };
+
+/** Karşılama: geliş sineması videonun `at` saniyesinde başlar; kahramanlar küreleri inince belirir. */
+export interface ArrivalReel {
+  at: number;
+  /** Doğacak kahramanlar (geliş sırası). */
+  heroes: string[];
+}
 
 /** Akın Günü'nü videoya bağlar: videonun 0. saniyesi Akın Günü'nün `start` saniyesidir. */
 export interface RaidDayReel {
@@ -71,6 +82,10 @@ export interface ReelScript {
   hour: number | null;
   /** Yalnızca akın şablonunda. */
   raidDay?: RaidDayReel;
+  /** Yalnızca karşılama şablonunda. */
+  arrival?: ArrivalReel;
+  /** Yalnızca yetenekler şablonunda: portre panelinin açıldığı bölümler. */
+  skills?: SkillSegment[];
 }
 
 // ── Zaman çizelgesi ────────────────────────────────────────────────
@@ -207,6 +222,8 @@ export interface StudioContext {
   raid: { square: Coordinates; focus: Coordinates; facing: number; count: number; raiders: readonly Character[] } | null;
   boss: { name: string } | null;
   hero: { id: string; position: Coordinates; displayName: string; handle: string; title: string; rarity: string; className: string; region: string } | null;
+  /** Gelmiş hikâye kahramanları (geliş sırası) ve obadaki yerleri; imza yeteneklerinin adları. */
+  heroes: { character: Character; position: Coordinates; skill: string }[];
 }
 
 const upper = (text: string) => text.toLocaleUpperCase("tr");
@@ -378,8 +395,81 @@ function heroTemplate(ctx: StudioContext): ReelScript {
   };
 }
 
+/** Geliş sineması videoda bu saniyede başlar (önce takımadadan kapıya iniş). */
+export const ARRIVAL_REEL_AT = 2;
+
+/**
+ * Karşılama: takımadadan Kut Kapısı'na iniş, kapı titrer, kahramanlar art arda ışık küresi olarak doğar, kamera obaya
+ * iner ve kahramanların etrafında döner. Sonda "nasıl gelirim?" kartı.
+ */
+function welcomeTemplate(ctx: StudioContext): ReelScript {
+  if (ctx.heroes.length === 0) return portalTemplate(ctx);
+  const portal = { x: ctx.portal.x, z: ctx.portal.y };
+  const village = { x: ctx.village.x, z: ctx.village.y };
+  const mid = { x: (portal.x + village.x) / 2, z: (portal.z + village.z) / 2 };
+  const n = ctx.heroes.length;
+  const at = ARRIVAL_REEL_AT;
+  const launch = at + 2.6;
+  const landed = at + 4.8 + (n - 1) * ORB_STAGGER;
+  const shots: Shot[] = [
+    { duration: launch, from: { x: ctx.island.x, z: ctx.island.y, zoom: 1, yaw: 0 }, to: { ...portal, zoom: 7.5, yaw: 0.25 } },
+    { duration: landed - launch, from: { ...portal, zoom: 7.5, yaw: 0.25 }, to: { ...mid, zoom: 5.2, yaw: 0.1 } },
+    { duration: 3.6, from: { ...village, zoom: 7, yaw: 0.1 }, to: { ...village, zoom: 10, yaw: -0.35 } },
+    { duration: 4.4, from: { ...village, zoom: 10, yaw: -0.35 }, to: { ...village, zoom: 6.5, yaw: 0.2 }, ease: "linear" },
+  ];
+  const total = totalDuration(shots);
+  const names = ctx.heroes.map((h) => upper(`${h.character.displayName} · ${h.character.title}`));
+  return {
+    template: "karsilama",
+    shots,
+    captions: ["Kutada'da kimse yoktu…", "Kut Kapısı titredi", n > 1 ? `${n} kahraman doğdu!` : `${ctx.heroes[0].character.displayName} doğdu!`, "Sıradaki sen ol: takip et!"],
+    cards: [
+      { at: landed + 0.6, duration: Math.min(3.6, arrivalLength(n) - (landed - at) - 0.2), title: "KUTADA'NIN KAHRAMANLARI", lines: names },
+      { at: total - 3.9, duration: 3.7, title: "NASIL GELİRİM?", lines: ["1. TAKİP ET", "2. KUT KAPISI'NDAN DOĞ", "3. HARİTADA KENDİNİ BUL"] },
+    ],
+    // Akşam: kapı ve küreler en parlak, obada ışıklar yanar.
+    hour: 19.6,
+    arrival: { at, heroes: ctx.heroes.map((h) => h.character.id) },
+  };
+}
+
+/** Bir kahramanın yetenek bölümünün süresi; açılış ve kapanış da aynı boyda (altyazılar bölümlerle aynı anda değişir). */
+export const SKILL_PART = 4.4;
+
+/**
+ * Kahraman yetenekleri: obadan sırayla her kahramanı takip eden kamera; üst yarıda portre paneli açılır, kahraman imza
+ * yeteneğini oynar (egetunce kalkan ve kılıç, mhellingtr Gök Gürültüsü, BinTaş Bin Taş Ocağı).
+ */
+function skillsTemplate(ctx: StudioContext): ReelScript {
+  if (ctx.heroes.length === 0) return joinTemplate(ctx);
+  const village = { x: ctx.village.x, z: ctx.village.y };
+  const L = SKILL_PART;
+  const shots: Shot[] = [{ duration: L, from: { x: ctx.island.x, z: ctx.island.y, zoom: 1, yaw: 0 }, to: { ...village, zoom: 7, yaw: 0.2 } }];
+  const skills: SkillSegment[] = [];
+  ctx.heroes.forEach((h, i) => {
+    const at = { x: h.position.x, z: h.position.y, follow: h.character.id };
+    const yaw = 0.35 - i * 0.3;
+    shots.push({ duration: L, from: { ...at, zoom: 12, yaw }, to: { ...at, zoom: 15, yaw: yaw - 0.35 }, ease: "linear" });
+    skills.push({ hero: h.character, at: L * (i + 1) + 0.15, duration: L - 0.3 });
+  });
+  shots.push({ duration: L, from: { ...village, zoom: 8, yaw: -0.4 }, to: { ...village, zoom: 5, yaw: 0 } });
+  const total = totalDuration(shots);
+  return {
+    template: "yetenekler",
+    shots,
+    captions: ["Kutada'nın kahramanları", ...ctx.heroes.map((h) => `${h.character.displayName}: ${h.skill}`), "Sen de katıl: takip et!"],
+    cards: [{ at: total - L + 0.4, duration: L - 0.7, title: "SEN DE KATIL", lines: ["TAKİP ET", "KARAKTERİN KUT KAPISI'NDAN DOĞSUN", "HARİTADA KENDİNİ BUL"] }],
+    hour: null,
+    skills,
+  };
+}
+
 export function buildTemplate(id: TemplateId, ctx: StudioContext): ReelScript {
   switch (id) {
+    case "karsilama":
+      return welcomeTemplate(ctx);
+    case "yetenekler":
+      return skillsTemplate(ctx);
     case "bolum":
       return episodeTemplate(ctx);
     case "akin":

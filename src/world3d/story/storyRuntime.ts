@@ -21,12 +21,17 @@ export interface StoryRuntime {
   ready: boolean;
   /** Seslenilen kahraman → tepkinin başlayacağı an (dünya saati, saniye). */
   calls: Map<string, number>;
+  /**
+   * Sahnedeki kahramanlar (karşılama): gün düzeni yerine burada durur, kameraya bakar; wave ise el sallar. Kayıt
+   * silinince gün düzenindeki yerine döner.
+   */
+  stage: Map<string, { x: number; z: number; wave: boolean }>;
 }
 
 /** İlk çizimden önce de doğru günü bilsin diye şimdiki zamanla başlar. */
 export function createStoryRuntime(): StoryRuntime {
   const now = storyTime(useWorldTime.getState().settings, Date.now(), 0);
-  return { day: now.day, seconds: now.seconds, ready: true, calls: new Map() };
+  return { day: now.day, seconds: now.seconds, ready: true, calls: new Map(), stage: new Map() };
 }
 
 /** Bir kahramana seslen: kısa bir gecikmeyle (kamera uçarken) dönüp el sallar. */

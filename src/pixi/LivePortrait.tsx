@@ -14,7 +14,7 @@ import { Graphics, Sprite, type Application, type Ticker } from "pixi.js";
 import { useCallback, useMemo, useRef } from "react";
 import { CLASSES } from "../content/classes";
 import { actorFromSprite } from "../game/fx/actor";
-import { PORTRAIT, portraitAuras, signatureSkill } from "../game/fx/fxCatalog";
+import { PORTRAIT, darknessAt, portraitAuras, signatureSkill } from "../game/fx/fxCatalog";
 import { PixelFxPlayer } from "../game/fx/PixelFxPlayer";
 import { composeSprite } from "../game/sprites/composeSprite";
 import { renderPortrait } from "../world3d/characters/portrait3d";
@@ -27,14 +27,6 @@ export const PORTRAIT_CSS_SCALE = 3;
 
 /** Sahnenin gerçek çözünürlüğü: CSS büyütmesi × ekran yoğunluğu (efektler yine keskin piksel büyür). */
 const stageResolution = () => Math.min(8, PORTRAIT_CSS_SCALE * Math.min(2.5, Math.max(1, window.devicePixelRatio || 1)));
-
-/** Kararmanın gücü (0 → 1 → 0) bir anda: [başla, tam, aydınlan, bitti] çizelgesine göre. */
-function darknessAt(t: number, [d0, d1, d2, d3]: readonly [number, number, number, number]): number {
-  if (t <= d0 || t >= d3) return 0;
-  if (t < d1) return (t - d0) / (d1 - d0);
-  if (t <= d2) return 1;
-  return 1 - (t - d2) / (d3 - d2);
-}
 
 export default function LivePortrait({ character }: { character: Character }) {
   const skillRef = useRef<(() => void) | null>(null);

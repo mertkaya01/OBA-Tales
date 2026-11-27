@@ -1,15 +1,26 @@
 /**
  * "Kahramanını bul" — yazdıkça haritadaki pinleri filtreler ve ilk eşleşmeleri öneri olarak gösterir.
  * Bir öneri seçilince (tıklama ya da ↑ ↓ Enter) harita o karaktere uçar ve çekmecesi açılır.
+ *
+ * Turun son adımı ("Kendimi bul") kutuyu parlatır ve "kullanıcı adını yaz" der. Kimse bulunamazsa: henüz haritada
+ * olmadığını, takip edince Kut Kapısı'ndan doğacağını söyleyen kutu (hesaplar ve Obaya katıl bağlantısıyla).
  */
 import { Search, X } from "lucide-react";
-import { useId, useState, type KeyboardEvent } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
+import { Link } from "react-router";
+import { PLATFORM_LABELS } from "../../content/classes";
+import { useGameData } from "../../data/useGameData";
 import { cn } from "../../lib/cn";
 import { useAppStore } from "../../state/useAppStore";
+import { PLATFORMS } from "../../types";
 import type { Character } from "../../types";
 import { CharacterPortrait } from "../character/CharacterPortrait";
+import { PlatformIcon } from "../character/PlatformIcon";
 import { RARITY_TEXT } from "../character/styles";
 import { RARITY_INFO } from "../../content/rarities";
+
+/** İpucu bu kadar sonra kendiliğinden söner (ms). */
+const HINT_MS = 9000;
 
 const MAX_SUGGESTIONS = 6;
 
@@ -21,14 +32,26 @@ interface HeroSearchProps {
 
 export function HeroSearch({ matches, className }: HeroSearchProps) {
   const query = useAppStore((s) => s.filters.query);
-  const { setQuery, focusCharacter } = useAppStore.getState();
+  const hint = useAppStore((s) => s.searchHint);
+  const { setQuery, focusCharacter, hideSearchHint } = useAppStore.getState();
+  const { world } = useGameData();
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
   const inputId = useId();
   const listId = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // "Kendimi bul": kutuya odaklan, birkaç saniye parlasın.
+  useEffect(() => {
+    if (!hint) return;
+    inputRef.current?.focus();
+    const timer = window.setTimeout(() => useAppStore.getState().hideSearchHint(), HINT_MS);
+    return () => window.clearTimeout(timer);
+  }, [hint]);
 
   const suggestions = query.trim() ? matches.slice(0, MAX_SUGGESTIONS) : [];
   const expanded = open && suggestions.length > 0;
+  const notFound = open && query.trim().length >= 2 && suggestions.length === 0;
   const activeIndex = Math.min(active, suggestions.length - 1);
 
   const choose = (c: Character) => {
@@ -71,16 +94,56 @@ export function HeroSearch({ matches, className }: HeroSearchProps) {
         placeholder="Kahramanını bul: ad ya da unvan"
         autoComplete="off"
         spellCheck={false}
+        ref={inputRef}
         onChange={(event) => {
           setQuery(event.target.value);
           setActive(0);
           setOpen(true);
+          hideSearchHint();
         }}
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}
         onKeyDown={onKeyDown}
-        className="w-full rounded-xl border border-white/15 bg-gece-900/90 py-2.5 pl-9 pr-9 text-buz-50 shadow-lg backdrop-blur placeholder:text-buz-300/70 focus:border-gunozu-400/70"
+        className={cn(
+          "w-full rounded-xl border border-white/15 bg-gece-900/90 py-2.5 pl-9 pr-9 text-buz-50 shadow-lg backdrop-blur placeholder:text-buz-300/70 focus:border-gunozu-400/70",
+          hint && "border-gunozu-300 ring-4 ring-gunozu-300/40 motion-safe:animate-pulse",
+        )}
       />
+      {hint && !query && (
+        <p role="status" className="absolute inset-x-0 top-full z-20 mt-2 rounded-xl border border-gunozu-400/50 bg-gece-900/95 px-3 py-2 text-sm text-gunozu-100 shadow-xl">
+          Kullanıcı adını yaz, karakterini bul. (Instagram, TikTok ya da YouTube'daki adın)
+        </p>
+      )}
+      {notFound && (
+        <div
+          role="status"
+          // Bağlantılara tıklarken kutunun blur'u paneli kapatmasın.
+          onMouseDown={(event) => event.preventDefault()}
+          className="absolute inset-x-0 top-full z-20 mt-1.5 rounded-xl border border-white/15 bg-gece-900/95 p-3 text-sm shadow-2xl backdrop-blur"
+        >
+          <p className="font-semibold text-buz-50">“{query.trim()}” henüz haritada yok.</p>
+          <p className="mt-1 text-buz-200">Bizi takip ettiysen birkaç gün içinde Kut Kapısı'ndan doğarsın. Etmediysen takip et, yerin hazır:</p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {PLATFORMS.map((p) =>
+              world.socialLinks[p] ? (
+                <a
+                  key={p}
+                  href={world.socialLinks[p]!}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-2.5 py-1 text-buz-100 hover:bg-white/10"
+                >
+                  <PlatformIcon platform={p} className="size-4" />
+                  {PLATFORM_LABELS[p]}
+                </a>
+              ) : null,
+            )}
+            <Link to="/katil" className="inline-flex items-center rounded-full border border-gunozu-400/50 bg-gunozu-400/10 px-2.5 py-1 text-gunozu-100 hover:bg-gunozu-400/20">
+              Obaya katıl
+            </Link>
+          </div>
+        </div>
+      )}
       {query && (
         <button
           type="button"

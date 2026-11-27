@@ -11,7 +11,7 @@
  *   POST /__yonetim/sifirla    { onay: "SIFIRLA" } → bütün takipçileri siler (kadro kalır)
  *   POST /__yonetim/youtube    YouTube yorumlarını çeker (npm run youtube:yorumlar), adları döndürür
  *   POST /__yonetim/kontrol    veri denetimi (npm run data:check)
- *   POST /__yonetim/hikaye     { islem: "getir" | "geri-al" | "gun" | "bolge" | "ada", ... } → world.json → story
+ *   POST /__yonetim/hikaye     { islem: "getir" | "geri-al" | "gun" | "bolge" | "ada" | "karsilama", ... } → world.json → story
  *   GET  /__yonetim/takipciler ?ara=&platform=&nadirlik=&sayfa=  → takipçi listesi (sayfalı) ve yer seçenekleri
  *   GET  /__yonetim/takipci    ?id=                               → bir takipçinin bütün bilgisi
  *   POST /__yonetim/takipci    { islem: "ekle" | "guncelle" | "sil", ... } → roster.json
@@ -44,6 +44,7 @@ interface StoryLib {
   undoLast(): string | null;
   setDay(day: number): void;
   setLandOpen(kind: "bolge" | "ada", id: string, open: boolean): void;
+  setWelcome(mode: string): void;
 }
 interface AdminLib {
   followerList(query: Record<string, unknown>): unknown;
@@ -191,6 +192,13 @@ async function handle(server: ViteDevServer, req: IncomingMessage, res: ServerRe
       } else if ((islem === "bolge" || islem === "ada") && typeof body.id === "string" && typeof body.acik === "boolean") {
         story.setLandOpen(islem, body.id, body.acik);
         message = body.acik ? "Açıldı: karartı kalktı." : "Kapatıldı: yeniden karartıldı.";
+      } else if (islem === "karsilama" && typeof body.mod === "string") {
+        try {
+          story.setWelcome(body.mod);
+        } catch (error) {
+          return send(res, 400, { error: (error as Error).message });
+        }
+        message = "Karşılama kaydedildi. Yayına almak için commit + push.";
       } else return send(res, 400, { error: "Bilinmeyen hikâye işlemi" });
       send(res, 200, { message, story: story.storySummary() });
       return;

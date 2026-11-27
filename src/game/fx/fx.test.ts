@@ -4,11 +4,11 @@ import { CAST } from "../../content/cast";
 import { createStarterCharacter } from "../../lib/rules";
 import { BOSS_IDS, CLASS_IDS } from "../../types";
 import type { Character, Rarity } from "../../types";
-import { EFFECTS } from "../../vendor/pixelfx/effects.js";
+import { ALL_EFFECTS } from "./effects";
 import { composeSprite } from "../sprites/composeSprite";
 import { actorFromSprite } from "./actor";
 import { bossSprite } from "./bossSprites";
-import { BOSS_SCENES, PORTRAIT, RAID_STAGE, anchorPoint, classSkill, pickRaiders, portraitAuras, raidSkills } from "./fxCatalog";
+import { BOSS_SCENES, PORTRAIT, RAID_STAGE, anchorPoint, classSkill, pickRaiders, portraitAuras, raidSkills, shieldSize, signatureSkill } from "./fxCatalog";
 import { PixelFxPlayer, paintedPixels } from "./PixelFxPlayer";
 import { raidBackdrop } from "./raidBackdrop";
 
@@ -19,8 +19,8 @@ const follower = (rarity: Rarity, platform: Character["platform"] = "instagram")
 });
 
 describe("pixelfx oynatıcı", () => {
-  it("vendor'daki bütün efektler meta bilgisiyle yüklenir", () => {
-    for (const [id, mod] of Object.entries(EFFECTS)) {
+  it("bütün efektler (pixelfx ve OBA-Tales) meta bilgisiyle yüklenir", () => {
+    for (const [id, mod] of Object.entries(ALL_EFFECTS)) {
       expect(mod.meta.name, id).toBeTruthy();
       expect(mod.meta.size, id).toHaveLength(2);
     }
@@ -115,6 +115,51 @@ describe("canlı portre", () => {
         painted = Math.max(painted, paintedPixels(player.front.pixels) + paintedPixels(player.back.pixels));
       }
       expect(painted, classId).toBeGreaterThan(20);
+    }
+  });
+
+  it("Kalkan Duvarı nadirlik ve rozetle büyür, tuvale sığar; büyük kalkan daha çok yer kaplar", () => {
+    const cirak = follower("siradan");
+    expect(cirak.title).toBe("Çırak Kalkaneri");
+    expect(shieldSize(cirak)).toBe(1);
+    expect(shieldSize({ rarity: "nadir", badges: [] })).toBeGreaterThan(shieldSize(cirak));
+    expect(shieldSize({ rarity: "efsanevi", badges: ["cift_iz"] })).toBeGreaterThan(shieldSize({ rarity: "efsanevi", badges: [] }));
+    expect(shieldSize({ rarity: "goksel", badges: ["cift_iz", "oba_onculugu", "kurucu_oba", "cift_iz", "cift_iz"] })).toBeLessThanOrEqual(1.4);
+    const area = (size: number) => {
+      const player = new PixelFxPlayer(PORTRAIT.width, PORTRAIT.height);
+      for (const r of classSkill("kalkaneri", { x: PORTRAIT.feetX, y: PORTRAIT.feetY }, size)) player.playRecipe(r);
+      player.update(0.08);
+      player.render();
+      return paintedPixels(player.front.pixels) + paintedPixels(player.back.pixels);
+    };
+    expect(area(1.4)).toBeGreaterThan(area(1) * 1.4);
+  });
+
+  it("kahramanların kendi imza yetenekleri var ve hepsi görünür bir şey çizer", () => {
+    const hero = (id: string) => CAST.find((c) => c.id === id)!;
+    const at = { x: PORTRAIT.feetX, y: PORTRAIT.feetY };
+    const ege = signatureSkill(hero("egetunce"), at);
+    expect(ege.recipes.map((r) => r.id)).toEqual(["oba/shield-wall", "oba/blade-arc"]);
+    expect(Number(ege.recipes[0].options?.size)).toBeGreaterThan(1.4);
+    const mh = signatureSkill(hero("mhellingtr"), at);
+    expect(mh.name).toBe("Gök Gürültüsü");
+    expect(mh.darkness?.[3]).toBeGreaterThan(mh.darkness?.[2] ?? Infinity);
+    expect(signatureSkill(hero("bintas"), at).recipes.map((r) => r.id)).toContain("oba/ember-ring");
+    // Takipçiler sınıfının yeteneğini kullanır.
+    expect(signatureSkill(follower("siradan", "tiktok"), at).name).toBe("Buz Oku");
+    for (const id of ["egetunce", "mhellingtr", "bintas"]) {
+      const player = new PixelFxPlayer(PORTRAIT.width, PORTRAIT.height);
+      for (const r of signatureSkill(hero(id), at).recipes) player.playRecipe(r);
+      let painted = 0;
+      for (let i = 0; i < 45; i++) {
+        player.update(1 / 30);
+        player.render();
+        painted = Math.max(painted, paintedPixels(player.front.pixels) + paintedPixels(player.back.pixels));
+      }
+      expect(painted, id).toBeGreaterThan(60);
+      // Hepsi kendiliğinden biter.
+      for (let i = 0; i < 90; i++) player.update(1 / 30);
+      expect(player.count, id).toBe(0);
     }
   });
 });

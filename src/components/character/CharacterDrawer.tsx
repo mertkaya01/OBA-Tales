@@ -24,6 +24,7 @@ import { BadgeList } from "./BadgeList";
 import { ClassIcon } from "./ClassIcon";
 import { LivePortraitSlot } from "./LivePortraitSlot";
 import { PlatformIcon } from "./PlatformIcon";
+import { ShareButtons } from "./ShareButtons";
 import { RARITY_TEXT } from "./styles";
 
 const RARITY_TONE: Record<Character["rarity"], BadgeTone> = {
@@ -95,6 +96,7 @@ function CharacterDetails({ character: c }: { character: Character }) {
             {cls.name} · {cls.archetypeLabel}
           </Badge>
         </div>
+        <ShareButtons character={c} />
       </div>
 
       <dl className="mt-5 grid grid-cols-3 gap-2 text-center">

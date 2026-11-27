@@ -11,7 +11,7 @@
  * Koordinatlar tuval pikselidir: (0, 0) sol üst köşe, x sağa, y aşağı.
  */
 import { clearFrame, composite, createFrame, createFx, type Frame, type FxInstance, type FxOptions } from "../../vendor/pixelfx/core/index.js";
-import { EFFECTS, type EffectId } from "../../vendor/pixelfx/effects.js";
+import { ALL_EFFECTS, type FxId } from "./effects";
 
 export interface FxLayerOutput {
   frame: Frame;
@@ -39,7 +39,7 @@ export interface PlayOptions extends FxOptions {
 }
 
 export interface FxHandle {
-  readonly id: EffectId;
+  readonly id: FxId;
   readonly tag?: string;
   /** Efektin konumu ve ayarları (değiştirilebilir: x, y, flip…). */
   readonly options: FxOptions;
@@ -77,8 +77,8 @@ export class PixelFxPlayer {
   }
 
   /** Bir efekti başlatır. Döngüler stop() ya da lifetime ile biter, tek seferlikler kendiliğinden. */
-  play(id: EffectId, { tag, layer, velocity, lifetime, delay, ...options }: PlayOptions = {}): FxHandle {
-    const fx = createFx(EFFECTS[id], options);
+  play(id: FxId, { tag, layer, velocity, lifetime, delay, ...options }: PlayOptions = {}): FxHandle {
+    const fx = createFx(ALL_EFFECTS[id], options);
     const entry: Live = {
       id,
       tag,
@@ -99,7 +99,7 @@ export class PixelFxPlayer {
   }
 
   /** Katalogdaki bir tarifi oynatır; overrides konumu ve diğer ayarları değiştirir. */
-  playRecipe(recipe: { id: EffectId; options?: PlayOptions; layer?: PlayOptions["layer"] }, overrides: PlayOptions = {}): FxHandle {
+  playRecipe(recipe: { id: FxId; options?: PlayOptions; layer?: PlayOptions["layer"] }, overrides: PlayOptions = {}): FxHandle {
     return this.play(recipe.id, { ...recipe.options, layer: recipe.layer, ...overrides });
   }
 

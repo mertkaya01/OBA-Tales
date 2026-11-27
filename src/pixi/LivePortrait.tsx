@@ -5,14 +5,16 @@
  *   karakter      3D modelden ekran çözünürlüğünde, pürüzsüz çizilen tam boy portre; hafifçe nefes alır
  *   ön katman     hale (ışık / destansı), ateşböcekleri (nadir), kar (sıradan)
  *
- * Portreye dokununca sınıfın imza yeteneği oynar: Kalkan Duvarı, Buz Oku ya da Ocak Çayı.
+ * Portreye dokununca imza yeteneği oynar: sınıfınki (Kalkan Duvarı nadirlik ve rozetle büyür, Buz Oku, Ocak Çayı) ya da
+ * kahramanın kendisine özel olanı (fxCatalog.signatureSkill). Gök Gürültüsü'nde portre kararır, karakter simsiyah bir
+ * siluete döner, yıldırımlar çakar ve her şey eski hâline gelir.
  * Bu dosya Pixi'yi getirir; yalnızca çekmece açılınca, tembel (lazy) yüklenir.
  */
-import { Sprite, type Application, type Ticker } from "pixi.js";
-import { useCallback, useRef } from "react";
+import { Graphics, Sprite, type Application, type Ticker } from "pixi.js";
+import { useCallback, useMemo, useRef } from "react";
 import { CLASSES } from "../content/classes";
 import { actorFromSprite } from "../game/fx/actor";
-import { CLASS_SKILL_NAMES, PORTRAIT, classSkill, portraitAuras } from "../game/fx/fxCatalog";
+import { PORTRAIT, portraitAuras, signatureSkill } from "../game/fx/fxCatalog";
 import { PixelFxPlayer } from "../game/fx/PixelFxPlayer";
 import { composeSprite } from "../game/sprites/composeSprite";
 import { renderPortrait } from "../world3d/characters/portrait3d";
@@ -26,8 +28,17 @@ export const PORTRAIT_CSS_SCALE = 3;
 /** Sahnenin gerçek çözünürlüğü: CSS büyütmesi × ekran yoğunluğu (efektler yine keskin piksel büyür). */
 const stageResolution = () => Math.min(8, PORTRAIT_CSS_SCALE * Math.min(2.5, Math.max(1, window.devicePixelRatio || 1)));
 
+/** Kararmanın gücü (0 → 1 → 0) bir anda: [başla, tam, aydınlan, bitti] çizelgesine göre. */
+function darknessAt(t: number, [d0, d1, d2, d3]: readonly [number, number, number, number]): number {
+  if (t <= d0 || t >= d3) return 0;
+  if (t < d1) return (t - d0) / (d1 - d0);
+  if (t <= d2) return 1;
+  return 1 - (t - d2) / (d3 - d2);
+}
+
 export default function LivePortrait({ character }: { character: Character }) {
   const skillRef = useRef<(() => void) | null>(null);
+  const skill = useMemo(() => signatureSkill(character, { x: PORTRAIT.feetX, y: PORTRAIT.feetY }), [character]);
 
   const setup = useCallback(
     (app: Application) => {
@@ -53,16 +64,32 @@ export default function LivePortrait({ character }: { character: Character }) {
       const heroX = feetX - boxW / 2;
       const heroY = feetY - boxH;
       hero.position.set(heroX, heroY);
-      app.stage.addChild(new Sprite(back.texture), hero, new Sprite(front.texture));
+      // Karanlık örtü: arka efektlerin önünde, karakterin arkasında (karakter ayrıca siluete döner); ön efektler üstte.
+      const dark = new Graphics().rect(0, 0, width, height).fill(0x04050b);
+      dark.alpha = 0;
+      app.stage.addChild(new Sprite(back.texture), dark, hero, new Sprite(front.texture));
 
       let t = 0;
       let hop = 0;
+      let darkT = -1;
       const tick = (ticker: Ticker) => {
         const dt = Math.min(ticker.deltaMS / 1000, 0.1);
         t += dt;
         hop = Math.max(0, hop - dt);
         // Yumuşak nefes; yetenek kullanınca küçük bir zıplama.
         hero.y = heroY - (Math.sin(t * 2.2) * 0.5 + 0.5) * 0.7 - (hop > 0 ? Math.sin((hop / 0.3) * Math.PI) * 3 : 0);
+        if (darkT >= 0 && skill.darkness) {
+          darkT += dt;
+          const k = darknessAt(darkT, skill.darkness);
+          dark.alpha = 0.94 * k;
+          const v = Math.round(255 * (1 - 0.96 * k));
+          hero.tint = (v << 16) | (v << 8) | v;
+          if (darkT >= skill.darkness[3]) {
+            darkT = -1;
+            dark.alpha = 0;
+            hero.tint = 0xffffff;
+          }
+        }
         player.update(dt);
         player.render();
         back.sync();
@@ -72,25 +99,25 @@ export default function LivePortrait({ character }: { character: Character }) {
 
       skillRef.current = () => {
         hop = 0.3;
-        for (const recipe of classSkill(character.class.id, { x: feetX, y: feetY })) player.playRecipe(recipe, { actor });
+        if (skill.darkness) darkT = 0;
+        for (const recipe of skill.recipes) player.playRecipe(recipe, { actor });
       };
       return () => {
         app.ticker.remove(tick);
         skillRef.current = null;
       };
     },
-    [character],
+    [character, skill],
   );
 
-  const skill = CLASS_SKILL_NAMES[character.class.id];
   return (
     <button
       type="button"
       onClick={() => skillRef.current?.()}
       className="group relative block cursor-pointer rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gunozu-400"
       style={{ width: PORTRAIT.width * PORTRAIT_CSS_SCALE }}
-      aria-label={`${character.displayName}, ${CLASSES[character.class.id].name}. Dokun: ${skill}`}
-      title={`Dokun: ${skill}`}
+      aria-label={`${character.displayName}, ${CLASSES[character.class.id].name}. Dokun: ${skill.name}`}
+      title={`Dokun: ${skill.name}`}
     >
       <PixiStage
         key={character.id}
@@ -101,7 +128,7 @@ export default function LivePortrait({ character }: { character: Character }) {
         setup={setup}
       />
       <span className="pointer-events-none absolute bottom-1 right-1 rounded-md bg-gece-950/70 px-1.5 py-0.5 text-[10px] text-buz-200 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-        Dokun: {skill}
+        Dokun: {skill.name}
       </span>
     </button>
   );

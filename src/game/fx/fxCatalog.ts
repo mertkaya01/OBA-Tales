@@ -3,18 +3,21 @@
  *
  *   Portre auraları   alev → ruh alevi (ateş renginde) · ışık → hale · efsanevi → arkada dönen güneş
  *                     destansı → mor hale · nadir → zümrüt ateşböcekleri · sıradan → hafif kar
- *   Sınıf yetenekleri Kalkaneri → Kalkan Duvarı · Okyeli → Buz Oku · Ocakcan → Ocak Çayı
+ *   Sınıf yetenekleri Kalkaneri → Kalkan Duvarı (nadirlik ve rozetle büyür) · Okyeli → Buz Oku · Ocakcan → Ocak Çayı
+ *   Kahraman imzaları egetunce → Lavanta Kalkanı ve Gün Kılıcı · mhellingtr → Gök Gürültüsü (portre kararır, yıldırımlar
+ *                     çakar, aydınlanır) · BinTaş → Bin Taş Ocağı (kor halkası, alev kanatları, ateş küresi)
  *   Boss akınları     her boss'un gökyüzü, ortam efektleri, saldırıları ve zayıf noktası (bosses.ts ile aynı)
  *
- * Renkler OBA-Tales paletinden; efektlerin kendisi src/vendor/pixelfx içinde, değiştirilmeden durur.
+ * Renkler OBA-Tales paletinden. pixelfx'in efektleri src/vendor/pixelfx içinde değiştirilmeden durur; OBA-Tales'e özel
+ * olanlar (kalkan duvarı, kılıç, yıldırım, kor halkası) src/game/fx/oba içinde.
  */
 import { RARITIES } from "../../types";
 import type { BossId, Character, ClassId } from "../../types";
-import type { EffectId } from "../../vendor/pixelfx/effects.js";
+import type { FxId } from "./effects";
 import type { PlayOptions } from "./PixelFxPlayer";
 
 export interface FxRecipe {
-  id: EffectId;
+  id: FxId;
   options?: PlayOptions;
   /**
    * auto: efektin kendi arka/ön parçaları karakterin arkasına ve önüne · back: hepsi arkada · front: hepsi önde
@@ -33,6 +36,7 @@ export const RAMPS = {
   goksel: ["#0a1030", "#1c2a66", "#2f56a8", "#4fa3e0", "#7fe6ff", "#b8f4ff", "#e8fcff", "#ffffff"],
   zumrut: ["#0b2a20", "#145a42", "#24906a", "#34b08b", "#8ae6c0", "#ffffff"],
   gunozu: ["#3b2a08", "#7a5612", "#b8861c", "#e2a52a", "#f6d36f", "#fbe7a6", "#fff8e0", "#ffffff"],
+  lavanta: ["#1d1233", "#33205c", "#553a91", "#7a5cc4", "#a184e6", "#c6b0f7", "#ece2ff", "#ffffff"],
 } as const;
 
 // ── Canlı portre ───────────────────────────────────────────────────
@@ -69,11 +73,67 @@ export function portraitAuras(c: Character): FxRecipe[] {
   return out;
 }
 
-/** Portreye dokununca: sınıfın imza yeteneği (tek seferlik). */
-export function classSkill(classId: ClassId, at: { x: number; y: number }): FxRecipe[] {
+/**
+ * Kalkan Duvarı'nın boyu: nadirlik kademesi ve rozetlerle büyür (Çırak Kalkaneri 1; her kademe +0,08, her rozet +0,03,
+ * en çok 1,4). Portrenin 88 piksellik tuvaline sığar.
+ */
+export function shieldSize(c: Pick<Character, "rarity" | "badges">): number {
+  return Math.min(1.4, 1 + 0.08 * Math.max(0, RARITIES.indexOf(c.rarity)) + 0.03 * Math.min(4, c.badges.length));
+}
+
+/** Büyük kalkan sağa taşmasın diye kubbenin çıkış noktası biraz sola alınır. */
+const shieldAt = (at: { x: number; y: number }, size: number) => ({ x: at.x - Math.round((size - 1) * 10), y: at.y });
+
+/** Bir karakterin portreye dokununca oynayan imza yeteneği. */
+export interface SignatureSkill {
+  /** Portrenin üstünde görünen ad ("Dokun: …"). */
+  name: string;
+  recipes: FxRecipe[];
+  /**
+   * Portrenin kararması (sn): [kararmaya başlar, tam karanlık, aydınlanmaya başlar, eski hâli]. Karanlıkta karakter
+   * de simsiyah bir siluete döner (Gök Gürültüsü).
+   */
+  darkness?: readonly [number, number, number, number];
+}
+
+/** Kahramanlara özel imza yetenekleri; diğer herkes sınıfının yeteneğini kullanır. */
+export function signatureSkill(c: Character, at: { x: number; y: number }): SignatureSkill {
+  switch (c.id) {
+    case "egetunce": {
+      const size = 1.5;
+      return {
+        name: "Lavanta Kalkanı · Gün Kılıcı",
+        recipes: [
+          { id: "oba/shield-wall", options: { ...shieldAt(at, size), size, palette: RAMPS.lavanta, sparks: ["#ffffff", "#ece2ff", "#c6b0f7", "#a184e6"] } },
+          // Kalkan sönerken kılıcı tuttuğu sol yandan savurur (kalkan sağda; iz lavantaya karışmasın).
+          { id: "oba/blade-arc", options: { x: at.x, y: at.y, delay: 0.62, flip: true, palette: RAMPS.ulu, radius: 30 }, layer: "front" },
+        ],
+      };
+    }
+    case "mhellingtr":
+      return {
+        name: "Gök Gürültüsü",
+        recipes: [{ id: "oba/lightning", options: { x: at.x, y: at.y, palette: RAMPS.goksel }, layer: "front" }],
+        darkness: [0, 0.25, 0.9, 1.4],
+      };
+    case "bintas":
+      return {
+        name: "Bin Taş Ocağı",
+        recipes: [
+          { id: "fire/spirit-flame", options: { x: at.x, y: at.y + 2, palette: RAMPS.ates, light: 1, lifetime: 1.7 }, layer: "back" },
+          { id: "oba/ember-ring", options: { x: at.x, y: at.y - 2, palette: RAMPS.ates } },
+          { id: "holy/sunburst", options: { x: at.x, y: at.y - 58, palette: RAMPS.efsanevi, light: 0.9, lifetime: 1.1, delay: 1 }, layer: "back" },
+        ],
+      };
+  }
+  return { name: CLASS_SKILL_NAMES[c.class.id], recipes: classSkill(c.class.id, at, shieldSize(c)) };
+}
+
+/** Portreye dokununca: sınıfın imza yeteneği (tek seferlik). `shield`: Kalkan Duvarı'nın boyu (shieldSize). */
+export function classSkill(classId: ClassId, at: { x: number; y: number }, shield = 1): FxRecipe[] {
   switch (classId) {
     case "kalkaneri":
-      return [{ id: "impacts/shield-block", options: { x: at.x, y: at.y } }];
+      return [{ id: "oba/shield-wall", options: { ...shieldAt(at, shield), size: shield } }];
     case "okyeli":
       return [
         {

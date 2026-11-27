@@ -1,6 +1,7 @@
 /**
  * 3D ada arazisi: yükseklik haritasından üretilen köşeli (low-poly) ağ, üstünde boyalı harita dokusu.
- * Araziye tıklamak (sürükleme değilse) o bölgeyi filtreler; harita görünümüyle aynı davranış.
+ * Ağ parçalıdır (terrainGeometry.buildTerrainChunks): ekranda olmayan parçalar çizilmez. Hepsi tek malzemeyi paylaşır.
+ * Araziye tek tıklama açık çekmeceyi kapatır, çift tıklama oraya yakınlaşır.
  */
 import type { ThreeEvent } from "@react-three/fiber";
 import { useEffect, useMemo } from "react";
@@ -8,7 +9,7 @@ import { MeshLambertMaterial, type Texture } from "three";
 import type { Terrain } from "../game/terrain";
 import type { Coordinates } from "../types";
 import { applyFogOfWar, type FogUniforms } from "./shaders/fog";
-import { buildTerrainGeometry } from "./terrainGeometry";
+import { buildTerrainChunks } from "./terrainGeometry";
 
 interface IslandTerrainProps {
   terrain: Terrain;
@@ -21,19 +22,14 @@ interface IslandTerrainProps {
 }
 
 export function IslandTerrain({ terrain, texture, fogUniforms, onGroundClick, onGroundDoubleClick }: IslandTerrainProps) {
-  const geometry = useMemo(() => buildTerrainGeometry(terrain), [terrain]);
+  const chunks = useMemo(() => buildTerrainChunks(terrain), [terrain]);
   const material = useMemo(
     () => applyFogOfWar(new MeshLambertMaterial({ map: texture, flatShading: true }), fogUniforms),
     [texture, fogUniforms],
   );
 
-  useEffect(
-    () => () => {
-      geometry.dispose();
-      material.dispose();
-    },
-    [geometry, material],
-  );
+  useEffect(() => () => chunks.forEach((g) => g.dispose()), [chunks]);
+  useEffect(() => () => material.dispose(), [material]);
 
   const onClick = (event: ThreeEvent<MouseEvent>) => {
     // Sürükleyerek kaydırma tıklama sayılmasın.
@@ -46,5 +42,11 @@ export function IslandTerrain({ terrain, texture, fogUniforms, onGroundClick, on
     onGroundDoubleClick({ x: event.point.x, y: event.point.z });
   };
 
-  return <mesh geometry={geometry} material={material} receiveShadow onClick={onClick} onDoubleClick={onDoubleClick} />;
+  return (
+    <group>
+      {chunks.map((geometry, i) => (
+        <mesh key={i} geometry={geometry} material={material} receiveShadow onClick={onClick} onDoubleClick={onDoubleClick} />
+      ))}
+    </group>
+  );
 }

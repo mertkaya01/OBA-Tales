@@ -28,6 +28,7 @@ Dosyayı aç, sayıyı değiştir, kaydet. Beğenmezsen eski sayıya dön.
 | Renk canlılığı | `src/world3d/living/sky.ts` → `saturation` değerleri | 1,12 (gündüz) | 1,25: daha canlı, 1,0: doğal |
 | **Karakter boyu** | `src/world3d/characters/instanceData.ts` → `CHARACTER_SIZE` | 1,8, herkes aynı boyda (takipçi, kadro, özel kahraman; nadirlik boyla değil aura ve kıyafetle anlaşılır) | 2,0: daha da iri. Büyütürsen `src/world3d/living/raid.ts` → `COLUMN_SPACING` (4,9) ve `ROW_SPACING` (5,8) sayılarını da aynı oranda büyüt, yoksa akın safında karakterler birbirine girer |
 | Ağaç boyu | `src/world3d/Nature.tsx` → `TREE_SIZE` | 1,35 | Küçültürsen karakterler öne çıkar |
+| **Oba çadırları** | `src/content/sites.ts` → `YURT_SIZE`, `MIN_RING`, `YURT_GAP` | 2,5 · 38 · 10 | Çadırlar ateşin çevresinde eşit aralıklı bir halkadır, kapıları ocağa bakar, renkler halka boyunca sırayla döner. `YURT_SIZE` çadır boyu; `MIN_RING` halkanın en küçük yarıçapı (avlu genişliği); `YURT_GAP` iki çadır arasındaki boşluk. Patikalar halkanın dışında biter, obanın zemini halkanın dışına kadar düzlenir. Değiştirince `npm test` çalıştır: her obanın tam halka olduğunu denetler |
 | Arazi ayrıntısı | `src/world3d/terrainGeometry.ts` → `MESH_STEP` | 5 | 3: tepeler daha yumuşak ve ayrıntılı (daha çok üçgen) |
 | En yakın yakınlaşma | `src/world3d/worldScale.ts` → `MAX_WORLD_ZOOM` | 22 | 30: sokak seviyesine daha çok inilir |
 | Kamera eğimi | `src/world3d/worldScale.ts` → `MAX_TILT` | 0,92 radyan | Büyütürsen yakında daha yandan bakar |

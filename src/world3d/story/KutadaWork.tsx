@@ -28,6 +28,7 @@ import {
 import { ARRIVAL_ORDER, type ArrivalHeroId } from "../../content/story";
 import type { CharacterPlacement } from "../living/placement";
 import { merge } from "../geometryKit";
+import { YURT_SIZE } from "../layout";
 import { groundY } from "../worldScale";
 import type { HeroWorld } from "./AnimatedHero";
 import { dayPlan, type DayPlan } from "./daySchedule";
@@ -396,7 +397,8 @@ export function KutadaWork({ world, heroes, placements }: KutadaWorkProps) {
       {zMaterials &&
         ARRIVAL_ORDER.map((id, h) => {
           const home = sites.homes[id];
-          const top = ground(home.tent) + 11.5 * home.tentScale;
+          // Çadırın tepesinin biraz üstü (boyu 1 olan çadır 5,75 birim yüksek).
+          const top = ground(home.tent) + 5.75 * YURT_SIZE * home.tentScale;
           return (
             <group key={`zzz-${id}`} position={[home.tent.x, top, home.tent.y]}>
               {[0, 1, 2].map((k) => (

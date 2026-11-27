@@ -664,7 +664,8 @@ export function generateTerrain({ seed, cellSize = 4 }: TerrainOptions): Terrain
       if (!isLandCell[i]) return;
       // Tam düz değil (zeminin %15'i kalır), çevresinden biraz yüksek ve hafif kubbeli: nehirler ve göller
       // içine girmez, kenarından geçer; haritada da yapay bir daire gibi görünmez.
-      const w = 0.85 * (1 - smoothstep(site.radius * 0.35, site.radius, d));
+      // Obalarda düz alan çadır halkasının dışına kadar sürer (site.plateau): çadırlar yamaca basmaz.
+      const w = 0.85 * (1 - smoothstep(site.plateau ?? site.radius * 0.35, site.radius, d));
       heights[i] = Math.max(0.02, heights[i] + (target + 0.014 - heights[i]) * w + 0.012 * w * (1 - d / site.radius));
     });
   }

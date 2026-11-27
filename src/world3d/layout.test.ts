@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import rosterText from "../../public/data/roster.json?raw";
-import { MONUMENTS, RAID_GROUNDS, SEA_ROUTES } from "../content/sites";
-import { getTrails } from "../game/paths";
+import { MONUMENTS, RAID_GROUNDS, SEA_ROUTES, YURT_FOOT, YURT_SIZE, ringRadius, trailStop } from "../content/sites";
+import { getTrails, onTrail } from "../game/paths";
 import { pointInPolygon } from "../lib/geometry";
 import { generateTerrain, isWet, sampleHeightBilinear, sampleTerrain } from "../game/terrain";
 import { REGIONS } from "../content/regions";
@@ -99,6 +99,33 @@ describe("yapılar", () => {
       for (let j = i + 1; j < yurts.length; j++) expect(distance(yurts[i], yurts[j])).toBeGreaterThanOrEqual(8);
     }
   });
+
+  it("her oba ateşin çevresinde tam ve düzgün bir halka: eşit aralık, aynı boy, kapılar ocağa, patikaya basan yok", () => {
+    const yurts = yurtPlacements(terrain, SEED);
+    const foot = YURT_FOOT * YURT_SIZE;
+    for (const v of VILLAGES) {
+      const mine = yurts.filter((y) => distance(v.center, y) <= v.radius + 4);
+      expect(mine.length, v.name).toBe(v.count);
+      const radii = mine.map((y) => distance(v.center, y));
+      expect(Math.max(...radii) - Math.min(...radii), v.name).toBeLessThan(0.01);
+      expect(Math.abs(radii[0] - ringRadius(v)), v.name).toBeLessThanOrEqual(6);
+      // Komşu çadırlar arası eşit (halka boyunca sıralı), duvarlar arasında en az 8 birim boşluk.
+      const angles = mine.map((y) => Math.atan2(y.y - v.center.y, y.x - v.center.x)).sort((a, b) => a - b);
+      const step = (Math.PI * 2) / v.count;
+      angles.forEach((a, i) => {
+        const next = i + 1 < angles.length ? angles[i + 1] : angles[0] + Math.PI * 2;
+        expect(next - a, v.name).toBeCloseTo(step, 6);
+      });
+      expect(2 * radii[0] * Math.sin(step / 2) - 2 * foot, v.name).toBeGreaterThanOrEqual(8);
+      for (const y of mine) {
+        expect(y.scale).toBe(1);
+        // Kapının baktığı yön (sin, cos) ocağı gösterir.
+        const toFire = { x: (v.center.x - y.x) / radii[0], y: (v.center.y - y.y) / radii[0] };
+        expect(Math.sin(y.rotation) * toFire.x + Math.cos(y.rotation) * toFire.y, v.name).toBeCloseTo(1, 6);
+        expect(onTrail(terrain, y), v.name).toBe(false);
+      }
+    }
+  });
 });
 
 describe("doğa", () => {
@@ -109,7 +136,8 @@ describe("doğa", () => {
   it("yeterince ağaç, kaya ve buz kristali üretir", () => {
     expect(trees.length).toBeGreaterThan(3000);
     expect(rocks.length).toBeGreaterThan(20);
-    expect(ice.length).toBeGreaterThan(10);
+    // Buz az ve tohuma duyarlı (dört tohumda 10–35 arası): alt sınır yalnızca "hiç yok"u yakalar.
+    expect(ice.length).toBeGreaterThanOrEqual(8);
   });
 
   it("hepsi karada, nehir ve göl dışında; yapıların çevresi boş", () => {
@@ -165,7 +193,8 @@ describe("obalar, anıtlar ve patikalar", () => {
 
   it("patikalar her obaya ulaşır ve nehri yalnızca köprüden geçer", () => {
     for (const v of VILLAGES.filter((q) => q.id)) {
-      const reaches = trails.paths.some((path) => path.some((p) => distance(p, v.center) < v.radius * 0.55 + 10));
+      // Yol obanın çadır halkasının hemen dışında biter (trailStop).
+      const reaches = trails.paths.some((path) => path.some((p) => distance(p, v.center) < trailStop(v) + 10));
       expect(reaches, v.name).toBe(true);
     }
     expect(trails.bridges.length).toBeGreaterThan(0);

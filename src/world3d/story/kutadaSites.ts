@@ -131,7 +131,7 @@ function buildSites(terrain: Terrain, seed: number): KutadaSites {
   const clearOf = (p: Coordinates, list: readonly Obstacle[], pad: number) => list.every((o) => distance(o, p) > o.r + pad);
   const free = (p: Coordinates, pad: number) => dry(p) && clearOf(p, near, pad);
 
-  // ── Çadırlar: obanın çadırlarından kapı önü ocağa yakın ama ateşin dışında kalan üçü ──
+  // ── Çadırlar: halkanın kuzeyindeki üçü (kapıları güneye, ocağa ve kameraya bakar; çıkan kahraman ekrana döner) ──
   const yurts = yurtPlacements(terrain, seed)
     .filter((y) => distance(y, center) <= village.radius + 1)
     .map((y) => {
@@ -142,7 +142,7 @@ function buildSites(terrain: Terrain, seed: number): KutadaSites {
       return { y, door, front, inYaw: y.rotation + Math.PI };
     })
     .filter((t) => distance(t.front, center) >= 14 && dry(t.front))
-    .sort((a, b) => distance(a.y, center) - distance(b.y, center));
+    .sort((a, b) => a.y.y - b.y.y);
   if (yurts.length < ARRIVAL_ORDER.length) throw new Error("Konuk obasında kahramanlara yetecek çadır yok");
 
   // ── Ateş başı oturakları: kameraya yüzü dönük olsun diye önce ocağın kuzeyi ──

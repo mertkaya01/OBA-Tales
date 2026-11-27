@@ -24,7 +24,7 @@ import { InstancedParts, type InstanceTransform } from "./InstancedParts";
 import type { SkyRuntime } from "./living/sky";
 import { LANDMARKS, YURT_SIZE, boatPlacements, pierPlacement, yurtPlacements } from "./layout";
 import { isHiddenAt, type LandVisibility } from "../game/visibility";
-import { foggedLambert, pickByPosition } from "./materials";
+import { foggedLambert } from "./materials";
 import type { FogUniforms } from "./shaders/fog";
 import { WATER_LEVEL, groundY } from "./worldScale";
 
@@ -35,6 +35,13 @@ const YURT_BAND = new CylinderGeometry(3.47, 3.47, 0.45, 8).translate(0, 1.7, 0)
 const YURT_ROOF = new ConeGeometry(3.9, 2.4, 8).translate(0, 2.6 + 1.2, 0);
 const YURT_DOOR = new BoxGeometry(1.3, 1.7, 0.4).translate(0, 0.85, 3.3);
 const ROOF_COLORS = ["#c4413a", "#3f6f8a", "#d9a12a", "#5a7f6b"];
+
+/** Halkadaki sırasına göre çatı rengi: kırmızı, mavi, sarı, yeşil… İlk ve son çadır aynı renge düşmez. */
+function roofColor(slot: number, ringSize: number): string {
+  const k = ROOF_COLORS.length;
+  const last = slot === ringSize - 1 && ringSize % k === 1;
+  return ROOF_COLORS[last ? 2 : slot % k];
+}
 
 const BEAM = new ConeGeometry(2.2, 28, 10, 1, true).rotateZ(Math.PI / 2).translate(14, 0, 0);
 const BLADE = new BoxGeometry(0.55, 6, 0.15).translate(0, 3, 0);
@@ -215,7 +222,8 @@ function Yurts({ terrain, seed, m, visibility }: { terrain: Terrain; seed: numbe
     }));
     return {
       base,
-      roofs: base.map((b, i) => ({ ...b, color: pickByPosition(ROOF_COLORS, placements[i].x, placements[i].y) })),
+      // Renkler halka boyunca sırayla döner; halka başa dönerken aynı renk yan yana gelecekse sonuncusu atlanır.
+      roofs: base.map((b, i) => ({ ...b, color: roofColor(placements[i].slot, placements[i].ringSize) })),
     };
   }, [terrain, seed, visibility]);
 

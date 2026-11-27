@@ -6,6 +6,8 @@
  */
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { prepareTerrain } from "../game/terrainWorker";
+import { detectWebGL } from "../hooks/useWebGLSupport";
+import { useAppStore } from "../state/useAppStore";
 import { clearDataCache, loadGameData } from "./loaders";
 import { GameDataContext, type GameDataState } from "./useGameData";
 
@@ -25,9 +27,11 @@ export function DataProvider({ children, rosterUrl, loading, renderError }: Data
 
   useEffect(() => {
     let active = true;
-    // Veriler gelince arazi de arka planda hazırlanır; ikisi bitince harita açılır.
+    // Veriler gelince arazi de arka planda hazırlanır; ikisi bitince harita açılır. Açılan görünümün boyası
+    // (3D dünya ya da 2D harita) arazinin yanında gelir, öbürü ardından arka planda boyanır.
+    const first = useAppStore.getState().view === "dunya" && detectWebGL() ? "dunya" : "harita";
     loadGameData({ rosterUrl })
-      .then((data) => prepareTerrain(data.world.seed).then(() => data))
+      .then((data) => prepareTerrain(data.world.seed, first).then(() => data))
       .then(
       (data) => {
         if (active) setState({ status: "ready", data });

@@ -8,8 +8,8 @@
 import { createNoise2D } from "simplex-noise";
 import { ISLAND_LIST } from "../content/islands";
 import { REGIONS } from "../content/regions";
-import { LANDMARKS, MONUMENTS, RAID_GROUNDS, VILLAGES, type Village } from "../content/sites";
-import { onTrail } from "../game/paths";
+import { LANDMARKS, MONUMENTS, RAID_GROUNDS, VILLAGES, YURT_FOOT, YURT_SIZE, ringRadius, trailStop, type Village } from "../content/sites";
+import { getTrails, onTrail } from "../game/paths";
 import { isWet, sampleTerrain, type Terrain } from "../game/terrain";
 import { distance, pointInPolygon } from "../lib/geometry";
 import { createRng, hashString, seedFrom } from "../lib/random";
@@ -19,8 +19,8 @@ import type { Obstacle } from "./living/placement";
 
 // ── Yapılar ────────────────────────────────────────────────────────
 
-// Konumlar content/sites.ts içinde (arazi üreticisi de onları okur).
-export { LANDMARKS, VILLAGES, type Village } from "../content/sites";
+// Konumlar ve oba ölçüleri content/sites.ts içinde (arazi üreticisi ve patikalar da onları okur).
+export { LANDMARKS, VILLAGES, YURT_FOOT, YURT_SIZE, ringRadius, type Village } from "../content/sites";
 
 /** Akın meydanlarının ağaçsız kalan yarıçapı ve boss'un durduğu yerin açıklığı. */
 export const RAID_CLEARING = { square: 34, focus: 14 } as const;
@@ -94,8 +94,6 @@ export interface CampLayout {
 export const CORRAL_RADIUS = 15;
 /** Kut Kapısı'nın taş meydanının yarıçapı (gezinenler girmez). */
 export const PORTAL_RADIUS = 41;
-/** Oba çadırlarının boyu (karakterler 1,8 kat iri olduğu için çadırlar da büyütüldü). */
-export const YURT_SIZE = 2;
 export const FLOCK_RADIUS = 14;
 
 const polar = (c: Coordinates, angle: number, r: number): Coordinates => ({ x: c.x + Math.cos(angle) * r, y: c.y + Math.sin(angle) * r });
@@ -204,25 +202,80 @@ export interface Placement {
   scale: number;
 }
 
-const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
+/** Halkadaki çadır: slot, halka boyunca sırası (0…count-1; atlanan çadırın sırası boş kalır). */
+export interface YurtPlacement extends Placement {
+  slot: number;
+  /** Obasındaki çadır sayısı (renk sırası halkanın başına dönerken aynı renk yan yana gelmesin). */
+  ringSize: number;
+}
 
-/** Köy merkezinin çevresine ayçiçeği deseninde çadır dizer; suya ya da dik yamaca düşenleri atlar. */
-export function yurtPlacements(terrain: Terrain, seed: number): Placement[] {
-  const rng = createRng(seedFrom("cadirlar", seed));
-  const out: Placement[] = [];
-  for (const village of VILLAGES) {
-    const ringOnly = village.center === LANDMARKS.senlikOcagi;
-    for (let i = 0; i < village.count; i++) {
-      const angle = i * (ringOnly ? (Math.PI * 2) / village.count : GOLDEN_ANGLE) + rng.float(-0.15, 0.15);
-      const radius = ringOnly ? village.radius : village.radius * Math.sqrt((i + 0.6) / village.count);
-      const p = { x: village.center.x + Math.cos(angle) * radius, y: village.center.y + Math.sin(angle) * radius };
-      const sample = sampleTerrain(terrain, p);
-      if (sample.height < 0.05 || sample.height > 0.7) continue;
-      if (out.some((o) => distance(o, p) < 16.5)) continue;
-      // Kapı köy merkezine baksın.
-      out.push({ ...p, rotation: Math.atan2(village.center.x - p.x, village.center.y - p.y), scale: rng.float(0.9, 1.15) });
-    }
+const yurtCache = new WeakMap<Terrain, Map<number, YurtPlacement[]>>();
+
+/** İki açı arasındaki en kısa fark (0–π). */
+const angleGap = (a: number, b: number) => Math.abs(((((a - b) % (Math.PI * 2)) + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
+
+/**
+ * Oba çadırları: ateşin çevresinde eşit aralıklı tek bir halka, hepsi aynı boyda, kapıları ocağa bakar.
+ * Halka, hiçbir çadır suya, kıyıya, eğimli yere ya da patikaya basmayacak biçimde döndürülür; eşit seçenekler
+ * arasında patikaların geldiği yöne iki çadırın arası (obanın kapısı) denk gelen seçilir. Gerekirse yarıçap birkaç
+ * birim oynatılır; hiçbir düzende sığmayan çadır atlanır. Tohum halkanın başlangıç açısını seçer.
+ */
+export function yurtPlacements(terrain: Terrain, seed: number): YurtPlacement[] {
+  let bySeed = yurtCache.get(terrain);
+  if (!bySeed) {
+    bySeed = new Map();
+    yurtCache.set(terrain, bySeed);
   }
+  const cached = bySeed.get(seed);
+  if (cached) return cached;
+
+  const foot = YURT_FOOT * YURT_SIZE;
+  // Taban düz olmalı: çevresindeki noktalarla ortası arasındaki yükseklik farkı küçük (yüksek yaylada da kurulur).
+  const fits = (p: Coordinates) => {
+    let low = Infinity;
+    let high = -Infinity;
+    for (let k = 0; k <= 8; k++) {
+      const q = k === 8 ? p : polar(p, (k / 8) * Math.PI * 2, foot + 1.5);
+      const h = sampleTerrain(terrain, q).height;
+      if (h < 0.05 || isWet(terrain, q) || onTrail(terrain, q)) return false;
+      low = Math.min(low, h);
+      high = Math.max(high, h);
+    }
+    return high - low <= 0.04;
+  };
+  const trails = getTrails(terrain).paths;
+
+  const out: YurtPlacement[] = [];
+  for (const village of VILLAGES) {
+    const n = village.count;
+    const step = (Math.PI * 2) / n;
+    const base = ((hashString(`${village.name}:${seed}`) % 3600) / 3600) * step;
+    const r0 = ringRadius(village);
+    // Obaya gelen patikaların yönleri (yolun obaya en yakın ucu).
+    const reach = trailStop(village) + 8;
+    const entries = trails.flatMap((path) =>
+      [path[0], path[path.length - 1]].filter((p) => distance(p, village.center) < reach).map((p) => Math.atan2(p.y - village.center.y, p.x - village.center.x)),
+    );
+    let best: (Coordinates & { slot: number })[] = [];
+    let bestScore = -Infinity;
+    for (const dr of [0, -3, 3, -6, 6]) {
+      const radius = r0 + dr;
+      for (let k = 0; k < 24; k++) {
+        const start = base + (k / 24) * step;
+        const ring = Array.from({ length: n }, (_, i) => ({ ...polar(village.center, start + i * step, radius), slot: i })).filter(fits);
+        // Önce sığan çadır sayısı; sonra patikaların iki çadırın arasına gelmesi, ideal yarıçap ve tohumun açısı.
+        const misaligned = entries.reduce((sum, e) => sum + angleGap(e - start, step / 2 + Math.round((e - start - step / 2) / step) * step), 0);
+        const score = ring.length * 1000 - Math.abs(dr) * 10 - misaligned * 30 - k * 0.01;
+        if (score > bestScore) {
+          bestScore = score;
+          best = ring;
+        }
+      }
+      if (best.length === n) break;
+    }
+    for (const p of best) out.push({ x: p.x, y: p.y, rotation: Math.atan2(village.center.x - p.x, village.center.y - p.y), scale: 1, slot: p.slot, ringSize: n });
+  }
+  bySeed.set(seed, out);
   return out;
 }
 
@@ -232,7 +285,7 @@ export function yurtPlacements(terrain: Terrain, seed: number): Placement[] {
 export function structureObstacles(terrain: Terrain, seed: number): Obstacle[] {
   const circle = (p: Coordinates, r: number): Obstacle => ({ x: p.x, y: p.y, r });
   return [
-    ...yurtPlacements(terrain, seed).map((y) => circle(y, 3.6 * YURT_SIZE * y.scale + 1.2)),
+    ...yurtPlacements(terrain, seed).map((y) => circle(y, YURT_FOOT * YURT_SIZE * y.scale + 1.2)),
     circle(LANDMARKS.fener, 4.5),
     ...LANDMARKS.ruzgarGulleri.map((p) => circle(p, 2.6)),
     circle(LANDMARKS.tapinak, 14.5),

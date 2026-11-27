@@ -44,5 +44,14 @@ export function getPaintedTerrain(seed: number, style: PaintStyle): PaintedImage
 export function primeTerrain(seed: number, terrain: Terrain, trails: Trails, painted: readonly { style: PaintStyle; image: PaintedImage }[]): void {
   terrains.set(seed, terrain);
   primeTrails(terrain, trails);
-  for (const { style, image } of painted) paintings.set(`${seed}:${style}`, image);
+  for (const { style, image } of painted) primePainting(seed, style, image);
+}
+
+export function hasPainting(seed: number, style: PaintStyle): boolean {
+  return paintings.has(`${seed}:${style}`);
+}
+
+/** Arka planda sonradan boyanan üslubu önbelleğe ekler. */
+export function primePainting(seed: number, style: PaintStyle, image: PaintedImage): void {
+  paintings.set(`${seed}:${style}`, image);
 }

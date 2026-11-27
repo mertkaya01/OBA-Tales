@@ -104,6 +104,33 @@ export const VILLAGES: readonly Village[] = [
   { id: "tapinak_obasi", name: "Tapınak obası", region: "gunozu_tepesi", center: { x: 1030, y: 805 }, count: 6, radius: 56, banner: "#e2b23c", corral: false },
 ];
 
+// ── Oba ölçüleri (çadır halkası) ───────────────────────────────────
+
+/** Oba çadırlarının boyu (karakterler 1,8 kat iri; obalar uzaktan da dolgun görünsün diye çadırlar 2,5 kat). */
+export const YURT_SIZE = 2.5;
+/** Boyu 1 olan çadırın tabandaki yarıçapı (dünya birimi). */
+export const YURT_FOOT = 3.6;
+/** Komşu iki çadırın duvarları arasında kalan en az boşluk (gezinenler buradan geçer). */
+const YURT_GAP = 10;
+/** Çadır halkasının en küçük yarıçapı: içteki avluda ateş, kazan, odun ve oturaklara yer kalsın. */
+const MIN_RING = 38;
+
+/**
+ * Bir obanın çadır halkasının yarıçapı: komşu çadırlar arasında YURT_GAP kalacak kadar geniş, en az MIN_RING,
+ * en çok obanın kendi yarıçapı. Şenlik halkası kendi yarıçapındadır (ocağın çevresindeki büyük halka).
+ */
+export function ringRadius(village: Village): number {
+  if (village.center === SENLIK_OCAGI) return village.radius;
+  const foot = YURT_FOOT * YURT_SIZE;
+  const needed = (2 * foot + YURT_GAP) / (2 * Math.sin(Math.PI / village.count));
+  return Math.min(village.radius - foot + 4, Math.max(MIN_RING, Math.ceil(needed)));
+}
+
+/** Patikaların bittiği yer: çadır halkasının hemen dışı (yol obanın kapısına gelir, çadırların arasına girmez). */
+export function trailStop(village: Village): number {
+  return ringRadius(village) + YURT_FOOT * YURT_SIZE + 10;
+}
+
 // ── Akın meydanları ────────────────────────────────────────────────
 
 export interface RaidGround {
@@ -179,6 +206,14 @@ export const SEA_ROUTES: readonly SeaRoute[] = [
 export interface Site {
   center: Coordinates;
   radius: number;
+  /** Düzlemenin tam güçte sürdüğü iç yarıçap (yoksa yarıçapın %35'i); dışında kenara doğru yumuşakça azalır. */
+  plateau?: number;
+}
+
+/** Obanın düz alanı: çadır halkasının dış kenarına kadar tam düz, sonra en az 18 birimlik yumuşak kenar. */
+function villageSite(v: Village): Site {
+  const plateau = ringRadius(v) + YURT_FOOT * YURT_SIZE + 2;
+  return { center: v.center, radius: Math.max(v.radius + 16, plateau + 18), plateau };
 }
 
 /** Düzlenen alanlar: saflar, çadırlar ve tapınak düz zemine otursun. */
@@ -187,7 +222,7 @@ export const FLAT_SITES: readonly Site[] = [
     { center: g.square, radius: 48 },
     { center: g.focus, radius: 22 },
   ]),
-  ...VILLAGES.map((v) => ({ center: v.center, radius: v.radius + 16 })),
+  ...VILLAGES.map(villageSite),
   { center: LANDMARKS.tapinak, radius: 36 },
   { center: MONUMENTS.ataHeykeli, radius: 16 },
   { center: LANDMARKS.kutKapisi, radius: 92 },

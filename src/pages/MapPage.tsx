@@ -20,13 +20,18 @@ import { MapLegend } from "../components/hud/MapLegend";
 import { ViewSwitcher } from "../components/hud/ViewSwitcher";
 import { LoadingScreen } from "../components/ui/LoadingScreen";
 import { useFilteredCharacters } from "../hooks/useFilteredCharacters";
-import { useWebGLSupport } from "../hooks/useWebGLSupport";
+import { detectWebGL, useWebGLSupport } from "../hooks/useWebGLSupport";
 import { cn } from "../lib/cn";
 import { useAppStore } from "../state/useAppStore";
 import { useUrlSync } from "../state/useUrlSync";
 
 const MapView = lazy(() => import("../map2d/MapView"));
-const WorldView = lazy(() => import("../world3d/WorldView"));
+const loadWorldView = () => import("../world3d/WorldView");
+const WorldView = lazy(loadWorldView);
+
+// Dünya görünümünün kodu (three.js ve sahne, ~430 KB) veriler ve arazi hazırlanırken paralel insin:
+// arazi bitince harita beklemeden açılır. Bu modül, sayfa verisi yüklenirken yönlendirici tarafından erkenden alınır.
+if (typeof window !== "undefined" && useAppStore.getState().view === "dunya" && detectWebGL()) void loadWorldView();
 
 export default function MapPage() {
   useUrlSync();

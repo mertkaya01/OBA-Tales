@@ -9,7 +9,7 @@
  *
  * Saf fonksiyonlardır: boyacı (haritaya çizer), 3D (köprüler) ve ağaç serpme (yolu boş bırakır) kullanır.
  */
-import { MONUMENTS, LANDMARKS, RAID_GROUNDS, VILLAGES } from "../content/sites";
+import { MONUMENTS, LANDMARKS, RAID_GROUNDS, VILLAGES, trailStop } from "../content/sites";
 import { clamp, distance } from "../lib/geometry";
 import type { Coordinates } from "../types";
 import type { Terrain } from "./terrain";
@@ -41,7 +41,8 @@ interface Stop {
 
 function stops(): Stop[] {
   return [
-    ...VILLAGES.map((v) => ({ point: v.center, clear: v.radius * 0.55 })),
+    // Yol obanın çadır halkasının dışında biter; çadırlar arasındaki boşluktan avluya yürünür.
+    ...VILLAGES.map((v) => ({ point: v.center, clear: trailStop(v) })),
     ...Object.values(RAID_GROUNDS).map((g) => ({ point: g.square, clear: 0 })),
     { point: LANDMARKS.tapinak, clear: 16 },
     { point: LANDMARKS.fener, clear: 5 },
@@ -273,7 +274,9 @@ export function planTrails(terrain: Terrain): Trails {
       }
     }
     if (piece.length > 1) paths.push(piece);
-    for (const c of cells) mask[c] = 1;
+    // İz yalnızca yolun çizildiği yerde: obanın, tapınağın ve kapının içinde görünmez bir şerit kalmasın
+    // (çadırlar ve otlar oraya da kurulabilsin).
+    for (const c of cells) if (!clears.some((s) => distance(center(c), s.point) < s.clear)) mask[c] = 1;
   }
   return { paths, bridges, mask };
 }

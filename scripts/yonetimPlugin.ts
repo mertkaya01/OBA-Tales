@@ -12,6 +12,11 @@
  *   POST /__yonetim/youtube    YouTube yorumlarını çeker (npm run youtube:yorumlar), adları döndürür
  *   POST /__yonetim/kontrol    veri denetimi (npm run data:check)
  *   POST /__yonetim/hikaye     { islem: "getir" | "geri-al" | "gun" | "bolge" | "ada", ... } → world.json → story
+ *   GET  /__yonetim/takipciler ?ara=&platform=&nadirlik=&sayfa=  → takipçi listesi (sayfalı) ve yer seçenekleri
+ *   GET  /__yonetim/takipci    ?id=                               → bir takipçinin bütün bilgisi
+ *   POST /__yonetim/takipci    { islem: "ekle" | "guncelle" | "sil", ... } → roster.json
+ *   GET  /__yonetim/baglantilar                                   → sosyal medya ve destek bağlantıları
+ *   POST /__yonetim/baglantilar { socialLinks, supportUrl }       → world.json
  *
  * Güvenlik: başka bir sitenin tarayıcın üzerinden istek atmasına karşı yalnızca bu sunucunun kendi adresinden gelen,
  * "X-Yonetim: 1" başlıklı ve JSON gövdeli istekler kabul edilir; Host başlığı localhost olmalıdır.
@@ -39,6 +44,17 @@ interface StoryLib {
   undoLast(): string | null;
   setDay(day: number): void;
   setLandOpen(kind: "bolge" | "ada", id: string, open: boolean): void;
+}
+interface AdminLib {
+  followerList(query: Record<string, unknown>): unknown;
+  followerDots(): unknown;
+  follower(id: string): unknown;
+  homes(): unknown;
+  updateFollower(id: string, patch: unknown): unknown;
+  createFollower(input: unknown): unknown;
+  removeFollower(id: string): void;
+  links(): unknown;
+  setLinks(input: unknown): unknown;
 }
 interface FilesLib {
   parseFollowerFile(name: string, text: string, platform: string): { kind: string; entries: Entry[]; skipped: number };
@@ -102,6 +118,25 @@ async function handle(server: ViteDevServer, req: IncomingMessage, res: ServerRe
   const route = (req.url ?? "").replace(/^\/__yonetim/, "").split("?")[0];
   const lib = (await server.ssrLoadModule("/scripts/lib/followers.ts")) as FollowersLib;
   const story = (await server.ssrLoadModule("/scripts/lib/story.ts")) as StoryLib;
+  const admin = (await server.ssrLoadModule("/scripts/lib/followerAdmin.ts")) as AdminLib;
+  const params = new URL(req.url ?? "/", "http://localhost").searchParams;
+  // Panelin düzenleme hataları (geçersiz ad, denizde nokta…) kullanıcıya olduğu gibi gösterilir.
+  const attempt = (fn: () => unknown) => {
+    try {
+      send(res, 200, fn());
+    } catch (error) {
+      send(res, 400, { error: error instanceof Error ? error.message : String(error) });
+    }
+  };
+  if (req.method === "GET" && route === "/takipciler") {
+    return attempt(() => ({
+      ...(admin.followerList({ ara: params.get("ara") ?? "", platform: params.get("platform") ?? "", nadirlik: params.get("nadirlik") ?? "", sayfa: Number(params.get("sayfa") ?? 1) }) as object),
+      homes: admin.homes(),
+      dots: admin.followerDots(),
+    }));
+  }
+  if (req.method === "GET" && route === "/takipci") return attempt(() => admin.follower(params.get("id") ?? ""));
+  if (req.method === "GET" && route === "/baglantilar") return attempt(() => admin.links());
   if (req.method === "GET" && route === "/durum") {
     const env = existsSync(resolve(".env.local")) ? readFileSync(resolve(".env.local"), "utf8") : "";
     send(res, 200, { summary: lib.rosterSummary(), story: story.storySummary(), youtube: { key: /^YOUTUBE_API_KEY=\S+/m.test(env), channel: /^YOUTUBE_KANAL=(.+)$/m.exec(env)?.[1]?.trim() ?? null } });
@@ -160,6 +195,19 @@ async function handle(server: ViteDevServer, req: IncomingMessage, res: ServerRe
       send(res, 200, { message, story: story.storySummary() });
       return;
     }
+    case "/takipci": {
+      const islem = String(body.islem ?? "");
+      if (islem === "ekle") return attempt(() => ({ message: "Takipçi eklendi.", follower: admin.createFollower(body.takipci) }));
+      if (islem === "guncelle") return attempt(() => ({ message: "Kaydedildi.", follower: admin.updateFollower(String(body.id ?? ""), body.degisiklik ?? {}) }));
+      if (islem === "sil")
+        return attempt(() => {
+          admin.removeFollower(String(body.id ?? ""));
+          return { message: "Haritadan silindi." };
+        });
+      return send(res, 400, { error: "Bilinmeyen takipçi işlemi" });
+    }
+    case "/baglantilar":
+      return attempt(() => ({ message: "Bağlantılar kaydedildi.", ...(admin.setLinks(body) as object) }));
     case "/kontrol": {
       const run = await runScript("scripts/validate-data.ts");
       send(res, 200, { ok: run.code === 0, output: run.output.trim() });

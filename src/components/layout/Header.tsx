@@ -1,5 +1,5 @@
 /**
- * Üst menü — logo, sayfa bağlantıları, aktif bölüm rozeti ve mobil menü.
+ * Üst menü — logo, sayfa bağlantıları, hikâye günü, sosyal medya hesapları, Destek düğmesi ve mobil menü.
  */
 import { Menu, Sparkles, X } from "lucide-react";
 import { useEffect, useId, useState } from "react";
@@ -9,6 +9,7 @@ import { useGameData } from "../../data/useGameData";
 import { cn } from "../../lib/cn";
 import { useAppStore } from "../../state/useAppStore";
 import { Logo } from "../ui/Logo";
+import { SocialLinks } from "./SocialLinks";
 
 const NAV_ITEMS = [
   { to: "/", label: "Harita", end: true },
@@ -70,6 +71,8 @@ export function Header() {
           <span>Hikâye · {world.story.day}. gün</span>
         </button>
 
+        <SocialLinks links={world.socialLinks} supportUrl={world.supportUrl} className="ml-2 hidden lg:flex" />
+
         <button
           type="button"
           className="ml-auto rounded-lg p-2 text-buz-100 hover:bg-white/10 sm:ml-2 md:hidden"
@@ -97,6 +100,7 @@ export function Header() {
             <Sparkles aria-hidden className="size-4" />
             Hikâye · {world.story.day}. gün · tanıtım turunu izle
           </button>
+          <SocialLinks links={world.socialLinks} supportUrl={world.supportUrl} compact className="mt-3" />
         </nav>
       )}
     </header>

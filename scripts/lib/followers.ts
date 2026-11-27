@@ -42,7 +42,7 @@ function getTerrain(): Terrain {
 }
 
 /** Yeni gelenin yeri: Kut Kapısı'nın meydanının çevresinde, kuru, Kutada'nın içinde, kahramanlardan uzak. */
-function arrivalPoint(handle: string): { x: number; y: number } {
+export function arrivalPoint(handle: string): { x: number; y: number } {
   const t = getTerrain();
   for (let attempt = 0; attempt < 80; attempt++) {
     const h = hashString(`varis:${handle}:${attempt}`);

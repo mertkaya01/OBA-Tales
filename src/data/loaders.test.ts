@@ -39,6 +39,7 @@ const world: WorldState = {
   weather: "kar",
   namedPlaces: [],
   socialLinks: { instagram: null, tiktok: null, youtube: null },
+  supportUrl: null,
   revealedIslands: [],
   story: { day: 1, arrivals: [{ id: "mhellingtr", at: iso }, { id: "egetunce", at: iso }] },
   updatedAt: iso,

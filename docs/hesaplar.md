@@ -30,10 +30,16 @@ bu sayfa yoktur. Paneldeki bölümler:
 | Bölüm | Ne yapar |
 |---|---|
 | Durum | Haritadaki takipçi sayısını, platform ve nadirlik dağılımını gösterir |
-| Takipçi ekle | Instagram ve TikTok veri dosyasını, YouTube yorumlarını, CSV'yi ya da elle yazılan listeyi okur. Önce önizleme gelir, sonra "Haritaya ekle" |
+| Hikâye | Kahramanları sırayla getirir, hikâye gününü ve açık adaları ayarlar |
+| Takipçiler | Listede ad, kullanıcı adı ya da unvanla arar; platform ve nadirliğe göre süzer. Birine tıklayınca düzenlersin: görünen ad, unvan (boşsa otomatik), ana platform (sınıfı belirler), bağlı platformlar, nadirlik (en çok Efsanevi), puan, rozetler ve haritadaki yeri (Kut Kapısı, bir oba ya da küçük haritada tıklanan nokta). "Yeni takipçi" ile tek kişi eklersin, "Sil" ile onaylayıp çıkarırsın |
+| Bağlantılar | Instagram, TikTok, YouTube hesapların ve destek bağlantısı. Üst menüde görünür; destek bağlantısı boşsa düğme "yakında" der |
+| Takipçi ekle (toplu) | Instagram ve TikTok veri dosyasını, YouTube yorumlarını, CSV'yi ya da elle yazılan listeyi okur. Önce önizleme gelir, sonra "Haritaya ekle" |
 | Haritadan çıkar | Çıkmak isteyen kişiyi kullanıcı adıyla siler |
 | Sıfırla | Örnek takipçileri siler; kadro ve özel kahramanlar kalır. Kutuya "SIFIRLA" yazınca çalışır |
 | Kontrol et ve yayına al | Veri denetimini çalıştırır, yayına alma komutlarını gösterir |
+
+Düzenlemede kurallar sunucuda denetlenir: denize, dereye, çadırın içine ya da karanlıktaki bir adaya taşıma reddedilir;
+kullanıcı adı değişmez (yanlışsa silip yeniden ekle). Kurallar `scripts/lib/followerEdit.ts` içinde.
 
 **Takipçi listesi temelli yol:** Platformların API'si takipçi listesi vermez, ama hesap sahibi kendi verisini indirebilir.
 Dosya tarayıcıda okunur; yalnızca kullanıcı adları kaydedilir.

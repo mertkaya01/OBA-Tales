@@ -22,10 +22,12 @@ import { NARRATOR_ID } from "../content/story";
 import { WelcomeTour } from "./WelcomeTour";
 import { ArrivalCinematic } from "./story/ArrivalCinematic";
 import { ARRIVAL_SEEN_KEY, pendingArrival } from "./story/arrival";
-import { LANDMARKS } from "../content/sites";
+import { LANDMARKS, VILLAGES } from "../content/sites";
+import { cn } from "../lib/cn";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { WorldClock } from "../components/hud/WorldClock";
 import { ZoomControls } from "../components/hud/ZoomControls";
+import { QuickViews } from "../components/hud/QuickViews";
 import { soundSupported } from "../audio/kutadaSound";
 import { useKutadaSound } from "../state/useKutadaSound";
 import { TERRAIN_COLORS } from "../game/palette";
@@ -53,6 +55,9 @@ import { hiddenLandmasses, isHiddenAt, visibleBounds } from "../game/visibility"
 
 /** Bir karaktere odaklanırken kullanılan yakınlık (1 = bütün adalar). */
 const CHARACTER_FOCUS_ZOOM = 11;
+/** Hızlı görünümler: Konuk obası ve bütün dünya. */
+const KONUK = VILLAGES.find((v) => v.id === "konuk_obasi") ?? VILLAGES[0];
+const WHOLE_WORLD = { minX: 0, minY: 0, maxX: WORLD_SIZE.width, maxY: WORLD_SIZE.height };
 /** Yer etiketleri bu yakınlıktan itibaren görünür. */
 const PLACE_LABEL_ZOOM = 2.2;
 /** Adı konmamış yapıların etiketi daha yakında belirir (uzaktan kalabalık olmasın). */
@@ -113,6 +118,7 @@ export default function WorldView({ characters: filtered }: WorldViewProps) {
   const characterLabelRefs = useRef<CharacterLabelRefs>({ selected: null, hovered: null });
   const compassRef = useRef<HTMLSpanElement>(null);
   const watching = useAppStore((s) => s.watchingRaid);
+  const selectedId = useAppStore((s) => s.selectedId);
   const animate = !reducedMotion;
 
   const visibleIds = useMemo(() => new Set(characters.map((c) => c.id)), [characters]);
@@ -408,6 +414,17 @@ export default function WorldView({ characters: filtered }: WorldViewProps) {
             Bitir
           </button>
         </div>
+      )}
+      {!touring && !cinematic && !watching && (
+        <QuickViews
+          className={cn("absolute bottom-16 left-1/2 z-10 -translate-x-1/2 sm:bottom-4", selectedId && "max-md:hidden")}
+          views={[
+            { id: "oba", label: "Oba", title: "Konuk obası: kahramanların ateşi", go: () => rigRef.current?.flyTo(KONUK.center, 9) },
+            { id: "kapi", label: "Kapı", title: "Kut Kapısı: yeni yoldaşlar buradan gelir", go: () => rigRef.current?.flyTo(LANDMARKS.kutKapisi, 6) },
+            { id: "ada", label: "Kutada", title: "Hikâyede açık adalar", go: () => rigRef.current?.reset() },
+            { id: "dunya", label: "Dünya", title: "Bütün dünya (karanlıktaki adalar dahil)", go: () => rigRef.current?.flyToBounds(WHOLE_WORLD) },
+          ]}
+        />
       )}
       <WorldClock seasonStart={data.episodes[0]?.progress?.airedAt ?? null} weather={data.world.weather} />
       <ZoomControls

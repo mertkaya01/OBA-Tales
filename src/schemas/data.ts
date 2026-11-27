@@ -258,6 +258,8 @@ export const worldStateSchema = z
       tiktok: httpsUrlOrNull,
       youtube: httpsUrlOrNull,
     }),
+    /** Destek bağlantısı (yoksa üst menüdeki düğme "yakında" der). */
+    supportUrl: httpsUrlOrNull.default(null),
     story: z
       .object({
         day: z.number().int().min(1),

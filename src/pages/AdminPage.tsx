@@ -4,12 +4,16 @@
  *   · Durum: haritadaki takipçi sayısı, platform ve nadirlik dağılımı
  *   · Takipçi ekle: Instagram ve TikTok "verilerini indir" dosyaları, YouTube yorumları, CSV ya da elle liste
  *     (dosya tarayıcıda okunur; sunucuya yalnızca kullanıcı adları gider). Önce önizleme, sonra "Haritaya ekle".
+ *   · Takipçiler: listede ara, tek tek düzenle (ad, unvan, nadirlik, rozet, puan, platform, yer), elle ekle, sil
+ *   · Bağlantılar: sosyal medya hesapları ve destek bağlantısı (üst menüde görünür)
  *   · Haritadan çıkar: çıkmak isteyen kişiler için
  *   · Sıfırla: örnek (sahte) takipçileri siler; "SIFIRLA" yazarak onaylanır
  *   · Yayına al: değişiklikler public/data/ içine yazılır; git ile commit + push yapınca site güncellenir
  * Uç noktalar: scripts/yonetimPlugin.ts · kurallar: scripts/lib/followers.ts · dosya okuyucular: src/admin/followerFiles.ts
  */
-import { BookOpen, Download, FileUp, RefreshCw, ShieldAlert, Sparkles, Trash2, Undo2, UserMinus, UserPlus } from "lucide-react";
+import { BookOpen, Download, FileUp, Link2, RefreshCw, ShieldAlert, Sparkles, Trash2, Undo2, UserMinus, UserPlus, Users } from "lucide-react";
+import { api } from "../admin/adminApi";
+import { FollowersCard, LinksCard } from "../admin/FollowerEditor";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { parseFollowerFile, type FollowerEntry, type ParsedFile } from "../admin/followerFiles";
 import { SectionTitle } from "../components/ui/SectionTitle";
@@ -48,17 +52,6 @@ interface StorySummary {
   order: { id: string; name: string }[];
   regions: { id: string; name: string; open: boolean }[];
   islands: { id: string; name: string; open: boolean }[];
-}
-
-async function api<T>(path: string, body?: unknown): Promise<T> {
-  const response = await fetch(`/__yonetim${path}`, {
-    method: body === undefined ? "GET" : "POST",
-    headers: body === undefined ? undefined : { "Content-Type": "application/json", "X-Yonetim": "1" },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
-  const data = (await response.json().catch(() => ({}))) as T & { error?: string };
-  if (!response.ok) throw new Error(data.error ?? `Hata ${response.status}`);
-  return data;
 }
 
 function Card({ title, icon, children }: { title: string; icon: ReactNode; children: ReactNode }) {
@@ -350,7 +343,16 @@ export default function AdminPage() {
         )}
       </Card>
 
-      <Card title="Takipçi ekle" icon={<UserPlus aria-hidden className="size-5 text-zumrut-400" />}>
+      <Card title="Takipçiler" icon={<Users aria-hidden className="size-5 text-gunozu-300" />}>
+        <FollowersCard onChanged={refresh} />
+      </Card>
+
+      <Card title="Bağlantılar" icon={<Link2 aria-hidden className="size-5 text-buz-300" />}>
+        <p className="mb-3 text-sm text-buz-300">Sosyal medya hesapların üst menüde ve Obaya Katıl sayfasında görünür; destek bağlantısı yoksa düğme "yakında" der.</p>
+        <LinksCard />
+      </Card>
+
+      <Card title="Takipçi ekle (toplu)" icon={<UserPlus aria-hidden className="size-5 text-zumrut-400" />}>
         <p className="mb-3 text-sm text-buz-300">
           Platformların resmî API'leri takipçi listesi vermez; ama hesap sahibi kendi verisini indirebilir. Dosya bu tarayıcıda okunur, yalnızca kullanıcı adları
           kaydedilir. Yeni gelenler Kut Kapısı'nın önünde doğar; başka platformdan da gelen kişiye o platform eklenir (çift iz rozeti).

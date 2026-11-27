@@ -178,6 +178,8 @@ export interface WorldState {
   /** Topluluğun ad koyduğu yerler (yazılmazsa boş). */
   namedPlaces: NamedPlace[];
   socialLinks: SocialLinks;
+  /** Destek bağlantısı; yoksa üst menüdeki "Destek" düğmesi "yakında" der (yönetim panelinden girilir). */
+  supportUrl: string | null;
   /** Hikâye: gün ve gelen kahramanlar (yazılmazsa 1. gün, kimse yok). */
   story: StoryState;
   /** ISO 8601 tarih-saat, ör. "2026-11-24T18:00:00+03:00". */

@@ -3,7 +3,7 @@
  *
  * Tam ekran harita ve üstündeki arayüz:
  *   sol üst   → Filtreler + görünüm seçici (Dünya / Harita)
- *   orta üst  → aktif bölüm ve sınıf sayaçları, altında seçili filtreler
+ *   orta üst  → sınıf sayaçları (haritadaki Kalkaneri · Okyeli · Ocakcan), altında seçili filtreler
  *   sağ üst   → "Kahramanını bul" araması
  *   sol alt   → lejant          sağ alt → yakınlaştırma
  *   sağ/alt   → karakter detay çekmecesi
@@ -13,6 +13,7 @@
 import { lazy, Suspense } from "react";
 import { CharacterDrawer } from "../components/character/CharacterDrawer";
 import { ActiveFilterBar } from "../components/filters/ActiveFilterBar";
+import { ClassCounts } from "../components/hud/ClassCounts";
 import { FilterPanel } from "../components/filters/FilterPanel";
 import { HeroSearch } from "../components/hud/HeroSearch";
 import { MapLegend } from "../components/hud/MapLegend";
@@ -62,6 +63,7 @@ export default function MapPage() {
           </div>
 
           <div className="order-3 flex flex-col items-center gap-2 md:order-2">
+            <ClassCounts characters={all} className="pointer-events-auto" />
             <ActiveFilterBar resultCount={filtered.length} totalCount={all.length} className="pointer-events-auto" />
           </div>
 

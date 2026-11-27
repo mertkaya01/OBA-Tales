@@ -127,13 +127,17 @@ export function ArrivalCinematic({ hero, spot, runtime, rig, reducedMotion, onRe
         </div>
       )}
 
-      <button
-        type="button"
-        onClick={() => skipRef.current()}
-        className="pointer-events-auto absolute bottom-[10.5vh] right-4 rounded-full border border-white/20 bg-black/60 px-3 py-1 text-xs text-buz-100 hover:bg-black/80"
-      >
-        Atla
-      </button>
+      {/* Alt bandın ortasında: sağ alttaki saat ve yakınlaştırma düğmelerinin üstüne binmesin
+          (alt ortadaki hızlı görünümler sinema sürerken gizli). */}
+      <div className="absolute inset-x-0 bottom-0 flex h-[9vh] items-center justify-center px-4">
+        <button
+          type="button"
+          onClick={() => skipRef.current()}
+          className="pointer-events-auto rounded-full border border-white/25 bg-black/70 px-3 py-1 text-xs text-buz-100 hover:bg-white/10"
+        >
+          Atla
+        </button>
+      </div>
     </div>
   );
 }

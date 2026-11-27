@@ -68,7 +68,7 @@ export function HeroSearch({ matches, className }: HeroSearchProps) {
         aria-autocomplete="list"
         aria-activedescendant={expanded ? `${listId}-${activeIndex}` : undefined}
         value={query}
-        placeholder="Kahramanını bul: kullanıcı adı ya da unvan"
+        placeholder="Kahramanını bul: ad ya da unvan"
         autoComplete="off"
         spellCheck={false}
         onChange={(event) => {

@@ -3,8 +3,9 @@
  * (Aynı işi tıklayarak yapmak için: `npm run dev` → http://localhost:5173/yonetim)
  *
  * `veri/girdi/` klasöründeki dosyaları okur ve `public/data/roster.json`'a işler:
+ *   · ZIP        platformdan indirilen ZIP olduğu gibi (içindeki takipçi dosyaları bulunur)
  *   · Instagram  followers_1.json / followers_1.html ("Bilgilerini indir → Takipçiler ve takip edilenler")
- *   · TikTok     user_data_tiktok.json / user_data.json / "Follower List.txt" ("Verilerini indir")
+ *   · TikTok     user_data_tiktok.json / user_data.json / Follower.txt ("Verilerini indir")
  *   · CSV        platform,kullanici[,ad] (ilk satır başlık). `npm run youtube:yorumlar` YouTube yorumlarından üretir.
  *   · Düz liste  her satırda bir kullanıcı adı; platform dosya adından (ör. youtube-aboneler.txt)
  * Nasıl indirileceği: docs/hesaplar.md
@@ -20,7 +21,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { parseArgs } from "node:util";
-import { parseFollowerFile, type FollowerEntry } from "../src/admin/followerFiles";
+import { readFollowerFile, type FollowerEntry } from "../src/admin/followerFiles";
 import type { Platform } from "../src/types";
 import { applyEntries, removeHandles, saveRoster } from "./lib/followers";
 
@@ -47,23 +48,25 @@ if (args.cikar) {
   process.exit(0);
 }
 
-function readEntries(): FollowerEntry[] {
+async function readEntries(): Promise<FollowerEntry[]> {
   if (!existsSync(INPUT)) {
     mkdirSync(INPUT, { recursive: true });
     console.log(`Girdi klasörü oluşturuldu: ${INPUT}\nDosyaları buraya koyup komutu yeniden çalıştır.`);
     return [];
   }
   const entries: FollowerEntry[] = [];
-  for (const file of readdirSync(INPUT).filter((f) => /\.(csv|json|html|txt)$/i.test(f))) {
-    const parsed = parseFollowerFile(file, readFileSync(resolve(INPUT, file), "utf8"), guessPlatform(file));
-    console.log(`  ${file}: ${parsed.kind}, ${parsed.entries.length} kişi${parsed.skipped ? ` (${parsed.skipped} atlandı)` : ""}`);
-    entries.push(...parsed.entries);
+  for (const file of readdirSync(INPUT).filter((f) => /\.(csv|json|html|txt|zip)$/i.test(f))) {
+    // ZIP olduğu gibi okunur: içindeki takipçi dosyaları bulunur.
+    for (const { name, parsed } of await readFollowerFile(file, new Uint8Array(readFileSync(resolve(INPUT, file))), guessPlatform(file))) {
+      console.log(`  ${name}: ${parsed.kind}, ${parsed.entries.length} kişi${parsed.skipped ? ` (${parsed.skipped} atlandı)` : ""}${parsed.note ? ` · ${parsed.note}` : ""}`);
+      entries.push(...parsed.entries);
+    }
   }
   return entries;
 }
 
 console.log("OBA-Tales takipçi içe aktarımı");
-const entries = readEntries();
+const entries = await readEntries();
 const result = applyEntries(entries, { reset: args.sifirla });
 console.log(`  girdi:        ${entries.length} kişi (${INPUT})`);
 console.log(`  yeni yoldaş:  ${result.added.length} (Kutada'da, Kut Kapısı'nın önünde)`);

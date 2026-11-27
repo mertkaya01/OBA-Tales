@@ -5,10 +5,17 @@
  * komut satırında (npm run takipci:ekle) çalışır.
  *
  *   Instagram  followers_1.json (JSON) ya da followers_1.html (HTML): "Bilgilerini indir → Takipçiler ve takip edilenler"
- *   TikTok     user_data_tiktok.json / user_data.json (JSON) ya da "Follower List.txt" (TXT): "Verilerini indir"
+ *              (çok takipçide followers_2.json … da olur)
+ *   TikTok     user_data_tiktok.json / user_data.json (JSON; "Profile And Settings" ya da eski "Activity" → Follower →
+ *              FansList) ya da Follower.txt / "Follower List.txt" (TXT): "Verilerini indir"
+ *   ZIP        indirilen ZIP olduğu gibi: içindeki takipçi dosyaları bulunur, gerisi açılmaz (parseFollowerZip)
  *   CSV        platform,kullanici[,ad] (ilk satır başlık) ya da her satırda bir kullanıcı adı
+ *
+ * Yalnızca kullanıcı adları alınır; dosyadaki e-posta, doğum tarihi gibi bilgiler okunmaz, hiçbir yere gitmez.
+ * Yanlış dosya (takip ettiklerin, takip istekleri, profil ziyaretçileri) takipçi sanılmaz; ne olduğu söylenir.
  */
 import { PLATFORMS, type Platform } from "../types";
+import { isZip, listZip } from "./zipReader";
 
 export interface FollowerEntry {
   platform: Platform;
@@ -22,6 +29,8 @@ export interface ParsedFile {
   entries: FollowerEntry[];
   /** Tanınmayan ya da atlanan satır sayısı. */
   skipped: number;
+  /** Kullanıcıya not: yanlış dosya, takipçi yok ya da ne seçmesi gerektiği. */
+  note?: string;
 }
 
 const clean = (handle: string) => handle.trim().replace(/^@+/, "").replace(/\/+$/, "");
@@ -34,7 +43,8 @@ function unique(platform: Platform, handles: Iterable<string>): FollowerEntry[] 
   const out: FollowerEntry[] = [];
   for (const raw of handles) {
     const handle = clean(raw);
-    const key = handle.toLocaleLowerCase("tr");
+    // Kullanıcı adları İngilizce harflerdir: Türkçe küçültme ("I" → "ı") aynı kişiyi iki kez saydırırdı.
+    const key = handle.toLowerCase();
     if (!VALID.test(handle) || seen.has(key)) continue;
     seen.add(key);
     out.push({ platform, handle, displayName: handle });
@@ -144,7 +154,7 @@ export function parseFollowerCsv(text: string, fallback: Platform): FollowerEntr
     const platform = (pi >= 0 ? row[pi]?.trim().toLowerCase() : fallback) as Platform;
     const handle = clean(row[ki] ?? "");
     if (!PLATFORMS.includes(platform) || !VALID.test(handle)) continue;
-    const key = `${platform}:${handle.toLocaleLowerCase("tr")}`;
+    const key = `${platform}:${handle.toLowerCase()}`;
     if (seen.has(key)) continue;
     seen.add(key);
     out.push({ platform, handle, displayName: (ai >= 0 ? row[ai]?.trim() : "") || handle });
@@ -154,26 +164,50 @@ export function parseFollowerCsv(text: string, fallback: Platform): FollowerEntr
 
 // ── Dosya türünü tanıma ─────────────────────────────────────────────
 
+const NOT_FOLLOWERS = "Bu bir takipçi listesi değil; hiçbir şey eklenmedi.";
+
+/** Dosya adı takipçi dışı bir liste mi söylüyor? (takip ettiklerin, istekler, ziyaretçiler, engellenenler) */
+function otherListByName(lower: string): string | null {
+  const base = lower.split("/").pop() ?? lower;
+  if (/following|takip_edilen|takip edilen/.test(base)) return "Takip ettiğin hesaplar";
+  if (/request|istek/.test(base)) return "Takip istekleri";
+  if (/view|ziyaret/.test(base)) return "Profil ziyaretçileri";
+  if (/block|engel/.test(base)) return "Engellenenler";
+  return null;
+}
+
+/** TikTok "Verilerini indir" JSON'u mu? (takipçisi olmasa da tanınsın) */
+const isTikTokExport = (data: unknown) =>
+  !!data && typeof data === "object" && !Array.isArray(data) && ["Profile And Settings", "Profile", "Activity", "Your Activity", "Comment", "Video"].some((k) => k in (data as Record<string, unknown>));
+
 /** Dosyayı adından ve içeriğinden tanıyıp kullanıcı adlarını çıkarır. `platform` CSV ve düz liste için varsayılandır. */
 export function parseFollowerFile(name: string, text: string, platform: Platform): ParsedFile {
   const lower = name.toLowerCase();
-  const trimmed = text.trimStart();
+  const trimmed = text.replace(/^﻿/, "").trimStart();
+  const other = otherListByName(lower);
   if (lower.endsWith(".json") || trimmed.startsWith("{") || trimmed.startsWith("[")) {
     let data: unknown;
     try {
-      data = JSON.parse(text);
+      data = JSON.parse(trimmed);
     } catch {
-      return { kind: "Okunamayan JSON", entries: [], skipped: 0 };
+      return { kind: "Okunamayan JSON", entries: [], skipped: 0, note: "Dosya yarım inmiş ya da bozuk olabilir; yeniden indirip dene." };
     }
+    const record = data && typeof data === "object" && !Array.isArray(data) ? (data as Record<string, unknown>) : {};
+    // Instagram ZIP'inde followers_1.json'un yanında duran öbür listeler takipçi sanılmasın.
+    if ("relationships_following" in record) return { kind: "Instagram: takip ettiğin hesaplar (following.json)", entries: [], skipped: 0, note: `${NOT_FOLLOWERS} Takipçiler followers_1.json dosyasında.` };
+    if (Object.keys(record).some((k) => /follow_requests|pending/.test(k)) || (Array.isArray(data) && (data as Record<string, unknown>[]).some((i) => i && typeof i === "object" && "label_values" in i)))
+      return { kind: "Instagram: takip istekleri", entries: [], skipped: 0, note: `${NOT_FOLLOWERS} Takipçiler followers_1.json dosyasında.` };
+    if (other && !/follower/.test(lower.replace(/following/g, ""))) return { kind: `${other} (${name.split("/").pop()})`, entries: [], skipped: 0, note: NOT_FOLLOWERS };
     const tiktok = parseTikTokJson(data);
-    if (tiktok.length || platform === "tiktok") {
+    if (tiktok.length || isTikTokExport(data) || platform === "tiktok") {
       const entries = unique("tiktok", tiktok);
-      return { kind: "TikTok verileri (JSON)", entries, skipped: tiktok.length - entries.length };
+      return { kind: "TikTok verileri (JSON)", entries, skipped: tiktok.length - entries.length, note: entries.length ? undefined : "Bu dosyada takipçi yok (henüz takipçin yoksa normal)." };
     }
     const instagram = parseInstagramJson(data);
     const entries = unique("instagram", instagram);
-    return { kind: "Instagram takipçileri (JSON)", entries, skipped: instagram.length - entries.length };
+    return { kind: "Instagram takipçileri (JSON)", entries, skipped: instagram.length - entries.length, note: entries.length ? undefined : "Bu dosyada takipçi bulunamadı. Instagram'da followers_1.json dosyasını seç." };
   }
+  if (other) return { kind: `${other} (${name.split("/").pop()})`, entries: [], skipped: 0, note: NOT_FOLLOWERS };
   if (lower.endsWith(".html") || /<html|<a\s/i.test(trimmed.slice(0, 2000))) {
     const handles = parseInstagramHtml(text);
     const entries = unique("instagram", handles);
@@ -187,4 +221,53 @@ export function parseFollowerFile(name: string, text: string, platform: Platform
   const entries = parseFollowerCsv(text, platform);
   const lines = text.split(/\r?\n/).filter((l) => l.trim()).length;
   return { kind: lower.endsWith(".csv") ? "CSV" : "Liste", entries, skipped: Math.max(0, lines - entries.length - 1) };
+}
+
+// ── ZIP (indirilen dosya olduğu gibi) ──────────────────────────────
+
+/** ZIP içinde takipçi listesi olan dosyalar: Instagram followers_N, TikTok user_data / Follower TXT. */
+const FOLLOWER_FILE = /(^|\/)(followers(_\d+)?\.(json|html?)|user_data(_tiktok)?\.json|follower( list)?\.txt|fans\.txt)$/i;
+
+export interface ReadFile {
+  /** Gösterilecek ad (ZIP içindeyse "arsiv.zip → connections/…/followers_1.json"). */
+  name: string;
+  parsed: ParsedFile;
+}
+
+/**
+ * Seçilen dosyayı okur: ZIP ise içindeki takipçi dosyalarını bulup her birini ayrıştırır, değilse dosyanın kendisini.
+ * Panel (tarayıcı) ve komut satırı ortak kullanır; dosyanın baytlarını alır.
+ */
+export async function readFollowerFile(name: string, bytes: Uint8Array, platform: Platform): Promise<ReadFile[]> {
+  if (!isZip(bytes)) return [{ name, parsed: parseFollowerFile(name, new TextDecoder().decode(bytes), platform) }];
+  let inner;
+  try {
+    inner = listZip(bytes).filter((e) => FOLLOWER_FILE.test(e.name));
+  } catch (error) {
+    return [{ name, parsed: { kind: "ZIP", entries: [], skipped: 0, note: (error as Error).message } }];
+  }
+  if (inner.length === 0) {
+    return [
+      {
+        name,
+        parsed: {
+          kind: "ZIP: takipçi dosyası yok",
+          entries: [],
+          skipped: 0,
+          note: "İçinde followers_1.json (Instagram) ya da user_data_tiktok.json (TikTok) bulunamadı. Instagram'da \"Takipçiler ve takip edilenler\" bölümünü, TikTok'ta \"Profil\" verilerini seçtiğinden emin ol.",
+        },
+      },
+    ];
+  }
+  const out: ReadFile[] = [];
+  for (const entry of inner) {
+    let parsed: ParsedFile;
+    try {
+      parsed = parseFollowerFile(entry.name, await entry.text(), platform);
+    } catch (error) {
+      parsed = { kind: "Açılamadı", entries: [], skipped: 0, note: (error as Error).message };
+    }
+    out.push({ name: `${name} → ${entry.name}`, parsed });
+  }
+  return out;
 }

@@ -15,7 +15,7 @@ import { BookOpen, Download, FileUp, Link2, RefreshCw, ShieldAlert, Sparkles, Tr
 import { api } from "../admin/adminApi";
 import { FollowersCard, LinksCard } from "../admin/FollowerEditor";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { parseFollowerFile, type FollowerEntry, type ParsedFile } from "../admin/followerFiles";
+import { parseFollowerFile, readFollowerFile, type FollowerEntry, type ReadFile } from "../admin/followerFiles";
 import { SectionTitle } from "../components/ui/SectionTitle";
 import { PLATFORM_LABELS } from "../content/classes";
 import { RARITY_INFO } from "../content/rarities";
@@ -82,11 +82,11 @@ const GUIDES: Readonly<Record<Platform, { title: string; steps: string[]; file: 
       "Bilgilerin ve izinler → Bilgilerini indir → Bilgileri indir veya aktar → OBA-Tales hesabını seç.",
       "\"Bilgilerinin bir kısmı\" → yalnızca \"Takipçiler ve takip edilenler\" kutusunu işaretle → Cihaza indir.",
       "Tarih aralığı: Tüm zamanlar · Biçim: JSON → Dosya oluştur. Hazır olunca e-posta gelir (birkaç dakika–birkaç saat).",
-      "İndirdiğin ZIP'i aç: connections/followers_and_following/followers_1.json (çok takipçin varsa followers_2.json … da var).",
-      "O dosyayı (dosyaları) aşağıdan seç.",
+      "İndirdiğin ZIP'i açmadan olduğu gibi aşağıdan seç: içindeki followers_1.json (çok takipçide followers_2.json …) kendiliğinden bulunur. following.json (senin takip ettiklerin) alınmaz.",
+      "ZIP'i açtıysan connections/followers_and_following/followers_1.json dosyasını seçmen de olur.",
     ],
-    file: "followers_1.json ya da followers_1.html",
-    accept: ".json,.html,.htm,.csv,.txt",
+    file: "ZIP ya da followers_1.json",
+    accept: ".zip,.json,.html,.htm,.csv,.txt",
   },
   tiktok: {
     title: "TikTok: takipçi listesini indir",
@@ -94,11 +94,11 @@ const GUIDES: Readonly<Record<Platform, { title: string; steps: string[]; file: 
       "TikTok uygulamasında profil → ☰ menü → Ayarlar ve gizlilik → Hesap → Verilerini indir.",
       "\"Veri iste\" sekmesinde biçim olarak JSON'u seç (TXT de olur) → Veri iste.",
       "Hazırlanması birkaç saat ile birkaç gün sürebilir; hazır olunca \"Verileri indir\" sekmesinden indir.",
-      "ZIP'i aç: user_data_tiktok.json (ya da user_data.json). TXT seçtiysen \"Follower List.txt\".",
-      "O dosyayı aşağıdan seç: içinden yalnızca takipçilerin kullanıcı adları alınır, gerisi okunmaz.",
+      "İndirdiğin ZIP'i açmadan olduğu gibi aşağıdan seç (ya da içindeki user_data_tiktok.json'u; TXT seçtiysen Follower.txt).",
+      "İçinden yalnızca takipçilerin kullanıcı adları alınır; e-posta, doğum tarihi gibi bilgiler okunmaz, hiçbir yere gitmez.",
     ],
-    file: "user_data_tiktok.json ya da Follower List.txt",
-    accept: ".json,.txt,.csv",
+    file: "ZIP ya da user_data_tiktok.json",
+    accept: ".zip,.json,.txt,.csv",
   },
   youtube: {
     title: "YouTube: aboneler ve yorum yapanlar",
@@ -115,17 +115,19 @@ const GUIDES: Readonly<Record<Platform, { title: string; steps: string[]; file: 
 
 function PlatformImport({ platform, youtube, onPreview }: { platform: Platform; youtube: Status["youtube"] | null; onPreview: (title: string, entries: FollowerEntry[]) => void }) {
   const guide = GUIDES[platform];
-  const [files, setFiles] = useState<{ name: string; parsed: ParsedFile }[]>([]);
+  const [files, setFiles] = useState<ReadFile[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Dosya tarayıcıda okunur (ZIP de burada açılır); sunucuya yalnızca kullanıcı adları gider.
   const read = async (list: FileList | null) => {
     setError(null);
-    const parsed = await Promise.all([...(list ?? [])].map(async (file) => ({ name: file.name, parsed: parseFollowerFile(file.name, await file.text(), platform) })));
+    const chosen = [...(list ?? [])];
+    const parsed = (await Promise.all(chosen.map(async (file) => readFollowerFile(file.name, new Uint8Array(await file.arrayBuffer()), platform)))).flat();
     setFiles(parsed);
     const entries = parsed.flatMap((p) => p.parsed.entries);
-    if (entries.length) onPreview(`${PLATFORM_LABELS[platform]} · ${parsed.map((p) => p.name).join(", ")}`, entries);
-    else setError("Dosyada kullanıcı adı bulunamadı. Doğru dosyayı seçtiğinden emin ol.");
+    if (entries.length) onPreview(`${PLATFORM_LABELS[platform]} · ${chosen.map((f) => f.name).join(", ")}`, entries);
+    else setError(parsed.find((p) => p.parsed.note)?.parsed.note ?? "Dosyada kullanıcı adı bulunamadı. Doğru dosyayı seçtiğinden emin ol.");
   };
 
   const fromComments = async () => {
@@ -164,8 +166,9 @@ function PlatformImport({ platform, youtube, onPreview }: { platform: Platform; 
         {platform === "youtube" && !youtube?.key && <span className="text-xs text-buz-300">.env.local içinde YOUTUBE_API_KEY yok</span>}
       </div>
       {files.map((f) => (
-        <p key={f.name} className="mt-2 text-xs text-buz-300">
+        <p key={f.name} className="mt-2 break-all text-xs text-buz-300">
           {f.name}: {f.parsed.kind}, {formatNumber(f.parsed.entries.length)} kişi{f.parsed.skipped ? ` (${f.parsed.skipped} atlandı)` : ""}
+          {f.parsed.note && <span className="text-gunozu-200"> · {f.parsed.note}</span>}
         </p>
       ))}
       {error && <p className="mt-2 text-sm text-alev-300">{error}</p>}

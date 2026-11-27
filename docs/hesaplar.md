@@ -42,23 +42,32 @@ Düzenlemede kurallar sunucuda denetlenir: denize, dereye, çadırın içine ya 
 kullanıcı adı değişmez (yanlışsa silip yeniden ekle). Kurallar `scripts/lib/followerEdit.ts` içinde.
 
 **Takipçi listesi temelli yol:** Platformların API'si takipçi listesi vermez, ama hesap sahibi kendi verisini indirebilir.
-Dosya tarayıcıda okunur; yalnızca kullanıcı adları kaydedilir.
+Dosya tarayıcıda okunur; yalnızca kullanıcı adları kaydedilir. Dosyadaki e-posta, doğum tarihi gibi bilgiler okunmaz.
+
+**İndirdiğin ZIP'i açmana gerek yok:** panelde olduğu gibi seç, içindeki takipçi dosyası kendiliğinden bulunur.
 
 - **Instagram:**
   1. Profil → ☰ → Hesap Merkezi → Bilgilerin ve izinler → Bilgilerini indir.
   2. "Bilgilerinin bir kısmı" → Takipçiler ve takip edilenler → Cihaza indir. Biçim JSON, tarih aralığı Tüm zamanlar.
-  3. Gelen ZIP'teki `connections/followers_and_following/followers_1.json` dosyasını panelden seç.
+  3. Gelen ZIP'i (ör. `instagram-oba.tales-….zip`) panelden seç. İçindeki `followers_1.json` okunur (çok takipçide
+     `followers_2.json` … da). `following.json` (senin takip ettiklerin) ve takip istekleri alınmaz. Yanlışlıkla onları
+     tek başına seçersen panel "takipçi listesi değil" der.
 - **TikTok:**
   1. Profil → ☰ → Ayarlar ve gizlilik → Hesap → Verilerini indir → JSON → Veri iste. Hazırlanması birkaç gün sürebilir.
-  2. ZIP'teki `user_data_tiktok.json` dosyasını panelden seç. TXT seçtiysen `Follower List.txt` dosyasını seç.
+  2. Gelen ZIP'i (ör. `TikTok_Data_….zip`) panelden seç. İçindeki `user_data_tiktok.json` okunur: yalnızca
+     "Profile And Settings → Follower" altındaki takipçiler alınır; takip ettiklerin ve profil ziyaretçileri alınmaz.
+     TXT seçtiysen `Follower.txt` okunur.
+- **Kahramanlar:** mhellingtr, egetunce ve bintas listede çıksa da takipçi olarak eklenmez (önizlemede "Kahraman"
+  satırında görünür). Haritaya yalnızca Hikâye kartındaki **Sıradakini getir** ile, sinemayla gelirler.
 - **YouTube:** Abone listesinin tamamı alınamaz.
   - YouTube Studio → Pano → "Son aboneler" listesinde yalnızca aboneliğini herkese açık yapanlar görünür. Oradaki adları
     bir metin dosyasına alt alta yazıp panelden seçebilirsin.
   - Ya da aşağıdaki API anahtarıyla yorum yapanları "Yorumlardan çek" ile alabilirsin.
+  - Youtube platformunda yorumlar üzerinden karakter oluşturulacaktır.
 
 Haftada bir yeni dosya indirip panelden eklemen yeterli: zaten haritada olanlar atlanır, yeniler Kut Kapısı'nın önünde
-doğar. Aynı komutlar komut satırında da var: `npm run takipci:ekle` (`veri/girdi/` içindeki CSV, JSON, HTML ve TXT
-dosyalarını okur) ve `npm run takipci:ekle -- --cikar kullanici1,kullanici2`.
+doğar. Aynı komutlar komut satırında da var: `npm run takipci:ekle` (`veri/girdi/` içindeki ZIP, CSV, JSON, HTML ve
+TXT dosyalarını okur) ve `npm run takipci:ekle -- --cikar kullanici1,kullanici2`.
 
 Paneldeki değişiklikler `public/data/` içine yazılır. Yayına almak için:
 

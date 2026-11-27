@@ -41,6 +41,42 @@ describe("takipçi dosyaları", () => {
     expect(parseFollowerCsv("bir_kisi\n@iki.kisi\n", "youtube").map((e) => `${e.platform}:${e.handle}`)).toEqual(["youtube:bir_kisi", "youtube:iki.kisi"]);
   });
 
+  it("TikTok'un 2026 biçimi: Profile And Settings → Follower → FansList; ziyaretçiler, takip edilenler ve hesabın kendisi alınmaz", () => {
+    const data = {
+      Comment: { Comments: { App: 1, CommentsList: [] } },
+      "Profile And Settings": {
+        Follower: { App: 1, IsFastLane: true, FansList: [{ Date: "2026-11-27 08:52:34", UserName: "bozkir_atlisi" }] },
+        Following: { App: 1, IsFastLane: true, Following: [{ Date: "2026-11-20", UserName: "benim_takip_ettigim" }] },
+        ProfileViews: { ProfileViewList: [{ Date: "2026-11-27 08:52:37 UTC", Username: "ziyaretci" }] },
+        "Profile Info": { App: 1, ProfileMap: { userName: "hesabin_kendisi", followerCount: 1, emailAddress: "gizli@ornek.com", birthDate: "01-Jan-2000" } },
+      },
+    };
+    const parsed = parseFollowerFile("user_data_tiktok.json", JSON.stringify(data), "tiktok");
+    expect(parsed.kind).toContain("TikTok");
+    expect(parsed.entries.map((e) => e.handle)).toEqual(["bozkir_atlisi"]);
+    // Takipçisi olmayan TikTok dosyası da TikTok diye tanınır (Instagram seçili olsa bile).
+    const empty = parseFollowerFile("user_data_tiktok.json", JSON.stringify({ "Profile And Settings": { Follower: { FansList: [] } } }), "instagram");
+    expect(empty.kind).toContain("TikTok");
+    expect(empty.note).toMatch(/takipçi yok/);
+  });
+
+  it("Instagram ZIP'indeki öbür listeler takipçi sanılmaz", () => {
+    const following = parseFollowerFile("following.json", JSON.stringify({ relationships_following: [{ title: "x_y", string_list_data: [{ href: "https://www.instagram.com/x_y" }] }] }), "instagram");
+    expect(following.entries).toEqual([]);
+    expect(following.kind).toMatch(/takip ettiğin/);
+    expect(following.note).toMatch(/followers_1\.json/);
+    const requests = parseFollowerFile("recent_follow_requests.json", JSON.stringify([{ timestamp: 1, media: [], label_values: [{ label: "Kullanıcı adı", value: "istek_atan" }] }]), "instagram");
+    expect(requests.entries).toEqual([]);
+    expect(parseFollowerFile("Following.txt", "Date: 2026-11-01\nUsername: takip_ettigim\n", "tiktok").entries).toEqual([]);
+    expect(parseFollowerFile("Profile Views.txt", "Date: 2026-11-01\nUsername: ziyaretci\n", "tiktok").entries).toEqual([]);
+    expect(parseFollowerFile("Follower.txt", "Date: 2026-11-01\nUsername: gercek_takipci\n", "tiktok").entries.map((e) => e.handle)).toEqual(["gercek_takipci"]);
+  });
+
+  it("aynı kişiyi büyük-küçük harf farkıyla iki kez saymaz (Türkçe I/ı tuzağı dahil)", () => {
+    const parsed = parseFollowerFile("followers_1.json", JSON.stringify([{ string_list_data: [{ value: "ISIK.yolcu" }] }, { string_list_data: [{ value: "isik.yolcu" }] }]), "instagram");
+    expect(parsed.entries).toHaveLength(1);
+  });
+
   it("dosyayı türünden tanır, tekrarları ve geçersiz adları atar", () => {
     const ig = parseFollowerFile("followers_1.json", JSON.stringify([{ string_list_data: [{ value: "a.b" }] }, { string_list_data: [{ value: "a.b" }] }]), "instagram");
     expect(ig.kind).toContain("Instagram");

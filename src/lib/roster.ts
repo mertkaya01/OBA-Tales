@@ -5,13 +5,52 @@
  *   rarityBreakdown    obada her nadirlikten kaç kişi var, yüzde kaçı
  *   lookupHero         "@kullanici_adi" → obadaki kahraman (yoksa benzer adlar)
  *   previewNewcomer    henüz obada olmayan biri, takip ettiği platformlarla nasıl başlar?
+ *   heroForHandle      kullanıcı adı hikâyenin kahramanlarından birine mi ait? (takipçi olarak eklenmez)
+ *   followerId         takipçinin kimliği (kadrodaki bir kimlikle çakışmaz)
  */
+import { CAST } from "../content/cast";
 import { LANDMARKS } from "../content/sites";
+import { ARRIVAL_ORDER, type ArrivalHeroId } from "../content/story";
 import { RARITIES } from "../types";
 import type { Character, Platform, Rarity } from "../types";
 import { cleanHandle, createStarterCharacter, rarityRank } from "./rules";
 import { roundPercents } from "./season";
-import { normalizeSearch } from "./text";
+import { normalizeSearch, slugify } from "./text";
+
+// ── Kahramanlar ve kadro kimlikleri ────────────────────────────────
+
+/**
+ * Büyük harf, nokta, alt çizgi ve tire fark etmeden karşılaştırılacak biçim ("Ege.Tunce" → "egetunce").
+ * Kullanıcı adları İngilizce harflerdir: Türkçe küçültme kullanılmaz ("MHELLINGTR" → "mhellingtr", "mhellıngtr" değil).
+ */
+const compactHandle = (handle: string) => cleanHandle(handle).toLowerCase().replace(/[^a-z0-9]/g, "");
+
+const HERO_BY_HANDLE: ReadonlyMap<string, ArrivalHeroId> = new Map(
+  ARRIVAL_ORDER.map((id) => [compactHandle(CAST.find((c) => c.id === id)?.handle ?? id), id] as const),
+);
+
+/**
+ * Kullanıcı adı hikâyenin kahramanlarından birine (mhellingtr, egetunce, bintas) mi ait? Kahramanlar kodda yaşar ve
+ * haritaya Hikâye kartından gelir; abone ya da takipçi listesinde çıksalar da ikinci kez takipçi olarak eklenmezler.
+ */
+export function heroForHandle(handle: string): ArrivalHeroId | null {
+  return HERO_BY_HANDLE.get(compactHandle(handle)) ?? null;
+}
+
+const CAST_IDS: ReadonlySet<string> = new Set(CAST.map((c) => c.id));
+
+/**
+ * Takipçinin kimliği: kullanıcı adından. Haritada olmayan hikâye kadrosundan biriyle çakışırsa (ör. gerçek bir
+ * "kursat") sonuna "_yoldas" eklenir; böylece aynı adlı gerçek takipçi de haritaya girer. `taken` verilirse orada
+ * olan kimlikler de atlanır (sonuna sayı eklenir).
+ */
+export function followerId(handle: string, taken: ReadonlySet<string> = new Set()): string {
+  const slug = slugify(cleanHandle(handle), "_");
+  const base = CAST_IDS.has(slug) ? `${slug}_yoldas` : slug;
+  let id = base;
+  for (let n = 2; taken.has(id) || CAST_IDS.has(id); n++) id = `${base}_${n}`;
+  return id;
+}
 
 // ── Sıralama ───────────────────────────────────────────────────────
 

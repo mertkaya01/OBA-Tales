@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { CAST } from "../content/cast";
 import type { Character, Rarity } from "../types";
 import { createStarterCharacter } from "./rules";
-import { isValidHandle, lookupHero, previewNewcomer, rarityBreakdown, sortCharacters } from "./roster";
+import { followerId, heroForHandle, isValidHandle, lookupHero, previewNewcomer, rarityBreakdown, sortCharacters } from "./roster";
 
 const now = new Date("2026-11-25T12:00:00Z");
 const make = (handle: string, rarity: Rarity, points: number, displayName?: string): Character => ({
@@ -49,6 +49,25 @@ describe("kahramanını bul", () => {
     expect(r.suggestions.map((c) => c.handle)).toContain("cagri_kalkan");
     expect(r.suggestions.length).toBeLessThanOrEqual(5);
     expect(lookupHero(everyone, "a")).toEqual({ hero: null, suggestions: [], handle: "a" });
+  });
+});
+
+describe("kahramanlar ve takipçi kimlikleri", () => {
+  it("kahramanın kullanıcı adını büyük harf, nokta, alt çizgi ve @ fark etmeden tanır", () => {
+    expect(heroForHandle("mhellingtr")).toBe("mhellingtr");
+    expect(heroForHandle("@MhellingTR")).toBe("mhellingtr");
+    expect(heroForHandle("MHELLINGTR")).toBe("mhellingtr");
+    expect(heroForHandle("ege.tunce")).toBe("egetunce");
+    expect(heroForHandle("Bin_Tas")).toBe("bintas");
+    expect(heroForHandle("mhellingtr2")).toBeNull();
+    expect(heroForHandle("kursat")).toBeNull();
+  });
+
+  it("takipçi kimliği kadroyla ve alınmış kimliklerle çakışmaz", () => {
+    expect(followerId("Kopuz.Okcu")).toBe("kopuz_okcu");
+    for (const member of CAST) expect(followerId(member.handle)).not.toBe(member.id);
+    expect(followerId("kursat")).toBe("kursat_yoldas");
+    expect(followerId("kopuz_okcu", new Set(["kopuz_okcu"]))).toBe("kopuz_okcu_2");
   });
 });
 

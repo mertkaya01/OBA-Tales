@@ -33,7 +33,7 @@ interface Entry {
   displayName: string;
 }
 interface FollowersLib {
-  applyEntries(entries: Entry[], options?: { reset?: boolean }): { roster: { characters: unknown[] }; before: number; added: string[]; linked: string[]; skipped: string[] };
+  applyEntries(entries: Entry[], options?: { reset?: boolean }): { roster: { characters: unknown[] }; before: number; added: string[]; linked: string[]; skipped: string[]; heroes: string[] };
   removeHandles(handles: string[]): { roster: { characters: unknown[] }; removed: string[]; missing: string[] };
   saveRoster(roster: unknown): number;
   rosterSummary(): unknown;
@@ -150,7 +150,7 @@ async function handle(server: ViteDevServer, req: IncomingMessage, res: ServerRe
       const entries = Array.isArray(body.entries) ? (body.entries as Entry[]) : [];
       const result = lib.applyEntries(entries, { reset: body.reset === true });
       const cleaned = route === "/ekle" ? lib.saveRoster(result.roster) : 0;
-      send(res, 200, { written: route === "/ekle", before: result.before, after: result.roster.characters.length, added: result.added, linked: result.linked, skipped: result.skipped, cleaned });
+      send(res, 200, { written: route === "/ekle", before: result.before, after: result.roster.characters.length, added: result.added, linked: result.linked, skipped: result.skipped, heroes: result.heroes, cleaned });
       return;
     }
     case "/cikar": {

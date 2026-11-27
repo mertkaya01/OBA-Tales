@@ -68,6 +68,7 @@ const result = applyEntries(entries, { reset: args.sifirla });
 console.log(`  girdi:        ${entries.length} kişi (${INPUT})`);
 console.log(`  yeni yoldaş:  ${result.added.length} (Kutada'da, Kut Kapısı'nın önünde)`);
 console.log(`  çift iz:      ${result.linked.length} (yeni platform eklendi)`);
+if (result.heroes.length) console.log(`  kahraman:     ${result.heroes.join(", ")} (hikâyenin kahramanı; Hikâye kartından gelir, takipçi olarak eklenmedi)`);
 if (result.skipped.length) console.log(`  atlanan:      ${result.skipped.length} geçersiz kullanıcı adı: ${result.skipped.slice(0, 8).join(", ")}${result.skipped.length > 8 ? "…" : ""}`);
 console.log(`  toplam:       ${result.before}${args.sifirla ? " (sıfırlandı)" : ""} → ${result.roster.characters.length}`);
 

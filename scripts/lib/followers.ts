@@ -6,6 +6,7 @@
  *     dibine konmaz.
  *   · Zaten haritada olan kişi başka bir platformdan da geldiyse → o platform eklenir; çift iz / oba öncülüğü rozeti ve
  *     nadirlik bonusu kendiliğinden verilir.
+ *   · Hikâyenin kahramanları (mhellingtr, egetunce, bintas) listede olsa da eklenmez: Hikâye kartından gelirler.
  *   · Sıfırlama örnek (sahte) takipçileri siler; sezon akın listelerinden ve yer adlarından onlara ait kayıtlar da temizlenir.
  */
 import { readFileSync, writeFileSync } from "node:fs";
@@ -18,7 +19,7 @@ import { generateTerrain, isWet, sampleTerrain, type Terrain } from "../../src/g
 import { pointInPolygon } from "../../src/lib/geometry";
 import { hashString } from "../../src/lib/random";
 import { createStarterCharacter, defaultTitle, multiPlatformBadge, multiPlatformBonus, raiseRarity } from "../../src/lib/rules";
-import { isValidHandle } from "../../src/lib/roster";
+import { followerId, heroForHandle, isValidHandle } from "../../src/lib/roster";
 import { formatDataError, rosterSchema } from "../../src/schemas/data";
 import { PLATFORMS } from "../../src/types";
 import type { Character, Platform, RosterFile } from "../../src/types";
@@ -71,22 +72,38 @@ export interface ImportResult {
   added: string[];
   linked: string[];
   skipped: string[];
+  /** Hikâyenin kahramanları (mhellingtr, egetunce, bintas): listede olsalar da takipçi olarak eklenmez. */
+  heroes: string[];
 }
 
-/** Girdileri listeye işler (dosyaya yazmaz). `reset`: önce bütün takipçileri siler. */
+/** Görünen ad en çok 40 karakter (emoji bölünmeden); boşsa kullanıcı adı. */
+const cleanDisplayName = (name: string | undefined, handle: string) => [...(name?.trim() || handle)].slice(0, 40).join("").trim() || handle;
+
+/**
+ * Girdileri listeye işler (dosyaya yazmaz). `reset`: önce bütün takipçileri siler.
+ * Geçersiz kullanıcı adları atlanır (skipped); kahramanlar ayrı listelenir (heroes); hikâye kadrosuyla aynı kimliğe
+ * düşen gerçek takipçi "_yoldas" ekli kimlikle girer. Böylece tek bir tuhaf kayıt bütün içe aktarmayı bozmaz.
+ */
 export function applyEntries(entries: readonly FollowerEntry[], { reset = false }: { reset?: boolean } = {}): ImportResult {
   const roster = readRoster();
   const before = roster.characters.length;
-  const byHandle = new Map((reset ? [] : roster.characters).map((c) => [c.handle.toLocaleLowerCase("tr"), c]));
+  const kept = reset ? [] : roster.characters;
+  const byHandle = new Map(kept.map((c) => [c.handle.toLowerCase(), c]));
+  const taken = new Set(kept.map((c) => c.id));
   const added: string[] = [];
   const linked: string[] = [];
   const skipped: string[] = [];
+  const heroes: string[] = [];
   for (const entry of entries) {
     if (!PLATFORMS.includes(entry.platform) || !isValidHandle(entry.handle)) {
       skipped.push(entry.handle || "(boş)");
       continue;
     }
-    const key = entry.handle.toLocaleLowerCase("tr");
+    if (heroForHandle(entry.handle)) {
+      if (!heroes.some((h) => h.toLowerCase() === entry.handle.toLowerCase())) heroes.push(entry.handle);
+      continue;
+    }
+    const key = entry.handle.toLowerCase();
     const existing = byHandle.get(key);
     if (existing) {
       if (existing.linkedPlatforms.includes(entry.platform)) continue;
@@ -94,21 +111,29 @@ export function applyEntries(entries: readonly FollowerEntry[], { reset = false 
       linked.push(entry.handle);
       continue;
     }
-    byHandle.set(key, createStarterCharacter({ handle: entry.handle, displayName: entry.displayName || entry.handle, platform: entry.platform, region: "kutada", coordinates: arrivalPoint(entry.handle) }));
+    const id = followerId(entry.handle, taken);
+    // Yalnızca noktadan ya da alt çizgiden oluşan adlardan kimlik çıkmaz.
+    if (!/^[a-z0-9]/.test(id)) {
+      skipped.push(entry.handle);
+      continue;
+    }
+    taken.add(id);
+    const character = createStarterCharacter({ handle: entry.handle, displayName: cleanDisplayName(entry.displayName, entry.handle), platform: entry.platform, region: "kutada", coordinates: arrivalPoint(entry.handle) });
+    byHandle.set(key, { ...character, id });
     added.push(entry.handle);
   }
   const next: RosterFile = { ...roster, characters: [...byHandle.values()], generatedAt: new Date().toISOString() };
-  return { roster: next, before, added, linked, skipped };
+  return { roster: next, before, added, linked, skipped, heroes };
 }
 
 /** Kullanıcı adlarına göre takipçileri çıkarır (haritadan çıkmak isteyenler için; dosyaya yazmaz). */
 export function removeHandles(handles: readonly string[]): { roster: RosterFile; removed: string[]; missing: string[] } {
   const roster = readRoster();
-  const wanted = new Set(handles.map((h) => h.trim().replace(/^@+/, "").toLocaleLowerCase("tr")).filter(Boolean));
-  const removed = roster.characters.filter((c) => wanted.has(c.handle.toLocaleLowerCase("tr"))).map((c) => c.handle);
-  const found = new Set(removed.map((h) => h.toLocaleLowerCase("tr")));
+  const wanted = new Set(handles.map((h) => h.trim().replace(/^@+/, "").toLowerCase()).filter(Boolean));
+  const removed = roster.characters.filter((c) => wanted.has(c.handle.toLowerCase())).map((c) => c.handle);
+  const found = new Set(removed.map((h) => h.toLowerCase()));
   return {
-    roster: { ...roster, characters: roster.characters.filter((c) => !wanted.has(c.handle.toLocaleLowerCase("tr"))), generatedAt: new Date().toISOString() },
+    roster: { ...roster, characters: roster.characters.filter((c) => !wanted.has(c.handle.toLowerCase())), generatedAt: new Date().toISOString() },
     removed,
     missing: [...wanted].filter((h) => !found.has(h)),
   };

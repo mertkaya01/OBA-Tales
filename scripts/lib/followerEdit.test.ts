@@ -95,4 +95,14 @@ describe("yönetim panelinde takipçi düzenleme", () => {
     expect(() => addFollower(added, { handle: "boşluk var", platform: "instagram" }, ctx)).toThrow(/geçerli/);
     expect(deleteFollower(added, character.id).characters).toHaveLength(3);
   });
+
+  it("hikâyenin kahramanlarını takipçi olarak eklemez; kadroyla aynı adlı gerçek takipçi ayrı kimlik alır", () => {
+    expect(() => addFollower(roster(), { handle: "mhellingtr", platform: "youtube" }, ctx)).toThrow(/kahraman/);
+    expect(() => addFollower(roster(), { handle: "@Ege.Tunce", platform: "instagram" }, ctx)).toThrow(/kahraman/);
+    const { roster: once, character } = addFollower(roster(), { handle: "kursat", platform: "instagram" }, ctx);
+    expect(character.id).toBe("kursat_yoldas");
+    expect(character.handle).toBe("kursat");
+    // Aynı kimliğe düşen ikinci biri (ör. "Kursat_Yoldas") sayı ekli kimlik alır.
+    expect(addFollower(once, { handle: "kursat__yoldas", platform: "tiktok" }, ctx).character.id).toBe("kursat_yoldas_2");
+  });
 });

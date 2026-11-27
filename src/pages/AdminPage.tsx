@@ -42,6 +42,8 @@ interface ImportReport {
   added: string[];
   linked: string[];
   skipped: string[];
+  /** Hikâyenin kahramanları: listede olsalar da takipçi olarak eklenmez. */
+  heroes: string[];
   cleaned: number;
 }
 
@@ -388,6 +390,11 @@ export default function AdminPage() {
               {formatNumber(report.after)}.
             </p>
             {report.added.length > 0 && <p className="mt-1 truncate text-xs text-buz-300">Yeniler: {report.added.slice(0, 30).join(", ")}{report.added.length > 30 ? "…" : ""}</p>}
+            {report.heroes.length > 0 && (
+              <p className="mt-1 text-xs text-gunozu-200">
+                Kahraman: {report.heroes.join(", ")}. Hikâyenin kahramanları takipçi olarak eklenmez; haritaya yukarıdaki Hikâye kartından gelirler.
+              </p>
+            )}
             <div className="mt-3 flex gap-2">
               <button
                 type="button"

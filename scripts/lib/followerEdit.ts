@@ -18,7 +18,7 @@ import { isWet, sampleTerrain, type Terrain } from "../../src/game/terrain";
 import { isHiddenAt, type LandVisibility } from "../../src/game/visibility";
 import { findContaining } from "../../src/lib/geometry";
 import { hashString } from "../../src/lib/random";
-import { isValidHandle } from "../../src/lib/roster";
+import { followerId, heroForHandle, isValidHandle } from "../../src/lib/roster";
 import { classForPlatform, createStarterCharacter, defaultTitle, multiPlatformBadge, rarityRank } from "../../src/lib/rules";
 import { BADGE_IDS, FOLLOWER_RARITY_CAP, PLATFORMS, RARITIES, type BadgeId, type Character, type Coordinates, type Platform, type Rarity, type RegionId, type RosterFile } from "../../src/types";
 import { toClassInfo } from "../../src/content/classes";
@@ -68,7 +68,8 @@ export interface HomeOption {
   label: string;
 }
 
-const key = (s: string) => s.trim().replace(/^@+/, "").toLocaleLowerCase("tr");
+// Kullanıcı adları yalnızca İngilizce harf, rakam, nokta ve alt çizgidir: Türkçe küçültme ("I" → "ı") kullanılmaz.
+const key = (s: string) => s.trim().replace(/^@+/, "").toLowerCase();
 const MULTI_BADGES: readonly BadgeId[] = ["cift_iz", "oba_onculugu"];
 
 export function summarize(c: Character): FollowerSummary {
@@ -230,12 +231,15 @@ export function addFollower(
 ): { roster: RosterFile; character: Character } {
   const handle = input.handle.trim().replace(/^@+/, "");
   if (!isValidHandle(handle)) throw new Error(`"${input.handle}" geçerli bir kullanıcı adı değil (harf, rakam, nokta ve alt çizgi).`);
+  if (heroForHandle(handle)) throw new Error(`@${handle} hikâyenin kahramanı; haritaya Hikâye kartından gelir, takipçi olarak eklenmez.`);
   if (roster.characters.some((c) => key(c.handle) === key(handle))) throw new Error(`@${handle} zaten haritada; listeden bulup düzenleyebilirsin.`);
   const linked = cleanPlatforms(input.platform, input.linkedPlatforms ?? []);
   const home = input.home ?? { kind: "kapi" };
   const coordinates = placeAt(home, handle, ctx);
-  const character = createStarterCharacter({ handle, displayName: input.displayName, platform: input.platform, linkedPlatforms: linked, region: regionAt(coordinates), coordinates, now: ctx.now });
-  if (roster.characters.some((c) => c.id === character.id)) throw new Error(`@${handle} ile aynı kimlikte biri zaten var.`);
+  // Kimlik kadroyla ve listedekilerle çakışmaz (ör. gerçek bir "kursat" → kursat_yoldas).
+  const id = followerId(handle, new Set(roster.characters.map((c) => c.id)));
+  if (!/^[a-z0-9]/.test(id)) throw new Error(`"${input.handle}" kullanıcı adından kimlik çıkmıyor (en az bir harf ya da rakam olmalı).`);
+  const character = { ...createStarterCharacter({ handle, displayName: input.displayName, platform: input.platform, linkedPlatforms: linked, region: regionAt(coordinates), coordinates, now: ctx.now }), id };
   const now = (ctx.now ?? new Date()).toISOString();
   return { roster: { ...roster, characters: [...roster.characters, character], generatedAt: now }, character };
 }

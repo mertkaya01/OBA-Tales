@@ -22,11 +22,12 @@ import { LoadingScreen } from "../components/ui/LoadingScreen";
 import { useFilteredCharacters } from "../hooks/useFilteredCharacters";
 import { detectWebGL, useWebGLSupport } from "../hooks/useWebGLSupport";
 import { cn } from "../lib/cn";
+import { withStaleReload } from "../lib/staleBuild";
 import { useAppStore } from "../state/useAppStore";
 import { useUrlSync } from "../state/useUrlSync";
 
-const MapView = lazy(() => import("../map2d/MapView"));
-const loadWorldView = () => import("../world3d/WorldView");
+const MapView = lazy(withStaleReload(() => import("../map2d/MapView")));
+const loadWorldView = withStaleReload(() => import("../world3d/WorldView"));
 const WorldView = lazy(loadWorldView);
 
 // Dünya görünümünün kodu (three.js ve sahne, ~430 KB) veriler ve arazi hazırlanırken paralel insin:

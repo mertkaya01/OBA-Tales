@@ -13,9 +13,18 @@ import type { ComponentType } from "react";
 import { createBrowserRouter, type RouteObject, redirect } from "react-router";
 import { AppLayout } from "./components/layout/AppLayout";
 import { LoadingScreen } from "./components/ui/LoadingScreen";
+import { reloadForNewBuild, withStaleReload } from "./lib/staleBuild";
 import NotFoundPage, { RouteErrorPage } from "./pages/NotFoundPage";
 
-const page = (load: () => Promise<{ default: ComponentType }>) => async () => ({ Component: (await load()).default });
+/**
+ * Eski sürümden kalan sekmede sayfa parçası bulunamazsa sayfa yenilenir (lib/staleBuild.ts). path verilirse yenileme
+ * o sayfayı açar: menüden "Oba Kadrosu"na tıklayan haritada kalmaz, kadroya gelir.
+ */
+const page = (load: () => Promise<{ default: ComponentType }>, path?: string) => {
+  const goTo = path ? () => window.location.assign(path) : undefined;
+  const safeLoad = withStaleReload(load, () => reloadForNewBuild(Date.now(), undefined, goTo));
+  return async () => ({ Component: (await safeLoad()).default });
+};
 
 export const routes: RouteObject[] = [
   {
@@ -25,11 +34,11 @@ export const routes: RouteObject[] = [
     HydrateFallback: LoadingScreen,
     children: [
       { index: true, lazy: page(() => import("./pages/MapPage")), handle: { fullBleed: true } },
-      { path: "karakterler", lazy: page(() => import("./pages/CharactersPage")) },
+      { path: "karakterler", lazy: page(() => import("./pages/CharactersPage"), "/karakterler") },
       // Sezon sayfası kalktı (akın videoları platformlarda paylaşılıyor); eski bağlantılar haritaya döner.
       { path: "bolumler", loader: () => redirect("/") },
-      { path: "katil", lazy: page(() => import("./pages/JoinPage")) },
-      { path: "studyo", lazy: page(() => import("./pages/StudioPage")) },
+      { path: "katil", lazy: page(() => import("./pages/JoinPage"), "/katil") },
+      { path: "studyo", lazy: page(() => import("./pages/StudioPage"), "/studyo") },
       // Yönetim paneli yalnızca geliştirme sunucusunda (npm run dev): yayın sürümüne girmez.
       ...(import.meta.env.DEV ? [{ path: "yonetim", lazy: page(() => import("./pages/AdminPage")) }] : []),
       { path: "*", Component: NotFoundPage },

@@ -10,11 +10,12 @@ import { getPortraitUrl } from "../../game/sprites/portraitCache";
 import { usePortrait3d } from "../../game/sprites/usePortrait3d";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useWebGLSupport } from "../../hooks/useWebGLSupport";
+import { withStaleReload } from "../../lib/staleBuild";
 import { usePixiTurn } from "../../pixi/pixiLease";
 import type { Character } from "../../types";
 import { RarityFrame } from "./RarityFrame";
 
-const LivePortrait = lazy(() => import("../../pixi/LivePortrait"));
+const LivePortrait = lazy(withStaleReload(() => import("../../pixi/LivePortrait")));
 
 /** LivePortrait.tsx'teki PORTRAIT_CSS_SCALE ile aynı (o dosya tembel yüklendiği için burada tekrar). */
 const CSS_SCALE = 3;

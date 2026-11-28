@@ -81,6 +81,7 @@ export const BADGE_IDS = [
   'ayaz_dindiren', //   Bölüm 9 boss akını
   'gunozu_bekcisi', //  Bölüm 12 boss akını
   'ozan_dostu', //      sezon boyunca çok oy kullandı
+  'ad_koyan', //        haritada bir yere ad koydu (yorumla ad koyma oylaması)
 ] as const;
 export type BadgeId = (typeof BADGE_IDS)[number];
 

@@ -9,7 +9,11 @@
  *   POST /__yonetim/ekle       { entries, reset }  → yazar
  *   POST /__yonetim/cikar      { handles }         → haritadan çıkarır
  *   POST /__yonetim/sifirla    { onay: "SIFIRLA" } → bütün takipçileri siler (kadro kalır)
- *   POST /__yonetim/youtube    YouTube yorumlarını çeker (npm run youtube:yorumlar), adları döndürür
+ *   POST /__yonetim/youtube    YouTube yorumlarını çeker; yorum yapanları ve "ad: …" komutlarını döndürür (yazmaz)
+ *   POST /__yonetim/youtube-videolar                  → kanalın son videoları (ad koyma oylaması için)
+ *   POST /__yonetim/youtube-oylama { video }          → o videonun yorumlarındaki ad önerileri, beğeniye göre
+ *   GET  /__yonetim/yerler                            → ad konabilen yerler, konulmuş adlar ve koyanlar
+ *   POST /__yonetim/yer        { islem: "koy" | "kaldir", place, name?, handle?, platform? } → world.json → namedPlaces
  *   POST /__yonetim/kontrol    veri denetimi (npm run data:check)
  *   POST /__yonetim/hikaye     { islem: "getir" | "geri-al" | "gun" | "bolge" | "ada" | "karsilama", ... } → world.json → story
  *   GET  /__yonetim/takipciler ?ara=&platform=&nadirlik=&sayfa=  → takipçi listesi (sayfalı) ve yer seçenekleri
@@ -31,9 +35,21 @@ interface Entry {
   platform: string;
   handle: string;
   displayName: string;
+  heroName?: string;
+  at?: string;
+}
+interface ImportResult {
+  roster: { characters: unknown[] };
+  before: number;
+  added: string[];
+  linked: string[];
+  skipped: string[];
+  heroes: string[];
+  named: { handle: string; name: string }[];
+  rejectedNames: { handle: string; name: string; reason: string }[];
 }
 interface FollowersLib {
-  applyEntries(entries: Entry[], options?: { reset?: boolean }): { roster: { characters: unknown[] }; before: number; added: string[]; linked: string[]; skipped: string[]; heroes: string[] };
+  applyEntries(entries: Entry[], options?: { reset?: boolean }): ImportResult;
   removeHandles(handles: string[]): { roster: { characters: unknown[] }; removed: string[]; missing: string[] };
   saveRoster(roster: unknown): number;
   rosterSummary(): unknown;
@@ -57,8 +73,22 @@ interface AdminLib {
   links(): unknown;
   setLinks(input: unknown): unknown;
 }
-interface FilesLib {
-  parseFollowerFile(name: string, text: string, platform: string): { kind: string; entries: Entry[]; skipped: number };
+interface YoutubeSettings {
+  key: string;
+  channel: string;
+}
+interface YoutubeLib {
+  youtubeSettings(): YoutubeSettings | null;
+  channelVideos(settings: YoutubeSettings, max?: number): Promise<unknown[]>;
+  channelComments(settings: YoutubeSettings, options?: { videos?: number; limit?: number }): Promise<{ videos: unknown[]; comments: unknown[] }>;
+  videoComments(settings: YoutubeSettings, videoId: string, options?: { limit?: number; order?: "time" | "relevance" }): Promise<unknown[]>;
+  commentEntries(comments: unknown[]): Entry[];
+  voteCandidates(comments: unknown[], max?: number): unknown[];
+}
+interface PlacesLib {
+  placeList(): unknown;
+  namePlace(input: { place: string; name: string; handle: string; platform: string }): unknown;
+  clearPlace(place: string): unknown;
 }
 
 const MAX_BODY = 8 * 1024 * 1024;
@@ -122,12 +152,19 @@ async function handle(server: ViteDevServer, req: IncomingMessage, res: ServerRe
   const admin = (await server.ssrLoadModule("/scripts/lib/followerAdmin.ts")) as AdminLib;
   const params = new URL(req.url ?? "/", "http://localhost").searchParams;
   // Panelin düzenleme hataları (geçersiz ad, denizde nokta…) kullanıcıya olduğu gibi gösterilir.
-  const attempt = (fn: () => unknown) => {
+  const attempt = async (fn: () => unknown) => {
     try {
-      send(res, 200, fn());
+      send(res, 200, await fn());
     } catch (error) {
       send(res, 400, { error: error instanceof Error ? error.message : String(error) });
     }
+  };
+  const places = async () => (await server.ssrLoadModule("/scripts/lib/places.ts")) as PlacesLib;
+  const youtube = async () => {
+    const yt = (await server.ssrLoadModule("/scripts/lib/youtube.ts")) as YoutubeLib;
+    const settings = yt.youtubeSettings();
+    if (!settings) throw new Error(".env.local içinde YOUTUBE_API_KEY yok (nasıl alınır: docs/hesaplar.md).");
+    return { yt, settings };
   };
   if (req.method === "GET" && route === "/takipciler") {
     return attempt(() => ({
@@ -138,6 +175,7 @@ async function handle(server: ViteDevServer, req: IncomingMessage, res: ServerRe
   }
   if (req.method === "GET" && route === "/takipci") return attempt(() => admin.follower(params.get("id") ?? ""));
   if (req.method === "GET" && route === "/baglantilar") return attempt(() => admin.links());
+  if (req.method === "GET" && route === "/yerler") return attempt(() => places().then((p) => p.placeList()));
   if (req.method === "GET" && route === "/durum") {
     const env = existsSync(resolve(".env.local")) ? readFileSync(resolve(".env.local"), "utf8") : "";
     send(res, 200, { summary: lib.rosterSummary(), story: story.storySummary(), youtube: { key: /^YOUTUBE_API_KEY=\S+/m.test(env), channel: /^YOUTUBE_KANAL=(.+)$/m.exec(env)?.[1]?.trim() ?? null } });
@@ -151,7 +189,7 @@ async function handle(server: ViteDevServer, req: IncomingMessage, res: ServerRe
       const entries = Array.isArray(body.entries) ? (body.entries as Entry[]) : [];
       const result = lib.applyEntries(entries, { reset: body.reset === true });
       const cleaned = route === "/ekle" ? lib.saveRoster(result.roster) : 0;
-      send(res, 200, { written: route === "/ekle", before: result.before, after: result.roster.characters.length, added: result.added, linked: result.linked, skipped: result.skipped, heroes: result.heroes, cleaned });
+      send(res, 200, { written: route === "/ekle", before: result.before, after: result.roster.characters.length, added: result.added, linked: result.linked, skipped: result.skipped, heroes: result.heroes, named: result.named, rejectedNames: result.rejectedNames, cleaned });
       return;
     }
     case "/cikar": {
@@ -168,14 +206,31 @@ async function handle(server: ViteDevServer, req: IncomingMessage, res: ServerRe
       send(res, 200, { before: result.before, after: 0, cleaned });
       return;
     }
-    case "/youtube": {
-      const run = await runScript("scripts/fetch-youtube-comments.ts");
-      const csv = resolve("veri/girdi/youtube-yorumlar.csv");
-      if (run.code !== 0 || !existsSync(csv)) return send(res, 400, { error: run.output.trim().split("\n").slice(-4).join("\n") || "YouTube yorumları çekilemedi" });
-      const files = (await server.ssrLoadModule("/src/admin/followerFiles.ts")) as FilesLib;
-      const parsed = files.parseFollowerFile("youtube-yorumlar.csv", readFileSync(csv, "utf8"), "youtube");
-      send(res, 200, { kind: "YouTube yorumları", entries: parsed.entries, log: run.output.trim().split("\n").slice(-3).join("\n") });
-      return;
+    case "/youtube":
+      return attempt(async () => {
+        const { yt, settings } = await youtube();
+        const { videos, comments } = await yt.channelComments(settings, { videos: 10, limit: 2000 });
+        if (videos.length === 0) throw new Error(`Anahtar çalışıyor ama @${settings.channel} kanalında henüz herkese açık video yok; ilk video yüklenince yeniden dene.`);
+        const entries = yt.commentEntries(comments);
+        return { kind: "YouTube yorumları", entries, log: `${comments.length} yorum, ${entries.length} kişi, ${entries.filter((e) => e.heroName).length} kişi ad yazmış · son ${videos.length} video` };
+      });
+    case "/youtube-videolar":
+      return attempt(async () => {
+        const { yt, settings } = await youtube();
+        return { videos: await yt.channelVideos(settings, 15) };
+      });
+    case "/youtube-oylama":
+      return attempt(async () => {
+        if (typeof body.video !== "string" || !body.video) throw new Error("Video seç.");
+        const { yt, settings } = await youtube();
+        const comments = await yt.videoComments(settings, body.video, { limit: 500, order: "relevance" });
+        return { total: comments.length, candidates: yt.voteCandidates(comments, 15) };
+      });
+    case "/yer": {
+      const islem = String(body.islem ?? "");
+      if (islem === "koy") return attempt(async () => (await places()).namePlace({ place: String(body.place ?? ""), name: String(body.name ?? ""), handle: String(body.handle ?? ""), platform: String(body.platform ?? "") }));
+      if (islem === "kaldir") return attempt(async () => (await places()).clearPlace(String(body.place ?? "")));
+      return send(res, 400, { error: "Bilinmeyen yer işlemi" });
     }
     case "/hikaye": {
       const islem = String(body.islem ?? "");

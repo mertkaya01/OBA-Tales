@@ -9,11 +9,14 @@
  *   TikTok     user_data_tiktok.json / user_data.json (JSON; "Profile And Settings" ya da eski "Activity" → Follower →
  *              FansList) ya da Follower.txt / "Follower List.txt" (TXT): "Verilerini indir"
  *   ZIP        indirilen ZIP olduğu gibi: içindeki takipçi dosyaları bulunur, gerisi açılmaz (parseFollowerZip)
- *   CSV        platform,kullanici[,ad] (ilk satır başlık) ya da her satırda bir kullanıcı adı
+ *   CSV        platform,kullanici[,ad,yorum,tarih] (ilk satır başlık) ya da her satırda bir kullanıcı adı.
+ *              yorum sütununda "ad: Kara Şahin" gibi bir komut varsa kahraman o adla doğar (src/lib/heroNames.ts)
+ *   Yorumlar   panele yapıştırılan Instagram / TikTok yorumları (parsePastedComments)
  *
  * Yalnızca kullanıcı adları alınır; dosyadaki e-posta, doğum tarihi gibi bilgiler okunmaz, hiçbir yere gitmez.
  * Yanlış dosya (takip ettiklerin, takip istekleri, profil ziyaretçileri) takipçi sanılmaz; ne olduğu söylenir.
  */
+import { isNewerOrSame, parseNameCommand } from "../lib/heroNames";
 import { PLATFORMS, type Platform } from "../types";
 import { isZip, listZip } from "./zipReader";
 
@@ -21,6 +24,10 @@ export interface FollowerEntry {
   platform: Platform;
   handle: string;
   displayName: string;
+  /** Yorumda seçtiği kahraman adı (ham; scripts/lib/followers.ts denetleyip uygular). */
+  heroName?: string;
+  /** Ad komutunun yazıldığı an (ISO). Yoksa "şimdi" sayılır. */
+  at?: string;
 }
 
 export interface ParsedFile {
@@ -35,8 +42,8 @@ export interface ParsedFile {
 
 const clean = (handle: string) => handle.trim().replace(/^@+/, "").replace(/\/+$/, "");
 const fromUrl = (href: string) => clean(decodeURIComponent(href.split(/[?#]/)[0].split("/").filter(Boolean).pop() ?? ""));
-/** Instagram ve TikTok kullanıcı adı kuralı: harf, rakam, nokta, alt çizgi (1–30). */
-const VALID = /^[A-Za-z0-9._]{1,30}$/;
+/** Kullanıcı adı kuralı: harf, rakam, nokta, alt çizgi (Instagram, TikTok) ve tire (YouTube), 1–30. */
+const VALID = /^[A-Za-z0-9._-]{1,30}$/;
 
 function unique(platform: Platform, handles: Iterable<string>): FollowerEntry[] {
   const seen = new Set<string>();
@@ -142,24 +149,86 @@ export function parseCsv(text: string): string[][] {
   return rows;
 }
 
-/** CSV: başlıkta platform ve kullanici sütunları varsa onlardan; yoksa her satırın ilk alanı, verilen platformla. */
+/**
+ * CSV: başlıkta platform ve kullanici sütunları varsa onlardan; yoksa her satırın ilk alanı, verilen platformla.
+ * Aynı kişinin birden çok yorumu varsa tek kayıt olur; ad komutlarından tarihi en yeni olanı tutulur.
+ */
 export function parseFollowerCsv(text: string, fallback: Platform): FollowerEntry[] {
   const rows = parseCsv(text.replace(/^﻿/, ""));
   const header = rows[0]?.map((h) => h.trim().toLocaleLowerCase("tr")) ?? [];
-  const [pi, ki, ai] = ["platform", "kullanici", "ad"].map((name) => header.indexOf(name));
+  const [pi, ki, ai, yi, ti] = ["platform", "kullanici", "ad", "yorum", "tarih"].map((name) => header.indexOf(name));
   if (ki < 0) return unique(fallback, rows.map((r) => r[0] ?? ""));
   const out: FollowerEntry[] = [];
-  const seen = new Set<string>();
+  const index = new Map<string, number>();
   for (const row of rows.slice(1)) {
     const platform = (pi >= 0 ? row[pi]?.trim().toLowerCase() : fallback) as Platform;
     const handle = clean(row[ki] ?? "");
     if (!PLATFORMS.includes(platform) || !VALID.test(handle)) continue;
     const key = `${platform}:${handle.toLowerCase()}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    out.push({ platform, handle, displayName: (ai >= 0 ? row[ai]?.trim() : "") || handle });
+    const heroName = yi >= 0 ? (parseNameCommand(row[yi] ?? "") ?? undefined) : undefined;
+    const at = ti >= 0 ? row[ti]?.trim() || undefined : undefined;
+    const known = index.get(key);
+    if (known !== undefined) {
+      const prev = out[known];
+      if (heroName && (!prev.heroName || isNewerOrSame(at, prev.at))) out[known] = { ...prev, heroName, at };
+      continue;
+    }
+    index.set(key, out.length);
+    out.push({ platform, handle, displayName: (ai >= 0 ? row[ai]?.trim() : "") || handle, ...(heroName ? { heroName, at } : {}) });
   }
   return out;
+}
+
+// ── Yapıştırılan yorumlar (Instagram, TikTok) ──────────────────────
+
+/** Yorum listesinden kopyalanınca araya giren satırlar: süre, "Yanıtla", beğeni sayısı, tarih. */
+const NOISE_LINE =
+  /^(?:·|•|\d+|\d+\s*(?:sn|dk|sa|saat|g|gün|h|hf|hafta|ay|y|yıl|s|m|d|w|mo|min|hr)\.?(?:\s*önce)?|yanıtla|yanıt ver|reply|cevapla|\d+\s*(?:beğenme|beğeni|like|likes|yanıt|replies)|yanıtları gör.*|view replies.*|çeviriyi gör|see translation|yazar|creator|\d{1,2}[-./]\d{1,2}(?:[-./]\d{2,4})?)$/iu;
+const HANDLE_LINE = /^@?([A-Za-z0-9._-]{1,30})$/;
+/** "@kullanici yorum" ya da "kullanici: yorum" / "kullanici<TAB>yorum" (tablodan kopyalanınca). */
+const INLINE_AT = /^@([A-Za-z0-9._-]{1,30})[:\s]\s*(.+)$/;
+const INLINE = /^([A-Za-z0-9._-]{1,30})\s*(?::|\t)\s*(.+)$/;
+
+/**
+ * Panele yapıştırılan yorumları okur. Üç biçim tanınır:
+ *   · "@kullanici ad: Kara Şahin" ya da "kullanici: ad: Kara Şahin" (her satırda bir yorum)
+ *   · kullanıcı adı bir satırda, yorumu alt satırda (Instagram'ın web sayfasından seçip kopyalayınca böyle gelir;
+ *     araya giren "2 sa", "Yanıtla", beğeni sayısı satırları atlanır)
+ * Yorumunda ad komutu olmayanlar da katılır (adları kullanıcı adı olur). Aynı kişinin sonraki komutu öncekini ezer.
+ */
+export function parsePastedComments(text: string, platform: Platform): { entries: FollowerEntry[]; unread: number } {
+  const out: FollowerEntry[] = [];
+  const index = new Map<string, number>();
+  let unread = 0;
+  const push = (rawHandle: string, comment: string | null) => {
+    const handle = clean(rawHandle);
+    if (!VALID.test(handle)) return void unread++;
+    const heroName = comment ? (parseNameCommand(comment) ?? undefined) : undefined;
+    const key = handle.toLowerCase();
+    const known = index.get(key);
+    if (known !== undefined) {
+      if (heroName) out[known] = { ...out[known], heroName };
+      return;
+    }
+    index.set(key, out.length);
+    out.push({ platform, handle, displayName: handle, ...(heroName ? { heroName } : {}) });
+  };
+  let pending: string | null = null;
+  for (const raw of text.normalize("NFC").split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line || NOISE_LINE.test(line)) continue;
+    if (pending !== null) {
+      push(pending, line);
+      pending = null;
+      continue;
+    }
+    const inline = INLINE_AT.exec(line) ?? (parseNameCommand(line) === null ? INLINE.exec(line) : null);
+    if (inline) push(inline[1], inline[2]);
+    else if (HANDLE_LINE.test(line)) pending = line;
+    else unread++;
+  }
+  if (pending !== null) push(pending, null);
+  return { entries: out, unread };
 }
 
 // ── Dosya türünü tanıma ─────────────────────────────────────────────

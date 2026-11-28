@@ -7,6 +7,9 @@
  *   · Zaten haritada olan kişi başka bir platformdan da geldiyse → o platform eklenir; çift iz / oba öncülüğü rozeti ve
  *     nadirlik bonusu kendiliğinden verilir.
  *   · Hikâyenin kahramanları (mhellingtr, egetunce, bintas) listede olsa da eklenmez: Hikâye kartından gelirler.
+ *   · Yorumunda "ad: Kara Şahin" yazan kişi o adla doğar; haritada olan biri yeniden yazarsa adı değişir. Panelden
+ *     elle verilen ad, ondan daha eski bir yorumla ezilmez (yorumun tarihi karakterin son güncellemesinden yeni olmalı).
+ *     Uygunsuz adlar uygulanmaz, raporda gerekçesiyle listelenir (src/lib/heroNames.ts).
  *   · Sıfırlama örnek (sahte) takipçileri siler; sezon akın listelerinden ve yer adlarından onlara ait kayıtlar da temizlenir.
  */
 import { readFileSync, writeFileSync } from "node:fs";
@@ -17,6 +20,7 @@ import { LANDMARKS } from "../../src/content/sites";
 import type { FollowerEntry } from "../../src/admin/followerFiles";
 import { generateTerrain, isWet, sampleTerrain, type Terrain } from "../../src/game/terrain";
 import { pointInPolygon } from "../../src/lib/geometry";
+import { cleanHeroName, isNewerOrSame, type NameCheck } from "../../src/lib/heroNames";
 import { hashString } from "../../src/lib/random";
 import { createStarterCharacter, defaultTitle, multiPlatformBadge, multiPlatformBonus, raiseRarity } from "../../src/lib/rules";
 import { followerId, heroForHandle, isValidHandle } from "../../src/lib/roster";
@@ -37,7 +41,7 @@ const CAST_IDS: ReadonlySet<string> = new Set(CAST.map((c) => c.id));
 export const readRoster = (): RosterFile => JSON.parse(readFileSync(FILES.roster, "utf8"));
 
 let terrain: Terrain | null = null;
-function getTerrain(): Terrain {
+export function getTerrain(): Terrain {
   terrain ??= generateTerrain({ seed: JSON.parse(readFileSync(FILES.world, "utf8")).seed });
   return terrain;
 }
@@ -74,7 +78,14 @@ export interface ImportResult {
   skipped: string[];
   /** Hikâyenin kahramanları (mhellingtr, egetunce, bintas): listede olsalar da takipçi olarak eklenmez. */
   heroes: string[];
+  /** Yorumla kahraman adı seçenler (yeni gelen ya da adını değiştiren). */
+  named: { handle: string; name: string }[];
+  /** Kabul edilmeyen ad komutları ve gerekçesi (kişi yine katılır, adı değişmez). */
+  rejectedNames: { handle: string; name: string; reason: string }[];
 }
+
+/** Görünen adı hâlâ kullanıcı adı mı? (kendi seçtiği ya da panelden verilmiş bir ad yok) */
+const hasDefaultName = (c: Character) => c.displayName.replace(/^@+/, "").toLowerCase() === c.handle.toLowerCase();
 
 /** Görünen ad en çok 40 karakter (emoji bölünmeden); boşsa kullanıcı adı. */
 const cleanDisplayName = (name: string | undefined, handle: string) => [...(name?.trim() || handle)].slice(0, 40).join("").trim() || handle;
@@ -84,8 +95,7 @@ const cleanDisplayName = (name: string | undefined, handle: string) => [...(name
  * Geçersiz kullanıcı adları atlanır (skipped); kahramanlar ayrı listelenir (heroes); hikâye kadrosuyla aynı kimliğe
  * düşen gerçek takipçi "_yoldas" ekli kimlikle girer. Böylece tek bir tuhaf kayıt bütün içe aktarmayı bozmaz.
  */
-export function applyEntries(entries: readonly FollowerEntry[], { reset = false }: { reset?: boolean } = {}): ImportResult {
-  const roster = readRoster();
+export function applyEntries(entries: readonly FollowerEntry[], { reset = false, roster = readRoster() }: { reset?: boolean; roster?: RosterFile } = {}): ImportResult {
   const before = roster.characters.length;
   const kept = reset ? [] : roster.characters;
   const byHandle = new Map(kept.map((c) => [c.handle.toLowerCase(), c]));
@@ -94,6 +104,46 @@ export function applyEntries(entries: readonly FollowerEntry[], { reset = false 
   const linked: string[] = [];
   const skipped: string[] = [];
   const heroes: string[] = [];
+  const named: ImportResult["named"] = [];
+  const rejectedNames: ImportResult["rejectedNames"] = [];
+  const now = new Date().toISOString();
+
+  // Ad komutları: aynı kişinin birden çok yorumu varsa tarihi en yeni olanı geçer (tarihsiz = şimdi yapıştırılan).
+  const commands = new Map<string, { raw: string; at?: string; handle: string }>();
+  for (const e of entries) {
+    if (!e.heroName) continue;
+    const key = e.handle.replace(/^@+/, "").toLowerCase();
+    const prev = commands.get(key);
+    if (!prev || isNewerOrSame(e.at, prev.at)) commands.set(key, { raw: e.heroName, at: e.at, handle: e.handle });
+  }
+  const checks = new Map<string, NameCheck>();
+  const chosenName = (key: string): string | null => {
+    const command = commands.get(key);
+    if (!command) return null;
+    let check = checks.get(key);
+    if (!check) {
+      check = cleanHeroName(command.raw);
+      checks.set(key, check);
+      if (!check.ok) rejectedNames.push({ handle: command.handle, name: command.raw, reason: check.reason });
+    }
+    return check.ok ? check.name : null;
+  };
+  /** Bu içe aktarmadan önceki son güncelleme: yorum ondan yeniyse ad değişir. */
+  const lastUpdate = new Map(kept.map((c) => [c.handle.toLowerCase(), c.updatedAt]));
+  const renamed = new Set<string>();
+  const rename = (key: string, c: Character): Character => {
+    if (renamed.has(key)) return c;
+    const name = chosenName(key);
+    const command = commands.get(key);
+    if (!name || !command || name === c.displayName) return c;
+    const last = lastUpdate.get(key);
+    const newer = !command.at || !last || Date.parse(command.at) > Date.parse(last);
+    if (!newer && !hasDefaultName(c)) return c;
+    renamed.add(key);
+    named.push({ handle: c.handle, name });
+    return { ...c, displayName: name, updatedAt: now };
+  };
+
   for (const entry of entries) {
     if (!PLATFORMS.includes(entry.platform) || !isValidHandle(entry.handle)) {
       skipped.push(entry.handle || "(boş)");
@@ -103,12 +153,15 @@ export function applyEntries(entries: readonly FollowerEntry[], { reset = false 
       if (!heroes.some((h) => h.toLowerCase() === entry.handle.toLowerCase())) heroes.push(entry.handle);
       continue;
     }
-    const key = entry.handle.toLowerCase();
+    const key = entry.handle.replace(/^@+/, "").toLowerCase();
     const existing = byHandle.get(key);
     if (existing) {
-      if (existing.linkedPlatforms.includes(entry.platform)) continue;
-      byHandle.set(key, addPlatform(existing, entry.platform));
-      linked.push(entry.handle);
+      let next = existing;
+      if (!existing.linkedPlatforms.includes(entry.platform)) {
+        next = addPlatform(existing, entry.platform);
+        linked.push(entry.handle);
+      }
+      byHandle.set(key, rename(key, next));
       continue;
     }
     const id = followerId(entry.handle, taken);
@@ -118,12 +171,17 @@ export function applyEntries(entries: readonly FollowerEntry[], { reset = false 
       continue;
     }
     taken.add(id);
-    const character = createStarterCharacter({ handle: entry.handle, displayName: cleanDisplayName(entry.displayName, entry.handle), platform: entry.platform, region: "kutada", coordinates: arrivalPoint(entry.handle) });
+    const chosen = chosenName(key);
+    const character = createStarterCharacter({ handle: entry.handle, displayName: chosen ?? cleanDisplayName(entry.displayName, entry.handle), platform: entry.platform, region: "kutada", coordinates: arrivalPoint(entry.handle) });
     byHandle.set(key, { ...character, id });
     added.push(entry.handle);
+    if (chosen) {
+      renamed.add(key);
+      named.push({ handle: character.handle, name: chosen });
+    }
   }
-  const next: RosterFile = { ...roster, characters: [...byHandle.values()], generatedAt: new Date().toISOString() };
-  return { roster: next, before, added, linked, skipped, heroes };
+  const next: RosterFile = { ...roster, characters: [...byHandle.values()], generatedAt: now };
+  return { roster: next, before, added, linked, skipped, heroes, named, rejectedNames };
 }
 
 /** Kullanıcı adlarına göre takipçileri çıkarır (haritadan çıkmak isteyenler için; dosyaya yazmaz). */

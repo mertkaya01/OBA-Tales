@@ -76,6 +76,13 @@ export const BADGES: Catalog<BadgeId, BadgeDefinition> = {
     howToEarn: "Sezon boyunca en az 10 oylamada yorumla oy kullan.",
     icon: "music",
   },
+  ad_koyan: {
+    id: "ad_koyan",
+    name: "Ad Koyan",
+    description: "Haritada bir yere adını veren yoldaş; o yerin etiketinde adı yazar.",
+    howToEarn: "Ad koyma oylamasında önerdiğin ad en çok beğeniyi alsın.",
+    icon: "signpost",
+  },
 };
 
 /** Rozetler, gösterim sırasıyla. */

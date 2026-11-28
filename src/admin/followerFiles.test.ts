@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseFollowerCsv, parseFollowerFile, parseInstagramHtml, parseInstagramJson, parseTikTokJson, parseTikTokText } from "./followerFiles";
+import { parseFollowerCsv, parseFollowerFile, parseInstagramHtml, parseInstagramJson, parseTikTokJson, parsePastedComments, parseTikTokText } from "./followerFiles";
 
 describe("takipçi dosyaları", () => {
   it("Instagram followers_1.json: eski ve yeni biçim", () => {
@@ -86,5 +86,47 @@ describe("takipçi dosyaları", () => {
     expect(tt.kind).toContain("TikTok");
     expect(tt.entries[0]).toEqual({ platform: "tiktok", handle: "x_y", displayName: "x_y" });
     expect(parseFollowerFile("bozuk.json", "{bozuk", "tiktok").entries).toEqual([]);
+  });
+});
+
+describe("yorumla katılma", () => {
+  it("CSV yorum sütunundan kahraman adını alır; aynı kişinin en yeni komutu geçer", () => {
+    const csv = [
+      "platform,kullanici,ad,yorum,video,tarih",
+      'youtube,kara-sahin,@kara-sahin,"ad: Kara Şahin",v2,2026-11-28T10:00:00Z',
+      'youtube,kara-sahin,@kara-sahin,"ad: Eski Ad",v1,2026-11-20T10:00:00Z',
+      'youtube,kara-sahin,@kara-sahin,"Harika video",v2,2026-11-28T11:00:00Z',
+      'youtube,ayaz,@ayaz,"süper olmuş",v2,2026-11-28T09:00:00Z',
+    ].join("\n");
+    const entries = parseFollowerCsv(csv, "youtube");
+    expect(entries).toHaveLength(2);
+    expect(entries[0]).toMatchObject({ handle: "kara-sahin", heroName: "Kara Şahin", at: "2026-11-28T10:00:00Z" });
+    expect(entries[1].heroName).toBeUndefined();
+  });
+
+  it("yapıştırılan yorumları üç biçimde okur", () => {
+    const text = [
+      "@kara.sahin ad: Kara Şahin",
+      "ayaz_kiz: adım Ayaz Hatun",
+      "tolga.er\tharika video",
+      "",
+      "demir.yay",
+      "2 sa",
+      "#katıl Demir Yay",
+      "Yanıtla",
+      "12 beğenme",
+      "ad: Sahipsiz Ad",
+      "sessiz.okcu",
+    ].join("\n");
+    const { entries, unread } = parsePastedComments(text, "instagram");
+    expect(entries.map((e) => [e.handle, e.heroName ?? null])).toEqual([
+      ["kara.sahin", "Kara Şahin"],
+      ["ayaz_kiz", "Ayaz Hatun"],
+      ["tolga.er", null],
+      ["demir.yay", "Demir Yay"],
+      ["sessiz.okcu", null],
+    ]);
+    expect(entries.every((e) => e.platform === "instagram")).toBe(true);
+    expect(unread).toBe(1);
   });
 });

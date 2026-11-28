@@ -1,8 +1,9 @@
 /**
  * OBAYA KATIL ( /katil )
  *
- *   üç adım           takip et → sınıfın belli olur → yorumlarla hikâyeye yön ver
+ *   üç adım           takip et → sınıfın belli olur, adını sen seçersin → yorumlarla hikâyeye yön ver
  *   kahramanını bul   kullanıcı adıyla obada ara; yoksa karakterinin nasıl başlayacağını önizle
+ *   yorumla katıl     "ad: Kara Şahin" ile kahraman adı, "yer: …" ile ad koyma oylaması
  *   sınıflar          Instagram → Kalkaneri · TikTok → Okyeli · YouTube → Ocakcan
  *   çoklu takip       2 platform: bir kademe nadirlik + Çift İz · 3 platform: Oba Öncülüğü
  *   nadirlik ve rozetler
@@ -11,6 +12,7 @@ import { Compass, MessageCircle, UserPlus } from "lucide-react";
 import { CharacterDrawer } from "../components/character/CharacterDrawer";
 import { BadgeList } from "../components/character/BadgeList";
 import { CharacterLookup } from "../components/join/CharacterLookup";
+import { CommentJoinGuide } from "../components/join/CommentJoinGuide";
 import { MultiPlatformRules } from "../components/join/MultiPlatformRules";
 import { PlatformClassGuide } from "../components/join/PlatformClassGuide";
 import { RarityGuide } from "../components/join/RarityGuide";
@@ -21,8 +23,8 @@ import { useGameData } from "../data/useGameData";
 
 const STEPS = [
   { icon: UserPlus, title: "Takip et", text: "Instagram, TikTok ya da YouTube'da OBA-Tales hesabını takip et. Birden fazlasında takip edersen daha güçlü başlarsın." },
-  { icon: Compass, title: "Sınıfın belli olur", text: "Ana platformun sınıfını seçer: Kalkaneri, Okyeli ya da Ocakcan. Karakterin haritada belirir." },
-  { icon: MessageCircle, title: "Hikâyeye yön ver", text: "Yorumlarla hikâyeye yön ver, kapalı adaların açılmasına destek ol, rozet topla. Oba senin kararınla ilerler." },
+  { icon: Compass, title: "Sınıfın belli olur, adını sen seçersin", text: "Ana platformun sınıfını seçer: Kalkaneri, Okyeli ya da Ocakcan. Yorumuna “ad: Kahramanının Adı” yazarsan haritada o adla belirirsin." },
+  { icon: MessageCircle, title: "Hikâyeye yön ver", text: "Yorumlarla yerlere ad koy, kapalı adaların açılmasına destek ol, rozet topla. Oba senin kararınla ilerler." },
 ] as const;
 
 /** Takip edenlere kendiliğinden verilen rozetler dışındakiler (kadroya özel olan gösterilmez). */
@@ -59,6 +61,13 @@ export default function JoinPage() {
           <CharacterLookup />
         </section>
       </div>
+
+      <section aria-labelledby="yorumla" className="mt-14">
+        <SectionTitle title={<span id="yorumla">Yorumla katıl</span>} description="Kahramanının adını ve haritadaki yerlerin adlarını yorumlarınla sen koyarsın." />
+        <div className="mt-5">
+          <CommentJoinGuide />
+        </div>
+      </section>
 
       <section aria-labelledby="siniflar" className="mt-14">
         <SectionTitle title={<span id="siniflar">Hangi platform, hangi sınıf?</span>} description="OBA-Tales hesabını ilk takip ettiğin platform ana platformun olur ve sınıfını belirler." />

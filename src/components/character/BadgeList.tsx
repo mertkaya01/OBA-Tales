@@ -8,6 +8,7 @@ import {
   Footprints,
   Music,
   PartyPopper,
+  Signpost,
   Snowflake,
   Sprout,
   Sun,
@@ -31,6 +32,7 @@ const ICONS: Readonly<Record<string, LucideIcon>> = {
   wind: Wind,
   sun: Sun,
   music: Music,
+  signpost: Signpost,
 };
 
 interface BadgeListProps {

@@ -31,3 +31,40 @@ describe("abone ve takipçi içe aktarımı", () => {
     expect(new Set(result.roster.characters.map((c) => c.id)).size).toBe(result.roster.characters.length);
   });
 });
+
+describe("yorumla kahraman adı", () => {
+  const base = applyEntries([{ platform: "youtube", handle: "zq-yorumcu", displayName: "@zq-yorumcu" }], { roster: { version: 1, season: 1, generatedAt: "2026-11-01T00:00:00.000Z", characters: [] } });
+  const old = { ...base.roster, characters: base.roster.characters.map((c) => ({ ...c, updatedAt: "2026-11-27T12:00:00.000Z" })) };
+
+  it("yeni gelen yorumdaki adla doğar", () => {
+    const r = applyEntries([{ platform: "instagram", handle: "zq.yeni", displayName: "zq.yeni", heroName: "kara şahin" }], { roster: old });
+    expect(r.roster.characters.find((c) => c.handle === "zq.yeni")?.displayName).toBe("Kara Şahin");
+    expect(r.named).toEqual([{ handle: "zq.yeni", name: "Kara Şahin" }]);
+  });
+
+  it("haritadaki kişi yeni yorumla adını değiştirir; eski yorum elle verilmiş adı ezmez", () => {
+    const renamed = applyEntries([{ platform: "youtube", handle: "zq-yorumcu", displayName: "", heroName: "Demir Yay", at: "2026-11-28T10:00:00Z" }], { roster: old });
+    expect(renamed.roster.characters[0].displayName).toBe("Demir Yay");
+    const manual = { ...old, characters: old.characters.map((c) => ({ ...c, displayName: "Panelden Ad" })) };
+    const stale = applyEntries([{ platform: "youtube", handle: "zq-yorumcu", displayName: "", heroName: "Demir Yay", at: "2026-11-26T10:00:00Z" }], { roster: manual });
+    expect(stale.roster.characters[0].displayName).toBe("Panelden Ad");
+    expect(stale.named).toEqual([]);
+    // Adı hâlâ kullanıcı adıysa eski yorum da uygulanır.
+    const plain = applyEntries([{ platform: "youtube", handle: "zq-yorumcu", displayName: "", heroName: "Demir Yay", at: "2026-11-26T10:00:00Z" }], { roster: old });
+    expect(plain.roster.characters[0].displayName).toBe("Demir Yay");
+  });
+
+  it("aynı kişinin en yeni komutu geçer; uygunsuz ad uygulanmaz ama kişi katılır", () => {
+    const r = applyEntries(
+      [
+        { platform: "tiktok", handle: "zq.iki", displayName: "", heroName: "Yeni Ad", at: "2026-11-28T10:00:00Z" },
+        { platform: "tiktok", handle: "zq.iki", displayName: "", heroName: "Eski Ad", at: "2026-11-20T10:00:00Z" },
+        { platform: "tiktok", handle: "zq.kufur", displayName: "", heroName: "siktir" },
+      ],
+      { roster: old },
+    );
+    expect(r.roster.characters.find((c) => c.handle === "zq.iki")?.displayName).toBe("Yeni Ad");
+    expect(r.roster.characters.find((c) => c.handle === "zq.kufur")?.displayName).toBe("zq.kufur");
+    expect(r.rejectedNames).toEqual([{ handle: "zq.kufur", name: "siktir", reason: "uygunsuz söz" }]);
+  });
+});

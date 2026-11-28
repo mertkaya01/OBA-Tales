@@ -2,8 +2,10 @@
  * YÖNETİM PANELİ — /yonetim (yalnızca `npm run dev` ile, bu bilgisayarda; yayın sürümünde bu sayfa yoktur).
  *
  *   · Durum: haritadaki takipçi sayısı, platform ve nadirlik dağılımı
- *   · Takipçi ekle: Instagram ve TikTok "verilerini indir" dosyaları, YouTube yorumları, CSV ya da elle liste
- *     (dosya tarayıcıda okunur; sunucuya yalnızca kullanıcı adları gider). Önce önizleme, sonra "Haritaya ekle".
+ *   · Takipçi ekle: Instagram ve TikTok "verilerini indir" dosyaları, YouTube yorumları, yapıştırılan yorumlar, CSV ya da
+ *     elle liste (dosya tarayıcıda okunur; sunucuya yalnızca kullanıcı adları ve seçilen kahraman adları gider).
+ *     Yorumunda "ad: Kara Şahin" yazan o adla doğar (src/lib/heroNames.ts). Önce önizleme, sonra "Haritaya ekle".
+ *   · Yer adları: ad koyma oylaması (YouTube yorumları beğeniye göre ya da elle), "adını koyan @…" etiketi
  *   · Takipçiler: listede ara, tek tek düzenle (ad, unvan, nadirlik, rozet, puan, platform, yer), elle ekle, sil
  *   · Bağlantılar: sosyal medya hesapları ve destek bağlantısı (üst menüde görünür)
  *   · Haritadan çıkar: çıkmak isteyen kişiler için
@@ -11,11 +13,12 @@
  *   · Yayına al: değişiklikler public/data/ içine yazılır; git ile commit + push yapınca site güncellenir
  * Uç noktalar: scripts/yonetimPlugin.ts · kurallar: scripts/lib/followers.ts · dosya okuyucular: src/admin/followerFiles.ts
  */
-import { BookOpen, Download, FileUp, Link2, RefreshCw, ShieldAlert, Sparkles, Trash2, Undo2, UserMinus, UserPlus, Users } from "lucide-react";
+import { BookOpen, Download, FileUp, Link2, RefreshCw, ShieldAlert, Signpost, Sparkles, Trash2, Undo2, UserMinus, UserPlus, Users } from "lucide-react";
 import { api } from "../admin/adminApi";
 import { FollowersCard, LinksCard } from "../admin/FollowerEditor";
+import { PlaceNamingCard } from "../admin/PlaceNaming";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { parseFollowerFile, readFollowerFile, type FollowerEntry, type ReadFile } from "../admin/followerFiles";
+import { parseFollowerFile, parsePastedComments, readFollowerFile, type FollowerEntry, type ReadFile } from "../admin/followerFiles";
 import { SectionTitle } from "../components/ui/SectionTitle";
 import { PLATFORM_LABELS } from "../content/classes";
 import { RARITY_INFO } from "../content/rarities";
@@ -45,6 +48,10 @@ interface ImportReport {
   skipped: string[];
   /** Hikâyenin kahramanları: listede olsalar da takipçi olarak eklenmez. */
   heroes: string[];
+  /** Yorumla kahraman adı seçenler. */
+  named: { handle: string; name: string }[];
+  /** Kabul edilmeyen ad komutları (kişi yine katılır). */
+  rejectedNames: { handle: string; name: string; reason: string }[];
   cleaned: number;
 }
 
@@ -109,6 +116,7 @@ const GUIDES: Readonly<Record<Platform, { title: string; steps: string[]; file: 
       "Yol 1: o listedeki kullanıcı adlarını bir metin dosyasına alt alta yaz (youtube-aboneler.txt) ve aşağıdan seç.",
       "Yol 2: yorum yapanları otomatik çek. Google Cloud Console → yeni proje → YouTube Data API v3'ü etkinleştir → Kimlik bilgileri → API anahtarı oluştur.",
       ".env.local dosyasına iki satır ekle: YOUTUBE_API_KEY=anahtarın ve YOUTUBE_KANAL=kanal-adın (@ olmadan). Sonra \"Yorumlardan çek\".",
+      "Son 10 videonun yorumları okunur. Yorumunda \"ad: Kara Şahin\" yazan kişi o adla doğar; adı haritadaysa değişir.",
     ],
     file: "youtube-aboneler.txt ya da .csv",
     accept: ".txt,.csv",
@@ -136,8 +144,9 @@ function PlatformImport({ platform, youtube, onPreview }: { platform: Platform; 
     setBusy(true);
     setError(null);
     try {
-      const result = await api<{ entries: FollowerEntry[] }>("/youtube", {});
-      onPreview("YouTube yorumları", result.entries);
+      const result = await api<{ entries: FollowerEntry[]; log: string }>("/youtube", {});
+      if (result.entries.length) onPreview(`YouTube yorumları · ${result.log}`, result.entries);
+      else setError(`Yorum bulunamadı (${result.log}).`);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -187,6 +196,9 @@ export default function AdminPage() {
   const [busy, setBusy] = useState(false);
   const [manual, setManual] = useState("");
   const [manualPlatform, setManualPlatform] = useState<Platform>("instagram");
+  const [pasted, setPasted] = useState("");
+  const [pastePlatform, setPastePlatform] = useState<Platform>("instagram");
+  const [pasteUnread, setPasteUnread] = useState<number | null>(null);
   const [remove, setRemove] = useState("");
   const [confirm, setConfirm] = useState("");
   const [check, setCheck] = useState<{ ok: boolean; output: string } | null>(null);
@@ -406,6 +418,44 @@ export default function AdminPage() {
             </div>
             <textarea value={manual} onChange={(e) => setManual(e.target.value)} rows={4} placeholder={"kopuz_okcu\n@ayaz.kiz"} className="mt-2 w-full rounded-lg bg-gece-900 p-2 text-sm text-buz-50" />
           </details>
+          <details className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <summary className="cursor-pointer font-semibold text-buz-50">Yorumları yapıştır (Instagram, TikTok)</summary>
+            <p className="mt-2 text-sm text-buz-200">
+              Instagram ve TikTok yorumları otomatik okunamıyor; videonun altındaki yorumları kopyalayıp buraya yapıştır. Her satıra{" "}
+              <code className="text-gunozu-200">@kullanici yorum</code> ya da <code className="text-gunozu-200">kullanici: yorum</code> yazabilirsin; Instagram'ın web
+              sayfasından seçip kopyaladığın liste de olur (kullanıcı adı üstte, yorum altta; "2 sa", "Yanıtla" satırları atlanır). Yorumunda{" "}
+              <code className="text-gunozu-200">ad: Kara Şahin</code> yazan o adla doğar.
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <select value={pastePlatform} onChange={(e) => setPastePlatform(e.target.value as Platform)} className="rounded-lg bg-gece-900 px-2 py-1.5 text-sm text-buz-50">
+                {PLATFORMS.map((p) => (
+                  <option key={p} value={p}>
+                    {PLATFORM_LABELS[p]}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                className={secondary}
+                disabled={!pasted.trim()}
+                onClick={() => {
+                  const { entries, unread } = parsePastedComments(pasted, pastePlatform);
+                  setPasteUnread(unread);
+                  if (entries.length) void preview(`Yorumlar · ${PLATFORM_LABELS[pastePlatform]}`, entries);
+                }}
+              >
+                Önizle
+              </button>
+              {pasteUnread !== null && pasteUnread > 0 && <span className="self-center text-xs text-buz-300">{pasteUnread} satır okunamadı (kullanıcı adı bulunamadı)</span>}
+            </div>
+            <textarea
+              value={pasted}
+              onChange={(e) => (setPasted(e.target.value), setPasteUnread(null))}
+              rows={5}
+              placeholder={"@kara.sahin ad: Kara Şahin\nayaz_kiz: adım Ayaz Hatun\ntolga.er: harika bölüm!"}
+              className="mt-2 w-full rounded-lg bg-gece-900 p-2 text-sm text-buz-50"
+            />
+          </details>
         </div>
 
         {pending && report && (
@@ -422,17 +472,42 @@ export default function AdminPage() {
                 Kahraman: {report.heroes.join(", ")}. Hikâyenin kahramanları takipçi olarak eklenmez; haritaya yukarıdaki Hikâye kartından gelirler.
               </p>
             )}
+            {report.named.length > 0 && (
+              <div className="mt-2">
+                <p className="text-xs font-semibold text-zumrut-400">Yorumla ad seçen: {formatNumber(report.named.length)}</p>
+                <p className="mt-0.5 text-xs text-buz-200">
+                  {report.named.slice(0, 20).map((n, i) => (
+                    <span key={n.handle}>
+                      {i > 0 && ", "}@{n.handle} → <b className="text-buz-50">{n.name}</b>
+                    </span>
+                  ))}
+                  {report.named.length > 20 ? "…" : ""}
+                </p>
+              </div>
+            )}
+            {report.rejectedNames.length > 0 && (
+              <div className="mt-2">
+                <p className="text-xs font-semibold text-alev-300">Kabul edilmeyen adlar: {formatNumber(report.rejectedNames.length)} (kişi yine katılır, adı kullanıcı adı olur)</p>
+                <ul className="mt-0.5 text-xs text-buz-300">
+                  {report.rejectedNames.slice(0, 12).map((n) => (
+                    <li key={n.handle}>
+                      @{n.handle}: "{n.name}" · {n.reason}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <div className="mt-3 flex gap-2">
               <button
                 type="button"
                 className={primary}
-                disabled={busy || report.added.length + report.linked.length === 0}
+                disabled={busy || report.added.length + report.linked.length + report.named.length === 0}
                 onClick={() =>
                   void run(async () => {
                     const done = await api<ImportReport>("/ekle", { entries: pending.entries });
                     setPending(null);
                     setReport(null);
-                    return `✔ Haritaya eklendi: ${done.added.length} yeni, ${done.linked.length} çift iz. Toplam ${done.after}.`;
+                    return `✔ Haritaya eklendi: ${done.added.length} yeni, ${done.linked.length} çift iz, ${done.named.length} kahraman adı. Toplam ${done.after}.`;
                   })
                 }
               >
@@ -444,6 +519,10 @@ export default function AdminPage() {
             </div>
           </div>
         )}
+      </Card>
+
+      <Card title="Yer adları (ad koyma oylaması)" icon={<Signpost aria-hidden className="size-5 text-gunozu-300" />}>
+        <PlaceNamingCard />
       </Card>
 
       <Card title="Haritadan çıkar" icon={<UserMinus aria-hidden className="size-5 text-buz-300" />}>

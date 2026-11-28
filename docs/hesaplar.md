@@ -169,7 +169,36 @@ Bu yüzden ana yol **takipçi listesi dosyası**dır (yukarıdaki panel); yoruml
    ```
 
 Son 10 videonun yorumları `veri/girdi/youtube-yorumlar.csv` dosyasına yazılır. Ücretsiz kota günde 10.000 birim; bu
-komut bir çalıştırmada birkaç düzine birim harcar.
+komut bir çalıştırmada birkaç düzine birim harcar. Aynı iş panelde: **Takipçi ekle → YouTube → Yorumlardan çek**.
+
+## Yorumla katılma: kahraman adı ve ad koyma oylaması
+
+Videonun sonunda izleyiciye iki şey söylenir; kurallar sitede **Obaya Katıl → Yorumla katıl** bölümünde de yazar.
+
+**Kahraman adı.** Yorumuna `ad: Kara Şahin` yazan kişi haritada o adla doğar. Şunlar da tanınır: `adım Kara Şahin`,
+`isim: …`, `kahraman: …`, `#katıl …`, `obaya katıl …`. Haritadaki biri yeniden yazarsa adı değişir (en son yorum
+geçer). Panelden elle verdiğin ad, ondan daha eski bir yorumla ezilmez.
+- Ad en çok 24 harf ve 4 sözcük olabilir. Hepsi küçük ya da büyük yazılmışsa baş harfler büyütülür.
+- Küfürlü, bağlantılı, kadronun ya da sitenin adını taşıyan adlar uygulanmaz. Kişi yine katılır, adı kullanıcı adı
+  olur. Önizlemede "Kabul edilmeyen adlar" altında gerekçesiyle görünür.
+- Küfür listesi kusursuz olamaz. Önizlemedeki "Yorumla ad seçen" listesine göz at; gözden kaçanı **Takipçiler**
+  kartından düzelt.
+- Kurallar `src/lib/heroNames.ts` dosyasında.
+
+**Instagram ve TikTok yorumları** otomatik okunamıyor. Videonun yorumlarını kopyala ve panelde
+**Takipçi ekle → Yorumları yapıştır** kutusuna yapıştır. Her satır `@kullanici yorum` ya da `kullanici: yorum`
+olabilir. Instagram'ın web sayfasından seçip kopyalanan liste de olur: kullanıcı adı üstte, yorum altta; "2 sa",
+"Yanıtla" gibi satırlar atlanır.
+
+**Ad koyma oylaması** (panel → **Yer adları**):
+1. Videoda bir yeri göster: "Bu adanın adını yorumlara yazın, en çok beğenilen kazansın."
+2. Panelde yeri seç. YouTube'da **Videoları getir → Önerileri say** de. Yorumlar beğeniye göre sıralanır;
+   `yer: Yıldız Koyu` ya da yalnızca `Yıldız Koyu` yazan kısa yorumlar aday olur. Birincide **Adı koy** de.
+   Instagram ve TikTok'ta kazananı uygulamada bul, adı ve yazanı **Elle** bölümüne gir.
+3. Haritada o yerin etiketinde yeni ad ve "adını koyan @…" görünür. Koyan kişi haritada değilse eklenir ve
+   **Ad Koyan** rozetini alır.
+
+Karanlıktaki yerlere de ad konabilir; ad, o kara açılınca görünür.
 
 ## 3. adım (sırada): Instagram yorumları
 
